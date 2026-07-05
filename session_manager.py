@@ -674,11 +674,17 @@ class SessionManager:
 
     def save_state(self):
         print("Saving session state...")
-        # Trigger save_resume_data for all torrents
+        # Trigger save_resume_data for all torrents. This runs on the app's
+        # shutdown/close path and blocks the UI (busy cursor) until it
+        # finishes, so it must stay fast: skip flush_disk_cache here (it
+        # forces a synchronous disk write flush per torrent, which is what
+        # made closing/updating feel slow with several active torrents).
+        # The periodic background autosave (_maybe_autosave) still flushes
+        # for real crash safety without blocking anything.
         handles = self.ses.get_torrents()
         with self.lock:
             self.pending_saves.clear()
-        
+
         count = 0
         for h in handles:
             if h.is_valid():
@@ -690,7 +696,7 @@ class SessionManager:
                 if callable(need_resume) and not need_resume():
                     continue
                 try:
-                    h.save_resume_data(_flush_resume_flag())
+                    h.save_resume_data()
                 except Exception as e:
                     print(f"Error requesting resume data for {ih}: {e}")
                     continue
@@ -698,14 +704,14 @@ class SessionManager:
                     with self.lock:
                         self.pending_saves.add(ih)
                 count += 1
-        
+
         if count == 0:
             return
 
         # Actively poll for save_resume_data alerts instead of relying on background thread
         # This ensures resume data is saved even during shutdown
         start_time = time.time()
-        while self.pending_saves and time.time() - start_time < 10:
+        while self.pending_saves and time.time() - start_time < 5:
             try:
                 if self.ses.wait_for_alert(500):  # 500ms timeout
                     alerts = self.ses.pop_alerts()
