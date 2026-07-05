@@ -1,46 +1,57 @@
 # SerrebiTorrent
 
-SerrebiTorrent is a Windows desktop torrent manager designed for keyboard-first use and screen readers. It can manage torrents on this PC (local libtorrent) or control a remote client (qBittorrent, Transmission, rTorrent).
+A vibe-coded, keyboard-first, screen-reader-friendly torrent manager for Windows. Manage torrents locally with built-in libtorrent, or drive a remote client — qBittorrent, Transmission, or rTorrent — from the same interface.
 
-**Latest:** v1.5.45
+[![Join SerrebiProjects on Telegram](https://img.shields.io/badge/Telegram-SerrebiProjects-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/SerrebiProjects)
 
-## What you get
-- Connect to local libtorrent, rTorrent (SCGI/XML-RPC), qBittorrent, or Transmission from one interface.
+**Have a question, hit a bug, or want early word on new releases?** Join the [SerrebiProjects Telegram group](https://t.me/SerrebiProjects) — the community hub for SerrebiTorrent and my other projects, and the fastest place to get help.
+
+## Features
+
+- Connects to local libtorrent, or a remote qBittorrent, Transmission, or rTorrent (SCGI/XML-RPC) client, all from one interface.
 - Live download/upload speeds, progress, ratio, tracker host, and status messages for each torrent.
-- Create torrents.
-- Responsive UI: remote operations run in the background to avoid freezing.
+- Creates torrents.
+- Responsive UI: remote operations run in the background so the app never freezes.
 - Quick filters (All, Downloading, Complete, Active) plus a tracker tree in the sidebar.
-- Keyboard workflow + tray support that plays nicely with NVDA and other screen readers.
+- Full keyboard workflow and tray support, built and tested with NVDA.
+- Built-in updater that verifies SHA-256 and Authenticode before applying an update, with automatic backup and rollback.
 
-## Download & run (portable)
-1. Download the latest ZIP from https://github.com/serrebidev/SerrebiTorrent/releases
+## Download and install
+
+Grab the latest build from the [Releases page](https://github.com/serrebidev/SerrebiTorrent/releases). Latest: **v1.7.10**.
+
+**Windows portable**
+
+1. Download the latest ZIP.
 2. Extract the entire `SerrebiTorrent` folder somewhere (example: `C:\Portable\SerrebiTorrent\`).
-3. Run `SerrebiTorrent.exe` (do not move the EXE out of its folder).
+3. Run `SerrebiTorrent.exe` — don't move the EXE out of its folder.
 
-Portable data (profiles, preferences, resume data, logs) lives next to the app in `SerrebiTorrent_Data\`.
+Portable data (profiles, preferences, resume data, logs) lives next to the app in `SerrebiTorrent_Data\`. Updating in place keeps this data untouched.
 
 ## First-time setup
-- Open Connection Manager: `Ctrl+Shift+C` (or tray icon -> Switch Profile -> Connection Manager...)
+
+- Open Connection Manager: `Ctrl+Shift+C` (or tray icon -> Switch Profile -> Connection Manager...).
 - Add a profile and connect:
-  - **Local**: manages torrents via libtorrent on this PC (default profile on first run).
-  - **Remote**: point at qBittorrent / Transmission / rTorrent and enter credentials if needed.
+  - **Local** — manages torrents via libtorrent on this PC (default profile on first run).
+  - **Remote** — point at qBittorrent, Transmission, or rTorrent and enter credentials if needed.
 
 ## Settings
-- Local session + app settings: Tools -> Local Session Settings... (Ctrl+,) (or tray icon -> Settings -> Local Session Settings...)
-- Remote client settings (enabled only when connected): Tools -> qBittorrent/Transmission/rTorrent Remote Settings... (or tray icon -> Settings -> ...)
 
-## Auto-updater (Windows)
-The app checks GitHub Releases for updates. You can enable/disable the startup check in Local Session Settings, or run Tools -> Check for Updates.
+- Local session + app settings: Tools -> Local Session Settings... (`Ctrl+,`) (or tray icon -> Settings -> Local Session Settings...).
+- Remote client settings (enabled only when connected): Tools -> qBittorrent/Transmission/rTorrent Remote Settings... (or tray icon -> Settings -> ...).
 
-Update flow:
-- Downloads the release ZIP from GitHub using the update manifest asset (`SerrebiTorrent-update.json`).
-- Verifies the ZIP SHA-256 from the manifest.
-- Verifies Authenticode signature on the new `SerrebiTorrent.exe`.
-- Uses a helper script to swap folders safely, keep a backup, and restart the app.
+## Run from source (developers)
 
-If an update fails, check the updater log in `%TEMP%\SerrebiTorrent_update_*.log`.
+1. Install Python 3.14.
+2. `git clone https://github.com/serrebidev/SerrebiTorrent`
+3. `python -m pip install -r requirements.txt`
+4. Ensure the Python 3.14 Windows `libtorrent` extension and its DLLs are installed or available on `PATH` — it isn't published on PyPI.
+5. Launch it: `python main.py`
 
-## Release pipeline (automated)
+## Building
+
+`build_exe.bat` drives the whole release pipeline: PyInstaller packaging, Authenticode signing, and GitHub release publishing.
+
 Prereqs:
 - Python 3.14 + dependencies from `requirements.txt`
 - Git + GitHub CLI (`gh auth login` completed)
@@ -48,68 +59,52 @@ Prereqs:
 - SignTool available (default path used, or set `SIGNTOOL_PATH`)
 
 Commands:
-- `build_exe.bat build` builds, signs, and zips locally.
-- `build_exe.bat release` auto-bumps version, builds, signs, zips, tags, pushes, creates the GitHub release, and uploads the update manifest.
-- `build_exe.bat dry-run` shows what it would do without modifying anything.
+- `build_exe.bat build` — builds, signs, and zips locally.
+- `build_exe.bat release` — auto-bumps version, builds, signs, zips, tags, pushes, creates the GitHub release, and uploads the update manifest.
+- `build_exe.bat dry-run` — shows what it would do without modifying anything.
 
 Versioning uses the latest `vMAJOR.MINOR.PATCH` tag as the base. If none exists, it starts at `v1.0.0`. Commits with `BREAKING CHANGE` or `!:` bump major; commits starting with `feat` (or containing `feature`) bump minor; otherwise it bumps patch.
 
-## Build from source (developers)
-Commands:
-- `git clone https://github.com/serrebidev/SerrebiTorrent`
-- `python -m pip install -r requirements.txt`
-- Ensure the Python 3.14 Windows `libtorrent` extension and its DLLs are installed or available on `PATH`; it is not installed from PyPI.
-- `build_exe.bat build`
+Build output lands in `dist\SerrebiTorrent\`. For distribution, zip the entire `SerrebiTorrent` folder, not just the EXE.
 
-Build output lands in `dist\SerrebiTorrent\`. For distribution, zip the entire `SerrebiTorrent` folder (not just the EXE).
+## Auto-updater
 
-## Accessibility & shortcuts
+The app checks GitHub Releases for updates. Enable or disable the startup check in Local Session Settings, or run Tools -> Check for Updates at any time.
+
+Update flow:
+1. Downloads the release ZIP using the update manifest asset (`SerrebiTorrent-update.json`).
+2. Verifies the ZIP's SHA-256 against the manifest.
+3. Verifies the Authenticode signature on the new `SerrebiTorrent.exe`.
+4. Runs a hidden helper script that waits for the app to exit, backs up the current install to `<install_dir>_backup_<timestamp>`, swaps in the new files, and restarts the app.
+
+Backup cleanup runs automatically:
+- **Default** — keeps 1 backup (newest); cleanup starts after a 5-minute grace period.
+- **Immediate** — set `SERREBITORRENT_KEEP_BACKUPS=0` to delete the backup right after a successful update.
+- **Multiple** — set `SERREBITORRENT_KEEP_BACKUPS=N` to keep N most recent backups.
+
+Other environment variables:
+- `SERREBITORRENT_TRUSTED_SIGNING_THUMBPRINTS` — comma-separated list of trusted certificate thumbprints.
+
+If an update fails, the backup is restored automatically. Check the updater log in `%TEMP%\SerrebiTorrent_update_*.log` if something goes wrong. The update process runs completely hidden — no console windows appear, and user data in `SerrebiTorrent_Data` is preserved throughout.
+
+## Accessibility and shortcuts
+
 Everything stays reachable by keyboard:
-- Ctrl+Shift+C: Connection Manager
-- Ctrl+O / Ctrl+U: Add torrent file / Add URL or magnet
-- Ctrl+S / Ctrl+P: Start / Stop selected torrents
-- Delete / Shift+Delete: Remove / Remove with data
-- Ctrl+A: Select all
-- Tab: Toggle focus between the sidebar and torrent list; double-clicking the tray icon restores the window.
-- Ctrl+N: Create a torrent
 
-Need to troubleshoot? Logs live under `SerrebiTorrent_Data\logs` next to the EXE/script in portable mode (or per-user app data in installed mode). Open `AGENTS.md` if you need technical or build details.
+- `Ctrl+Shift+C` — Connection Manager
+- `Ctrl+O` / `Ctrl+U` — Add torrent file / Add URL or magnet
+- `Ctrl+S` / `Ctrl+P` — Start / Stop selected torrents
+- `Delete` / `Shift+Delete` — Remove / Remove with data
+- `Ctrl+A` — Select all
+- `Ctrl+N` — Create a torrent
+- `Tab` — Toggle focus between the sidebar and torrent list; double-clicking the tray icon restores the window.
 
-## Auto-update
+Logs live under `SerrebiTorrent_Data\logs`, next to the EXE/script in portable mode (or in per-user app data in installed mode).
 
-SerrebiTorrent includes automatic update functionality:
+## Contributing
 
-### Update Process
-1. App checks GitHub releases for newer versions (manual via Tools menu or automatic on startup if enabled)
-2. Downloads update ZIP and verifies SHA-256 checksum and Authenticode signature
-3. Launches hidden helper script that:
-   - Waits for app to exit
-   - Backs up current installation to `<install_dir>_backup_<timestamp>`
-   - Applies update by moving new files to install directory
-   - Restarts the app
-4. Backup cleanup runs automatically:
-   - **Default:** Keeps 1 backup (newest); retention cleanup starts after a 5-minute grace period
-   - **Immediate:** Set `SERREBITORRENT_KEEP_BACKUPS=0` to delete backup immediately after successful update
-   - **Multiple:** Set `SERREBITORRENT_KEEP_BACKUPS=N` to keep N most recent backups
+Pull requests are welcome. If SerrebiTorrent has been useful to you, open a PR with a fix or feature and I'll review it.
 
-### Configuration
-- **Backup Retention:** Set environment variable `SERREBITORRENT_KEEP_BACKUPS` to control how many backup folders to keep (default: 1)
-- **Signing Trust:** Set `SERREBITORRENT_TRUSTED_SIGNING_THUMBPRINTS` to comma-separated list of trusted certificate thumbprints
+## Community and support
 
-### Notes
-- The update process runs completely hidden (no CMD windows appear)
-- User data in `SerrebiTorrent_Data` is preserved during updates
-- If an update fails, the backup is automatically restored
-- Backups are cleaned up automatically after a grace period to allow manual rollback if needed
-
-## Test plan (manual)
-- Build a release with `build_exe.bat release` and extract the ZIP to a folder like `C:\Temp\SerrebiTorrent-old`.
-- Create a newer release (make a small commit, then run `build_exe.bat release` again).
-- Launch the older app, run Tools -> Check for Updates, accept the prompt, and confirm:
-  - The app closes and restarts on the new version
-  - No CMD/console windows appear during the update
-  - After 5 minutes, backup folders are automatically cleaned up (or immediately if `SERREBITORRENT_KEEP_BACKUPS=0`)
-  - The status bar reports update status or errors clearly
-
-##Submit bugs in issues, or join my Telegram group!
-(https://t.me/SerrebiProjects)
+Report bugs and request features in [Issues](https://github.com/serrebidev/SerrebiTorrent/issues). For questions, feedback, and release news, join the [SerrebiProjects Telegram group](https://t.me/SerrebiProjects).
