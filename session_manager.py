@@ -22,6 +22,13 @@ QBITTORRENT_REPORTED_VERSION = "5.2.2"
 QBITTORRENT_USER_AGENT = f"qBittorrent/{QBITTORRENT_REPORTED_VERSION}"
 QBITTORRENT_PEER_FINGERPRINT = b"-qB5220-"
 
+# How often (seconds) to persist resume data (ratio, upload/download totals, etc.)
+# in the background. Without this, stats like seeding ratio only survive a graceful
+# app shutdown - a crash, force-kill, or update-triggered restart would silently
+# roll every torrent back to whatever was last saved, no matter which client
+# profile (local/remote) was active in the UI at the time.
+AUTOSAVE_INTERVAL_SECONDS = 180
+
 
 def _unlimited_if_negative(value, default=0):
     try:
@@ -96,6 +103,7 @@ class SessionManager:
         self.alerts_queue = []
         self.running = True
         self.pending_saves = set()  # Track info_hashes for pending resume data
+        self.last_autosave = time.time()
         self.alert_thread = threading.Thread(target=self._alert_loop, daemon=True)
         self.alert_thread.start()
         
@@ -325,6 +333,9 @@ class SessionManager:
                 print(f"announce_ip not supported by this libtorrent build: {e}")
 
     def _alert_loop(self):
+        # Runs for the lifetime of the process, independent of which client
+        # profile (local or remote) is currently selected in the UI - this is
+        # the background local session and must keep ticking regardless.
         while self.running:
             try:
                 if not self.ses:
@@ -340,10 +351,43 @@ class SessionManager:
                         elif isinstance(alert, lt.metadata_received_alert):
                             # ... handle metadata ...
                             pass
+                self._maybe_autosave()
             except Exception as e:
                 print(f"Session alert loop error: {e}")
                 time.sleep(1)
                 continue
+
+    def _maybe_autosave(self):
+        """Periodically flush resume data (ratio, totals, etc.) to disk.
+
+        This runs on a timer independent of app shutdown so seeding stats
+        survive crashes, forced restarts (e.g. auto-update), or the process
+        simply never being closed gracefully - not just clean exits.
+        """
+        now = time.time()
+        if now - self.last_autosave < AUTOSAVE_INTERVAL_SECONDS:
+            return
+        self.last_autosave = now
+        try:
+            for h in self.ses.get_torrents():
+                if not h.is_valid():
+                    continue
+                has_metadata = getattr(h, 'has_metadata', None)
+                if callable(has_metadata) and not has_metadata():
+                    continue
+                need_resume = getattr(h, 'need_save_resume_data', None)
+                if callable(need_resume) and not need_resume():
+                    continue
+                ih = self._handle_hash_key(h)
+                try:
+                    h.save_resume_data(_flush_resume_flag())
+                    if ih:
+                        with self.lock:
+                            self.pending_saves.add(ih)
+                except Exception as e:
+                    print(f"Error requesting periodic resume save for {ih}: {e}")
+        except Exception as e:
+            print(f"Error during periodic autosave: {e}")
 
     def _handle_save_resume_failed(self, alert):
         try:
