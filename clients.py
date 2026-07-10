@@ -538,8 +538,10 @@ class RTorrentClient(BaseClient):
 # --- qBit ---
 import qbittorrentapi
 class QBittorrentClient(BaseClient):
-    _DELETE_VERIFY_ATTEMPTS = 5
-    _DELETE_VERIFY_DELAY_SECONDS = 0.2
+    # qBittorrent acknowledges the delete request before its torrent list is
+    # always updated, especially when deleting data on a remote server.
+    _DELETE_VERIFY_ATTEMPTS = 20
+    _DELETE_VERIFY_DELAY_SECONDS = 0.5
 
     def __init__(self, u, us, pw):
         if not u.startswith(('http://', 'https://')):

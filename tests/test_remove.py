@@ -56,6 +56,25 @@ class FakeQbittorrentStickyClient(FakeQbittorrentApiClient):
         self.calls.append((torrent_hashes, delete_files))
 
 
+class FakeQbittorrentDelayedClient(FakeQbittorrentApiClient):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.delete_pending = False
+        self.remaining_polls = 0
+
+    def torrents_info(self, torrent_hashes=None):
+        if self.delete_pending and self.remaining_polls:
+            self.remaining_polls -= 1
+            return [SimpleNamespace(hash=h) for h in self._hash_list(torrent_hashes)]
+        return super().torrents_info(torrent_hashes)
+
+    def torrents_delete(self, torrent_hashes=None, delete_files=False):
+        self.calls.append((torrent_hashes, delete_files))
+        self.delete_pending = True
+        self.remaining_polls = 2
+        self.deleted.update(h.lower() for h in self._hash_list(torrent_hashes))
+
+
 class FakeTransmissionApiClient:
     def __init__(self, host=None, port=None, username=None, password=None, protocol=None, path=None):
         self.calls = []
@@ -130,6 +149,14 @@ class RemoveTorrentsTests(unittest.TestCase):
                 client.remove_torrent("0" * 40)
 
             self.assertEqual(client.c.calls, [(["0" * 40], False)])
+
+    def test_qbittorrent_remove_waits_for_delayed_remote_removal(self):
+        with mock.patch.object(clients.qbittorrentapi, "Client", FakeQbittorrentDelayedClient), \
+            mock.patch.object(clients.time, "sleep"):
+            client = clients.QBittorrentClient("localhost", "user", "pass")
+            client.remove_torrent_with_data("0" * 40)
+
+            self.assertEqual(client.c.calls, [(["0" * 40], True)])
 
     def test_qbittorrent_start_stop_use_v5_methods_and_normalize_hashes(self):
         hash_bytes = b"0123456789abcdef0123456789abcdef01234567"
