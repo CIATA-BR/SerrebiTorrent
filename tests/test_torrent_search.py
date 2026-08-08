@@ -4,6 +4,7 @@ Nothing here touches the network -- each indexer's parser is fed a recorded
 reply, and the fan-out is driven through fake searchers.
 """
 
+import json
 import os
 import sys
 import threading
@@ -188,6 +189,91 @@ def test_feeds_join_the_built_in_indexers():
 
     assert "Jackett" in ts.all_sources(prefs)
     assert ts.SOURCE_KNABEN in ts.all_sources(prefs)
+
+
+def test_nothing_private_ships_in_the_defaults():
+    # A fresh install must arrive with no indexer of anybody's, and every
+    # public one switched on.
+    from config_manager import DEFAULT_PREFERENCES
+
+    assert DEFAULT_PREFERENCES["torznab_feeds"] == []
+    assert DEFAULT_PREFERENCES["disabled_torrent_sources"] == []
+
+
+def test_blinddl_feeds_are_adopted_when_there_are_none_here(tmp_path):
+    config = tmp_path / "config.json"
+    config.write_text(json.dumps({"torznab_feeds": [
+        {"name": "My Prowlarr", "url": "http://localhost:9696/api/v1/search",
+         "api_key": "secret"},
+    ]}), encoding="utf-8")
+    prefs = {"torznab_feeds": []}
+
+    with patch.object(ts, 'blinddl_config_path', return_value=str(config)):
+        added = ts.import_blinddl_feeds(prefs)
+
+    assert [feed["name"] for feed in added] == ["My Prowlarr"]
+    assert prefs["torznab_feeds"][0]["api_key"] == "secret"
+
+
+def test_adopting_twice_adds_nothing_the_second_time(tmp_path):
+    config = tmp_path / "config.json"
+    config.write_text(json.dumps({"torznab_feeds": [
+        {"name": "My Prowlarr", "url": "http://x", "api_key": "k"},
+    ]}), encoding="utf-8")
+    prefs = {"torznab_feeds": []}
+
+    with patch.object(ts, 'blinddl_config_path', return_value=str(config)):
+        ts.import_blinddl_feeds(prefs)
+        assert ts.import_blinddl_feeds(prefs) == []
+
+    assert len(prefs["torznab_feeds"]) == 1
+
+
+def test_an_indexer_edited_here_is_never_overwritten(tmp_path):
+    # The search dialog runs this every time it opens, so a URL or key
+    # changed in SerrebiTorrent has to survive.
+    config = tmp_path / "config.json"
+    config.write_text(json.dumps({"torznab_feeds": [
+        {"name": "My Prowlarr", "url": "http://blinddl", "api_key": "old"},
+    ]}), encoding="utf-8")
+    prefs = {"torznab_feeds": [
+        {"name": "My Prowlarr", "url": "http://edited", "api_key": "new"},
+    ]}
+
+    with patch.object(ts, 'blinddl_config_path', return_value=str(config)):
+        assert ts.import_blinddl_feeds(prefs) == []
+
+    assert prefs["torznab_feeds"][0]["url"] == "http://edited"
+    assert prefs["torznab_feeds"][0]["api_key"] == "new"
+
+
+def test_a_feed_may_not_shadow_a_built_in_indexer(tmp_path):
+    config = tmp_path / "config.json"
+    config.write_text(json.dumps({"torznab_feeds": [
+        {"name": ts.SOURCE_NYAA, "url": "http://x", "api_key": ""},
+    ]}), encoding="utf-8")
+    prefs = {"torznab_feeds": []}
+
+    with patch.object(ts, 'blinddl_config_path', return_value=str(config)):
+        assert ts.import_blinddl_feeds(prefs) == []
+
+
+def test_no_blinddl_installed_is_not_an_error(tmp_path):
+    prefs = {"torznab_feeds": []}
+    missing = str(tmp_path / "nothing" / "config.json")
+
+    with patch.object(ts, 'blinddl_config_path', return_value=missing):
+        assert ts.import_blinddl_feeds(prefs) == []
+
+    assert prefs["torznab_feeds"] == []
+
+
+def test_a_corrupt_blinddl_config_is_not_an_error(tmp_path):
+    config = tmp_path / "config.json"
+    config.write_text("{not json", encoding="utf-8")
+
+    with patch.object(ts, 'blinddl_config_path', return_value=str(config)):
+        assert ts.blinddl_feeds() == []
 
 
 def test_the_switched_off_list_decides_what_is_searched():

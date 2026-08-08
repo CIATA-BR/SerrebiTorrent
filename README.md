@@ -42,6 +42,8 @@ Tools -> Search for Torrents... (`Ctrl+F`) searches Knaben, The Pirate Bay, EZTV
 
 **Search sites...** switches individual indexers off, and indexers added in a later release are searched by default. **My indexers...** adds your own Torznab or Newznab endpoint — a whole Prowlarr or Jackett instance counts as one. That is how private trackers are searched: those tools already hold the login and the passkey, so SerrebiTorrent never stores a tracker password. A private tracker's authenticated `.torrent` is fetched with your own credentials at the moment you add it, rather than being turned into a magnet that its swarm would refuse.
 
+SerrebiTorrent ships with no indexers of its own configured — only the public ones above. If [blindDL](https://github.com/serrebidev/blindDL) is installed on the same computer and has indexers set up, the search picks them up the first time it opens, since both use the same feed format. It only ever adds: an indexer you have edited here is never overwritten.
+
 ## Settings
 
 - Local session + app settings: Tools -> Local Session Settings... (`Ctrl+,`) (or tray icon -> Settings -> Local Session Settings...).

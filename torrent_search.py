@@ -34,7 +34,10 @@ carries `torznab_feeds` and `disabled_torrent_sources`.
 from __future__ import annotations
 
 import html
+import json
+import os
 import re
+import sys
 import threading
 import time
 import xml.etree.ElementTree as ET
@@ -213,6 +216,54 @@ def feeds(prefs):
 def feed_named(prefs, name):
     """One feed by its name, or None."""
     return next((feed for feed in feeds(prefs) if feed["name"] == name), None)
+
+
+def blinddl_config_path():
+    """Where blindDL keeps its settings on this platform.
+
+    blindDL uses platformdirs; these are the three paths it resolves to.
+    Working them out by hand keeps SerrebiTorrent from taking a dependency
+    on platformdirs for one optional lookup.
+    """
+    if sys.platform == "win32":
+        base = os.environ.get("APPDATA") or os.path.expanduser("~")
+    elif sys.platform == "darwin":
+        base = os.path.expanduser("~/Library/Application Support")
+    else:
+        base = (os.environ.get("XDG_CONFIG_HOME") or
+                os.path.expanduser("~/.config"))
+    return os.path.join(base, "blindDL", "config.json")
+
+
+def blinddl_feeds():
+    """The indexer feeds configured in blindDL on this machine, or [].
+
+    The two programs share an author and the same feed format, so someone
+    who set their Prowlarr up once should not have to type the URL and key
+    again over here.
+    """
+    try:
+        with open(blinddl_config_path(), encoding="utf-8") as handle:
+            return feeds(json.load(handle))
+    except (OSError, ValueError):
+        return []
+
+
+def import_blinddl_feeds(prefs):
+    """Copy blindDL's indexers in, and return the ones that were new.
+
+    Only ever adds: an indexer already configured here wins, so this can run
+    every time the search opens without ever overwriting an edited URL or a
+    replaced API key.
+    """
+    existing = feeds(prefs)
+    taken = {feed["name"].casefold() for feed in existing}
+    taken |= {source.casefold() for source in ALL_SOURCES}
+    added = [feed for feed in blinddl_feeds()
+             if feed["name"].casefold() not in taken]
+    if added:
+        prefs["torznab_feeds"] = existing + added
+    return added
 
 
 # -- naming ----------------------------------------------------------------

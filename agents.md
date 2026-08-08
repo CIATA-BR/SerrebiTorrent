@@ -5,6 +5,7 @@
 - Entry point: `main.py`. GUI built with wxPython.
 - Background libtorrent session lives in `session_manager.py`. Do not duplicate sessions.
 - Indexer search lives in `torrent_search.py` (network, no wx) and `search_dialog.py` (wx, no network). Ported from blindDL; keep the two in step when either changes. `torrent_search.resolve()` returns `("magnet", str)` or `("file", bytes)` and is the only thing that fetches a private tracker's `.torrent`, so it must stay off the GUI thread.
+- Never commit an indexer URL or API key. `DEFAULT_PREFERENCES` ships `torznab_feeds: []` / `disabled_torrent_sources: []`, and there are tests asserting that. `import_blinddl_feeds()` reads blindDL's config on the local machine only, adds names that are not configured here already, and never overwrites — the search dialog calls it on every open.
 
 
 ## Runtime requirements

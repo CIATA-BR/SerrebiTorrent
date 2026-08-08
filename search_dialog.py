@@ -136,7 +136,29 @@ class TorrentSearchDialog(wx.Dialog):
         self.SetSizer(frame_sizer)
 
         self.Bind(wx.EVT_CLOSE, self.on_close)
+        self._adopt_blinddl_feeds()
         self.query.SetFocus()
+
+    def _adopt_blinddl_feeds(self):
+        """Pick up blindDL's own indexers, if it is installed on this machine.
+
+        The two programs share an author and the same feed format, so a
+        Prowlarr set up in one should not have to be typed into the other.
+        Nothing is shipped with the app -- this reads a file on this
+        computer, and only ever adds indexers that are not configured here
+        already, so an edited URL or a replaced key is never overwritten.
+        """
+        prefs = self._prefs()
+        try:
+            added = torrent_search.import_blinddl_feeds(prefs)
+        except Exception:  # noqa: BLE001 - an optional convenience, never fatal
+            return
+        if not added:
+            return
+        self.config_manager.set_preferences(prefs)
+        names = ", ".join(feed["name"] for feed in added)
+        noun = "indexer" if len(added) == 1 else "indexers"
+        self._say(f"Added your blindDL {noun}: {names}.")
 
     # -- searching ----------------------------------------------------------
 
