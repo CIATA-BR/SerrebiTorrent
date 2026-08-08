@@ -53,8 +53,11 @@ local_modules = [
     'config_manager',
     'libtorrent_env',
     'rss_manager',
+    'search_dialog',
     'session_manager',
     'torrent_creator',
+    'torrent_parsing',
+    'torrent_search',
     'updater',
     'web_server',
 ]

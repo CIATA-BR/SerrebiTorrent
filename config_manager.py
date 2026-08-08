@@ -75,6 +75,16 @@ DEFAULT_PREFERENCES: Dict[str, Any] = {
     "web_ui_port": 8080,
     "web_ui_user": "admin",
     "web_ui_pass": "password",
+    # Torrent search (Tools, Search for Torrents).
+    # Indexers the user switched off, by name. The off list is stored rather
+    # than the on list so an indexer added in a later release is searched by
+    # default instead of silently staying dark.
+    "disabled_torrent_sources": [],
+    # The user's own Torznab/Newznab endpoints, each {"name", "url",
+    # "api_key"}. One entry can be a whole Prowlarr or Jackett instance,
+    # which is how private trackers are searched: that tool already holds the
+    # login and the passkey, so SerrebiTorrent never stores a tracker password.
+    "torznab_feeds": [],
     # 0=None, 1=SOCKS4, 2=SOCKS5, 3=HTTP
     "proxy_type": 0,
     "proxy_host": "",

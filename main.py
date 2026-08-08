@@ -27,6 +27,8 @@ import web_server
 import updater
 from torrent_creator import CreateTorrentDialog, create_torrent_bytes
 from torrent_parsing import build_magnet_from_hashes, parse_magnet_infohash, safe_torrent_info_hash
+import torrent_search
+from search_dialog import TorrentSearchDialog
 
 
 # Constants for List Columns
@@ -2826,6 +2828,8 @@ class MainFrame(wx.Frame):
 
         # ----- Tools menu -----
         tools_menu = wx.Menu()
+        search_item = tools_menu.Append(wx.ID_ANY, "&Search for Torrents...\tCtrl+F", "Search torrent indexers and add what you find")
+        tools_menu.AppendSeparator()
         assoc_item = tools_menu.Append(wx.ID_ANY, "Register &Associations", "Associate .torrent and magnet links with this app")
         update_item = tools_menu.Append(wx.ID_ANY, "Check for &Updates...\tF5", "Check for updates")
         tools_menu.AppendSeparator()
@@ -2874,6 +2878,7 @@ class MainFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.on_select_all, select_all_item)
 
         # Tools menu extras.
+        self.Bind(wx.EVT_MENU, self.on_search_torrents, search_item)
         self.Bind(wx.EVT_MENU, lambda e: register_associations(), assoc_item)
         self.Bind(wx.EVT_MENU, self.on_check_updates, update_item)
         self.Bind(wx.EVT_MENU, self.on_remote_preferences, self.qbit_remote_prefs_item)
@@ -2899,6 +2904,7 @@ class MainFrame(wx.Frame):
             (wx.ACCEL_CTRL, ord('I'), copy_hash_item.GetId()),
             (wx.ACCEL_CTRL, ord('M'), copy_magnet_item.GetId()),
             (wx.ACCEL_CTRL, ord(','), local_settings_item.GetId()),
+            (wx.ACCEL_CTRL, ord('F'), search_item.GetId()),
         ]
         self.SetAcceleratorTable(wx.AcceleratorTable(accel_entries))
 
@@ -3740,6 +3746,74 @@ class MainFrame(wx.Frame):
 
             except Exception as e:
                 wx.LogError(f"Error adding file: {e}")
+
+    def on_search_torrents(self, event=None):
+        """Tools, Search for Torrents: find torrents and add the chosen rows."""
+        dlg = TorrentSearchDialog(self, self.config_manager)
+        try:
+            if dlg.ShowModal() != wx.ID_OK or not dlg.chosen:
+                return
+            picked = list(dlg.chosen)
+        finally:
+            dlg.Destroy()
+
+        if not self.client:
+            wx.LogError("Connect to a client before adding torrents.")
+            return
+
+        # Ask for the save path once, however many rows were picked; going
+        # through the file-picker per torrent is the kind of thing that makes
+        # a batch not worth doing.
+        name = picked[0]['title'] if len(picked) == 1 else f"{len(picked)} torrents"
+        adlg = AddTorrentDialog(self, name, None, self._get_default_save_path())
+        try:
+            if adlg.ShowModal() != wx.ID_OK:
+                return
+            save_path = adlg.get_selected_path() or None
+        finally:
+            adlg.Destroy()
+
+        self._prepare_auto_start()
+        client = self.client
+        generation = self.client_generation
+        noun = "torrent" if len(picked) == 1 else "torrents"
+        self.statusbar.SetStatusText(f"Adding {len(picked)} {noun}...", 0)
+        for item in picked:
+            self.thread_pool.submit(
+                self._add_search_result_background,
+                client, generation, item, save_path,
+            )
+
+    def _add_search_result_background(self, client, generation, item, save_path):
+        """Resolve one search result and hand it to the session.
+
+        Resolving can mean an HTTP fetch: a private tracker publishes an
+        authenticated .torrent instead of a magnet, and only the file carries
+        the account's passkey. That is why this runs off the GUI thread.
+        """
+        try:
+            if generation != self.client_generation:
+                return
+            kind, payload = torrent_search.resolve(item)
+        except Exception as e:
+            wx.CallAfter(self._on_action_error,
+                         f"Failed to fetch {item.get('title', 'torrent')}: {e}")
+            return
+
+        if kind == "magnet":
+            hash_hint = self._maybe_hash_from_magnet(payload)
+            if hash_hint:
+                self.pending_hash_starts.add(hash_hint)
+            self._add_magnet_background(client, generation, payload, save_path,
+                                        f"Added {item.get('title', 'torrent')}")
+            return
+
+        hash_hint = self._maybe_hash_from_torrent_bytes(payload)
+        if hash_hint:
+            self.pending_hash_starts.add(hash_hint)
+        self._add_torrent_file_background(client, generation, payload, save_path,
+                                          None,
+                                          f"Added {item.get('title', 'torrent')}")
 
     def on_add_url(self, event):
         dlg = wx.TextEntryDialog(self, "Enter Magnet Link or URL:", "Add Torrent")

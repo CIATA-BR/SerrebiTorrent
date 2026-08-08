@@ -10,6 +10,7 @@ A vibe-coded, keyboard-first, screen-reader-friendly torrent manager for Windows
 
 - Connects to local libtorrent, or a remote qBittorrent, Transmission, or rTorrent (SCGI/XML-RPC) client, all from one interface.
 - Live download/upload speeds, progress, ratio, tracker host, and status messages for each torrent.
+- Searches torrent indexers and adds what you pick, without leaving the app.
 - Creates torrents.
 - Responsive UI: remote operations run in the background so the app never freezes.
 - Quick filters (All, Downloading, Complete, Active) plus a tracker tree in the sidebar.
@@ -34,6 +35,12 @@ Portable data (profiles, preferences, resume data, logs) lives next to the app i
 - Add a profile and connect:
   - **Local** — manages torrents via libtorrent on this PC (default profile on first run).
   - **Remote** — point at qBittorrent, Transmission, or rTorrent and enter credentials if needed.
+
+## Searching for torrents
+
+Tools -> Search for Torrents... (`Ctrl+F`) searches Knaben, The Pirate Bay, EZTV, Nyaa, Torrents-CSV, LimeTorrents and BitSearch at once, filling the list as each answers. Sort by seeders, best match, size, newest or name; `Enter` adds the selected rows to the connected client, and `Ctrl+C` copies their magnet links.
+
+**Search sites...** switches individual indexers off, and indexers added in a later release are searched by default. **My indexers...** adds your own Torznab or Newznab endpoint — a whole Prowlarr or Jackett instance counts as one. That is how private trackers are searched: those tools already hold the login and the passkey, so SerrebiTorrent never stores a tracker password. A private tracker's authenticated `.torrent` is fetched with your own credentials at the moment you add it, rather than being turned into a magnet that its swarm would refuse.
 
 ## Settings
 
@@ -97,6 +104,7 @@ Everything stays reachable by keyboard:
 - `Delete` / `Shift+Delete` — Remove / Remove with data
 - `Ctrl+A` — Select all
 - `Ctrl+N` — Create a torrent
+- `Ctrl+F` — Search for torrents
 - `Tab` — Toggle focus between the sidebar and torrent list; double-clicking the tray icon restores the window.
 
 Logs live under `SerrebiTorrent_Data\logs`, next to the EXE/script in portable mode (or in per-user app data in installed mode).

@@ -18,9 +18,21 @@ from app_paths import get_state_dir
 from config_manager import ConfigManager
 from torrent_parsing import normalize_info_hash
 
-QBITTORRENT_REPORTED_VERSION = "5.2.2"
-QBITTORRENT_USER_AGENT = f"qBittorrent/{QBITTORRENT_REPORTED_VERSION}"
-QBITTORRENT_PEER_FINGERPRINT = b"-qB5220-"
+# The local session identifies itself to trackers and peers as the current
+# qBittorrent release: peer ID -qBXYZ0- and User-Agent qBittorrent/X.Y.Z.
+# Plenty of trackers only admit clients from a list they maintain, and a raw
+# libtorrent build is usually not on it -- nor is a qBittorrent several
+# releases stale. This is the version used when the lookup below has nothing
+# newer; qbittorrent_version() keeps it current on its own.
+QBITTORRENT_FALLBACK_VERSION = "5.2.3"
+QBITTORRENT_RELEASES_URL = (
+    "https://api.github.com/repos/qbittorrent/qBittorrent/releases/latest")
+# How long a looked-up version is trusted before GitHub is asked again.
+VERSION_CHECK_SECONDS = 24 * 3600
+VERSION_FETCH_TIMEOUT_S = 10
+_VERSION_STATE_FILE = "qbittorrent_version.json"
+
+_version_lock = threading.Lock()
 
 # How often (seconds) to persist resume data (ratio, upload/download totals, etc.)
 # in the background. Without this, stats like seeding ratio only survive a graceful
@@ -28,6 +40,83 @@ QBITTORRENT_PEER_FINGERPRINT = b"-qB5220-"
 # roll every torrent back to whatever was last saved, no matter which client
 # profile (local/remote) was active in the UI at the time.
 AUTOSAVE_INTERVAL_SECONDS = 180
+
+
+def _parse_version(text):
+    """(major, minor, patch) out of "release-5.2.3", or None."""
+    import re
+
+    match = re.search(r"(\d+)\.(\d+)\.(\d+)", str(text or ""))
+    if not match:
+        return None
+    return tuple(int(part) for part in match.groups())
+
+
+def _version_state_path():
+    return os.path.join(get_state_dir(), _VERSION_STATE_FILE)
+
+
+def _read_version_state():
+    try:
+        with open(_version_state_path(), "r", encoding="utf-8") as f:
+            state = json.load(f)
+    except (OSError, ValueError):
+        return None, 0.0
+    return _parse_version(state.get("version")), float(state.get("checked", 0) or 0)
+
+
+def _write_version_state(version):
+    try:
+        with open(_version_state_path(), "w", encoding="utf-8") as f:
+            json.dump({"version": "%d.%d.%d" % version, "checked": time.time()}, f)
+    except OSError:
+        pass
+
+
+def _fetch_latest_qbittorrent():
+    """Ask GitHub for qBittorrent's newest release tag. None on any failure."""
+    try:
+        import requests
+
+        response = requests.get(
+            QBITTORRENT_RELEASES_URL,
+            headers={"Accept": "application/vnd.github+json",
+                     "User-Agent": "SerrebiTorrent"},
+            timeout=VERSION_FETCH_TIMEOUT_S,
+        )
+        response.raise_for_status()
+        return _parse_version(response.json().get("tag_name"))
+    except Exception:
+        return None
+
+
+def qbittorrent_version(allow_network=True):
+    """The qBittorrent version this session claims to be, as (x, y, z).
+
+    Looked up from qBittorrent's own releases once a day and remembered in the
+    state directory, so the reported version stays current without anybody
+    editing a constant before each release -- and so an offline start still
+    gets a recent one rather than whatever was last hard-coded.
+    """
+    with _version_lock:
+        cached, checked = _read_version_state()
+        fallback = _parse_version(QBITTORRENT_FALLBACK_VERSION) or (5, 2, 3)
+        if not allow_network or (cached and time.time() - checked < VERSION_CHECK_SECONDS):
+            return cached or fallback
+        latest = _fetch_latest_qbittorrent()
+        if latest:
+            _write_version_state(latest)
+            return latest
+        return cached or fallback
+
+
+def qbittorrent_identity(allow_network=True):
+    """(user_agent, peer_fingerprint) for the reported qBittorrent version."""
+    major, minor, patch = qbittorrent_version(allow_network=allow_network)
+    # qBittorrent's own peer ID: "qB" plus its four version digits, with the
+    # build slot it leaves empty -- 5.2.3 becomes -qB5230-.
+    return (f"qBittorrent/{major}.{minor}.{patch}",
+            f"-qB{major}{minor}{patch}0-".encode("ascii"))
 
 
 def _unlimited_if_negative(value, default=0):
@@ -286,10 +375,13 @@ class SessionManager:
                 lt_proxy_type = lt.proxy_type_t.http_pw
 
         port = _listen_port(prefs.get('listen_port', 6881))
+        # Cached after the first call of the day; never blocks on the network
+        # once the session is up and preferences are being re-applied.
+        user_agent, peer_fingerprint = qbittorrent_identity()
 
         settings = {
-            'user_agent': QBITTORRENT_USER_AGENT,
-            'peer_fingerprint': QBITTORRENT_PEER_FINGERPRINT,
+            'user_agent': user_agent,
+            'peer_fingerprint': peer_fingerprint,
             'enable_dht': prefs.get('enable_dht', True),
             'enable_lsd': prefs.get('enable_lsd', True),
             'enable_upnp': prefs.get('enable_upnp', True),

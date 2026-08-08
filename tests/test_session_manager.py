@@ -126,12 +126,48 @@ def test_apply_preferences_treats_zero_upload_slots_as_unlimited(session_manager
     assert call_args['unchoke_slots_limit'] == -1
 
 
-def test_qbittorrent_reported_version_matches_fingerprint():
+def test_qbittorrent_identity_matches_the_reported_version():
     import session_manager as sm
 
-    assert sm.QBITTORRENT_REPORTED_VERSION == "5.2.2"
-    assert sm.QBITTORRENT_USER_AGENT == "qBittorrent/5.2.2"
-    assert sm.QBITTORRENT_PEER_FINGERPRINT == b"-qB5220-"
+    # The version is looked up from qBittorrent's releases, so pin one here
+    # rather than asserting on whatever today's is.
+    with patch.object(sm, 'qbittorrent_version', return_value=(5, 2, 3)):
+        user_agent, fingerprint = sm.qbittorrent_identity()
+
+    assert user_agent == "qBittorrent/5.2.3"
+    assert fingerprint == b"-qB5230-"
+
+
+def test_qbittorrent_version_falls_back_when_the_lookup_fails(tmp_path):
+    import session_manager as sm
+
+    with patch.object(sm, 'get_state_dir', return_value=str(tmp_path)), \
+            patch.object(sm, '_fetch_latest_qbittorrent', return_value=None):
+        assert sm.qbittorrent_version() == sm._parse_version(
+            sm.QBITTORRENT_FALLBACK_VERSION)
+
+
+def test_qbittorrent_version_is_remembered_between_lookups(tmp_path):
+    import session_manager as sm
+
+    with patch.object(sm, 'get_state_dir', return_value=str(tmp_path)), \
+            patch.object(sm, '_fetch_latest_qbittorrent',
+                         return_value=(9, 9, 9)) as fetch:
+        assert sm.qbittorrent_version() == (9, 9, 9)
+        # Second call inside the same day is answered from the state file.
+        assert sm.qbittorrent_version() == (9, 9, 9)
+
+    assert fetch.call_count == 1
+
+
+def test_qbittorrent_version_offline_never_calls_out(tmp_path):
+    import session_manager as sm
+
+    with patch.object(sm, 'get_state_dir', return_value=str(tmp_path)), \
+            patch.object(sm, '_fetch_latest_qbittorrent',
+                         side_effect=AssertionError("looked up")):
+        assert sm.qbittorrent_version(allow_network=False) == sm._parse_version(
+            sm.QBITTORRENT_FALLBACK_VERSION)
 
 def test_add_magnet(session_manager, mock_libtorrent_environment):
     magnet = "magnet:?xt=urn:btih:abcdef"

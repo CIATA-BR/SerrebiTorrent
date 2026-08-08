@@ -4,6 +4,7 @@
 - Location: Assume Windows 11, 64-bit.
 - Entry point: `main.py`. GUI built with wxPython.
 - Background libtorrent session lives in `session_manager.py`. Do not duplicate sessions.
+- Indexer search lives in `torrent_search.py` (network, no wx) and `search_dialog.py` (wx, no network). Ported from blindDL; keep the two in step when either changes. `torrent_search.resolve()` returns `("magnet", str)` or `("file", bytes)` and is the only thing that fetches a private tracker's `.torrent`, so it must stay off the GUI thread.
 
 
 ## Runtime requirements
@@ -41,10 +42,10 @@
 - Local mode needs the OpenSSL DLLs in `PATH`; `libtorrent_env.py` already injects both the repo root and Python's `DLLs` directory. Don't delete that helper.
 - Connection profiles, preferences, session state, and logs write to `SerrebiTorrent_Data` (portable mode) or per-user app data (installed mode).
 - Accessibility shortcuts are hard-coded in `MainFrame.__init__`. Update README if you touch them.
-- If you must run tests, there are no automated suites. Launch `python main.py` and exercise the UI manually.
+- Run `python -m pytest` for the suite under `tests/`. It does not cover the UI end to end, so also launch `python main.py` and exercise anything you touched.
 
 ## Update notes
-- Before each SerrebiTorrent release, verify the latest stable qBittorrent release from the official qBittorrent download/release pages and update `QBITTORRENT_REPORTED_VERSION` / `QBITTORRENT_PEER_FINGERPRINT` in `session_manager.py` if it changed.
+- The reported qBittorrent version is no longer a release chore: `qbittorrent_version()` in `session_manager.py` looks it up from qBittorrent's GitHub releases once a day and caches it in the state dir. `QBITTORRENT_FALLBACK_VERSION` is only used offline or when the lookup fails — bump it occasionally, but nothing breaks if you forget.
 - The updater accepts a `signing_thumbprint` value in the release manifest so self-signed Authenticode signatures can be trusted when Windows reports UnknownError.
 - Release manifests are generated via `tools/release_manifest.py`, which parses `signtool verify` output to capture the signing thumbprint (override with `SIGN_CERT_THUMBPRINT`).
 - Version bumps in `build_exe.bat` now call `tools/update_version.py` to update `app_version.py` safely (avoids PowerShell quoting pitfalls).
@@ -66,6 +67,14 @@ Keep edits lean, comment only when code is not self-explanatory, and leave user-
 
 <!-- claude-memory:begin (managed by sync-claude-memory.py; canonical files live in C:\Users\admin\.claude - edit there, not here) -->
 ## Memories (shared from ~/.claude - project: c--Users-admin-git-SerrebiTorrent)
+Index of memory files - read one on demand when a task touches its
+topic (agents that expand @imports get every file via the @ lines below).
+New memories for this project go in C:\Users\admin\.claude\projects\c--Users-admin-git-SerrebiTorrent\memory - see the memory protocol in
+the global AGENTS.md for the required format, and re-run
+sync-claude-memory.py after writing one:
+- [Running Windows commands from Bash](C:\Users\admin\.claude\projects\c--Users-admin-git-SerrebiTorrent\memory\running-windows-commands-from-bash.md) — Git Bash quirks (path mangling, NoDefaultCurrentDirectory) and the system-wide fix
+- [Prefer root-cause fixes over PowerShell fallback](C:\Users\admin\.claude\projects\c--Users-admin-git-SerrebiTorrent\memory\prefer-root-cause-fixes-over-powershell-fallback.md) — user wants durable, broad fixes, not workarounds
+- [NVDA virtual-list focus](C:\Users\admin\.claude\projects\c--Users-admin-git-SerrebiTorrent\memory\nvda-virtual-list-focus.md) — blind user; every virtual wx.ListCtrl must re-assert LIST_STATE_FOCUSED after refresh (use AccessibleVirtualListMixin)
 @C:\Users\admin\.claude\projects\c--Users-admin-git-SerrebiTorrent\memory\MEMORY.md
 @C:\Users\admin\.claude\projects\c--Users-admin-git-SerrebiTorrent\memory\nvda-virtual-list-focus.md
 @C:\Users\admin\.claude\projects\c--Users-admin-git-SerrebiTorrent\memory\prefer-root-cause-fixes-over-powershell-fallback.md
