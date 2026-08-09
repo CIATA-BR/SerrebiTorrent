@@ -22,3 +22,8 @@ build_exe.bat release
 ## Output
 
 Release mode builds the PyInstaller onedir app, signs `SerrebiTorrent.exe`, creates the release ZIP, writes `SerrebiTorrent-update.json`, commits the version bump, tags and pushes Git, and publishes the GitHub release.
+
+The shipped folder contains its own Python runtime and libtorrent/OpenSSL
+runtime. End users do not install Python, pip, or developer tools. Every build
+runs the frozen executable with developer paths removed and refuses to package
+it if any client library, native DLL, web asset, or update component is missing.

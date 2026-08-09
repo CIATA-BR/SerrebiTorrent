@@ -1,9 +1,31 @@
 # -*- mode: python ; coding: utf-8 -*-
 import os
+import importlib.util
 import sys
 from PyInstaller.utils.hooks import collect_submodules, collect_data_files
 
 block_cipher = None
+
+if importlib.util.find_spec('libtorrent') is None:
+    raise RuntimeError(
+        'libtorrent is required for SerrebiTorrent releases. Import the '
+        'module successfully before building.'
+    )
+
+required_native_files = [
+    'libcrypto-3-x64.dll',
+    'libssl-3-x64.dll',
+    'libcrypto-1_1-x64.dll',
+    'libssl-1_1-x64.dll',
+    'libcrypto-1_1.dll',
+    'libssl-1_1.dll',
+]
+missing_native_files = [name for name in required_native_files if not os.path.isfile(name)]
+if missing_native_files:
+    raise RuntimeError(
+        'Required libtorrent/OpenSSL files are missing: '
+        + ', '.join(missing_native_files)
+    )
 
 # Base hidden imports
 hiddenimports = [
@@ -71,14 +93,7 @@ datas += collect_data_files('flask')
 a = Analysis(
     ['main.py'],
     pathex=[os.path.abspath('.')],
-    binaries=[
-        ('libcrypto-3-x64.dll', '.'),
-        ('libssl-3-x64.dll', '.'),
-        ('libcrypto-1_1-x64.dll', '.'),
-        ('libssl-1_1-x64.dll', '.'),
-        ('libcrypto-1_1.dll', '.'),
-        ('libssl-1_1.dll', '.'),
-    ],
+    binaries=[(name, '.') for name in required_native_files],
     datas=datas,
     hiddenimports=hiddenimports,
     hookspath=[os.path.abspath('hooks')],

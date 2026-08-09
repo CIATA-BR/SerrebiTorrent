@@ -18,6 +18,7 @@ import threading
 import json
 import requests # Added for downloading torrent files from URL
 import concurrent.futures
+from pathlib import Path
 
 from clients import RTorrentClient, QBittorrentClient, TransmissionClient, LocalClient, download_torrent_url, validate_public_torrent_url
 from config_manager import ConfigManager
@@ -48,6 +49,80 @@ APP_NAME = "SerrebiTorrent"
 EVENT_OBJECT_FOCUS = 0x8005
 OBJID_CLIENT = -4
 _NOTIFY_WIN_EVENT = None
+
+
+def frozen_self_test(output_path):
+    """Verify that a packaged app has everything a clean Windows PC needs."""
+    results = {}
+    failures = []
+
+    def check(name, callback):
+        try:
+            results[name] = callback()
+        except Exception as exc:  # noqa: BLE001 - diagnostic boundary
+            failures.append(f"{name}: {type(exc).__name__}: {exc}")
+
+    def embedded_runtime():
+        if not getattr(sys, "frozen", False):
+            raise RuntimeError("SerrebiTorrent is using a system Python")
+        return f"embedded Python {sys.version.split()[0]}"
+
+    def libtorrent_runtime():
+        import libtorrent as lt  # noqa: PLC0415 - after DLL preparation
+
+        session = lt.session({
+            "enable_dht": False,
+            "enable_lsd": False,
+            "enable_upnp": False,
+            "enable_natpmp": False,
+        })
+        if session is None:
+            raise RuntimeError("libtorrent could not create a session")
+        return str(lt.__version__)
+
+    def bundled_files():
+        root = Path(getattr(sys, "_MEIPASS", Path(sys.executable).parent))
+        wanted = [
+            "libcrypto-3-x64.dll",
+            "libssl-3-x64.dll",
+            "libcrypto-1_1-x64.dll",
+            "libssl-1_1-x64.dll",
+            "libcrypto-1_1.dll",
+            "libssl-1_1.dll",
+            "web_static/index.html",
+            "web_static/login.html",
+            "web_static/app.js",
+            "web_static/style.css",
+        ]
+        missing = [name for name in wanted if not (root / name).is_file()]
+        if missing:
+            raise RuntimeError("missing: " + ", ".join(missing))
+        return len(wanted)
+
+    def update_runtime():
+        helper = updater.find_update_helper()
+        if not helper or not updater.is_update_supported():
+            raise RuntimeError("the packaged update helper is unavailable")
+        return helper
+
+    check("runtime", embedded_runtime)
+    check("wx", lambda: wx.version())
+    check("libtorrent", libtorrent_runtime)
+    check("requests", lambda: requests.__version__)
+    check("beautifulsoup", lambda: __import__("bs4").__version__)
+    check("yaml", lambda: __import__("yaml").__version__)
+    check("flask", lambda: __import__("flask").__name__)
+    check("qbittorrent_api", lambda: __import__("qbittorrentapi").__name__)
+    check("transmission_rpc", lambda: __import__("transmission_rpc").__name__)
+    check("defusedxml", lambda: __import__("defusedxml").__version__)
+    check("bundled_files", bundled_files)
+    check("updater", update_runtime)
+
+    report = {"ok": not failures, "results": results, "failures": failures}
+    Path(output_path).write_text(
+        json.dumps(report, indent=2), encoding="utf-8", newline="\n"
+    )
+    return 0 if not failures else 1
 
 
 def notify_win_event(event, hwnd, object_id, child_id):
@@ -4435,6 +4510,8 @@ class MainFrame(wx.Frame):
             self.on_connect(None)
 
 if __name__ == "__main__":
+    if len(sys.argv) == 3 and sys.argv[1] == "--self-test":
+        raise SystemExit(frozen_self_test(sys.argv[2]))
     try:
         print("Starting application...")
         app = wx.App(False) # False = don't redirect stdout/stderr to window

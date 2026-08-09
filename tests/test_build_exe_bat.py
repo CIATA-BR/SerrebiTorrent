@@ -54,3 +54,11 @@ def test_failed_release_create_cleans_drafts():
 
     failure_block = script[script.index("if errorlevel 1 (\n    echo GitHub release creation failed.") :]
     assert "call :delete_draft_releases" in failure_block.split(")", 1)[0]
+
+
+def test_build_verifies_the_frozen_runtime_before_signing():
+    script = (ROOT / "build_exe.bat").read_text(encoding="utf-8")
+
+    verify = '%PYTHON_CMD% tools\\verify_frozen.py "dist\\%APP_NAME%\\%EXE_NAME%"'
+    assert verify in script
+    assert script.index(verify) < script.index("Signing %EXE_NAME%")

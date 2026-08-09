@@ -118,6 +118,10 @@ if exist "web_static" (
     if errorlevel 1 goto :error
 )
 
+echo Verifying self-contained packaged runtime...
+%PYTHON_CMD% tools\verify_frozen.py "dist\%APP_NAME%\%EXE_NAME%" "build\frozen-self-test.json"
+if errorlevel 1 goto :error
+
 if not exist "%SIGNTOOL_PATH%" (
     echo SignTool not found: "%SIGNTOOL_PATH%"
     goto :error

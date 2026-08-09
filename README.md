@@ -19,13 +19,17 @@ A vibe-coded, keyboard-first, screen-reader-friendly torrent manager for Windows
 
 ## Download and install
 
-Grab the latest build from the [Releases page](https://github.com/serrebidev/SerrebiTorrent/releases). Latest: **v1.7.10**.
+Grab the latest build from the [Releases page](https://github.com/serrebidev/SerrebiTorrent/releases). Latest: **v1.9.0**.
 
 **Windows portable**
 
 1. Download the latest ZIP.
 2. Extract the entire `SerrebiTorrent` folder somewhere (example: `C:\Portable\SerrebiTorrent\`).
 3. Run `SerrebiTorrent.exe` — don't move the EXE out of its folder.
+
+The ZIP contains SerrebiTorrent's private Python runtime, libtorrent, OpenSSL,
+web interface, and update helper. A regular Windows 11 64-bit computer does
+not need Python, pip, Visual C++ build tools, or a separate torrent client.
 
 Portable data (profiles, preferences, resume data, logs) lives next to the app in `SerrebiTorrent_Data\`. Updating in place keeps this data untouched.
 
