@@ -19,7 +19,7 @@ A vibe-coded, keyboard-first, screen-reader-friendly torrent manager for Windows
 
 ## Download and install
 
-Grab the latest build from the [Releases page](https://github.com/serrebidev/SerrebiTorrent/releases). Latest: **v1.9.0**.
+Grab the latest build from the [Releases page](https://github.com/serrebidev/SerrebiTorrent/releases). Latest: **v1.10.0**.
 
 **Windows portable**
 
