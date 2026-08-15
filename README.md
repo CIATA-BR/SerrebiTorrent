@@ -33,6 +33,20 @@ not need Python, pip, Visual C++ build tools, or a separate torrent client.
 
 Portable data (profiles, preferences, resume data, logs) lives next to the app in `SerrebiTorrent_Data\`. Updating in place keeps this data untouched.
 
+**Linux x86-64**
+
+1. Download the Linux `.tar.gz` package.
+2. Extract it and run `SerrebiTorrent/SerrebiTorrent`.
+
+The Linux package includes its own Python runtime and libtorrent. A system
+Python installation is not required.
+
+**macOS**
+
+Download and extract the macOS ZIP produced for the release. macOS packages
+are built on a native GitHub-hosted macOS runner and include their required
+Python runtime and libtorrent binding.
+
 ## First-time setup
 
 - Open Connection Manager: `Ctrl+Shift+C` (or tray icon -> Switch Profile -> Connection Manager...).
@@ -63,22 +77,31 @@ SerrebiTorrent ships with no indexers of its own configured — only the public 
 
 ## Building
 
-`build_exe.bat` drives the whole release pipeline: PyInstaller packaging, Authenticode signing, and GitHub release publishing.
+`build_exe.bat` drives releases from the Windows release machine. It creates a
+clean build environment, installs the newest locally maintained CPython 3.14
+libtorrent wheel, packages and verifies Windows locally, and asks
+`root@serrebiradio.com` to build and verify Linux. Tagged macOS packages are
+built natively by GitHub Actions.
 
 Prereqs:
-- Python 3.14 + dependencies from `requirements.txt`
+- Python 3.14
+- A validated libtorrent wheel from the `Libtorrent Weekly Update` task
 - Git + GitHub CLI (`gh auth login` completed)
 - Code signing cert installed
 - SignTool available (default path used, or set `SIGNTOOL_PATH`)
 
 Commands:
 - `build_exe.bat build` — builds, signs, and zips locally.
-- `build_exe.bat release` — auto-bumps version, builds, signs, zips, tags, pushes, creates the GitHub release, and uploads the update manifest.
+- `build_exe.bat release` — auto-bumps, builds Windows locally and Linux over SSH, signs, archives, tags, pushes, creates the GitHub release, and uploads the update manifest.
 - `build_exe.bat dry-run` — shows what it would do without modifying anything.
+- `powershell -File tools\build_linux_remote.ps1 -Version X.Y.Z` — builds only the Linux package on the configured SSH host.
 
 Versioning uses the latest `vMAJOR.MINOR.PATCH` tag as the base. If none exists, it starts at `v1.0.0`. Commits with `BREAKING CHANGE` or `!:` bump major; commits starting with `feat` (or containing `feature`) bump minor; otherwise it bumps patch.
 
-Build output lands in `dist\SerrebiTorrent\`. For distribution, zip the entire `SerrebiTorrent` folder, not just the EXE.
+Windows output lands in `dist\SerrebiTorrent\`; distribute the whole folder,
+not just the EXE. The package contains its own Python runtime, libtorrent, and
+the native libraries those features actually load, so users do not install
+Python or a Visual C++ runtime separately.
 
 ## Auto-updater
 

@@ -12,7 +12,7 @@
 - Python 3.14 (64-bit).
 - Core packages: see `requirements.txt`. Libs already installed in the user site-packages.
 - Libtorrent DLL resolution happens in `libtorrent_env.py`. Always call `prepare_libtorrent_dlls()` before importing `libtorrent`.
-- OpenSSL 3 DLLs (`libcrypto-3-x64.dll`, `libssl-3-x64.dll`) sit in the repo root and are bundled into the EXE (required for libtorrent HTTPS). Legacy 1.1 DLLs remain for compatibility.
+- Release builds install the maintained libtorrent wheel into a clean build venv. Its hashed, vendored native dependencies are authoritative; do not explicitly add the repo-root OpenSSL or legacy 1.1 DLLs to frozen packages.
 
 ## Threading Model
 - **Blocking I/O:** All network operations (fetching torrents, sending commands like start/stop/remove) MUST be offloaded to a background thread to prevent freezing the GUI.
@@ -26,12 +26,12 @@
 
 ## Build commands
 - Install deps (only if new environment): `python -m pip install -r requirements.txt`.
-- Build EXE: `pyinstaller SerrebiTorrent.spec`. Output lands in `dist\\SerrebiTorrent\\`.
-- The `.spec` file is configured for a directory-based distribution (`onedir`) to improve stability and startup performance. It includes all submodules for major dependencies (`flask`, `requests`, `qbittorrentapi`, `transmission_rpc`, `bs4`, `yaml`, etc.) using `collect_submodules`.
-- It also bundles the web UI (`web_static`), OpenSSL DLLs, and other resources into the distribution folder.
-- Hidden imports explicitly include local modules (`clients`, `rss_manager`, `web_server`, etc.) and core dependency sub-components (`werkzeug`, `jinja2`, `urllib3`) to ensure compatibility across different environments.
+- Windows: run `build_exe.bat build` locally on this machine. Do not use a GitHub-hosted Windows runner.
+- Linux: run `powershell -File tools\\build_linux_remote.ps1 -Version X.Y.Z`; it must build through SSH on `root@serrebiradio.com`.
+- macOS: `.github/workflows/ci.yml` builds natively on GitHub's macOS runner using Homebrew's libtorrent.
+- The `.spec` file uses PyInstaller's import analysis rather than collecting every dependency submodule. It explicitly requires the libtorrent extension so PyInstaller follows only its referenced native dependencies.
+- Every package runs `tools/audit_bundle.py` and `tools/verify_frozen.py` before it is accepted.
 - `icon.ico` is conditionally included in the build only if it exists in the root directory.
-- OpenSSL 3 DLLs are explicitly added (`libssl-3-x64.dll`, `libcrypto-3-x64.dll`); keep them in the repo root before building. Legacy 1.1 DLLs are still bundled for compatibility.
 
 ## Packaging
 - Ship the entire `SerrebiTorrent` folder from the `dist` directory. The main executable is `SerrebiTorrent.exe` inside that folder.
@@ -40,7 +40,7 @@
 - If you rebrand the EXE, update the `.spec` file and any doc references. Remember to refresh the tray icon (`icon.ico`) if you change branding.
 
 ## Ops notes
-- Local mode needs the OpenSSL DLLs in `PATH`; `libtorrent_env.py` already injects both the repo root and Python's `DLLs` directory. Don't delete that helper.
+- Source mode may need native DLL directories in `PATH`; `libtorrent_env.py` prepares them before libtorrent is imported. Don't delete that helper.
 - Connection profiles, preferences, session state, and logs write to `SerrebiTorrent_Data` (portable mode) or per-user app data (installed mode).
 - Accessibility shortcuts are hard-coded in `MainFrame.__init__`. Update README if you touch them.
 - Run `python -m pytest` for the suite under `tests/`. It does not cover the UI end to end, so also launch `python main.py` and exercise anything you touched.
@@ -63,6 +63,7 @@
 
 ## Known build issues
 - PyInstaller 6.x prints an elevated-shell deprecation warning when the build is launched from an administrator terminal. The build succeeds; run the release command from a non-admin terminal to avoid the warning.
+- The current Authenticode certificate is self-signed, so `signtool verify /pa` reports an untrusted root on a stock machine even though the EXE is signed and timestamped. The updater accepts its manifest thumbprint; eliminating the initial Windows trust prompt requires a publicly trusted code-signing certificate.
 
 Keep edits lean, comment only when code is not self-explanatory, and leave user-facing docs in README.md. Everything technical goes here.
 

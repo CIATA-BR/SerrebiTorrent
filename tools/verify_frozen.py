@@ -6,6 +6,7 @@ import argparse
 import json
 import os
 import subprocess
+import sys
 import tempfile
 from pathlib import Path
 
@@ -14,6 +15,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("executable", type=Path)
     parser.add_argument("report", type=Path)
+    parser.add_argument("--expected-libtorrent", required=True)
     args = parser.parse_args()
 
     executable = args.executable.resolve()
@@ -25,10 +27,13 @@ def main() -> int:
 
     with tempfile.TemporaryDirectory(prefix="SerrebiTorrent-self-test-") as temp:
         environment = os.environ.copy()
-        windows = Path(os.environ.get("SystemRoot", r"C:\Windows"))
-        environment["PATH"] = os.pathsep.join(
-            str(path) for path in (windows / "System32", windows) if path.is_dir()
-        )
+        if sys.platform == "win32":
+            windows = Path(os.environ.get("SystemRoot", r"C:\Windows"))
+            environment["PATH"] = os.pathsep.join(
+                str(path) for path in (windows / "System32", windows) if path.is_dir()
+            )
+        else:
+            environment["PATH"] = "/usr/bin:/bin"
         environment["APPDATA"] = str(Path(temp) / "roaming")
         environment["LOCALAPPDATA"] = str(Path(temp) / "local")
         environment.pop("PYTHONHOME", None)
@@ -48,6 +53,12 @@ def main() -> int:
     data = json.loads(report.read_text(encoding="utf-8"))
     if completed.returncode or not data.get("ok"):
         raise SystemExit("Packaged self-test failed: " + repr(data))
+    packaged_libtorrent = data.get("results", {}).get("libtorrent", {})
+    if packaged_libtorrent.get("version") != args.expected_libtorrent:
+        raise SystemExit(
+            "Packaged libtorrent version mismatch: "
+            f"expected {args.expected_libtorrent}, got {packaged_libtorrent!r}"
+        )
     print("Packaged self-test passed:")
     for name, value in sorted(data["results"].items()):
         print(f"- {name}: {value}")

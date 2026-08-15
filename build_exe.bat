@@ -8,7 +8,8 @@ set "MANIFEST_NAME=SerrebiTorrent-update.json"
 set "DEFAULT_SIGNTOOL=C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\signtool.exe"
 set "GITHUB_OWNER=serrebidev"
 set "GITHUB_REPO=SerrebiTorrent"
-set "PYTHON_CMD=py -3.14"
+set "PYTHON_CMD=%LOCALAPPDATA%\Programs\Python\Launcher\py.exe -3.14"
+if not exist "%LOCALAPPDATA%\Programs\Python\Launcher\py.exe" set "PYTHON_CMD=py.exe -3.14"
 
 if "%SIGNTOOL_PATH%"=="" (
     set "SIGNTOOL_PATH=%DEFAULT_SIGNTOOL%"
@@ -29,6 +30,10 @@ echo ========================================
 
 set "ROOT=%~dp0"
 pushd "%ROOT%"
+
+if not defined LIBTORRENT_WHEEL_DIR set "LIBTORRENT_WHEEL_DIR=%USERPROFILE%\libtorrent-build\wheels"
+set "BUILD_VENV=%ROOT%build\venv"
+set "BUILD_PYTHON=%BUILD_VENV%\Scripts\python.exe"
 
 %PYTHON_CMD% --version >nul 2>&1 || (echo Python 3.14 not found.& goto :error)
 
@@ -106,20 +111,37 @@ if exist dist (
     goto :error
 )
 
-echo Running PyInstaller...
-%PYTHON_CMD% -m PyInstaller SerrebiTorrent.spec --noconfirm
-if errorlevel 1 goto :error
-
-echo Copying additional files...
-copy /Y "update_helper.bat" "dist\%APP_NAME%\"
-if errorlevel 1 goto :error
-if exist "web_static" (
-    xcopy /E /I /Y "web_static" "dist\%APP_NAME%\web_static"
-    if errorlevel 1 goto :error
+echo Selecting the maintained CPython 3.14 libtorrent wheel...
+set "LIBTORRENT_WHEEL="
+set "LIBTORRENT_VERSION="
+for /f "delims=" %%A in ('%PYTHON_CMD% tools\select_libtorrent_wheel.py --wheel-dir %LIBTORRENT_WHEEL_DIR% --platform-pattern win_amd64 --format cmd') do set "%%A"
+if not defined LIBTORRENT_WHEEL (
+    echo No suitable libtorrent wheel was selected.
+    goto :error
 )
 
+echo Creating isolated build environment...
+%PYTHON_CMD% -m venv "%BUILD_VENV%"
+if errorlevel 1 goto :error
+"%BUILD_PYTHON%" -m pip install --disable-pip-version-check --requirement requirements.txt --requirement requirements-build.txt
+if errorlevel 1 goto :error
+"%BUILD_PYTHON%" -m pip install --disable-pip-version-check --force-reinstall --no-deps "%LIBTORRENT_WHEEL%"
+if errorlevel 1 goto :error
+for /f "delims=" %%V in ('call "%BUILD_PYTHON%" -c "import libtorrent; print(libtorrent.__version__)"') do set "LIBTORRENT_VERSION=%%V"
+if not defined LIBTORRENT_VERSION (
+    echo Failed to import libtorrent in the isolated build environment.
+    goto :error
+)
+echo Using libtorrent !LIBTORRENT_VERSION! from %LIBTORRENT_WHEEL%.
+
+echo Running PyInstaller...
+"%BUILD_PYTHON%" -m PyInstaller SerrebiTorrent.spec --noconfirm
+if errorlevel 1 goto :error
+
 echo Verifying self-contained packaged runtime...
-%PYTHON_CMD% tools\verify_frozen.py "dist\%APP_NAME%\%EXE_NAME%" "build\frozen-self-test.json"
+"%BUILD_PYTHON%" tools\audit_bundle.py "dist\%APP_NAME%"
+if errorlevel 1 goto :error
+"%BUILD_PYTHON%" tools\verify_frozen.py "dist\%APP_NAME%\%EXE_NAME%" "build\frozen-self-test.json" --expected-libtorrent "!LIBTORRENT_VERSION!"
 if errorlevel 1 goto :error
 
 if not exist "%SIGNTOOL_PATH%" (
@@ -148,6 +170,9 @@ powershell -NoProfile -Command "Compress-Archive -Path 'dist\%APP_NAME%' -Destin
 if errorlevel 1 goto :error
 
 if /I "%MODE%"=="release" (
+    echo Building Linux release on root@serrebiradio.com...
+    powershell -NoProfile -File "tools\build_linux_remote.ps1" -Ref HEAD -Version "!NEXT_VERSION!" -OutputDirectory "dist"
+    if errorlevel 1 goto :error
     call :create_manifest || goto :error
     call :git_commit_tag_push || goto :error
     call :gh_release || goto :error
@@ -283,6 +308,7 @@ exit /b 0
 echo Creating GitHub release v%NEXT_VERSION%...
 call :delete_draft_releases || exit /b 1
 gh release create "v%NEXT_VERSION%" "%ZIP_PATH%" "%MANIFEST_PATH%" ^
+    "dist\%APP_NAME%-v%NEXT_VERSION%-linux-x86_64.tar.gz" ^
     --title "V%NEXT_VERSION%" ^
     --notes-file "%RELEASE_NOTES%" ^
     --latest

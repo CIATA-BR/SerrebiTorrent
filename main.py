@@ -1,6 +1,7 @@
 # ruff: noqa: E402
 
 import wx
+import importlib.machinery
 import sys
 import os
 import subprocess
@@ -52,7 +53,7 @@ _NOTIFY_WIN_EVENT = None
 
 
 def frozen_self_test(output_path):
-    """Verify that a packaged app has everything a clean Windows PC needs."""
+    """Verify that a packaged app has its private runtime and core features."""
     results = {}
     failures = []
 
@@ -70,6 +71,14 @@ def frozen_self_test(output_path):
     def libtorrent_runtime():
         import libtorrent as lt  # noqa: PLC0415 - after DLL preparation
 
+        bundle_root = Path(getattr(sys, "_MEIPASS", Path(sys.executable).parent)).resolve()
+        module_path = Path(lt.__file__).resolve()
+        try:
+            module_path.relative_to(bundle_root)
+        except ValueError as exc:
+            raise RuntimeError(f"libtorrent loaded outside the bundle: {module_path}") from exc
+        if not any(str(module_path).endswith(suffix) for suffix in importlib.machinery.EXTENSION_SUFFIXES):
+            raise RuntimeError(f"libtorrent is not a native extension: {module_path.name}")
         session = lt.session({
             "enable_dht": False,
             "enable_lsd": False,
@@ -78,22 +87,21 @@ def frozen_self_test(output_path):
         })
         if session is None:
             raise RuntimeError("libtorrent could not create a session")
-        return str(lt.__version__)
+        return {
+            "version": str(lt.__version__),
+            "module": module_path.relative_to(bundle_root).as_posix(),
+        }
 
     def bundled_files():
         root = Path(getattr(sys, "_MEIPASS", Path(sys.executable).parent))
         wanted = [
-            "libcrypto-3-x64.dll",
-            "libssl-3-x64.dll",
-            "libcrypto-1_1-x64.dll",
-            "libssl-1_1-x64.dll",
-            "libcrypto-1_1.dll",
-            "libssl-1_1.dll",
             "web_static/index.html",
             "web_static/login.html",
             "web_static/app.js",
             "web_static/style.css",
         ]
+        if sys.platform == "win32":
+            wanted.append("update_helper.bat")
         missing = [name for name in wanted if not (root / name).is_file()]
         if missing:
             raise RuntimeError("missing: " + ", ".join(missing))
@@ -109,14 +117,14 @@ def frozen_self_test(output_path):
     check("wx", lambda: wx.version())
     check("libtorrent", libtorrent_runtime)
     check("requests", lambda: requests.__version__)
-    check("beautifulsoup", lambda: __import__("bs4").__version__)
     check("yaml", lambda: __import__("yaml").__version__)
     check("flask", lambda: __import__("flask").__name__)
     check("qbittorrent_api", lambda: __import__("qbittorrentapi").__name__)
     check("transmission_rpc", lambda: __import__("transmission_rpc").__name__)
     check("defusedxml", lambda: __import__("defusedxml").__version__)
     check("bundled_files", bundled_files)
-    check("updater", update_runtime)
+    if sys.platform == "win32":
+        check("updater", update_runtime)
 
     report = {"ok": not failures, "results": results, "failures": failures}
     Path(output_path).write_text(

@@ -15,7 +15,7 @@ import pytest
 import sys
 import os
 import tempfile
-from unittest.mock import MagicMock, patch, PropertyMock
+from unittest.mock import MagicMock, patch
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -487,10 +487,8 @@ class TestIntegrationTorrentCreation:
             f.write("Test content for torrent")
         
         # Create torrent
-        fs = lt.file_storage()
-        lt.add_files(fs, test_file)
-        
-        ct = lt.create_torrent(fs)
+        files = lt.list_files(test_file)
+        ct = lt.create_torrent(files)
         ct.set_creator("SerrebiTorrent Test")
         lt.set_piece_hashes(ct, temp_dirs['download'])
         
@@ -505,7 +503,6 @@ class TestIntegrationTorrentCreation:
     def test_url_encoding_with_real_request(self, real_libtorrent):
         """Test that encoded URLs work with real requests library."""
         from clients import safe_encode_url
-        import requests
         
         # Test encoding
         url = "https://example.com/test[1].torrent"
@@ -555,7 +552,6 @@ class TestConcurrentOperations:
     def test_torrents_db_thread_safety(self, mock_session_env):
         """Test that torrents_db access is thread-safe."""
         import threading
-        import time
         
         from session_manager import SessionManager
         SessionManager._instance = None

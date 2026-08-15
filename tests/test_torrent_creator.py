@@ -47,7 +47,12 @@ def test_create_torrent_bytes_folder_roundtrip():
         query = parse_qs(urlparse(magnet).query)
         assert f"urn:btih:{info_hash}" in query["xt"]
         assert info.name() == "payload"
-        assert info.files().file_path(0).replace("\\", "/") == "payload/file.txt"
+        decoded = torrent_creator.lt.bdecode(torrent_bytes)
+        info_dict = decoded.get(b"info", decoded.get("info"))
+        entries = info_dict.get(b"files", info_dict.get("files"))
+        path = entries[0].get(b"path", entries[0].get("path"))
+        path = [part.decode() if isinstance(part, bytes) else part for part in path]
+        assert "/".join([info.name(), *path]) == "payload/file.txt"
 
 
 @pytest.mark.skipif(torrent_creator.lt is None, reason="libtorrent not installed")

@@ -3,6 +3,7 @@ __pycache__/
 *.pyc
 .hypothesis/
 .pytest_cache/
+.firecrawl/
 build/
 dist/
 release_notes.txt

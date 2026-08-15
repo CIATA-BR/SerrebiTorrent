@@ -59,6 +59,23 @@ def test_failed_release_create_cleans_drafts():
 def test_build_verifies_the_frozen_runtime_before_signing():
     script = (ROOT / "build_exe.bat").read_text(encoding="utf-8")
 
-    verify = '%PYTHON_CMD% tools\\verify_frozen.py "dist\\%APP_NAME%\\%EXE_NAME%"'
+    verify = 'tools\\verify_frozen.py "dist\\%APP_NAME%\\%EXE_NAME%"'
     assert verify in script
     assert script.index(verify) < script.index("Signing %EXE_NAME%")
+
+
+def test_build_uses_isolated_maintained_libtorrent_wheel():
+    script = (ROOT / "build_exe.bat").read_text(encoding="utf-8")
+
+    assert 'set "BUILD_VENV=%ROOT%build\\venv"' in script
+    assert "tools\\select_libtorrent_wheel.py" in script
+    assert 'set "LIBTORRENT_WHEEL_DIR=%USERPROFILE%\\libtorrent-build\\wheels"' in script
+    assert '--force-reinstall --no-deps "%LIBTORRENT_WHEEL%"' in script
+    assert '--expected-libtorrent "!LIBTORRENT_VERSION!"' in script
+
+
+def test_release_builds_linux_over_ssh_and_uploads_it():
+    script = (ROOT / "build_exe.bat").read_text(encoding="utf-8")
+
+    assert "tools\\build_linux_remote.ps1" in script
+    assert '"dist\\%APP_NAME%-v%NEXT_VERSION%-linux-x86_64.tar.gz"' in script

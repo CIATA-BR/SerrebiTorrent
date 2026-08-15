@@ -151,25 +151,19 @@ def create_torrent_bytes(
     if not _include_torrent_path(source_path):
         raise ValueError("Source path must not be a symlink or Windows reparse point.")
 
-    fs = lt.file_storage()
+    # list_files prevents symlink/junction traversal through the predicate and
+    # returns the non-deprecated create_file_entry vector used by libtorrent 2.1.
+    files = lt.list_files(source_path, _include_torrent_path)
+    if not files:
+        raise ValueError("No regular files found to include in torrent.")
 
-    # add_files can take a directory or a file; predicate prevents symlink/junction
-    # traversal into arbitrary external content.
-    lt.add_files(fs, source_path, _include_torrent_path)
-    try:
-        if fs.num_files() == 0:
-            raise ValueError("No regular files found to include in torrent.")
-    except AttributeError:
-        pass
-
-    # create_torrent signature differs a bit between lt versions; try safest calls.
     if piece_size and piece_size > 0:
         try:
-            ct = lt.create_torrent(fs, piece_size)
+            ct = lt.create_torrent(files, piece_size)
         except TypeError:
-            ct = lt.create_torrent(fs, piece_size=piece_size)
+            ct = lt.create_torrent(files, piece_size=piece_size)
     else:
-        ct = lt.create_torrent(fs)
+        ct = lt.create_torrent(files)
 
     if private:
         try:
