@@ -34,6 +34,35 @@ ASSET_URL = "https://github.com/serrebidev/SerrebiTorrent/releases/download/v1.0
 SIGNING_THUMBPRINT = "A" * 40
 
 
+class FakeStartupInfo:
+    def __init__(self):
+        self.dwFlags = 0
+        self.wShowWindow = None
+
+
+@pytest.fixture
+def windows_subprocess(monkeypatch):
+    """Simulate Windows well enough to exercise the hidden-window paths.
+
+    These paths only run on Windows, but the Linux and macOS builders run the
+    same suite, and POSIX subprocess does not define STARTUPINFO or the
+    creation flags. Supply the missing names so the behaviour stays covered
+    everywhere instead of being skipped off Windows.
+    """
+    monkeypatch.setattr(updater.sys, "platform", "win32")
+    defaults = {
+        "STARTF_USESHOWWINDOW": 1,
+        "CREATE_NO_WINDOW": 0x08000000,
+        "CREATE_NEW_PROCESS_GROUP": 0x00000200,
+        "CREATE_BREAKAWAY_FROM_JOB": 0x01000000,
+        "STARTUPINFO": FakeStartupInfo,
+    }
+    for name, value in defaults.items():
+        if not hasattr(updater.subprocess, name):
+            monkeypatch.setattr(updater.subprocess, name, value, raising=False)
+    return updater.subprocess
+
+
 def release_with_asset(tag="v1.0.0", url=ASSET_URL):
     return {
         "tag_name": tag,
@@ -396,10 +425,9 @@ def test_check_for_update_none(mock_fetch):
     assert update_info is None
 
 
-def test_launch_update_helper_is_hidden_and_uses_helper_cwd(monkeypatch, tmp_path):
+def test_launch_update_helper_is_hidden_and_uses_helper_cwd(monkeypatch, tmp_path, windows_subprocess):
     helper = tmp_path / "update_helper.bat"
     helper.write_text("@echo off\n", encoding="utf-8")
-    monkeypatch.setattr(updater.sys, "platform", "win32")
     monkeypatch.setenv("COMSPEC", "cmd.exe")
     popen = MagicMock()
     monkeypatch.setattr(updater.subprocess, "Popen", popen)
@@ -420,10 +448,9 @@ def test_launch_update_helper_is_hidden_and_uses_helper_cwd(monkeypatch, tmp_pat
     assert kwargs["stderr"] is updater.subprocess.DEVNULL
 
 
-def test_launch_update_helper_retry_keeps_hidden_flags_without_breakaway(monkeypatch, tmp_path):
+def test_launch_update_helper_retry_keeps_hidden_flags_without_breakaway(monkeypatch, tmp_path, windows_subprocess):
     helper = tmp_path / "update_helper.bat"
     helper.write_text("@echo off\n", encoding="utf-8")
-    monkeypatch.setattr(updater.sys, "platform", "win32")
     monkeypatch.setenv("COMSPEC", "cmd.exe")
     popen = MagicMock(side_effect=[OSError("job denied"), MagicMock()])
     monkeypatch.setattr(updater.subprocess, "Popen", popen)
@@ -440,10 +467,9 @@ def test_launch_update_helper_retry_keeps_hidden_flags_without_breakaway(monkeyp
     assert popen.call_args_list[1].kwargs["startupinfo"].wShowWindow == 0
 
 
-def test_verify_authenticode_runs_powershell_hidden(monkeypatch):
+def test_verify_authenticode_runs_powershell_hidden(monkeypatch, windows_subprocess):
     startup = MagicMock()
-    monkeypatch.setattr(updater.sys, "platform", "win32")
-    monkeypatch.setattr(updater.subprocess, "STARTUPINFO", lambda: startup)
+    monkeypatch.setattr(updater.subprocess, "STARTUPINFO", lambda: startup, raising=False)
     monkeypatch.setattr(updater.subprocess, "STARTF_USESHOWWINDOW", 1, raising=False)
     monkeypatch.setattr(updater.subprocess, "CREATE_NO_WINDOW", 0x08000000, raising=False)
     monkeypatch.setattr(updater, "_powershell_executables", lambda: ("powershell.exe",))

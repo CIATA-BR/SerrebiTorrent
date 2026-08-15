@@ -961,7 +961,10 @@ class LocalClient(BaseClient):
         from config_manager import ConfigManager
         p = ConfigManager().get_preferences().get('download_path')
         return p if p and os.path.isdir(p) else self.dp
-    def test_connection(self): return f"libtorrent {lt.version}"
+    def test_connection(self):
+        # libtorrent 2.1 dropped lt.version and only exposes lt.__version__.
+        version = getattr(lt, "__version__", None) or getattr(lt, "version", None)
+        return f"libtorrent {version or 'unknown'}"
     def _local_magnet_uri(self, handle, hashes):
         try:
             if handle.has_metadata() and hasattr(lt, "make_magnet_uri"):

@@ -321,6 +321,21 @@ class TestLocalClientUrlEncoding:
         with pytest.raises(ValueError):
             download_torrent_url("file:///C:/secret.torrent")
 
+
+class TestLocalClientConnection:
+    """test_connection runs against the real libtorrent the build ships."""
+
+    def test_reports_version_of_the_installed_libtorrent(self):
+        libtorrent = pytest.importorskip("libtorrent")
+        from clients import LocalClient
+
+        # libtorrent 2.1 removed lt.version, which made this raise
+        # AttributeError and surface as "Connection failed" on startup.
+        result = LocalClient.test_connection(LocalClient.__new__(LocalClient))
+
+        assert result == f"libtorrent {libtorrent.__version__}"
+        assert "unknown" not in result
+
     def test_download_torrent_url_enforces_size_cap(self, monkeypatch):
         import clients
 

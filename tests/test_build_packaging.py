@@ -1,3 +1,4 @@
+import ast
 import subprocess
 from pathlib import Path
 
@@ -7,6 +8,21 @@ from tools import audit_bundle, select_libtorrent_wheel
 
 
 ROOT = Path(__file__).resolve().parents[1]
+
+# libtorrent names the code reaches for only behind hasattr/getattr, because
+# they exist in some libtorrent releases and not others. Everything else must
+# exist in the libtorrent the build actually ships.
+OPTIONAL_LIBTORRENT_ATTRIBUTES = frozenset(
+    {
+        "remove_flags_t",
+        "resume_data_flags_t",
+        "options_t",
+        "save_resume_flags_t",
+        "make_magnet_uri",
+        "write_resume_data_buf",
+        "write_resume_data",
+    }
+)
 
 
 def test_spec_packages_native_libtorrent_without_broad_dependency_collection():
@@ -39,6 +55,37 @@ def test_native_build_policy_uses_local_windows_ssh_linux_and_actions_macos():
     assert "windows-latest" not in workflow
     assert "ubuntu-latest" not in workflow
     assert "actions/upload-artifact@v7" in workflow
+
+
+def test_every_libtorrent_attribute_used_exists_in_the_shipped_libtorrent():
+    libtorrent = pytest.importorskip("libtorrent")
+
+    # lt.version was removed in libtorrent 2.1 but stayed in clients.py, so the
+    # packaged app raised AttributeError on startup. The frozen self-test only
+    # touched lt.__version__ and could not see it.
+    used = set()
+    for source in ROOT.glob("*.py"):
+        tree = ast.parse(source.read_text(encoding="utf-8", errors="ignore"))
+        for node in ast.walk(tree):
+            if (
+                isinstance(node, ast.Attribute)
+                and isinstance(node.value, ast.Name)
+                and node.value.id == "lt"
+            ):
+                used.add(node.attr)
+
+    assert used, "expected the code to reference libtorrent as lt"
+
+    missing = sorted(
+        name
+        for name in used - OPTIONAL_LIBTORRENT_ATTRIBUTES
+        if not hasattr(libtorrent, name)
+    )
+    assert not missing, (
+        f"libtorrent {libtorrent.__version__} has no {missing}. "
+        "Guard the access and add it to OPTIONAL_LIBTORRENT_ATTRIBUTES, "
+        "or use the supported name."
+    )
 
 
 def test_shell_scripts_keep_lf_endings_through_git_archive():
