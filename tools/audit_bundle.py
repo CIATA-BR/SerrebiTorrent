@@ -26,7 +26,14 @@ def main() -> int:
     if not bundle.is_dir():
         raise SystemExit(f"Bundle directory was not found: {bundle}")
 
-    files = [path for path in bundle.rglob("*") if path.is_file()]
+    # A macOS .app keeps one real copy of each binary under Contents/Frameworks
+    # and symlinks it elsewhere in the bundle. Counting symlinks would report
+    # the libtorrent extension twice and double its contribution to the total.
+    files = [
+        path
+        for path in bundle.rglob("*")
+        if path.is_file() and not path.is_symlink()
+    ]
     relative = [path.relative_to(bundle) for path in files]
     lowered_parts = {
         part.lower().split("-", 1)[0]

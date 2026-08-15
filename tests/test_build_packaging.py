@@ -153,6 +153,45 @@ def test_bundle_audit_rejects_legacy_openssl_on_windows(tmp_path, monkeypatch):
         audit_bundle.main()
 
 
+def test_bundle_audit_accepts_macos_app_symlinked_extension(tmp_path, monkeypatch):
+    # PyInstaller keeps the real binary in Contents/Frameworks and symlinks it
+    # into Contents/Resources, which read as two libtorrent extensions.
+    frameworks = tmp_path / "Contents" / "Frameworks"
+    resources = tmp_path / "Contents" / "Resources"
+    frameworks.mkdir(parents=True)
+    resources.mkdir(parents=True)
+    extension = frameworks / "libtorrent.cpython-314-darwin.so"
+    extension.write_bytes(b"native")
+    try:
+        (resources / extension.name).symlink_to(extension)
+    except (OSError, NotImplementedError):
+        pytest.skip("this platform does not allow creating symlinks here")
+
+    monkeypatch.setattr(audit_bundle.sys, "platform", "darwin")
+    monkeypatch.setattr(
+        audit_bundle.sys, "argv", ["audit_bundle.py", str(tmp_path)]
+    )
+
+    assert audit_bundle.main() == 0
+
+
+def test_bundle_audit_still_rejects_two_real_extensions(tmp_path, monkeypatch):
+    frameworks = tmp_path / "Contents" / "Frameworks"
+    resources = tmp_path / "Contents" / "Resources"
+    frameworks.mkdir(parents=True)
+    resources.mkdir(parents=True)
+    (frameworks / "libtorrent.cpython-314-darwin.so").write_bytes(b"native")
+    (resources / "libtorrent.cpython-314-darwin.so").write_bytes(b"native")
+
+    monkeypatch.setattr(audit_bundle.sys, "platform", "darwin")
+    monkeypatch.setattr(
+        audit_bundle.sys, "argv", ["audit_bundle.py", str(tmp_path)]
+    )
+
+    with pytest.raises(SystemExit, match="Expected one bundled libtorrent"):
+        audit_bundle.main()
+
+
 def test_bundle_audit_allows_dist_info_wheel_metadata(tmp_path, monkeypatch):
     (tmp_path / "libtorrent.cp314-win_amd64.pyd").touch()
     metadata = tmp_path / "flask-3.1.3.dist-info"
