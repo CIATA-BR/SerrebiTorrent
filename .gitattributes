@@ -1,2 +1,7 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Shell scripts must keep LF endings. git archive applies the working-tree
+# conversion, so without this the Linux build script reaches the remote host
+# with CRLF and bash rejects "set -Eeuo pipefail".
+*.sh text eol=lf

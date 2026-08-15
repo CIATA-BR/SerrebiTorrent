@@ -33,13 +33,20 @@ try {
     }
 
     Invoke-Native { scp -q "$archive" "${HostName}:${remoteRoot}/source.zip" } "Source upload"
-    $remoteCommand = @"
-set -Eeuo pipefail
-mkdir -p '$remoteRoot/source'
-unzip -q '$remoteRoot/source.zip' -d '$remoteRoot/source'
-SERREBITORRENT_BUILD_VERSION='$Version' bash '$remoteRoot/source/tools/build_linux.sh'
-"@
-    Invoke-Native { ssh -o BatchMode=yes $HostName "bash -lc `"$remoteCommand`"" } "Remote Linux build"
+
+    # Keep this a single line with no embedded double quotes or newlines. A
+    # multi-line string loses its quoting on the way through ssh, which turns
+    # "set -Eeuo pipefail" into a bare "set" that dumps the remote environment
+    # and silently drops the error handling. A login shell is not used, so the
+    # remote profile cannot print secrets into the build log.
+    $remoteCommand = (
+        "set -Eeuo pipefail; " +
+        "mkdir -p '$remoteRoot/source'; " +
+        "unzip -q '$remoteRoot/source.zip' -d '$remoteRoot/source'; " +
+        "SERREBITORRENT_BUILD_VERSION='$Version' " +
+        "bash '$remoteRoot/source/tools/build_linux.sh'"
+    )
+    Invoke-Native { ssh -o BatchMode=yes $HostName $remoteCommand } "Remote Linux build"
 
     $output = [IO.Path]::GetFullPath((Join-Path $root $OutputDirectory))
     New-Item -ItemType Directory -Force -Path $output | Out-Null

@@ -1,3 +1,4 @@
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -38,6 +39,35 @@ def test_native_build_policy_uses_local_windows_ssh_linux_and_actions_macos():
     assert "windows-latest" not in workflow
     assert "ubuntu-latest" not in workflow
     assert "actions/upload-artifact@v7" in workflow
+
+
+def test_shell_scripts_keep_lf_endings_through_git_archive():
+    # build_linux_remote.ps1 ships the source with git archive, which applies
+    # the working-tree eol conversion. CRLF here makes bash reject line 2 of
+    # build_linux.sh with "set: pipefail: invalid option name".
+    scripts = sorted(path.as_posix() for path in ROOT.glob("**/*.sh"))
+    assert scripts, "expected at least one shell script in the repository"
+
+    for script in scripts:
+        relative = Path(script).relative_to(ROOT).as_posix()
+        attribute = subprocess.run(
+            ["git", "check-attr", "eol", "--", relative],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=True,
+        ).stdout.strip()
+        assert attribute.endswith("eol: lf"), attribute
+
+
+def test_remote_linux_command_keeps_its_error_handling():
+    remote = (ROOT / "tools/build_linux_remote.ps1").read_text(encoding="utf-8")
+
+    # A login shell lets the remote profile print its environment, and a
+    # multi-line command string loses the quoting that keeps "set" attached to
+    # its options.
+    assert "bash -lc" not in remote
+    assert "set -Eeuo pipefail; " in remote
 
 
 def test_linux_bundle_strips_native_debug_symbols():
