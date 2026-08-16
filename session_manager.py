@@ -161,6 +161,16 @@ def _write_resume_data_bytes(params):
     return lt.bencode(data)
 
 
+class _SessionRates:
+    """Minimal stand-in for libtorrent 2.0's session_status object."""
+
+    __slots__ = ("payload_download_rate", "payload_upload_rate")
+
+    def __init__(self, payload_download_rate, payload_upload_rate):
+        self.payload_download_rate = payload_download_rate
+        self.payload_upload_rate = payload_upload_rate
+
+
 class SessionManager:
     _instance = None
     
@@ -922,4 +932,27 @@ class SessionManager:
         return self.ses.get_torrents()
 
     def get_status(self):
-        return self.ses.status()
+        """Session-wide status with payload download/upload rates.
+
+        libtorrent 2.1 removed ``session.status()``, so when the running
+        libtorrent no longer exposes it we sum each torrent's payload rate
+        instead (available on both 2.0 and 2.1). Only the rates are consumed
+        (by ``LocalClient.get_global_stats``), so a small stand-in object is
+        enough.
+        """
+        try:
+            return self.ses.status()
+        except AttributeError:
+            pass
+        down = 0
+        up = 0
+        for h in self.ses.get_torrents():
+            try:
+                if not h.is_valid():
+                    continue
+                st = h.status()
+                down += int(st.download_payload_rate)
+                up += int(st.upload_payload_rate)
+            except Exception:
+                continue
+        return _SessionRates(down, up)

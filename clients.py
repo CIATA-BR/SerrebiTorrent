@@ -125,6 +125,50 @@ def _safe_tracker_domain(tracker_url):
     except Exception:
         return ""
 
+
+def _torrent_state_value(name):
+    """Resolve a torrent_status state name to its enum value or None.
+
+    libtorrent 2.1 moved the state enum to ``torrent_status.states`` and
+    dropped members (``queued_for_checking``, ``allocating``) that 2.0 kept
+    on ``torrent_status`` itself; ``queued_for_checking`` merged into
+    ``checking_resume_data``.
+    """
+    states = getattr(lt.torrent_status, "states", None)
+    if states is not None:
+        try:
+            return int(getattr(states, name))
+        except (AttributeError, TypeError, ValueError):
+            pass
+    try:
+        return int(getattr(lt.torrent_status, name))
+    except (AttributeError, TypeError, ValueError):
+        return None
+
+
+def _torrent_status_flag(status, name):
+    """Boolean flag from a torrent_status object, across libtorrent versions.
+
+    libtorrent 2.1 removed the ``paused``/``auto_managed`` attributes from
+    ``torrent_status``; the same facts now live in the ``torrent_flags``
+    bitmask exposed as ``status.flags``. Prefer the legacy attribute when the
+    running libtorrent still exposes it (2.0) and fall back to the bitmask,
+    so one code path serves both.
+    """
+    try:
+        return bool(getattr(status, name))
+    except AttributeError:
+        pass
+    try:
+        flags = getattr(status, "flags", 0)
+        flags_t = getattr(lt, "torrent_flags", None)
+        if flags_t is None:
+            return False
+        bit = getattr(flags_t, name, 0)
+        return bool(bit) and bool(flags & bit)
+    except Exception:
+        return False
+
 class BaseClient(abc.ABC):
     @abc.abstractmethod
     def test_connection(self):
@@ -988,14 +1032,18 @@ class LocalClient(BaseClient):
                 if not h.is_valid():
                     continue
                 s = h.status()
-                sv = 0 if (s.paused and not s.auto_managed) else 1
+                sv = 0 if (_torrent_status_flag(s, "paused") and not _torrent_status_flag(s, "auto_managed")) else 1
                 if sv == 1 and s.state not in [lt.torrent_status.seeding, lt.torrent_status.finished]:
                     av = 1
                 elif s.state == lt.torrent_status.seeding:
                     av = 1
                 else:
                     av = 0
-                hv = 1 if s.state in [lt.torrent_status.checking_files, lt.torrent_status.queued_for_checking] else 0
+                hv = 1 if s.state in [
+                    _torrent_state_value("checking_files"),
+                    _torrent_state_value("queued_for_checking"),
+                    _torrent_state_value("checking_resume_data"),
+                ] else 0
                 hashes = self.m._handle_hash_dict(h) if hasattr(self.m, "_handle_hash_dict") else {}
                 ihs = hashes.get("v1") or hashes.get("v2") or self.m._handle_hash_key(h)
                 if not ihs:
@@ -1025,7 +1073,10 @@ class LocalClient(BaseClient):
                     if magnet:
                         row["magnet"] = magnet
                 res.append(row)
-            except Exception:
+            except Exception as exc:
+                # Never let one bad row blank the whole list (issue #1: an
+                # AttributeError on every row made added torrents invisible).
+                print(f"Skipping torrent row: {type(exc).__name__}: {exc}")
                 continue
         return res
     def start_torrent(self, h):

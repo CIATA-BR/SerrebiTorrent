@@ -15,6 +15,7 @@ import pytest
 import sys
 import os
 import tempfile
+from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -458,6 +459,68 @@ class TestLocalClientTorrentStatus:
         assert eta == -1
 
 
+class TestLocalClientStatusHelpers:
+    """Status helpers must keep working on libtorrent 2.0 and 2.1 (issue #1)."""
+
+    def test_paused_flag_falls_back_to_flags_bitmask(self):
+        lt = pytest.importorskip("libtorrent")
+        from clients import _torrent_status_flag
+
+        paused = int(lt.torrent_flags.paused)
+        auto_managed = int(lt.torrent_flags.auto_managed)
+
+        # libtorrent 2.1-style status: only .flags, no paused/auto_managed attrs.
+        running = SimpleNamespace(flags=auto_managed)
+        assert _torrent_status_flag(running, "paused") is False
+        assert _torrent_status_flag(running, "auto_managed") is True
+
+        manually_paused = SimpleNamespace(flags=paused)
+        assert _torrent_status_flag(manually_paused, "paused") is True
+        assert _torrent_status_flag(manually_paused, "auto_managed") is False
+
+        queued = SimpleNamespace(flags=paused | auto_managed)
+        assert _torrent_status_flag(queued, "paused") is True
+        assert _torrent_status_flag(queued, "auto_managed") is True
+
+    def test_paused_flag_prefers_legacy_attributes(self):
+        from clients import _torrent_status_flag
+
+        # libtorrent 2.0-style status with direct attributes.
+        running = SimpleNamespace(paused=False, auto_managed=True)
+        assert _torrent_status_flag(running, "paused") is False
+        assert _torrent_status_flag(running, "auto_managed") is True
+
+        stopped = SimpleNamespace(paused=True, auto_managed=False)
+        assert _torrent_status_flag(stopped, "paused") is True
+        assert _torrent_status_flag(stopped, "auto_managed") is False
+
+    def test_state_value_resolves_on_2_1_style_enum(self):
+        lt = pytest.importorskip("libtorrent")
+        from clients import _torrent_state_value
+
+        assert _torrent_state_value("checking_files") == int(lt.torrent_status.states.checking_files)
+        # queued_for_checking merged into checking_resume_data on 2.1; the
+        # resolver must not raise on either version.
+        queued = _torrent_state_value("queued_for_checking")
+        assert queued is None or isinstance(queued, int)
+
+    def test_stopped_state_matches_original_semantics(self):
+        lt = pytest.importorskip("libtorrent")
+        from clients import _torrent_status_flag
+
+        paused = int(lt.torrent_flags.paused)
+        auto_managed = int(lt.torrent_flags.auto_managed)
+
+        for flags in (auto_managed, 0):
+            status = SimpleNamespace(flags=flags)
+            sv = 0 if (_torrent_status_flag(status, "paused") and not _torrent_status_flag(status, "auto_managed")) else 1
+            assert sv == 1  # running/queued torrents are active
+
+        status = SimpleNamespace(flags=paused)
+        sv = 0 if (_torrent_status_flag(status, "paused") and not _torrent_status_flag(status, "auto_managed")) else 1
+        assert sv == 0  # manually paused is Stopped
+
+
 # ============================================================================
 # Integration Tests (Real libtorrent, if available)
 # ============================================================================
@@ -555,6 +618,64 @@ class TestIntegrationSessionLifecycle:
                 # Cleanup
                 sm.running = False
                 SessionManager._instance = None
+
+
+class TestIntegrationAddedTorrentAppearsInList:
+    """Regression for issue #1: added torrents must show up in the GUI list.
+
+    On libtorrent 2.1, ``LocalClient.get_torrents_full`` raised AttributeError
+    on every row (``torrent_status.paused`` was removed) and the row loop
+    silently skipped them all, so the list stayed empty while files still
+    downloaded.
+    """
+
+    def test_added_torrent_shows_up_in_get_torrents_full(self, real_libtorrent, temp_dirs):
+        import time
+
+        lt = real_libtorrent
+        from clients import LocalClient
+        from session_manager import SessionManager
+
+        SessionManager._instance = None
+        with patch('session_manager.get_state_dir', return_value=temp_dirs['state']):
+            with patch('session_manager.ConfigManager') as MockCM:
+                MockCM.return_value.get_preferences.return_value = {
+                    'enable_dht': False,
+                    'enable_lsd': False,
+                    'enable_upnp': False,
+                    'enable_natpmp': False,
+                }
+                sm = SessionManager.get_instance()
+                try:
+                    test_file = os.path.join(temp_dirs['download'], "payload.txt")
+                    with open(test_file, 'w') as f:
+                        f.write("issue #1 regression payload " * 100)
+
+                    files = lt.list_files(test_file)
+                    ct = lt.create_torrent(files)
+                    lt.set_piece_hashes(ct, temp_dirs['download'])
+                    torrent_bytes = lt.bencode(ct.generate())
+                    info = lt.torrent_info(torrent_bytes)
+                    v1 = str(info.info_hashes().v1)
+
+                    sm.add_torrent_file(torrent_bytes, temp_dirs['download'])
+
+                    # Let the session settle so status is populated.
+                    deadline = time.time() + 3
+                    while time.time() < deadline:
+                        sm.ses.wait_for_alert(100)
+                        sm.ses.pop_alerts()
+                        time.sleep(0.05)
+
+                    client = LocalClient(temp_dirs['download'])
+                    rows = client.get_torrents_full()
+                    hashes = [str(r.get("hash", "")) for r in rows]
+
+                    assert v1 in hashes, f"added torrent missing from list: {hashes}"
+                finally:
+                    sm.running = False
+                    sm.alert_thread.join(timeout=1)
+                    SessionManager._instance = None
 
 
 # ============================================================================

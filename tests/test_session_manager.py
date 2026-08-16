@@ -320,3 +320,26 @@ def test_cleanup_torrent_state_removes_db_key_files_when_called_with_alias(sessi
     assert db_key not in session_manager.torrents_db
     assert db_key not in session_manager.pending_saves
     assert alias not in session_manager.pending_saves
+
+
+def test_get_status_uses_session_status_when_available(session_manager):
+    session_manager.get_status()
+    session_manager.ses.status.assert_called_once()
+
+
+def test_get_status_falls_back_to_summed_rates_without_session_status(session_manager):
+    """libtorrent 2.1 removed session.status(); rates are summed per torrent."""
+    del session_manager.ses.status  # simulate libtorrent 2.1
+
+    handle = MagicMock()
+    handle.is_valid.return_value = True
+    st = MagicMock()
+    st.download_payload_rate = 1000
+    st.upload_payload_rate = 500
+    handle.status.return_value = st
+    session_manager.ses.get_torrents.return_value = [handle, handle]
+
+    status = session_manager.get_status()
+
+    assert status.payload_download_rate == 2000
+    assert status.payload_upload_rate == 1000
