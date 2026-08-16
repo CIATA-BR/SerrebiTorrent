@@ -214,6 +214,31 @@ def _handle_file_priorities(handle):
         pass
     return handle.get_file_priorities()
 
+
+def _handle_set_auto_managed(handle, enabled):
+    """Set or clear a handle's auto-managed flag across libtorrent versions.
+
+    libtorrent 2.1 removed ``torrent_handle.auto_managed(bool)``; the flag
+    now lives in the ``torrent_flags`` bitmask. A manual pause must clear it
+    so the queue manager cannot restart the torrent and the GUI reports it
+    as stopped.
+    """
+    try:
+        handle.auto_managed(enabled)
+        return
+    except AttributeError:
+        pass
+    try:
+        flags_t = getattr(lt, "torrent_flags", None)
+        if flags_t is None:
+            return
+        if enabled:
+            handle.set_flags(flags_t.auto_managed, flags_t.auto_managed)
+        else:
+            handle.unset_flags(flags_t.auto_managed)
+    except Exception:
+        pass
+
 class BaseClient(abc.ABC):
     @abc.abstractmethod
     def test_connection(self):
@@ -1131,6 +1156,10 @@ class LocalClient(BaseClient):
     def stop_torrent(self, h):
         x = self._gh(h)
         if x:
+            # A manual stop must take the torrent out of auto-management:
+            # the queue manager could otherwise restart it, and the GUI only
+            # shows a torrent as Stopped when paused and NOT auto-managed.
+            _handle_set_auto_managed(x, False)
             x.pause()
     def remove_torrent(self, h): self.m.remove_torrent(h, False)
     def remove_torrent_with_data(self, h): self.m.remove_torrent(h, True)

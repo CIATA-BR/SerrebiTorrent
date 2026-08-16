@@ -576,6 +576,61 @@ class TestLocalClientDetailHelpers:
         assert _handle_file_priorities(self.V21Handle()) == [4, 0]
 
 
+class TestLocalClientStopStart:
+    """Stop must clear auto-management so the pause sticks and the GUI shows
+    Stopped (the reported 'can't pause' bug)."""
+
+    def _client_with(self, handle):
+        from clients import LocalClient
+
+        class FakeMgr:
+            def _find_handle(self, hash_value):
+                return handle
+
+        client = LocalClient.__new__(LocalClient)
+        client.m = FakeMgr()
+        return client
+
+    def test_stop_clears_auto_managed_before_pausing(self):
+        calls = []
+
+        class LegacyHandle:
+            def auto_managed(self, enabled):
+                calls.append(("auto_managed", enabled))
+
+            def pause(self):
+                calls.append(("pause",))
+
+        self._client_with(LegacyHandle()).stop_torrent("hash")
+
+        assert calls == [("auto_managed", False), ("pause",)]
+
+    def test_stop_clears_auto_managed_via_flags_on_21(self):
+        lt = pytest.importorskip("libtorrent")
+        calls = []
+
+        class V21Handle:
+            def unset_flags(self, flags):
+                calls.append(("unset_flags", flags))
+
+            def pause(self):
+                calls.append(("pause",))
+
+        self._client_with(V21Handle()).stop_torrent("hash")
+
+        assert calls == [("unset_flags", int(lt.torrent_flags.auto_managed)), ("pause",)]
+
+    def test_start_paused_flags_clears_auto_managed(self):
+        """Start-paused add flags keep the paused bit and drop auto-management."""
+        lt = pytest.importorskip("libtorrent")
+        from session_manager import _start_paused_flags
+
+        flags = _start_paused_flags()
+        assert flags is not None
+        assert not (flags & int(lt.torrent_flags.auto_managed))
+        assert flags & int(lt.torrent_flags.paused)  # starts paused
+
+
 # ============================================================================
 # Integration Tests (Real libtorrent, if available)
 # ============================================================================
@@ -881,6 +936,71 @@ class TestIntegrationDetailTabs:
         assert handle is not None
         assert _handle_has_metadata(handle) is False
         assert env.client.get_files(fake_hash) == []
+
+    def test_pause_shows_stopped_and_resume_restarts(self, local_torrent_env):
+        """A manual pause must clear auto-management and show as Stopped."""
+        env = local_torrent_env
+
+        def state_of():
+            rows = env.client.get_torrents_full()
+            return next(r["state"] for r in rows if r["hash"] == env.v1)
+
+        assert state_of() == 1  # running after add
+        env.client.stop_torrent(env.v1)
+        time.sleep(0.5)
+
+        handle = env.sm._find_handle(env.v1)
+        assert not bool(handle.status().flags & env.lt.torrent_flags.auto_managed)
+        assert state_of() == 0  # Stopped
+
+        env.client.start_torrent(env.v1)
+        time.sleep(0.5)
+        assert state_of() == 1  # running again
+
+    def test_auto_start_off_adds_torrent_paused(self, real_libtorrent, temp_dirs):
+        """With 'Automatically start torrents' off, adds must start paused."""
+        from clients import LocalClient
+        from session_manager import SessionManager
+
+        lt = real_libtorrent
+        SessionManager._instance = None
+        with patch('session_manager.get_state_dir', return_value=temp_dirs['state']), \
+                patch('session_manager.ConfigManager') as MockCM:
+            MockCM.return_value.get_preferences.return_value = {
+                'enable_dht': False,
+                'enable_lsd': False,
+                'enable_upnp': False,
+                'enable_natpmp': False,
+                'listen_port': 16881,
+                'auto_start': False,
+            }
+            sm = SessionManager.get_instance()
+            try:
+                payload = os.path.join(temp_dirs['download'], "paused.txt")
+                with open(payload, 'w') as fh:
+                    fh.write("auto start off payload " * 100)
+                files = lt.list_files(payload)
+                ct = lt.create_torrent(files)
+                lt.set_piece_hashes(ct, temp_dirs['download'])
+                data = lt.bencode(ct.generate())
+                info = lt.torrent_info(data)
+                v1 = str(info.info_hashes().v1)
+
+                sm.add_torrent_file(data, temp_dirs['download'])
+                time.sleep(0.5)
+
+                handle = sm._find_handle(v1)
+                assert handle is not None
+                assert bool(handle.status().flags & lt.torrent_flags.paused)
+                assert not bool(handle.status().flags & lt.torrent_flags.auto_managed)
+
+                client = LocalClient(temp_dirs['download'])
+                rows = client.get_torrents_full()
+                assert next(r["state"] for r in rows if r["hash"] == v1) == 0
+            finally:
+                sm.running = False
+                sm.alert_thread.join(timeout=1)
+                SessionManager._instance = None
 
 
 # ============================================================================

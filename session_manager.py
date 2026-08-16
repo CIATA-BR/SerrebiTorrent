@@ -177,6 +177,20 @@ def _handle_has_metadata(handle):
         return False
 
 
+def _start_paused_flags():
+    """add_torrent_params flags for a torrent that must start paused.
+
+    Clears ``auto_managed`` from the defaults (keeping the add-time paused
+    bit) so the session's queue manager cannot start it -- the same way a
+    manual pause clears auto-management. Returns None when the running
+    libtorrent exposes no ``torrent_flags``.
+    """
+    try:
+        return int(lt.torrent_flags.default_flags) & ~int(lt.torrent_flags.auto_managed)
+    except Exception:
+        return None
+
+
 class _SessionRates:
     """Minimal stand-in for libtorrent 2.0's session_status object."""
 
@@ -213,6 +227,7 @@ class SessionManager:
         # Load preferences
         cm = ConfigManager()
         prefs = cm.get_preferences()
+        self.auto_start_default = bool(prefs.get('auto_start', True))
         self.apply_preferences(prefs)
         
         self.alerts_queue = []
@@ -574,10 +589,16 @@ class SessionManager:
         ih = hashes.get("v1") or hashes.get("v2") or ""
         if not ih:
             ih = self._info_hash_key(info.info_hash())
-        
-        params = {'ti': info, 'save_path': save_path}
+
+        params = lt.add_torrent_params()
+        params.ti = info
+        params.save_path = save_path
         if file_priorities:
-            params['file_priorities'] = file_priorities
+            params.file_priorities = list(file_priorities)
+        if not self.auto_start_default:
+            flags = _start_paused_flags()
+            if flags is not None:
+                params.flags = flags
 
         with self.lock:
             duplicate_keys = list(hashes.values()) or [ih]
@@ -636,6 +657,10 @@ class SessionManager:
     def add_magnet(self, url, save_path):
         params = lt.parse_magnet_uri(url)
         params.save_path = save_path
+        if not self.auto_start_default:
+            flags = _start_paused_flags()
+            if flags is not None:
+                params.flags = flags
         
         # Check if already exists from magnet's hash
         hashes = self._info_hash_dict(params.info_hashes)
