@@ -322,6 +322,29 @@ def test_cleanup_torrent_state_removes_db_key_files_when_called_with_alias(sessi
     assert alias not in session_manager.pending_saves
 
 
+def test_handle_has_metadata_across_libtorrent_versions():
+    from session_manager import _handle_has_metadata
+
+    class LegacyHandle:
+        def __init__(self, metadata):
+            self._metadata = metadata
+
+        def has_metadata(self):
+            return self._metadata
+
+    class V21Handle:
+        def __init__(self, metadata):
+            self._metadata = metadata
+
+        def status(self):
+            return SimpleNamespace(has_metadata=self._metadata)
+
+    assert _handle_has_metadata(LegacyHandle(True)) is True
+    assert _handle_has_metadata(LegacyHandle(False)) is False
+    assert _handle_has_metadata(V21Handle(True)) is True
+    assert _handle_has_metadata(V21Handle(False)) is False
+
+
 def test_get_status_uses_session_status_when_available(session_manager):
     session_manager.get_status()
     session_manager.ses.status.assert_called_once()

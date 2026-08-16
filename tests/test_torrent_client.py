@@ -15,6 +15,7 @@ import pytest
 import sys
 import os
 import tempfile
+import time
 from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
@@ -521,6 +522,60 @@ class TestLocalClientStatusHelpers:
         assert sv == 0  # manually paused is Stopped
 
 
+class TestLocalClientDetailHelpers:
+    """Handle-level helpers must work on libtorrent 2.0 and 2.1 (issue #1)."""
+
+    class LegacyHandle:
+        """libtorrent 2.0-style handle: has_metadata/get_torrent_info/file_priorities."""
+
+        def __init__(self, metadata=True):
+            self._metadata = metadata
+
+        def has_metadata(self):
+            return self._metadata
+
+        def get_torrent_info(self):
+            return "torrent-info-legacy"
+
+        def file_priorities(self):
+            return [4, 0]
+
+    class V21Handle:
+        """libtorrent 2.1-style handle: no has_metadata/get_torrent_info/file_priorities."""
+
+        def __init__(self, metadata=True):
+            self._metadata = metadata
+
+        def status(self):
+            return SimpleNamespace(has_metadata=self._metadata)
+
+        def torrent_file(self):
+            return "torrent-info-v21"
+
+        def get_file_priorities(self):
+            return [4, 0]
+
+    def test_handle_has_metadata_on_legacy_and_21(self):
+        from clients import _handle_has_metadata
+
+        assert _handle_has_metadata(self.LegacyHandle(True)) is True
+        assert _handle_has_metadata(self.LegacyHandle(False)) is False
+        assert _handle_has_metadata(self.V21Handle(True)) is True
+        assert _handle_has_metadata(self.V21Handle(False)) is False
+
+    def test_handle_torrent_info_on_legacy_and_21(self):
+        from clients import _handle_torrent_info
+
+        assert _handle_torrent_info(self.LegacyHandle()) == "torrent-info-legacy"
+        assert _handle_torrent_info(self.V21Handle()) == "torrent-info-v21"
+
+    def test_handle_file_priorities_on_legacy_and_21(self):
+        from clients import _handle_file_priorities
+
+        assert _handle_file_priorities(self.LegacyHandle()) == [4, 0]
+        assert _handle_file_priorities(self.V21Handle()) == [4, 0]
+
+
 # ============================================================================
 # Integration Tests (Real libtorrent, if available)
 # ============================================================================
@@ -552,6 +607,63 @@ def temp_dirs():
     shutil.rmtree(download_dir, ignore_errors=True)
 
 
+@pytest.fixture
+def local_torrent_env(real_libtorrent, temp_dirs):
+    """A real SessionManager + LocalClient with one added torrent.
+
+    Everything lives under temp_dirs so no real user data is touched. The
+    fixture yields a SimpleNamespace with the libtorrent module, session
+    manager, client, the torrent's v1 hash, and the temp paths.
+    """
+    from clients import LocalClient
+    from session_manager import SessionManager
+
+    lt = real_libtorrent
+    SessionManager._instance = None
+    with patch('session_manager.get_state_dir', return_value=temp_dirs['state']), \
+            patch('session_manager.ConfigManager') as MockCM:
+        MockCM.return_value.get_preferences.return_value = {
+            'enable_dht': False,
+            'enable_lsd': False,
+            'enable_upnp': False,
+            'enable_natpmp': False,
+            'listen_port': 16881,
+        }
+        sm = SessionManager.get_instance()
+        try:
+            payload = os.path.join(temp_dirs['download'], "payload.txt")
+            with open(payload, 'w') as fh:
+                fh.write("detail tab regression payload " * 100)
+            files = lt.list_files(payload)
+            ct = lt.create_torrent(files)
+            lt.set_piece_hashes(ct, temp_dirs['download'])
+            data = lt.bencode(ct.generate())
+            info = lt.torrent_info(data)
+            v1 = str(info.info_hashes().v1)
+            sm.add_torrent_file(data, temp_dirs['download'])
+
+            # Let the session settle so status/metadata are populated.
+            deadline = time.time() + 3
+            while time.time() < deadline:
+                sm.ses.wait_for_alert(100)
+                sm.ses.pop_alerts()
+                time.sleep(0.05)
+
+            client = LocalClient(temp_dirs['download'])
+            yield SimpleNamespace(
+                lt=lt,
+                sm=sm,
+                client=client,
+                v1=v1,
+                download_dir=temp_dirs['download'],
+                state_dir=temp_dirs['state'],
+            )
+        finally:
+            sm.running = False
+            sm.alert_thread.join(timeout=1)
+            SessionManager._instance = None
+
+
 class TestIntegrationTorrentCreation:
     """Integration tests using real libtorrent."""
     
@@ -577,6 +689,32 @@ class TestIntegrationTorrentCreation:
         
         assert info.name() == "test_file.txt"
         assert info.num_files() == 1
+
+    def test_create_multi_file_folder_torrent(self, real_libtorrent, temp_dirs):
+        """Folder torrents must hash and parse on libtorrent 2.1.
+
+        2.1's ``list_files`` returns paths relative to the parent directory,
+        so hashing against the wrong base aborts with a system:995 I/O error;
+        torrent_creator must keep using the parent base.
+        """
+        from torrent_creator import create_torrent_bytes
+
+        folder = os.path.join(temp_dirs['download'], "media")
+        os.makedirs(os.path.join(folder, "nested"))
+        with open(os.path.join(folder, "a.txt"), "w") as fh:
+            fh.write("x" * 20000)
+        with open(os.path.join(folder, "nested", "b.bin"), "wb") as fh:
+            fh.write(b"y" * 10000)
+
+        data, magnet, ih = create_torrent_bytes(folder, trackers=[])
+
+        assert ih
+        assert magnet.startswith("magnet:")
+        info = real_libtorrent.torrent_info(data)
+        assert str(info.info_hashes().v1) == ih
+        paths = [info.files().file_path(i) for i in range(info.num_files())]
+        assert any(path.endswith("a.txt") for path in paths)
+        assert any(path.endswith("b.bin") for path in paths)
     
     def test_url_encoding_with_real_request(self, real_libtorrent):
         """Test that encoded URLs work with real requests library."""
@@ -676,6 +814,73 @@ class TestIntegrationAddedTorrentAppearsInList:
                     sm.running = False
                     sm.alert_thread.join(timeout=1)
                     SessionManager._instance = None
+
+
+class TestIntegrationDetailTabs:
+    """Real-libtorrent coverage for the Files/Peers/Trackers tabs and session
+    persistence. These regress the libtorrent 2.1 handle API renames that made
+    the Files tab show nothing (issue #1 family).
+    """
+
+    def test_files_tab_lists_torrent_files(self, local_torrent_env):
+        env = local_torrent_env
+        files = env.client.get_files(env.v1)
+        assert isinstance(files, list) and files
+        row = files[0]
+        assert row["index"] == 0
+        assert row["name"]
+        assert row["size"] > 0
+        assert "progress" in row
+        assert "priority" in row
+
+    def test_set_file_priority_changes_file_row(self, local_torrent_env):
+        env = local_torrent_env
+        before = env.client.get_files(env.v1)[0]
+        env.client.set_file_priority(env.v1, 0, 0)
+        after = env.client.get_files(env.v1)[0]
+        assert before["priority"] != 0
+        assert after["priority"] == 0
+
+    def test_peers_trackers_and_save_path_return_values(self, local_torrent_env):
+        env = local_torrent_env
+        assert isinstance(env.client.get_peers(env.v1), list)
+        assert isinstance(env.client.get_trackers(env.v1), list)
+        assert env.client.get_torrent_save_path(env.v1)
+
+    def test_torrent_row_carries_a_magnet(self, local_torrent_env):
+        env = local_torrent_env
+        rows = env.client.get_torrents_full()
+        row = next(r for r in rows if r.get("hash") == env.v1)
+        magnet = str(row.get("magnet", ""))
+        assert magnet.startswith("magnet:")
+        assert env.v1 in magnet
+
+    def test_resume_data_persists_through_alert_loop(self, local_torrent_env):
+        env = local_torrent_env
+        handle = env.sm._find_handle(env.v1)
+        assert handle is not None
+        handle.save_resume_data()
+
+        resume_path = os.path.join(env.state_dir, env.v1 + ".resume")
+        deadline = time.time() + 8
+        while time.time() < deadline and not os.path.exists(resume_path):
+            time.sleep(0.2)
+        assert os.path.exists(resume_path), "resume data was not persisted"
+
+        with open(resume_path, "rb") as fp:
+            params = env.lt.read_resume_data(fp.read())
+        assert env.sm._info_hash_key(params.info_hashes) == env.v1
+
+    def test_magnet_without_metadata_reports_no_metadata(self, local_torrent_env):
+        from session_manager import _handle_has_metadata
+
+        env = local_torrent_env
+        fake_hash = "f" * 40
+        env.sm.add_magnet(f"magnet:?xt=urn:btih:{fake_hash}", env.download_dir)
+        handle = env.sm._find_handle(fake_hash)
+        assert handle is not None
+        assert _handle_has_metadata(handle) is False
+        assert env.client.get_files(fake_hash) == []
 
 
 # ============================================================================

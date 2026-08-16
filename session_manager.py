@@ -161,6 +161,22 @@ def _write_resume_data_bytes(params):
     return lt.bencode(data)
 
 
+def _handle_has_metadata(handle):
+    """Whether a handle has metadata, across libtorrent versions.
+
+    libtorrent 2.1 removed ``torrent_handle.has_metadata()``; the fact now
+    lives on ``torrent_status.has_metadata``.
+    """
+    try:
+        return bool(handle.has_metadata())
+    except AttributeError:
+        pass
+    try:
+        return bool(handle.status().has_metadata)
+    except Exception:
+        return False
+
+
 class _SessionRates:
     """Minimal stand-in for libtorrent 2.0's session_status object."""
 
@@ -474,8 +490,7 @@ class SessionManager:
             for h in self.ses.get_torrents():
                 if not h.is_valid():
                     continue
-                has_metadata = getattr(h, 'has_metadata', None)
-                if callable(has_metadata) and not has_metadata():
+                if not _handle_has_metadata(h):
                     continue
                 need_resume = getattr(h, 'need_save_resume_data', None)
                 if callable(need_resume) and not need_resume():
@@ -791,8 +806,7 @@ class SessionManager:
         for h in handles:
             if h.is_valid():
                 ih = self._handle_hash_key(h)
-                has_metadata = getattr(h, 'has_metadata', None)
-                if callable(has_metadata) and not has_metadata():
+                if not _handle_has_metadata(h):
                     continue
                 need_resume = getattr(h, 'need_save_resume_data', None)
                 if callable(need_resume) and not need_resume():

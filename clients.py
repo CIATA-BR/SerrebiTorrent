@@ -169,6 +169,51 @@ def _torrent_status_flag(status, name):
     except Exception:
         return False
 
+
+def _handle_has_metadata(handle):
+    """Whether a handle has metadata, across libtorrent versions.
+
+    libtorrent 2.1 removed ``torrent_handle.has_metadata()``; the fact now
+    lives on ``torrent_status.has_metadata``.
+    """
+    try:
+        return bool(handle.has_metadata())
+    except AttributeError:
+        pass
+    try:
+        return bool(handle.status().has_metadata)
+    except Exception:
+        return False
+
+
+def _handle_torrent_info(handle):
+    """The handle's torrent_info, or None, across libtorrent versions.
+
+    libtorrent 2.1 removed ``torrent_handle.get_torrent_info()`` in favor of
+    ``torrent_file()``.
+    """
+    try:
+        return handle.get_torrent_info()
+    except AttributeError:
+        pass
+    try:
+        return handle.torrent_file()
+    except Exception:
+        return None
+
+
+def _handle_file_priorities(handle):
+    """The handle's file priority list, across libtorrent versions.
+
+    libtorrent 2.1 renamed ``torrent_handle.file_priorities()`` to
+    ``get_file_priorities()``.
+    """
+    try:
+        return handle.file_priorities()
+    except AttributeError:
+        pass
+    return handle.get_file_priorities()
+
 class BaseClient(abc.ABC):
     @abc.abstractmethod
     def test_connection(self):
@@ -1011,8 +1056,8 @@ class LocalClient(BaseClient):
         return f"libtorrent {version or 'unknown'}"
     def _local_magnet_uri(self, handle, hashes):
         try:
-            if handle.has_metadata() and hasattr(lt, "make_magnet_uri"):
-                return lt.make_magnet_uri(handle.get_torrent_info())
+            if _handle_has_metadata(handle) and hasattr(lt, "make_magnet_uri"):
+                return lt.make_magnet_uri(_handle_torrent_info(handle))
         except Exception:
             pass
         return build_magnet_from_hashes(
@@ -1114,18 +1159,20 @@ class LocalClient(BaseClient):
         return getattr(x.status(), 'save_path', None) if x else None
     def get_files(self, h):
         x = self._gh(h)
-        if not x or not x.has_metadata():
+        if not x or not _handle_has_metadata(x):
             return []
-        ti = x.get_torrent_info()
+        ti = _handle_torrent_info(x)
+        if ti is None:
+            return []
         fs = ti.files()
         pr = x.file_progress()
-        prio = x.file_priorities()
+        prio = _handle_file_priorities(x)
         return [{"index": i, "name": fs.file_path(i), "size": fs.file_size(i), "progress": pr[i]/fs.file_size(i) if fs.file_size(i)>0 else 0, "priority": 1 if prio[i]==4 else (2 if prio[i]>4 else 0)} for i in range(ti.num_files())]
     def set_file_priority(self, h, i, p):
         x = self._gh(h)
         if x:
             x.file_priority(i, 4 if p==1 else (7 if p==2 else 0))
-            self.m.update_priorities(self.m._handle_hash_key(x) or h, x.file_priorities())
+            self.m.update_priorities(self.m._handle_hash_key(x) or h, _handle_file_priorities(x))
     def get_peers(self, h):
         x = self._gh(h)
         if not x:
