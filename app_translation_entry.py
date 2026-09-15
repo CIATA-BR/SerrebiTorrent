@@ -12,7 +12,7 @@ install_runtime_catalogs()
 
 import wx
 import app_entry
-from translation_center import TranslationCenterDialog
+from translation_center_localized import LocalizedTranslationCenterDialog
 
 
 class TranslationMainFrame(app_entry.LocalizedMainFrame):
@@ -33,7 +33,7 @@ class TranslationMainFrame(app_entry.LocalizedMainFrame):
         self.Bind(wx.EVT_MENU, self.on_translation_center, item)
 
     def on_translation_center(self, _event):
-        dlg = TranslationCenterDialog(self)
+        dlg = LocalizedTranslationCenterDialog(self)
         try:
             dlg.ShowModal()
         finally:
