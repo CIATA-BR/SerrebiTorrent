@@ -32,7 +32,6 @@
         'Select': 'Selecionar',
         'Name': 'Nome',
         'Size': 'Tamanho',
-        'Status': 'Status',
         'Progress': 'Progresso',
         'Speed': 'Velocidade',
         'Torrent Details': 'Detalhes do torrent',
@@ -92,6 +91,8 @@
         'Remote settings saved.': 'Configurações remotas salvas.',
         'Error saving remote settings.': 'Erro ao salvar as configurações remotas.',
         'Failed to load settings.': 'Falha ao carregar as configurações.',
+        'Failed to add torrents.': 'Falha ao adicionar torrents.',
+        'Invalid torrent URL.': 'URL de torrent inválida.',
         'Switching client profile...': 'Alternando perfil do cliente...',
         'Copied to clipboard': 'Copiado para a área de transferência',
         'Loading...': 'Carregando...',
@@ -131,11 +132,11 @@
     const PT_PATTERNS = [
         [/^Selected all (\d+) torrents$/, 'Selecionados todos os $1 torrents'],
         [/^(\d+) torrents selected\.$/, '$1 torrents selecionados.'],
-        [/^Select (.+)$/, 'Selecionar $1'],
         [/^Failed to add torrent: (.+)$/, 'Falha ao adicionar torrent: $1'],
         [/^Error saving remote settings: (.+)$/, 'Erro ao salvar as configurações remotas: $1'],
         [/^Failed to (.+) torrent\(s\)\.$/, 'Falha ao executar $1 no(s) torrent(s).'],
         [/^Failed to (.+) torrent\(s\): (.+)$/, 'Falha ao executar $1 no(s) torrent(s): $2'],
+        [/^Remove failed: (.+)$/, 'Falha ao remover: $1'],
         [/^Remove (\d+) torrent\?$/, 'Remover $1 torrent?'],
         [/^Remove (\d+) torrents\?$/, 'Remover $1 torrents?'],
         [/^Remove (\d+) torrent and delete downloaded data\?$/, 'Remover $1 torrent e excluir os dados baixados?'],
@@ -178,9 +179,15 @@
         return String(value).split(/\s+/).map((word) => REMOTE_WORDS[word.toLowerCase()] || word).join(' ');
     }
 
+    function isUserContentTextNode(node) {
+        const parent = node.parentElement;
+        if (!parent) return false;
+        return parent.matches('.col-name, #details-general h3');
+    }
+
     function translateTextNode(node) {
         const raw = node.nodeValue;
-        if (!raw || !raw.trim()) return;
+        if (!raw || !raw.trim() || isUserContentTextNode(node)) return;
         const leading = raw.match(/^\s*/)?.[0] || '';
         const trailing = raw.match(/\s*$/)?.[0] || '';
         const core = raw.trim();
@@ -197,7 +204,12 @@
         for (const attr of ATTRS) {
             if (!element.hasAttribute(attr)) continue;
             const source = element.getAttribute(attr);
-            const translated = t(source);
+            let translated = source;
+            if (attr === 'aria-label' && element.classList.contains('row-check') && source.startsWith('Select ')) {
+                translated = currentLanguage === 'pt-BR' ? `Selecionar ${source.slice(7)}` : source;
+            } else if (!(element.matches('tr[data-hash]') && attr === 'aria-label') && !(element.classList.contains('col-name') && attr === 'title')) {
+                translated = t(source);
+            }
             if (translated !== source) element.setAttribute(attr, translated);
         }
         for (const child of element.childNodes) {
