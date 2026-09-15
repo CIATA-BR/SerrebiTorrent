@@ -55,6 +55,15 @@ def test_dynamic_content_and_accessible_attributes_are_localized():
     assert "window.confirm" in I18N
 
 
+def test_user_supplied_torrent_names_are_not_translated():
+    assert "isUserContentTextNode" in I18N
+    assert ".col-name, #details-general h3" in I18N
+    assert "element.matches('tr[data-hash]')" in I18N
+    assert "element.classList.contains('col-name')" in I18N
+    assert "element.classList.contains('row-check')" in I18N
+    assert "`Selecionar ${source.slice(7)}`" in I18N
+
+
 def test_remote_labels_are_translated_without_changing_api_keys():
     assert "REMOTE_WORDS" in I18N
     assert "#remoteSettingsFields label" in I18N
