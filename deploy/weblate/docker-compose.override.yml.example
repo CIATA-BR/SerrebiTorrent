@@ -1,0 +1,16 @@
+services:
+  weblate:
+    image: weblate/weblate:2026
+    environment:
+      WEBLATE_SITE_DOMAIN: torrent.ciata.org.br
+      WEBLATE_SITE_TITLE: CIATA - SerrebiTorrent Translations
+      WEBLATE_ADMIN_NAME: CIATA
+      WEBLATE_ADMIN_EMAIL: contato@ciata.org.br
+      WEBLATE_SERVER_EMAIL: contato@ciata.org.br
+      WEBLATE_DEFAULT_FROM_EMAIL: contato@ciata.org.br
+      WEBLATE_ENABLE_HTTPS: "1"
+      WEBLATE_ALLOWED_HOSTS: torrent.ciata.org.br
+      # Define WEBLATE_ADMIN_PASSWORD only for the initial bootstrap or
+      # password recovery. Prefer a generated password or a local secret.
+    ports:
+      - "127.0.0.1:8088:8080"
