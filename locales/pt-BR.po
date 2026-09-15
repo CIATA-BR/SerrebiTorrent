@@ -1,0 +1,63 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: SerrebiTorrent\n"
+"Language: pt-BR\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Contribute &Translations..."
+msgstr "Contribuir com &traduções..."
+
+msgid "Translate SerrebiTorrent or review an existing language"
+msgstr "Traduzir o SerrebiTorrent ou revisar um idioma existente"
+
+msgid "Translation Center"
+msgstr "Central de traduções"
+
+msgid "Translation language"
+msgstr "Idioma da tradução"
+
+msgid "Translation filter"
+msgstr "Filtro de tradução"
+
+msgid "Translation progress"
+msgstr "Progresso da tradução"
+
+msgid "Translation entries"
+msgstr "Entradas de tradução"
+
+msgid "English source text"
+msgstr "Texto original em inglês"
+
+msgid "Translation context"
+msgstr "Contexto da tradução"
+
+msgid "Translated text"
+msgstr "Texto traduzido"
+
+msgid "Translation validation status"
+msgstr "Status de validação da tradução"
+
+msgid "Untranslated"
+msgstr "Não traduzidos"
+
+msgid "Needs review"
+msgstr "Precisa de revisão"
+
+msgid "Translated"
+msgstr "Traduzidos"
+
+msgid "Import translation"
+msgstr "Importar tradução"
+
+msgid "Export translation"
+msgstr "Exportar tradução"
+
+msgid "Translation validation"
+msgstr "Validação da tradução"
+
+msgid "Translation preview"
+msgstr "Prévia da tradução"
+
+msgid "The translation is active for this session. Reopen dialogs to preview them. Restart to return to the saved language."
+msgstr "A tradução está ativa nesta sessão. Reabra os diálogos para visualizá-la. Reinicie para voltar ao idioma salvo."
