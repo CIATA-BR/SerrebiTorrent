@@ -56,9 +56,6 @@ def _decode_po_string(token: str) -> str:
 
 def _parse_metadata(value: str) -> dict[str, str]:
     result: dict[str, str] = {}
-    # render_po/render_pot intentionally emit compact header strings. Accept
-    # both normal decoded newlines and literal backslash-n separators so PO
-    # files from other editors and our deterministic renderer round-trip.
     normalized = value.replace("\\n", "\n")
     for line in normalized.splitlines():
         if ":" not in line:
@@ -195,6 +192,11 @@ def _quote_po(value: str) -> str:
     return json.dumps(value, ensure_ascii=False)
 
 
+def _header_lines(items: list[tuple[str, str]]) -> list[str]:
+    """Render gettext metadata as one quoted PO line per header field."""
+    return [_quote_po(f"{key}: {value}\n") for key, value in items]
+
+
 def render_po(
     language: str,
     language_name: str,
@@ -203,20 +205,21 @@ def render_po(
     project: str = "SerrebiTorrent",
 ) -> str:
     """Render a deterministic contributor-friendly PO file."""
-    header = (
-        f"Project-Id-Version: {project}\\n"
-        f"Language: {language}\\n"
-        f"X-Language-Name: {language_name}\\n"
-        "MIME-Version: 1.0\\n"
-        "Content-Type: text/plain; charset=UTF-8\\n"
-        "Content-Transfer-Encoding: 8bit\\n"
-    )
     lines = [
         "# SerrebiTorrent translation catalog.",
         "# SPDX-License-Identifier: MIT",
         'msgid ""',
         'msgstr ""',
-        _quote_po(header),
+        *_header_lines(
+            [
+                ("Project-Id-Version", project),
+                ("Language", language),
+                ("X-Language-Name", language_name),
+                ("MIME-Version", "1.0"),
+                ("Content-Type", "text/plain; charset=UTF-8"),
+                ("Content-Transfer-Encoding", "8bit"),
+            ]
+        ),
         "",
     ]
     for source in sorted(entries, key=str.casefold):
@@ -225,18 +228,19 @@ def render_po(
 
 
 def render_pot(messages: list[str], *, project: str = "SerrebiTorrent") -> str:
-    header = (
-        f"Project-Id-Version: {project}\\n"
-        "MIME-Version: 1.0\\n"
-        "Content-Type: text/plain; charset=UTF-8\\n"
-        "Content-Transfer-Encoding: 8bit\\n"
-    )
     lines = [
         "# SerrebiTorrent translation template.",
         "# SPDX-License-Identifier: MIT",
         'msgid ""',
         'msgstr ""',
-        _quote_po(header),
+        *_header_lines(
+            [
+                ("Project-Id-Version", project),
+                ("MIME-Version", "1.0"),
+                ("Content-Type", "text/plain; charset=UTF-8"),
+                ("Content-Transfer-Encoding", "8bit"),
+            ]
+        ),
         "",
     ]
     for source in sorted(set(messages), key=str.casefold):
