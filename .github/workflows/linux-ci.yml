@@ -80,5 +80,6 @@ jobs:
             tests/test_main_helpers.py \
             tests/test_translation_catalog.py \
             tests/test_translation_runtime.py \
+            tests/test_translation_seed.py \
             tests/test_web_i18n.py \
             tests/test_web_ui_a11y.py
