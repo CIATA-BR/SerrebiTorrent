@@ -28,13 +28,7 @@ from runtime_components_i18n import (
 
 
 def install_localized_runtime_components():
-    """Install localized legacy bindings immediately before MainFrame creation.
-
-    Keeping this explicit avoids mutating ``main`` merely by importing
-    ``app_entry``. Upstream regression tests can therefore continue inspecting
-    the maintainer's original classes, while the real localized application
-    still constructs the localized subclasses.
-    """
+    """Install localized legacy bindings immediately before localized frame creation."""
     legacy.FilesListCtrl = LocalizedFilesListCtrl
     legacy.PeersListCtrl = LocalizedPeersListCtrl
     legacy.TrackersListCtrl = LocalizedTrackersListCtrl
@@ -44,6 +38,22 @@ def install_localized_runtime_components():
     legacy.RuleEditDialog = LocalizedRuleEditDialog
     legacy.RulesManagerDialog = LocalizedRulesManagerDialog
     legacy.RSSPanel = LocalizedRSSPanel
+
+
+# ``app_entry`` imports this module before defining LocalizedMainFrame. Wrapping
+# the legacy constructor lets us defer the class rebinding until an actual
+# localized frame is instantiated. Importing app_entry therefore leaves the
+# original detail/RSS classes intact for upstream source-inspection tests.
+_LEGACY_MAINFRAME_INIT = legacy.MainFrame.__init__
+
+
+def _localized_runtime_mainframe_init(self, *args, **kwargs):
+    if self.__class__.__name__ == "LocalizedMainFrame":
+        install_localized_runtime_components()
+    return _LEGACY_MAINFRAME_INIT(self, *args, **kwargs)
+
+
+legacy.MainFrame.__init__ = _localized_runtime_mainframe_init
 
 
 _PT_BR = {
