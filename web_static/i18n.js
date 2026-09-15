@@ -153,20 +153,75 @@
     let configuredLanguage = 'system';
     let pendingLanguage = null;
     let observer = null;
+    let externalTranslations = {};
+    let availableLanguages = [];
+
+    function rawLanguage(value) {
+        return String(value || '').trim().replace('_', '-');
+    }
 
     function normalizeLanguage(value) {
-        const raw = String(value || '').trim().replace('_', '-').toLowerCase();
-        if (raw === 'pt' || raw === 'pt-br' || raw.startsWith('pt-br.')) return 'pt-BR';
-        return 'en';
+        const raw = rawLanguage(value);
+        const lower = raw.toLowerCase();
+        if (lower === 'pt' || lower === 'pt-br' || lower.startsWith('pt-br.')) return 'pt-BR';
+        if (lower === 'en' || lower.startsWith('en-') || lower.startsWith('en.')) return 'en';
+        if (!raw) return 'en';
+        const known = availableLanguages.find((item) => item.code.toLowerCase() === lower);
+        return known ? known.code : raw;
+    }
+
+    function resolveAvailableLanguage(value) {
+        const raw = rawLanguage(value);
+        const lower = raw.toLowerCase();
+        const builtin = normalizeLanguage(raw);
+        if (builtin === 'pt-BR' || builtin === 'en') return builtin;
+        const exact = availableLanguages.find((item) => item.code.toLowerCase() === lower);
+        if (exact) return exact.code;
+        const base = lower.split('-', 1)[0];
+        const matches = availableLanguages.filter((item) => item.code.toLowerCase().split('-', 1)[0] === base);
+        return matches.length === 1 ? matches[0].code : 'en';
     }
 
     function systemLanguage() {
-        return normalizeLanguage(navigator.language || navigator.userLanguage || 'en');
+        return resolveAvailableLanguage(navigator.language || navigator.userLanguage || 'en');
+    }
+
+    async function loadLanguageIndex() {
+        try {
+            const response = await fetch('/locales/index.json', {cache: 'no-store'});
+            if (!response.ok) return [];
+            const payload = await response.json();
+            availableLanguages = Array.isArray(payload.languages) ? payload.languages.filter(
+                (item) => item && typeof item.code === 'string' && typeof item.name === 'string'
+            ) : [];
+        } catch (_error) {
+            availableLanguages = [];
+        }
+        return availableLanguages;
+    }
+
+    async function loadExternalCatalog(language) {
+        externalTranslations = {};
+        if (!language || language === 'en' || language === 'pt-BR') return;
+        try {
+            const response = await fetch(`/locales/${encodeURIComponent(language)}.json`, {cache: 'no-store'});
+            if (!response.ok) return;
+            const payload = await response.json();
+            if (payload && payload.translations && typeof payload.translations === 'object') {
+                externalTranslations = payload.translations;
+            }
+        } catch (_error) {
+            externalTranslations = {};
+        }
     }
 
     function t(value) {
-        if (currentLanguage !== 'pt-BR' || value == null) return value;
+        if (value == null) return value;
         const text = String(value);
+        if (currentLanguage !== 'en' && Object.prototype.hasOwnProperty.call(externalTranslations, text)) {
+            return externalTranslations[text];
+        }
+        if (currentLanguage !== 'pt-BR') return text;
         if (Object.prototype.hasOwnProperty.call(PT_BR, text)) return PT_BR[text];
         for (const [pattern, replacement] of PT_PATTERNS) {
             if (pattern.test(text)) return text.replace(pattern, replacement);
@@ -175,6 +230,8 @@
     }
 
     function translateRemoteLabel(value) {
+        const exact = t(value);
+        if (exact !== value) return exact;
         if (currentLanguage !== 'pt-BR') return value;
         return String(value).split(/\s+/).map((word) => REMOTE_WORDS[word.toLowerCase()] || word).join(' ');
     }
@@ -206,7 +263,10 @@
             const source = element.getAttribute(attr);
             let translated = source;
             if (attr === 'aria-label' && element.classList.contains('row-check') && source.startsWith('Select ')) {
-                translated = currentLanguage === 'pt-BR' ? `Selecionar ${source.slice(7)}` : source;
+                if (currentLanguage === 'pt-BR') translated = `Selecionar ${source.slice(7)}`;
+                else if (currentLanguage !== 'en' && externalTranslations['Select {name}']) {
+                    translated = externalTranslations['Select {name}'].replace('{name}', source.slice(7));
+                }
             } else if (!(element.matches('tr[data-hash]') && attr === 'aria-label') && !(element.classList.contains('col-name') && attr === 'title')) {
                 translated = t(source);
             }
@@ -218,8 +278,9 @@
     }
 
     function translateTree(root = document) {
-        if (currentLanguage !== 'pt-BR') return;
-        document.documentElement.lang = 'pt-BR';
+        if (currentLanguage === 'en') return;
+        if (currentLanguage === 'pt-BR') document.documentElement.lang = 'pt-BR';
+        else document.documentElement.lang = currentLanguage;
         if (root instanceof Element) translateElement(root);
         const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT);
         let node;
@@ -229,9 +290,27 @@
         }
     }
 
+    function populateExternalLanguageOptions() {
+        const select = document.getElementById('appLanguage');
+        if (!select) return;
+        const existing = new Set(Array.from(select.options).map((option) => option.value));
+        for (const item of availableLanguages) {
+            if (!item.code || existing.has(item.code) || item.code === 'en' || item.code === 'pt-BR') continue;
+            const option = document.createElement('option');
+            option.value = item.code;
+            option.textContent = item.name;
+            select.appendChild(option);
+            existing.add(item.code);
+        }
+        select.value = configuredLanguage || 'system';
+    }
+
     function ensureLanguageControl() {
         const form = document.getElementById('settingsForm');
-        if (!form || document.getElementById('appLanguage')) return;
+        if (!form || document.getElementById('appLanguage')) {
+            populateExternalLanguageOptions();
+            return;
+        }
         const tray = document.getElementById('minToTray');
         const trayGroup = tray ? tray.closest('.form-check') : null;
         const group = document.createElement('div');
@@ -246,15 +325,16 @@
             <div class="form-text">Language changes reload this page after saving.</div>`;
         if (trayGroup) form.insertBefore(group, trayGroup);
         else form.insertBefore(group, form.querySelector('button[type="submit"]'));
+        populateExternalLanguageOptions();
         const select = document.getElementById('appLanguage');
         if (select) select.value = configuredLanguage || 'system';
-        if (currentLanguage === 'pt-BR') translateTree(group);
+        if (currentLanguage !== 'en') translateTree(group);
     }
 
     function installObserver() {
         if (observer) observer.disconnect();
         observer = new MutationObserver((mutations) => {
-            if (currentLanguage !== 'pt-BR') return;
+            if (currentLanguage === 'en') return;
             for (const mutation of mutations) {
                 if (mutation.type === 'attributes') {
                     translateElement(mutation.target);
@@ -279,7 +359,7 @@
     window.alert = (message) => {
         originalAlert(t(message));
         if (message === 'Settings saved.' && pendingLanguage && pendingLanguage !== configuredLanguage) {
-            const resolved = pendingLanguage === 'system' ? systemLanguage() : normalizeLanguage(pendingLanguage);
+            const resolved = pendingLanguage === 'system' ? systemLanguage() : resolveAvailableLanguage(pendingLanguage);
             try { localStorage.setItem('serrebitorrent-language', resolved); } catch (_error) {}
             setTimeout(() => window.location.reload(), 700);
         }
@@ -308,16 +388,17 @@
             configured = null;
         }
 
+        await loadLanguageIndex();
         configuredLanguage = configured || 'system';
-        if (configuredLanguage === 'pt-BR') currentLanguage = 'pt-BR';
-        else if (configuredLanguage === 'en') currentLanguage = 'en';
-        else currentLanguage = systemLanguage();
+        if (configuredLanguage === 'system') currentLanguage = systemLanguage();
+        else currentLanguage = resolveAvailableLanguage(configuredLanguage);
+        await loadExternalCatalog(currentLanguage);
 
         try { localStorage.setItem('serrebitorrent-language', currentLanguage); } catch (_error) {}
         ensureLanguageControl();
         const select = document.getElementById('appLanguage');
         if (select) select.value = configuredLanguage;
-        if (currentLanguage === 'pt-BR') translateTree(document);
+        if (currentLanguage !== 'en') translateTree(document);
         else document.documentElement.lang = 'en';
         wrapAnnouncements();
         installObserver();
@@ -326,12 +407,13 @@
 
     try {
         const cached = localStorage.getItem('serrebitorrent-language');
-        if (cached) currentLanguage = normalizeLanguage(cached);
+        if (cached) currentLanguage = rawLanguage(cached) || 'en';
     } catch (_error) {}
 
     window.SerrebiI18n = {
         t,
         get language() { return currentLanguage; },
+        get availableLanguages() { return availableLanguages.slice(); },
         ready: null,
         apply: translateTree
     };
@@ -347,7 +429,7 @@
                 pendingLanguage = select ? select.value : null;
             }, true);
         }
-        if (currentLanguage === 'pt-BR') translateTree(document);
+        if (currentLanguage !== 'en') translateTree(document);
         setTimeout(wrapAnnouncements, 0);
         installObserver();
     });
