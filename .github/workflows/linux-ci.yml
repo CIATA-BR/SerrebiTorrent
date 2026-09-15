@@ -41,6 +41,11 @@ jobs:
           node --check web_static/i18n.js
           node --check web_static/app.js
 
+      - name: Validate translation tooling
+        run: |
+          .venv/bin/python tools/translation_tool.py template --output /tmp/serrebitorrent.pot
+          test -s /tmp/serrebitorrent.pot
+
       - name: Import localized runtime
         run: xvfb-run -a .venv/bin/python -c "import app_entry; print(app_entry.LocalizedMainFrame.__name__)"
 
@@ -74,4 +79,6 @@ jobs:
             tests/test_list_accessibility.py \
             tests/test_main_helpers.py \
             tests/test_web_i18n.py \
-            tests/test_web_ui_a11y.py
+            tests/test_web_ui_a11y.py \
+            tests/test_translation_catalog.py \
+            tests/test_translation_center.py
