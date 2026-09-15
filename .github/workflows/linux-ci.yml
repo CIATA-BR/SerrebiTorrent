@@ -41,8 +41,13 @@ jobs:
           node --check web_static/i18n.js
           node --check web_static/app.js
 
-      - name: Import localized runtime
-        run: xvfb-run -a .venv/bin/python -c "import app_entry; print(app_entry.LocalizedMainFrame.__name__)"
+      - name: Import translation-aware runtime
+        run: xvfb-run -a .venv/bin/python -c "import app_translation_entry; print(app_translation_entry.TranslationMainFrame.__name__)"
+
+      - name: Validate translation template tooling
+        run: |
+          .venv/bin/python tools/build_translation_catalog.py --template
+          test -s locales/serrebitorrent.pot
 
       - name: Run Linux compatibility tests
         # Ubuntu 24.04 currently ships libtorrent 2.0.10, while SerrebiTorrent's
@@ -73,5 +78,7 @@ jobs:
             tests/test_ui_formatting.py \
             tests/test_list_accessibility.py \
             tests/test_main_helpers.py \
+            tests/test_translation_catalog.py \
+            tests/test_translation_runtime.py \
             tests/test_web_i18n.py \
             tests/test_web_ui_a11y.py
