@@ -1,3 +1,4 @@
+import importlib
 from pathlib import Path
 
 
@@ -5,6 +6,12 @@ def test_pyinstaller_packages_localized_entry_point():
     spec = Path("SerrebiTorrent.spec").read_text(encoding="utf-8")
     assert "['app_entry.py']" in spec
     assert "['main.py']" not in spec
+
+
+def test_localized_entry_point_imports_without_starting_gui():
+    module = importlib.import_module("app_entry")
+    assert module.LocalizedMainFrame.__name__ == "LocalizedMainFrame"
+    assert callable(module.main)
 
 
 def test_localized_entry_point_uses_extracted_dialogs_and_subclass():
