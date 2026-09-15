@@ -12,23 +12,40 @@
     </style>
 </head>
 <body>
-    <div class="login-card">
-        <div class="logo">SerrebiTorrent</div>
+    <main class="login-card" aria-labelledby="login-title">
+        <h1 class="logo" id="login-title">SerrebiTorrent</h1>
         <form id="loginForm">
             <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
+                <label for="username" class="form-label" data-i18n="username">Username</label>
                 <input type="text" class="form-control" id="username" required autocomplete="username">
             </div>
             <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
+                <label for="password" class="form-label" data-i18n="password">Password</label>
                 <input type="password" class="form-control" id="password" required autocomplete="current-password">
             </div>
-            <button type="submit" class="btn btn-primary w-100">Login</button>
-            <div id="errorMsg" class="text-danger mt-2 text-center" style="display:none;">Invalid credentials.</div>
+            <button type="submit" class="btn btn-primary w-100" data-i18n="login">Login</button>
+            <div id="errorMsg" class="text-danger mt-2 text-center" role="alert" aria-live="assertive" style="display:none;" data-i18n="invalid">Invalid credentials.</div>
         </form>
-    </div>
+    </main>
 
     <script>
+        (() => {
+            const isPtBr = String(navigator.language || '').toLowerCase().replace('_', '-').startsWith('pt');
+            if (!isPtBr) return;
+            document.documentElement.lang = 'pt-BR';
+            document.title = 'Entrar - SerrebiTorrent';
+            const translations = {
+                username: 'Nome de usuário',
+                password: 'Senha',
+                login: 'Entrar',
+                invalid: 'Credenciais inválidas.'
+            };
+            document.querySelectorAll('[data-i18n]').forEach((element) => {
+                const value = translations[element.dataset.i18n];
+                if (value) element.textContent = value;
+            });
+        })();
+
         document.getElementById('loginForm').onsubmit = async (e) => {
             e.preventDefault();
             const formData = new FormData();

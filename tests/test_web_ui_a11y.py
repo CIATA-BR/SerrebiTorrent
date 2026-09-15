@@ -16,9 +16,13 @@ pytestmark = pytest.mark.e2e
 class DummyConfigManager:
     def __init__(self, profiles):
         self._profiles = profiles
+        self._preferences = {"language": "pt-BR"}
 
     def get_profiles(self):
         return self._profiles
+
+    def get_preferences(self):
+        return dict(self._preferences)
 
 
 class DummyApp:
@@ -118,6 +122,7 @@ def _login(page, base_url):
     page.wait_for_url(f"{base_url}/")
     page.wait_for_selector("#torrentTable")
     page.wait_for_selector("tr[data-hash]")
+    page.wait_for_function("document.documentElement.lang === 'pt-BR'")
 
 
 def test_web_ui_axe(page, web_ui_server):
@@ -145,4 +150,12 @@ def test_web_ui_landmarks(page, web_ui_server):
     _login(page, web_ui_server)
     assert page.locator("header[role='banner']").count() == 1
     assert page.locator("main[role='main']").count() == 1
-    assert page.locator("nav[aria-label='Navigation']").count() == 1
+    assert page.locator("nav[aria-label='Navegação']").count() == 1
+
+
+def test_web_ui_pt_br_accessible_labels(page, web_ui_server):
+    _login(page, web_ui_server)
+    assert page.locator("html").get_attribute("lang") == "pt-BR"
+    assert page.locator("a[href='#torrentTable']").inner_text() == "Pular para a lista de torrents"
+    assert page.locator("#contextMenu").get_attribute("aria-label") == "Ações do torrent"
+    assert page.locator("#torrentTable").get_attribute("aria-label") == "torrents"

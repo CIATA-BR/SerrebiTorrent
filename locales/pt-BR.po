@@ -1,0 +1,114 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: SerrebiTorrent\n"
+"Language: pt-BR\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Contribute &Translations..."
+msgstr "Contribuir com &traduções..."
+
+msgid "Translate SerrebiTorrent or review an existing language"
+msgstr "Traduzir o SerrebiTorrent ou revisar um idioma existente"
+
+msgid "Translation Center"
+msgstr "Central de traduções"
+
+msgid "&Language:"
+msgstr "&Idioma:"
+
+msgid "Translation language"
+msgstr "Idioma da tradução"
+
+msgid "&Filter:"
+msgstr "&Filtro:"
+
+msgid "Translation filter"
+msgstr "Filtro de tradução"
+
+msgid "Translation progress"
+msgstr "Progresso da tradução"
+
+msgid "Translation entries"
+msgstr "Entradas de tradução"
+
+msgid "Source"
+msgstr "Original"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Translation"
+msgstr "Tradução"
+
+msgid "Source:"
+msgstr "Original:"
+
+msgid "English source text"
+msgstr "Texto original em inglês"
+
+msgid "Context:"
+msgstr "Contexto:"
+
+msgid "Translation context"
+msgstr "Contexto da tradução"
+
+msgid "&Translation:"
+msgstr "&Tradução:"
+
+msgid "Translated text"
+msgstr "Texto traduzido"
+
+msgid "&Needs review"
+msgstr "&Precisa de revisão"
+
+msgid "Translation validation status"
+msgstr "Status de validação da tradução"
+
+msgid "&Previous"
+msgstr "&Anterior"
+
+msgid "&Save entry"
+msgstr "&Salvar entrada"
+
+msgid "&Next"
+msgstr "&Próxima"
+
+msgid "&Import..."
+msgstr "&Importar..."
+
+msgid "E&xport..."
+msgstr "E&xportar..."
+
+msgid "&Test in this session"
+msgstr "&Testar nesta sessão"
+
+msgid "&Close"
+msgstr "&Fechar"
+
+msgid "Untranslated"
+msgstr "Não traduzidos"
+
+msgid "Needs review"
+msgstr "Precisa de revisão"
+
+msgid "Translated"
+msgstr "Traduzidos"
+
+msgid "All"
+msgstr "Todos"
+
+msgid "Import translation"
+msgstr "Importar tradução"
+
+msgid "Export translation"
+msgstr "Exportar tradução"
+
+msgid "Translation validation"
+msgstr "Validação da tradução"
+
+msgid "Translation preview"
+msgstr "Prévia da tradução"
+
+msgid "The translation is active for this session. Reopen dialogs to preview them. Restart to return to the saved language."
+msgstr "A tradução está ativa nesta sessão. Reabra os diálogos para visualizá-la. Reinicie para voltar ao idioma salvo."

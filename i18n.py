@@ -16,6 +16,11 @@ from typing import Mapping
 
 DEFAULT_LANGUAGE = "en"
 SUPPORTED_LANGUAGES = ("en", "pt-BR")
+LANGUAGE_OPTIONS = (
+    ("system", "System"),
+    ("en", "English"),
+    ("pt-BR", "Português (Brasil)"),
+)
 
 
 def normalize_language(value: str | None) -> str:
@@ -44,6 +49,12 @@ def system_language() -> str:
     return normalize_language(current)
 
 
+def language_options(language: str | None = None):
+    """Return stable preference values paired with localized display labels."""
+    tr = translator(language)
+    return [(value, tr(label)) for value, label in LANGUAGE_OPTIONS]
+
+
 _PT_BR: Mapping[str, str] = {
     # Generic actions.
     "Add": "Adicionar",
@@ -51,6 +62,10 @@ _PT_BR: Mapping[str, str] = {
     "Remove": "Remover",
     "Close": "Fechar",
     "Cancel": "Cancelar",
+    "Connect": "Conectar",
+    "Set Default": "Definir como padrão",
+    "Default": "Padrão",
+    "System": "Sistema",
     "OK": "OK",
     "Browse...": "Procurar...",
     "Select All": "Selecionar tudo",
@@ -70,6 +85,23 @@ _PT_BR: Mapping[str, str] = {
     "Downloading": "Baixando",
     "Finished": "Concluídos",
     "Active": "Ativos",
+    # Connection/profile UI used by the extracted dialog.
+    "Connection Manager": "Gerenciador de conexões",
+    "Connection profiles": "Perfis de conexão",
+    "Choose a profile, then connect or manage it with the buttons below.":
+        "Escolha um perfil e depois conecte ou gerencie-o com os botões abaixo.",
+    "Add Profile": "Adicionar perfil",
+    "Edit Profile": "Editar perfil",
+    "Profile Name:": "Nome do perfil:",
+    "Profile Name": "Nome do perfil",
+    "Client Type:": "Tipo de cliente:",
+    "Client Type": "Tipo de cliente",
+    "URL (e.g. scgi://... or http://...):": "URL (ex.: scgi://... ou http://...):",
+    "URL or download path": "URL ou caminho de download",
+    "Download Path:": "Caminho de download:",
+    "Choose Download Folder": "Escolher pasta de download",
+    "Delete this profile?": "Excluir este perfil?",
+    "Please select a profile to connect.": "Selecione um perfil para conectar.",
     # Torrent/search UI.
     "Torrent List": "Lista de torrents",
     "Search for Torrents": "Pesquisar torrents",
@@ -185,7 +217,6 @@ _PT_BR: Mapping[str, str] = {
     "Select Folder": "Selecionar pasta",
     "Save Torrent As": "Salvar torrent como",
     "Torrent files (*.torrent)|*.torrent": "Arquivos torrent (*.torrent)|*.torrent",
-    "Connection Manager": "Gerenciador de conexões",
     "Check for Updates": "Verificar atualizações",
     # Columns and common torrent terminology.
     "Seeds": "Seeds",
