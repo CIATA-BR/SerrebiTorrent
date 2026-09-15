@@ -59,6 +59,8 @@ jobs:
             tests/test_runtime_actions_i18n.py \
             tests/test_runtime_components_i18n.py \
             tests/test_runtime_messages_i18n.py \
+            tests/test_runtime_create_i18n.py \
+            tests/test_runtime_update_i18n.py \
             tests/test_rss_i18n.py \
             tests/test_remote_preferences_i18n.py \
             tests/test_torrent_list.py \
