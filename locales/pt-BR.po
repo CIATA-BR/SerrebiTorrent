@@ -1,0 +1,11 @@
+# Brazilian Portuguese translation catalog for SerrebiTorrent.
+# SPDX-License-Identifier: MIT
+msgid ""
+msgstr ""
+"Project-Id-Version: SerrebiTorrent\n"
+"Language: pt-BR\n"
+"X-Language-Name: Português (Brasil)\n"
+"Language-Team: Português (Brasil)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
