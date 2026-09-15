@@ -42,20 +42,25 @@ def install_localized_runtime_components():
     install_remote_preferences_localization()
 
 
-# ``app_entry`` imports this module before defining LocalizedMainFrame. Wrapping
-# the legacy constructor lets us defer the class rebinding until an actual
-# localized frame is instantiated. Importing app_entry therefore leaves the
-# original detail/RSS classes intact for upstream source-inspection tests.
-_LEGACY_MAINFRAME_INIT = legacy.MainFrame.__init__
+# app_entry imports this module before defining LocalizedMainFrame. Hook only
+# subclass creation so main.MainFrame.__init__ remains byte-for-byte inspectable
+# by the upstream regression tests. Once LocalizedMainFrame exists, only its own
+# constructor is wrapped to install presentation bindings before the legacy
+# constructor builds child controls.
+def _localized_init_subclass(cls, **kwargs):
+    super(legacy.MainFrame, cls).__init_subclass__(**kwargs)
+    if cls.__name__ != "LocalizedMainFrame":
+        return
+    original_init = cls.__init__
 
-
-def _localized_runtime_mainframe_init(self, *args, **kwargs):
-    if self.__class__.__name__ == "LocalizedMainFrame":
+    def localized_init(self, *args, **init_kwargs):
         install_localized_runtime_components()
-    return _LEGACY_MAINFRAME_INIT(self, *args, **kwargs)
+        return original_init(self, *args, **init_kwargs)
+
+    cls.__init__ = localized_init
 
 
-legacy.MainFrame.__init__ = _localized_runtime_mainframe_init
+legacy.MainFrame.__init_subclass__ = classmethod(_localized_init_subclass)
 
 
 _PT_BR = {
