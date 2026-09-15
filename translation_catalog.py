@@ -166,8 +166,15 @@ def merge_template(source_strings: list[str], current: dict[str, CatalogEntry]) 
     return merged
 
 
+def _add_string_sequence(node, strings: set[str]) -> None:
+    if isinstance(node, (ast.Tuple, ast.List, ast.Set)):
+        for value in node.elts:
+            if isinstance(value, ast.Constant) and isinstance(value.value, str):
+                strings.add(value.value)
+
+
 def extract_python_catalog_strings(root: str | Path) -> list[str]:
-    """Extract source keys from Python translation dictionaries/calls without importing wx."""
+    """Extract source keys from Python catalogs and declared UI source lists without importing wx."""
     root = Path(root)
     strings: set[str] = set()
     for path in root.glob("*.py"):
@@ -182,11 +189,15 @@ def extract_python_catalog_strings(root: str | Path) -> list[str]:
                     for key in node.value.keys:
                         if isinstance(key, ast.Constant) and isinstance(key.value, str):
                             strings.add(key.value)
+                if "TRANSLATABLE_STRINGS" in names:
+                    _add_string_sequence(node.value, strings)
             elif isinstance(node, ast.AnnAssign) and isinstance(node.target, ast.Name):
                 if node.target.id in {"_PT_BR", "PT_BR"} and isinstance(node.value, ast.Dict):
                     for key in node.value.keys:
                         if isinstance(key, ast.Constant) and isinstance(key.value, str):
                             strings.add(key.value)
+                elif node.target.id == "TRANSLATABLE_STRINGS":
+                    _add_string_sequence(node.value, strings)
     return sorted(strings, key=str.casefold)
 
 
