@@ -1,0 +1,43 @@
+name: Linux CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  linux:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Install native Linux runtime
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            python3-venv \
+            python3-wxgtk4.0 \
+            python3-libtorrent \
+            xvfb \
+            libgtk-3-dev \
+            libtiff-dev \
+            libwebp-dev
+
+      - name: Create isolated test environment
+        run: |
+          python3 -m venv --system-site-packages .venv
+          grep -v -E '^(wxPython)$' requirements.txt > /tmp/requirements-linux.txt
+          .venv/bin/python -m pip install --disable-pip-version-check \
+            -r /tmp/requirements-linux.txt pytest hypothesis
+          .venv/bin/python -c 'import wx, libtorrent; print(wx.version()); print(libtorrent.__version__)'
+
+      - name: Import localized runtime
+        run: xvfb-run -a .venv/bin/python -c "import app_entry; print(app_entry.LocalizedMainFrame.__name__)"
+
+      - name: Run tests
+        run: xvfb-run -a .venv/bin/python -m pytest -q
