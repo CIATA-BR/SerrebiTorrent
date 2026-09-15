@@ -55,6 +55,11 @@ jobs:
             tests/test_localized_entrypoint.py \
             tests/test_main_ui_i18n.py \
             tests/test_preferences_dialog.py \
+            tests/test_add_torrent_dialog.py \
+            tests/test_runtime_actions_i18n.py \
+            tests/test_runtime_components_i18n.py \
+            tests/test_rss_i18n.py \
+            tests/test_remote_preferences_i18n.py \
             tests/test_torrent_list.py \
             tests/test_ui_formatting.py \
             tests/test_list_accessibility.py \
