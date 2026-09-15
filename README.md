@@ -1,5 +1,7 @@
 # SerrebiTorrent
 
+**English** | [Português (Brasil)](README.pt-BR.md)
+
 A vibe-coded, keyboard-first, screen-reader-friendly torrent manager for Windows. Manage torrents locally with built-in libtorrent, or drive a remote client — qBittorrent, Transmission, or rTorrent — from the same interface.
 
 [![Join SerrebiProjects on Telegram](https://img.shields.io/badge/Telegram-SerrebiProjects-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/SerrebiProjects)

@@ -1,5 +1,7 @@
 # SerrebiTorrent Build and Release
 
+**English** | [Português (Brasil)](BUILD.pt-BR.md)
+
 Platform packages must be built on their native operating system. Windows is
 built locally on this machine, Linux is built through SSH on
 `root@serrebiradio.com`, and macOS is built by GitHub Actions.
