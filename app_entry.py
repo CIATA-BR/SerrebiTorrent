@@ -18,6 +18,7 @@ import main as legacy
 from connection_dialog import ConnectDialog
 from main_ui_i18n import sidebar_label, tr_main
 from preferences_dialog import PreferencesDialog
+from torrent_list import TorrentListCtrl as LocalizedTorrentListCtrl
 
 
 class LocalizedMainFrame(legacy.MainFrame):
@@ -31,7 +32,29 @@ class LocalizedMainFrame(legacy.MainFrame):
 
     def __init__(self):
         super().__init__()
+        self._install_localized_torrent_list()
         self._apply_localized_static_labels()
+
+    def _install_localized_torrent_list(self):
+        """Replace the empty legacy list before deferred auto-connect can populate it."""
+        old_list = self.torrent_list
+        new_list = LocalizedTorrentListCtrl(
+            self.right_splitter,
+            language=self._language(),
+        )
+        new_list.Bind(wx.EVT_KEY_DOWN, self.on_list_key)
+        new_list.Bind(wx.EVT_CONTEXT_MENU, self.on_context_menu)
+        new_list.Bind(wx.EVT_RIGHT_DOWN, self.on_context_menu)
+        new_list.Bind(wx.EVT_LIST_ITEM_SELECTED, self.on_torrent_selected)
+        new_list.Bind(wx.EVT_LIST_ITEM_DESELECTED, self.on_torrent_selected)
+        new_list.Bind(wx.EVT_LIST_ITEM_FOCUSED, self.on_torrent_selected)
+
+        self.right_splitter.ReplaceWindow(old_list, new_list)
+        old_list.Hide()
+        self.torrent_list = new_list
+        new_list.Show()
+        old_list.Destroy()
+        self.right_splitter.Layout()
 
     def _apply_localized_static_labels(self):
         language = self._language()
