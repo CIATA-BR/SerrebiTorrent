@@ -37,12 +37,28 @@ def test_web_language_uses_saved_app_preference_with_system_fallback():
     assert "document.documentElement.lang = 'pt-BR'" in I18N
 
 
+def test_language_selector_uses_canonical_preference_values():
+    assert 'id="appLanguage"' in I18N
+    assert 'name="language"' in I18N
+    assert '<option value="system">System default</option>' in I18N
+    assert '<option value="en">English</option>' in I18N
+    assert '<option value="pt-BR">Portuguese (Brazil)</option>' in I18N
+    assert "pendingLanguage" in I18N
+    assert "window.location.reload()" in I18N
+
+
 def test_dynamic_content_and_accessible_attributes_are_localized():
     assert "MutationObserver" in I18N
     assert "'aria-label'" in I18N
     assert "window.announceToSR" in I18N
     assert "window.alert" in I18N
     assert "window.confirm" in I18N
+
+
+def test_remote_labels_are_translated_without_changing_api_keys():
+    assert "REMOTE_WORDS" in I18N
+    assert "#remoteSettingsFields label" in I18N
+    assert "translateRemoteLabel" in I18N
 
 
 def test_login_keeps_english_source_and_pt_br_browser_fallback():
