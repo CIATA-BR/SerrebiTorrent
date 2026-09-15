@@ -25,7 +25,6 @@ def source_messages() -> list[str]:
     messages: set[str] = set()
     for catalog in i18n.CATALOGS.values():
         messages.update(catalog.keys())
-    # Keep generic strings that may currently be English-only in scope too.
     messages.update(
         {
             "Translation Center",
@@ -117,7 +116,6 @@ class TranslationCenterDialog(wx.Dialog):
         self.current_source: str | None = None
 
         root = wx.BoxSizer(wx.VERTICAL)
-
         language_row = wx.BoxSizer(wx.HORIZONTAL)
         language_row.Add(wx.StaticText(self, label="Language code:"), 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 6)
         self.language_code = wx.TextCtrl(self, value=default_language)
@@ -186,7 +184,6 @@ class TranslationCenterDialog(wx.Dialog):
         self.export_button.Bind(wx.EVT_BUTTON, self._on_export)
         self.online_button.Bind(wx.EVT_BUTTON, self._on_online)
         close_button.Bind(wx.EVT_BUTTON, lambda _event: self.EndModal(wx.ID_CLOSE))
-
         self._load_language(default_language)
 
     def _load_language(self, code: str) -> None:
@@ -213,18 +210,14 @@ class TranslationCenterDialog(wx.Dialog):
     def _refresh_list(self) -> None:
         self._save_current_to_memory()
         wanted = self.FILTERS[self.filter_choice.GetSelection()]
-        self.visible_messages = [
-            source for source in self.messages if wanted == "All" or self._status(source) == wanted
-        ]
+        self.visible_messages = [source for source in self.messages if wanted == "All" or self._status(source) == wanted]
         self.entries.DeleteAllItems()
         for source in self.visible_messages:
             index = self.entries.InsertItem(self.entries.GetItemCount(), self._status(source))
             self.entries.SetItem(index, 1, source)
         translated, total, review = progress(self.messages, self.translations)
         pct = (translated / total * 100.0) if total else 100.0
-        self.progress_label.SetLabel(
-            f"{translated} of {total} translated — {pct:.1f}% — {review} need review"
-        )
+        self.progress_label.SetLabel(f"{translated} of {total} translated — {pct:.1f}% — {review} need review")
         if self.visible_messages:
             self.entries.Select(0)
             self.entries.Focus(0)
@@ -261,12 +254,7 @@ class TranslationCenterDialog(wx.Dialog):
             return
         value = self.translation_text.GetValue()
         problems = validate_translation(self.current_source, value) if value else []
-        if problems:
-            self.validation_text.SetValue("\n".join(problems))
-        else:
-            self.validation_text.SetValue(
-                "No validation problems. Preserve technical names and test the result in context."
-            )
+        self.validation_text.SetValue("\n".join(problems) if problems else "No validation problems. Preserve technical names and test the result in context.")
 
     def _on_save_entry(self, _event) -> None:
         self._save_current_to_memory()
@@ -294,11 +282,7 @@ class TranslationCenterDialog(wx.Dialog):
         if not code or not name:
             wx.MessageBox("Language code and language name are required.", "Translation Center", wx.OK | wx.ICON_ERROR)
             return
-        problems = {
-            source: validate_translation(source, value)
-            for source, value in self.translations.items()
-            if value and validate_translation(source, value)
-        }
+        problems = {source: validate_translation(source, value) for source, value in self.translations.items() if value and validate_translation(source, value)}
         if problems:
             answer = wx.MessageBox(
                 f"{len(problems)} translated entries still need review. Export anyway?",
@@ -316,12 +300,41 @@ class TranslationCenterDialog(wx.Dialog):
         ) as dialog:
             if dialog.ShowModal() != wx.ID_OK:
                 return
-            Path(dialog.GetPath()).write_text(
-                render_po(code, name, self.translations), encoding="utf-8"
-            )
+            Path(dialog.GetPath()).write_text(render_po(code, name, self.translations), encoding="utf-8")
         save_draft(code, name, self.translations)
         wx.MessageBox("Translation catalog exported successfully.", "Translation Center")
 
     def _on_online(self, _event) -> None:
         if ONLINE_TRANSLATION_URL:
             webbrowser.open(ONLINE_TRANSLATION_URL)
+
+
+def attach_translation_center(frame) -> None:
+    """Append the contributor UI to Help without rebuilding the existing menu."""
+    menubar = frame.GetMenuBar()
+    if not menubar or menubar.GetMenuCount() == 0:
+        return
+    help_menu = menubar.GetMenu(menubar.GetMenuCount() - 1)
+    if help_menu is None:
+        return
+    for existing in help_menu.GetMenuItems():
+        if existing.GetItemLabelText() == "Contribute Translation...":
+            return
+    help_menu.AppendSeparator()
+    item = help_menu.Append(wx.ID_ANY, "Contribute &Translation...", "Open the accessible Translation Center")
+
+    def open_center(_event) -> None:
+        default_language = "pt-BR"
+        try:
+            configured = frame._language()
+            if configured not in ("", "system", "en"):
+                default_language = configured
+        except Exception:
+            pass
+        dialog = TranslationCenterDialog(frame, default_language=default_language)
+        try:
+            dialog.ShowModal()
+        finally:
+            dialog.Destroy()
+
+    frame.Bind(wx.EVT_MENU, open_center, item)
