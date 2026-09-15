@@ -19,6 +19,7 @@ from rss_i18n import (
     LocalizedRuleEditDialog,
     LocalizedRulesManagerDialog,
 )
+from runtime_cli_i18n import install_cli_localization
 from runtime_components_i18n import (
     LocalizedFilesListCtrl,
     LocalizedPeersListCtrl,
@@ -48,6 +49,7 @@ def install_localized_runtime_components():
     install_file_add_localization()
     install_create_torrent_localization()
     install_update_localization()
+    install_cli_localization()
 
 
 # app_entry imports this module before defining LocalizedMainFrame. Hook only
