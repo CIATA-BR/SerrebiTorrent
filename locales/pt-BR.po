@@ -14,8 +14,14 @@ msgstr "Traduzir o SerrebiTorrent ou revisar um idioma existente"
 msgid "Translation Center"
 msgstr "Central de traduções"
 
+msgid "&Language:"
+msgstr "&Idioma:"
+
 msgid "Translation language"
 msgstr "Idioma da tradução"
+
+msgid "&Filter:"
+msgstr "&Filtro:"
 
 msgid "Translation filter"
 msgstr "Filtro de tradução"
@@ -26,17 +32,59 @@ msgstr "Progresso da tradução"
 msgid "Translation entries"
 msgstr "Entradas de tradução"
 
+msgid "Source"
+msgstr "Original"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Translation"
+msgstr "Tradução"
+
+msgid "Source:"
+msgstr "Original:"
+
 msgid "English source text"
 msgstr "Texto original em inglês"
+
+msgid "Context:"
+msgstr "Contexto:"
 
 msgid "Translation context"
 msgstr "Contexto da tradução"
 
+msgid "&Translation:"
+msgstr "&Tradução:"
+
 msgid "Translated text"
 msgstr "Texto traduzido"
 
+msgid "&Needs review"
+msgstr "&Precisa de revisão"
+
 msgid "Translation validation status"
 msgstr "Status de validação da tradução"
+
+msgid "&Previous"
+msgstr "&Anterior"
+
+msgid "&Save entry"
+msgstr "&Salvar entrada"
+
+msgid "&Next"
+msgstr "&Próxima"
+
+msgid "&Import..."
+msgstr "&Importar..."
+
+msgid "E&xport..."
+msgstr "E&xportar..."
+
+msgid "&Test in this session"
+msgstr "&Testar nesta sessão"
+
+msgid "&Close"
+msgstr "&Fechar"
 
 msgid "Untranslated"
 msgstr "Não traduzidos"
@@ -46,6 +94,9 @@ msgstr "Precisa de revisão"
 
 msgid "Translated"
 msgstr "Traduzidos"
+
+msgid "All"
+msgstr "Todos"
 
 msgid "Import translation"
 msgstr "Importar tradução"
