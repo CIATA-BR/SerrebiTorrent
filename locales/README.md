@@ -41,6 +41,17 @@ python tools/translation_tool.py compile-web locales/es-ES.po
 
 The generated Web file is written to `web_static/locales/<language>.json` unless another output path is supplied.
 
+## Pull-request review flow
+
+1. Export or edit a `.po` file.
+2. Run `python tools/translation_tool.py validate <catalog.po>`.
+3. Regenerate the POT when source strings changed.
+4. Keep the language code and native language name in PO metadata.
+5. Open a pull request containing only the catalog/generated Web JSON and any intentional translation metadata changes.
+6. Reviewers check terminology, context, keyboard mnemonics and screen-reader wording before merge.
+
+Translation pull requests should not include application credentials, Weblate tokens or unrelated code changes.
+
 ## Validation rules
 
 A contribution fails validation when:
