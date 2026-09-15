@@ -16,7 +16,6 @@ from pathlib import Path
 from string import Formatter
 import json
 import os
-import re
 
 
 @dataclass(frozen=True)
@@ -57,7 +56,11 @@ def _decode_po_string(token: str) -> str:
 
 def _parse_metadata(value: str) -> dict[str, str]:
     result: dict[str, str] = {}
-    for line in value.splitlines():
+    # render_po/render_pot intentionally emit compact header strings. Accept
+    # both normal decoded newlines and literal backslash-n separators so PO
+    # files from other editors and our deterministic renderer round-trip.
+    normalized = value.replace("\\n", "\n")
+    for line in normalized.splitlines():
         if ":" not in line:
             continue
         key, item = line.split(":", 1)
