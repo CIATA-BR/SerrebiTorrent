@@ -11,6 +11,7 @@ import sys
 import wx
 
 import main as legacy
+from external_catalog_runtime import install_external_catalogs
 from i18n import normalize_language, system_language, translate
 from remote_preferences_i18n import install_remote_preferences_localization
 from rss_i18n import (
@@ -32,6 +33,11 @@ from runtime_file_add_i18n import install_file_add_localization
 from runtime_messages_i18n import install_runtime_message_localization
 from runtime_update_i18n import install_update_localization
 from translation_center import attach_translation_center
+
+# Extend the existing i18n registries before any localized frame/dialog is
+# created. Existing translator function objects remain valid because they read
+# CATALOGS and normalize_language from the i18n module at call time.
+install_external_catalogs()
 
 
 def install_localized_runtime_components():
