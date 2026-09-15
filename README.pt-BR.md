@@ -22,6 +22,8 @@ A tradução preserva atalhos de teclado e mnemônicos (`&`) e inclui testes par
 
 O suporte das listas virtuais foi separado em um componente reutilizável e possui testes para preservar o foco durante atualizações em segundo plano, evitando roubo de foco e perda da linha atual em leitores de tela.
 
+A lista principal também foi separada para que estados, cabeçalhos e comportamento de foco possam ser validados independentemente da janela principal.
+
 ## Idiomas
 
 - [English](README.md)
