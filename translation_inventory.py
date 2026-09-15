@@ -25,6 +25,32 @@ _TRANSLATION_CALL_NAMES = {
     "tr_create",
     "tr_update",
 }
+_EXTRA_MESSAGES = {
+    # Translation Center presentation. These are direct wx labels today and are
+    # kept explicit until that dialog itself is migrated to the shared runtime.
+    "Translation Center",
+    "Language code:",
+    "Language name:",
+    "Filter:",
+    "Untranslated",
+    "Needs review",
+    "Translated",
+    "Source text",
+    "Source text:",
+    "Translation",
+    "Translation:",
+    "Context / validation:",
+    "Previous",
+    "Save entry",
+    "Next",
+    "Export PO...",
+    "Open online translation",
+    "Close",
+    "Status",
+    # Dynamic Web accessibility label pattern; the user-provided name remains
+    # data and is substituted only after the action prefix is translated.
+    "Select {name}",
+}
 
 
 def _string_key(node) -> str | None:
@@ -54,7 +80,7 @@ def _call_name(func) -> str | None:
 
 def python_source_messages(root: Path | None = None) -> set[str]:
     root = root or ROOT
-    messages: set[str] = set()
+    messages: set[str] = set(_EXTRA_MESSAGES)
     for path in sorted(root.glob("*.py")):
         if path.name.startswith("test_"):
             continue
