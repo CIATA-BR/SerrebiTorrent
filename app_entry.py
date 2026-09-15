@@ -19,6 +19,7 @@ from add_torrent_dialog import AddTorrentDialog as LocalizedAddTorrentDialog
 from connection_dialog import ConnectDialog
 from main_ui_i18n import sidebar_label, tr_main
 from preferences_dialog import PreferencesDialog
+from runtime_actions_i18n import register_associations
 from torrent_list import TorrentListCtrl as LocalizedTorrentListCtrl
 
 # The legacy handlers resolve AddTorrentDialog from main.py at call time. Point
@@ -260,7 +261,11 @@ class LocalizedMainFrame(legacy.MainFrame):
         self.Bind(wx.EVT_MENU, self.on_select_all, select_all_item)
 
         self.Bind(wx.EVT_MENU, self.on_search_torrents, search_item)
-        self.Bind(wx.EVT_MENU, lambda event: legacy.register_associations(), assoc_item)
+        self.Bind(
+            wx.EVT_MENU,
+            lambda event: register_associations(self._language()),
+            assoc_item,
+        )
         self.Bind(wx.EVT_MENU, self.on_check_updates, update_item)
         self.Bind(wx.EVT_MENU, self.on_remote_preferences, self.qbit_remote_prefs_item)
         self.Bind(wx.EVT_MENU, self.on_remote_preferences, self.trans_remote_prefs_item)
