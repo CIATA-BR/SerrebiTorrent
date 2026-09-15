@@ -12,6 +12,7 @@ import wx
 
 import main as legacy
 from i18n import normalize_language, system_language, translate
+from remote_preferences_i18n import install_remote_preferences_localization
 from rss_i18n import (
     LocalizedArticleListCtrl,
     LocalizedRSSPanel,
@@ -38,6 +39,7 @@ def install_localized_runtime_components():
     legacy.RuleEditDialog = LocalizedRuleEditDialog
     legacy.RulesManagerDialog = LocalizedRulesManagerDialog
     legacy.RSSPanel = LocalizedRSSPanel
+    install_remote_preferences_localization()
 
 
 # ``app_entry`` imports this module before defining LocalizedMainFrame. Wrapping
