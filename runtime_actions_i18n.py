@@ -31,6 +31,7 @@ from runtime_create_i18n import install_create_torrent_localization
 from runtime_file_add_i18n import install_file_add_localization
 from runtime_messages_i18n import install_runtime_message_localization
 from runtime_update_i18n import install_update_localization
+from translation_center import attach_translation_center
 
 
 def install_localized_runtime_components():
@@ -65,7 +66,9 @@ def _localized_init_subclass(cls, **kwargs):
 
     def localized_init(self, *args, **init_kwargs):
         install_localized_runtime_components()
-        return original_init(self, *args, **init_kwargs)
+        result = original_init(self, *args, **init_kwargs)
+        attach_translation_center(self)
+        return result
 
     cls.__init__ = localized_init
 
