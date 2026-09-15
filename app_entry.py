@@ -12,6 +12,7 @@ from __future__ import annotations
 import sys
 
 import wx
+import wx.adv
 
 import main as legacy
 from connection_dialog import ConnectDialog
@@ -222,6 +223,26 @@ class LocalizedMainFrame(legacy.MainFrame):
             dlg.Destroy()
         self._build_menu_bar()
 
+    def connect_profile(self, pid):
+        profile = self.config_manager.get_profile(pid)
+        if not profile:
+            return
+        super().connect_profile(pid)
+        if hasattr(self, "statusbar") and not self.connected:
+            self.statusbar.SetStatusText(self._("Connecting..."), 0)
+
+    def _on_connect_complete(self, generation, profile, client, error):
+        super()._on_connect_complete(generation, profile, client, error)
+        if generation != self.client_generation or not hasattr(self, "statusbar"):
+            return
+        if error or not client:
+            self.statusbar.SetStatusText(self._("Connection Failed"), 0)
+            return
+        message = self._("Connected to {name}").format(name=profile.get("name", "Profile"))
+        if profile.get("type") != "local":
+            message += f" ({self._('Local session active')})"
+        self.statusbar.SetStatusText(message, 0)
+
     def on_filter_change(self, event):
         """Keep canonical filter keys independent from translated sidebar labels."""
         item = event.GetItem()
@@ -255,6 +276,56 @@ class LocalizedMainFrame(legacy.MainFrame):
             text = text.rsplit(" (", 1)[0]
         self.current_filter = text
         self.refresh_data()
+
+    def on_context_menu(self, event):
+        self._prepare_torrent_context_menu_target(event)
+        menu = wx.Menu()
+
+        start = menu.Append(wx.ID_ANY, self._("Start"))
+        pause = menu.Append(wx.ID_ANY, self._("Pause"))
+        resume = menu.Append(wx.ID_ANY, self._("Resume"))
+        menu.AppendSeparator()
+        recheck = menu.Append(wx.ID_ANY, self._("Force Recheck"))
+        reannounce = menu.Append(wx.ID_ANY, self._("Force Reannounce"))
+        menu.AppendSeparator()
+        copy_hash = menu.Append(wx.ID_ANY, self._("Copy Info Hash"))
+        copy_magnet = menu.Append(wx.ID_ANY, self._("Copy Magnet Link"))
+        open_folder = menu.Append(wx.ID_ANY, self._("Open Download Folder"))
+        menu.AppendSeparator()
+        remove = menu.Append(wx.ID_ANY, self._("Remove"))
+        remove_data = menu.Append(wx.ID_ANY, self._("Remove with Data"))
+
+        self.Bind(wx.EVT_MENU, self.on_start, start)
+        self.Bind(wx.EVT_MENU, self.on_pause, pause)
+        self.Bind(wx.EVT_MENU, self.on_resume, resume)
+        self.Bind(wx.EVT_MENU, self.on_recheck, recheck)
+        self.Bind(wx.EVT_MENU, self.on_reannounce, reannounce)
+        self.Bind(wx.EVT_MENU, self.on_copy_info_hash, copy_hash)
+        self.Bind(wx.EVT_MENU, self.on_copy_magnet, copy_magnet)
+        self.Bind(wx.EVT_MENU, self.on_open_download_folder, open_folder)
+        self.Bind(wx.EVT_MENU, self.on_remove, remove)
+        self.Bind(wx.EVT_MENU, self.on_remove_data, remove_data)
+
+        try:
+            self.PopupMenu(menu)
+        finally:
+            menu.Destroy()
+
+    def on_about(self, event):
+        from app_version import APP_VERSION
+
+        info = wx.adv.AboutDialogInfo()
+        info.SetName("SerrebiTorrent")
+        info.SetVersion(APP_VERSION)
+        info.SetDescription(
+            self._(
+                "A Windows desktop torrent manager designed for keyboard-first use and screen readers."
+            )
+        )
+        info.SetCopyright("Copyright © 2025-2026 serrebidev and contributors")
+        info.SetWebSite("https://github.com/serrebidev/SerrebiTorrent")
+        info.AddDeveloper("serrebidev")
+        wx.adv.AboutBox(info)
 
     def _on_refresh_complete(
         self,
