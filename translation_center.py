@@ -17,7 +17,11 @@ from translation_catalog import render_po, validate_translation
 
 
 DRAFT_DIR_NAME = "translations"
-ONLINE_TRANSLATION_URL = os.environ.get("SERREBITORRENT_TRANSLATION_URL", "").strip()
+DEFAULT_ONLINE_TRANSLATION_URL = "https://torrent.ciata.org.br/"
+ONLINE_TRANSLATION_URL = os.environ.get(
+    "SERREBITORRENT_TRANSLATION_URL",
+    DEFAULT_ONLINE_TRANSLATION_URL,
+).strip()
 
 
 def source_messages() -> list[str]:
