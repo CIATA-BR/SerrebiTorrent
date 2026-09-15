@@ -8,7 +8,10 @@ from __future__ import annotations
 import wx
 
 import i18n
+from translation_catalog import load_po, merge_template
 from translation_center import FILTERS, TranslationCenterDialog
+from translation_runtime import user_catalog_path
+from translation_seed import seed_entries
 
 
 TRANSLATABLE_STRINGS = (
@@ -59,6 +62,22 @@ class LocalizedTranslationCenterDialog(TranslationCenterDialog):
 
     def _(self, text):
         return i18n.translate(text, self._ui_language)
+
+    def _load_language(self, language: str):
+        language = language.strip().replace("_", "-") or "en"
+        self.language = language
+        self.language_ctrl.SetValue(language)
+
+        # Start from translations already shipped by the application so the
+        # contributor sees real completion rather than an empty migration.
+        current = seed_entries(self.root, language)
+
+        # User edits are the highest-precedence layer.
+        user_entries = load_po(user_catalog_path(language))
+        current.update(user_entries)
+
+        self.entries = merge_template(self.source_strings, current)
+        self._refresh_list()
 
     def _localize_controls(self):
         self.SetTitle(self._("Translation Center"))
