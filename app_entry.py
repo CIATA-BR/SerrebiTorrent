@@ -222,6 +222,40 @@ class LocalizedMainFrame(legacy.MainFrame):
             dlg.Destroy()
         self._build_menu_bar()
 
+    def on_filter_change(self, event):
+        """Keep canonical filter keys independent from translated sidebar labels."""
+        item = event.GetItem()
+        if not item.IsOk():
+            return
+
+        target_window = self.right_splitter
+        if item == self.rss_id:
+            target_window = self.rss_panel
+
+        current_window = self.splitter.GetWindow2()
+        if current_window != target_window:
+            if current_window:
+                self.splitter.ReplaceWindow(current_window, target_window)
+                current_window.Hide()
+            else:
+                self.splitter.SplitVertically(self.sidebar, target_window, 220)
+            target_window.Show()
+
+        if item == self.rss_id:
+            return
+
+        for key, item_id in self.cat_ids.items():
+            if item == item_id:
+                self.current_filter = key
+                self.refresh_data()
+                return
+
+        text = self.sidebar.GetItemText(item)
+        if "(" in text:
+            text = text.rsplit(" (", 1)[0]
+        self.current_filter = text
+        self.refresh_data()
+
     def _on_refresh_complete(
         self,
         generation,
@@ -245,7 +279,6 @@ class LocalizedMainFrame(legacy.MainFrame):
         for key, item_id in self.cat_ids.items():
             self.sidebar.SetItemText(item_id, sidebar_label(key, stats.get(key, 0), language))
         self.sidebar.SetItemText(self.trackers_root, tr_main("Trackers", language))
-
 
 
 def main():
