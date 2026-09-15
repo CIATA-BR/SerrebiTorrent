@@ -1,3 +1,5 @@
+import string
+
 import i18n
 
 
@@ -89,3 +91,20 @@ def test_pt_br_dynamic_search_messages_format_cleanly():
     assert tr("Search failed: {error}").format(error="timeout") == "Falha na pesquisa: timeout"
     assert tr("Results, {count} results").format(count=2) == "Resultados, 2 resultados"
     assert tr("Removed {name}.").format(name="Teste") == "Teste removido."
+
+
+def test_catalogs_preserve_format_placeholders():
+    formatter = string.Formatter()
+    for language, catalog in i18n.CATALOGS.items():
+        for source, translated in catalog.items():
+            source_fields = {
+                field_name
+                for _literal, field_name, _format_spec, _conversion in formatter.parse(source)
+                if field_name is not None
+            }
+            translated_fields = {
+                field_name
+                for _literal, field_name, _format_spec, _conversion in formatter.parse(translated)
+                if field_name is not None
+            }
+            assert translated_fields == source_fields, (language, source, translated)
