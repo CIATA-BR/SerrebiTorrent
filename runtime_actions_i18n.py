@@ -26,6 +26,7 @@ from runtime_components_i18n import (
     LocalizedTorrentDetailsPanel,
     LocalizedTrackersListCtrl,
 )
+from runtime_messages_i18n import install_runtime_message_localization
 
 
 def install_localized_runtime_components():
@@ -40,6 +41,7 @@ def install_localized_runtime_components():
     legacy.RulesManagerDialog = LocalizedRulesManagerDialog
     legacy.RSSPanel = LocalizedRSSPanel
     install_remote_preferences_localization()
+    install_runtime_message_localization()
 
 
 # app_entry imports this module before defining LocalizedMainFrame. Hook only
