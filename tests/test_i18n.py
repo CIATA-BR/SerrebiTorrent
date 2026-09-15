@@ -111,10 +111,12 @@ def test_pt_br_mnemonics_are_preserved_for_keyboard_navigation():
         "&Edit...",
         "&Remove",
     )
+    language_neutral = {"&URL:"}
     for source in source_strings:
         translated = i18n.translate(source, "pt-BR")
         assert "&" in translated
-        assert translated != source
+        if source not in language_neutral:
+            assert translated != source
 
 
 def test_pt_br_dynamic_search_messages_format_cleanly():
