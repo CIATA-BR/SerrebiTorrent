@@ -84,4 +84,5 @@ jobs:
             tests/test_translation_center.py \
             tests/test_external_catalog_runtime.py \
             tests/test_translation_inventory.py \
-            tests/test_translation_packaging.py
+            tests/test_translation_packaging.py \
+            tests/test_translation_tool.py
