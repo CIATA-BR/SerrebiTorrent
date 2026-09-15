@@ -12,6 +12,12 @@ import wx
 
 import main as legacy
 from i18n import normalize_language, system_language, translate
+from rss_i18n import (
+    LocalizedArticleListCtrl,
+    LocalizedRSSPanel,
+    LocalizedRuleEditDialog,
+    LocalizedRulesManagerDialog,
+)
 from runtime_components_i18n import (
     LocalizedFilesListCtrl,
     LocalizedPeersListCtrl,
@@ -28,6 +34,10 @@ legacy.PeersListCtrl = LocalizedPeersListCtrl
 legacy.TrackersListCtrl = LocalizedTrackersListCtrl
 legacy.TorrentDetailsPanel = LocalizedTorrentDetailsPanel
 legacy.TaskBarIcon = LocalizedTaskBarIcon
+legacy.ArticleListCtrl = LocalizedArticleListCtrl
+legacy.RuleEditDialog = LocalizedRuleEditDialog
+legacy.RulesManagerDialog = LocalizedRulesManagerDialog
+legacy.RSSPanel = LocalizedRSSPanel
 
 
 _PT_BR = {
