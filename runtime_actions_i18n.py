@@ -1,7 +1,7 @@
 # Copyright (c) serrebidev and contributors
 # SPDX-License-Identifier: MIT
 
-"""Localized runtime actions that remain global in the legacy main module."""
+"""Localized runtime actions and component installation for the legacy main module."""
 
 from __future__ import annotations
 
@@ -10,7 +10,24 @@ import sys
 
 import wx
 
+import main as legacy
 from i18n import normalize_language, system_language, translate
+from runtime_components_i18n import (
+    LocalizedFilesListCtrl,
+    LocalizedPeersListCtrl,
+    LocalizedTaskBarIcon,
+    LocalizedTorrentDetailsPanel,
+    LocalizedTrackersListCtrl,
+)
+
+# main.py resolves these class names when MainFrame is instantiated. Replacing
+# only the runtime bindings keeps the maintainer-reviewed legacy implementation
+# intact while adding localized presentation/accessibility behavior.
+legacy.FilesListCtrl = LocalizedFilesListCtrl
+legacy.PeersListCtrl = LocalizedPeersListCtrl
+legacy.TrackersListCtrl = LocalizedTrackersListCtrl
+legacy.TorrentDetailsPanel = LocalizedTorrentDetailsPanel
+legacy.TaskBarIcon = LocalizedTaskBarIcon
 
 
 _PT_BR = {
