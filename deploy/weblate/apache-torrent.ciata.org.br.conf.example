@@ -1,0 +1,26 @@
+<VirtualHost *:80>
+    ServerName torrent.ciata.org.br
+    ServerAdmin contato@ciata.org.br
+
+    RewriteEngine On
+    RewriteRule ^ https://torrent.ciata.org.br%{REQUEST_URI} [R=301,L]
+</VirtualHost>
+
+<VirtualHost *:443>
+    ServerName torrent.ciata.org.br
+    ServerAdmin contato@ciata.org.br
+
+    SSLEngine On
+    SSLCertificateFile /etc/letsencrypt/live/torrent.ciata.org.br/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/torrent.ciata.org.br/privkey.pem
+
+    ProxyPreserveHost On
+    RequestHeader set X-Forwarded-Proto "https"
+    RequestHeader set X-Forwarded-Port "443"
+
+    ProxyPass / http://127.0.0.1:8088/
+    ProxyPassReverse / http://127.0.0.1:8088/
+
+    ErrorLog ${APACHE_LOG_DIR}/torrent-ciata-error.log
+    CustomLog ${APACHE_LOG_DIR}/torrent-ciata-access.log combined
+</VirtualHost>
