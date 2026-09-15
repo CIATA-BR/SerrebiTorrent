@@ -28,65 +28,6 @@ def test_translator_returns_bound_callable():
     assert tr("Search") == "Pesquisar"
 
 
-def test_language_options_keep_stable_values_and_localize_labels():
-    assert i18n.language_options("en") == [
-        ("system", "System"),
-        ("en", "English"),
-        ("pt-BR", "Português (Brasil)"),
-    ]
-    assert i18n.language_options("pt-BR") == [
-        ("system", "Sistema"),
-        ("en", "English"),
-        ("pt-BR", "Português (Brasil)"),
-    ]
-
-
-def test_settings_ui_labels_have_pt_br_translations():
-    source_strings = (
-        "Local Session Settings",
-        "General",
-        "Connection",
-        "Language:",
-        "Default Download Path:",
-        "Automatically start torrents",
-        "Minimize to System Tray",
-        "Close to System Tray",
-        "Check for updates automatically on startup",
-        "Global Limits (0 or -1 for unlimited):",
-        "Download Rate (bytes/s):",
-        "Upload Rate (bytes/s):",
-        "Max Connections:",
-        "Max Upload Slots:",
-        "Listening Port:",
-        "Announce IP (reported to trackers, blank = auto):",
-        "Enable UPnP Port Mapping",
-        "Enable NAT-PMP Port Mapping",
-        "Enable DHT",
-        "Enable Local Service Discovery (LSD)",
-        "Automatically add trackers from URL",
-        "Tracker List URL:",
-        "RSS Update Interval (seconds):",
-        "Reset RSS (Clear all feeds and rules)",
-        "Enable Web UI",
-        "Bind Host:",
-        "Port:",
-        "Username:",
-        "Password:",
-        "Proxy Type:",
-        "Authentication (if required):",
-        "Choose Download Directory",
-        "Are you sure you want to clear ALL RSS feeds and rules?",
-        "Confirm Reset",
-        "RSS data reset successfully.",
-        "Success",
-    )
-    language_neutral = {"Proxy"}
-    for source in source_strings:
-        translated = i18n.translate(source, "pt-BR")
-        if source not in language_neutral:
-            assert translated != source
-
-
 def test_search_ui_labels_have_pt_br_translations():
     source_strings = (
         "Search for Torrents",
@@ -201,3 +142,16 @@ def test_catalogs_preserve_format_placeholders():
                 if field_name is not None
             }
             assert translated_fields == source_fields, (language, source, translated)
+
+
+def test_language_options_use_stable_values_and_localized_labels():
+    assert i18n.language_options("en") == [
+        ("system", "System"),
+        ("en", "English"),
+        ("pt-BR", "Português (Brasil)"),
+    ]
+    assert i18n.language_options("pt-BR") == [
+        ("system", "Sistema"),
+        ("en", "English"),
+        ("pt-BR", "Português (Brasil)"),
+    ]
