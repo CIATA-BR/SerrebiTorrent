@@ -81,4 +81,5 @@ jobs:
             tests/test_web_i18n.py \
             tests/test_web_ui_a11y.py \
             tests/test_translation_catalog.py \
-            tests/test_translation_center.py
+            tests/test_translation_center.py \
+            tests/test_external_catalog_runtime.py
