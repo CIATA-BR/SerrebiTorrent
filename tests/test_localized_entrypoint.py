@@ -3,16 +3,33 @@ import inspect
 from pathlib import Path
 
 
-def test_pyinstaller_packages_localized_entry_point():
+def test_pyinstaller_packages_translation_aware_entry_point():
     spec = Path("SerrebiTorrent.spec").read_text(encoding="utf-8")
-    assert "['app_entry.py']" in spec
+    assert "['app_translation_entry.py']" in spec
+    assert "['app_entry.py']" not in spec
     assert "['main.py']" not in spec
+    assert "'locales'" in spec
 
 
 def test_localized_entry_point_imports_without_starting_gui():
     module = importlib.import_module("app_entry")
     assert module.LocalizedMainFrame.__name__ == "LocalizedMainFrame"
     assert callable(module.main)
+
+
+def test_translation_entry_installs_catalogs_before_importing_app_entry():
+    source = Path("app_translation_entry.py").read_text(encoding="utf-8")
+    assert source.index("install_runtime_catalogs()") < source.index("import app_entry")
+    module = importlib.import_module("app_translation_entry")
+    assert module.TranslationMainFrame.__name__ == "TranslationMainFrame"
+    assert callable(module.main)
+
+
+def test_translation_entry_exposes_accessible_contribution_menu():
+    source = Path("app_translation_entry.py").read_text(encoding="utf-8")
+    assert "Contribute &Translations..." in source
+    assert "TranslationCenterDialog" in source
+    assert "on_translation_center" in source
 
 
 def test_import_keeps_legacy_mainframe_constructor_inspectable():
