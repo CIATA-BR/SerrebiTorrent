@@ -40,6 +40,23 @@ def test_main_menu_shortcuts_are_preserved():
             assert translated.split("\t", 1)[1] == source.split("\t", 1)[1]
 
 
+def test_context_menu_labels_translate_to_pt_br():
+    expected = {
+        "Start": "Iniciar",
+        "Pause": "Pausar",
+        "Resume": "Retomar",
+        "Force Recheck": "Forçar reverificação",
+        "Force Reannounce": "Forçar novo anúncio",
+        "Copy Info Hash": "Copiar info hash",
+        "Copy Magnet Link": "Copiar link magnet",
+        "Open Download Folder": "Abrir pasta de download",
+        "Remove": "Remover",
+        "Remove with Data": "Remover com dados",
+    }
+    for source, translated in expected.items():
+        assert main_ui_i18n.tr_main(source, "pt-BR") == translated
+
+
 def test_sidebar_labels_keep_counts_separate_from_translation_key():
     assert main_ui_i18n.sidebar_label("All", 12, "pt-BR") == "Todos (12)"
     assert main_ui_i18n.sidebar_label("Downloading", 3, "pt-BR") == "Baixando (3)"
@@ -50,6 +67,23 @@ def test_main_status_formatting_preserves_values():
     assert (
         main_ui_i18n.formatted_status("Downloaded: {percent:.1f}%", "pt-BR", percent=42.25)
         == "Baixado: 42.2%"
+    )
+    assert (
+        main_ui_i18n.formatted_status("Connected to {name}", "pt-BR", name="Servidor")
+        == "Conectado a Servidor"
+    )
+
+
+def test_connection_and_about_labels_translate_to_pt_br():
+    assert main_ui_i18n.tr_main("Connecting...", "pt-BR") == "Conectando..."
+    assert main_ui_i18n.tr_main("Connection Failed", "pt-BR") == "Falha na conexão"
+    assert main_ui_i18n.tr_main("Local session active", "pt-BR") == "Sessão local ativa"
+    assert (
+        main_ui_i18n.tr_main(
+            "A Windows desktop torrent manager designed for keyboard-first use and screen readers.",
+            "pt-BR",
+        )
+        == "Um gerenciador de torrents para Windows projetado para uso prioritário pelo teclado e leitores de tela."
     )
 
 
