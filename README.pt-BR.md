@@ -10,8 +10,9 @@ Já estão cobertos ou integrados em pt-BR:
 - criação de torrents;
 - Configurações da sessão local, incluindo seleção de idioma;
 - Gerenciador de Conexões e edição de perfis;
-- menus, sidebar e estados principais da janela;
-- infraestrutura para lista principal de torrents, estados de download e nomes acessíveis;
+- menus, sidebar, menu de contexto e estados principais da janela;
+- lista principal de torrents, incluindo cabeçalhos, estados de download e nome acessível;
+- mensagens principais de conexão e diálogo Sobre;
 - documentação principal e instruções de build.
 
 O seletor de idioma usa valores estáveis (`system`, `en` e `pt-BR`) para que a preferência não dependa do texto exibido na interface. Da mesma forma, filtros internos como `All` e `Downloading` continuam usando valores canônicos independentemente dos rótulos `Todos` e `Baixando` mostrados na interface.
@@ -32,7 +33,9 @@ A tradução preserva atalhos de teclado e mnemônicos (`&`) e inclui testes par
 
 O suporte das listas virtuais foi separado em um componente reutilizável e possui testes para preservar o foco durante atualizações em segundo plano, evitando roubo de foco e perda da linha atual em leitores de tela.
 
-A lista principal também foi separada para que estados, cabeçalhos e comportamento de foco possam ser validados independentemente da janela principal. A integração dessa classe extraída ao runtime será feita separadamente para manter a alteração revisável e evitar regressões de foco.
+A lista principal extraída está integrada ao runtime localizado. Ela preserva seleção e foco por info hash durante atualizações e ordenação, usa cabeçalhos e estados em pt-BR e mantém os mesmos eventos de teclado, seleção, foco e menu de contexto usados pela janela original.
+
+O fork também executa uma validação específica no Windows com Python 3.14: instala as dependências, importa o entry point localizado e executa a suíte de testes, além do gate existente no macOS.
 
 ## Idiomas
 
