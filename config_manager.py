@@ -75,6 +75,10 @@ DEFAULT_PREFERENCES: Dict[str, Any] = {
     "web_ui_port": 8080,
     "web_ui_user": "admin",
     "web_ui_pass": "password",
+    # Interface language. "system" follows the OS locale; unsupported locales
+    # fall back to English in i18n.py. Explicit supported values include
+    # "en" and "pt-BR".
+    "language": "system",
     # Torrent search (Tools, Search for Torrents).
     # Indexers the user switched off, by name. The off list is stored rather
     # than the on list so an indexer added in a later release is searched by
@@ -138,13 +142,13 @@ class ConfigManager:
 
     def load_config(self) -> Dict[str, Any]:
         cfg = None
-        
+
         # Prefer the new path.
         if os.path.exists(CONFIG_FILE):
             try:
                 cfg = self._normalize(_read_json(CONFIG_FILE))
             except Exception:
-                cfg = None # Fallback
+                cfg = None  # Fallback
 
         # Migrate legacy config.json if present and no new config
         if not cfg and os.path.exists(LEGACY_CONFIG_FILE):
@@ -163,7 +167,7 @@ class ConfigManager:
             cfg = DEFAULT_CONFIG.copy()
             # Ensure fresh copy of prefs
             cfg["preferences"] = DEFAULT_PREFERENCES.copy()
-        
+
         # Ensure a default Local profile exists if list is empty
         profiles = cfg.get("profiles", {})
         if not profiles:
@@ -172,18 +176,18 @@ class ConfigManager:
             dl_path = cfg["preferences"].get("download_path", "")
             if not dl_path:
                 dl_path = os.path.join(os.path.expanduser("~"), "Downloads")
-                
+
             cfg["profiles"] = {
                 pid: {
                     "name": "Local",
                     "type": "local",
                     "url": dl_path,
                     "user": "",
-                    "password": ""
+                    "password": "",
                 }
             }
             cfg["default_profile"] = pid
-            
+
             # Save immediately if it was a fresh creation
             try:
                 _write_json(CONFIG_FILE, cfg)
@@ -198,7 +202,7 @@ class ConfigManager:
 
     def get_preferences(self) -> Dict[str, Any]:
         with self.lock:
-             return dict(self.config.get("preferences", DEFAULT_PREFERENCES.copy()))
+            return dict(self.config.get("preferences", DEFAULT_PREFERENCES.copy()))
 
     def set_preferences(self, prefs: Dict[str, Any]) -> None:
         with self.lock:
