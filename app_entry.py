@@ -15,10 +15,16 @@ import wx
 import wx.adv
 
 import main as legacy
+from add_torrent_dialog import AddTorrentDialog as LocalizedAddTorrentDialog
 from connection_dialog import ConnectDialog
 from main_ui_i18n import sidebar_label, tr_main
 from preferences_dialog import PreferencesDialog
 from torrent_list import TorrentListCtrl as LocalizedTorrentListCtrl
+
+# The legacy handlers resolve AddTorrentDialog from main.py at call time. Point
+# that name at the localized implementation without editing the maintainer's
+# reviewed main.py.
+legacy.AddTorrentDialog = LocalizedAddTorrentDialog
 
 
 class LocalizedMainFrame(legacy.MainFrame):
