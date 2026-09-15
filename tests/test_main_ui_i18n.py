@@ -40,6 +40,40 @@ def test_main_menu_shortcuts_are_preserved():
             assert translated.split("\t", 1)[1] == source.split("\t", 1)[1]
 
 
+def test_menu_help_text_translates_to_pt_br():
+    source_strings = (
+        "Connect to this profile",
+        "Add/edit/delete profiles and connect",
+        "Connect or switch profile",
+        "Manage Profiles & Connect",
+        "Add a torrent from a local file",
+        "Add a torrent from a URL or Magnet link",
+        "Create a .torrent file from a file or folder",
+        "Exit application",
+        "Start selected torrents",
+        "Pause selected torrents",
+        "Resume selected torrents",
+        "Force a recheck/verification (if supported)",
+        "Force an immediate tracker announce (if supported)",
+        "Copy the info hash for selected torrents",
+        "Copy a magnet link for selected torrents",
+        "Open the download folder (if available)",
+        "Remove selected torrents",
+        "Remove selected torrents and data",
+        "Select all torrents",
+        "Search torrent indexers and add what you find",
+        "Associate .torrent and magnet links with this app",
+        "Check for updates",
+        "Edit connected qBittorrent settings",
+        "Edit connected Transmission settings",
+        "Edit connected rTorrent settings",
+        "Configure local session and application settings",
+        "About this application",
+    )
+    for source in source_strings:
+        assert main_ui_i18n.tr_main(source, "pt-BR") != source
+
+
 def test_context_menu_labels_translate_to_pt_br():
     expected = {
         "Start": "Iniciar",
@@ -72,12 +106,26 @@ def test_main_status_formatting_preserves_values():
         main_ui_i18n.formatted_status("Connected to {name}", "pt-BR", name="Servidor")
         == "Conectado a Servidor"
     )
+    assert (
+        main_ui_i18n.formatted_status(
+            "Failed to apply settings: {error}", "pt-BR", error="boom"
+        )
+        == "Falha ao aplicar as configurações: boom"
+    )
 
 
 def test_connection_and_about_labels_translate_to_pt_br():
     assert main_ui_i18n.tr_main("Connecting...", "pt-BR") == "Conectando..."
     assert main_ui_i18n.tr_main("Connection Failed", "pt-BR") == "Falha na conexão"
     assert main_ui_i18n.tr_main("Local session active", "pt-BR") == "Sessão local ativa"
+    assert main_ui_i18n.tr_main("Profile", "pt-BR") == "Perfil"
+    assert (
+        main_ui_i18n.tr_main(
+            "Another instance of SerrebiTorrent is already running.", "pt-BR"
+        )
+        == "Outra instância do SerrebiTorrent já está em execução."
+    )
+    assert main_ui_i18n.tr_main("Error", "pt-BR") == "Erro"
     assert (
         main_ui_i18n.tr_main(
             "A Windows desktop torrent manager designed for keyboard-first use and screen readers.",
