@@ -32,8 +32,8 @@ def test_detail_priority_labels_translate_to_pt_br():
     assert runtime_components_i18n.tr_runtime("Skip", "pt-BR") == "Ignorar"
 
 
-def test_runtime_wires_localized_detail_and_tray_components():
-    source = Path("app_entry.py").read_text(encoding="utf-8")
+def test_runtime_installer_wires_localized_detail_and_tray_components():
+    source = Path("runtime_actions_i18n.py").read_text(encoding="utf-8")
     for assignment in (
         "legacy.FilesListCtrl = LocalizedFilesListCtrl",
         "legacy.PeersListCtrl = LocalizedPeersListCtrl",
