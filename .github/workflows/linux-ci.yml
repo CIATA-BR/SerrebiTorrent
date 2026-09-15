@@ -68,4 +68,5 @@ jobs:
             tests/test_ui_formatting.py \
             tests/test_list_accessibility.py \
             tests/test_main_helpers.py \
+            tests/test_web_i18n.py \
             tests/test_web_ui_a11y.py
