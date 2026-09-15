@@ -15,6 +15,15 @@ def test_localized_entry_point_uses_extracted_dialogs_and_subclass():
     assert "frame = LocalizedMainFrame()" in source
 
 
+def test_localized_entry_point_activates_extracted_torrent_list():
+    source = Path("app_entry.py").read_text(encoding="utf-8")
+    assert "from torrent_list import TorrentListCtrl as LocalizedTorrentListCtrl" in source
+    assert "self._install_localized_torrent_list()" in source
+    assert "new_list = LocalizedTorrentListCtrl(" in source
+    assert "self.right_splitter.ReplaceWindow(old_list, new_list)" in source
+    assert "self.torrent_list = new_list" in source
+
+
 def test_localized_entry_point_preserves_keyboard_accelerators():
     source = Path("app_entry.py").read_text(encoding="utf-8")
     for accelerator in (
@@ -32,3 +41,9 @@ def test_localized_entry_point_preserves_keyboard_accelerators():
         "ord(\"F\")",
     ):
         assert accelerator in source
+
+
+def test_translated_sidebar_does_not_become_filter_key():
+    source = Path("app_entry.py").read_text(encoding="utf-8")
+    assert "for key, item_id in self.cat_ids.items():" in source
+    assert "self.current_filter = key" in source
