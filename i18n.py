@@ -16,6 +16,11 @@ from typing import Mapping
 
 DEFAULT_LANGUAGE = "en"
 SUPPORTED_LANGUAGES = ("en", "pt-BR")
+LANGUAGE_OPTIONS = (
+    ("system", "System"),
+    ("en", "English"),
+    ("pt-BR", "Português (Brasil)"),
+)
 
 
 def normalize_language(value: str | None) -> str:
@@ -44,6 +49,12 @@ def system_language() -> str:
     return normalize_language(current)
 
 
+def language_options(language: str | None = None):
+    """Return stable preference values paired with localized display labels."""
+    tr = translator(language)
+    return [(value, tr(label)) for value, label in LANGUAGE_OPTIONS]
+
+
 _PT_BR: Mapping[str, str] = {
     # Generic actions.
     "Add": "Adicionar",
@@ -70,6 +81,51 @@ _PT_BR: Mapping[str, str] = {
     "Downloading": "Baixando",
     "Finished": "Concluídos",
     "Active": "Ativos",
+    "System": "Sistema",
+    "English": "English",
+    "Português (Brasil)": "Português (Brasil)",
+    # Local settings UI.
+    "Local Session Settings": "Configurações da sessão local",
+    "General": "Geral",
+    "Connection": "Conexão",
+    "Proxy": "Proxy",
+    "Language:": "Idioma:",
+    "Default Download Path:": "Pasta padrão de downloads:",
+    "Automatically start torrents": "Iniciar torrents automaticamente",
+    "Minimize to System Tray": "Minimizar para a área de notificação",
+    "Close to System Tray": "Fechar para a área de notificação",
+    "Check for updates automatically on startup": "Verificar atualizações automaticamente ao iniciar",
+    "Global Limits (0 or -1 for unlimited):": "Limites globais (0 ou -1 para ilimitado):",
+    "Download Rate (bytes/s):": "Taxa de download (bytes/s):",
+    "Upload Rate (bytes/s):": "Taxa de upload (bytes/s):",
+    "Max Connections:": "Máximo de conexões:",
+    "Max Upload Slots:": "Máximo de slots de upload:",
+    "Listening Port:": "Porta de escuta:",
+    "Announce IP (reported to trackers, blank = auto):":
+        "IP de anúncio (informado aos trackers; em branco = automático):",
+    "Enable UPnP Port Mapping": "Ativar mapeamento de porta UPnP",
+    "Enable NAT-PMP Port Mapping": "Ativar mapeamento de porta NAT-PMP",
+    "Enable DHT": "Ativar DHT",
+    "Enable Local Service Discovery (LSD)": "Ativar descoberta de serviço local (LSD)",
+    "Automatically add trackers from URL": "Adicionar trackers automaticamente a partir de uma URL",
+    "Tracker List URL:": "URL da lista de trackers:",
+    "RSS Update Interval (seconds):": "Intervalo de atualização do RSS (segundos):",
+    "Reset RSS (Clear all feeds and rules)": "Redefinir RSS (apagar todos os feeds e regras)",
+    "Enable Web UI": "Ativar interface Web",
+    "Bind Host:": "Host de escuta:",
+    "Port:": "Porta:",
+    "Username:": "Nome de usuário:",
+    "Password:": "Senha:",
+    "Proxy Type:": "Tipo de proxy:",
+    "Host:": "Host:",
+    "Authentication (if required):": "Autenticação (se necessária):",
+    "Choose Download Directory": "Escolher pasta de download",
+    "Are you sure you want to clear ALL RSS feeds and rules?":
+        "Tem certeza de que deseja apagar TODOS os feeds e regras de RSS?",
+    "Confirm Reset": "Confirmar redefinição",
+    "RSS data reset successfully.": "Dados de RSS redefinidos com sucesso.",
+    "Success": "Sucesso",
+    "Reset failed: {error}": "Falha ao redefinir: {error}",
     # Torrent/search UI.
     "Torrent List": "Lista de torrents",
     "Search for Torrents": "Pesquisar torrents",
