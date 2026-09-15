@@ -40,3 +40,8 @@ def test_online_translation_does_not_embed_credentials():
     assert "SERREBITORRENT_TRANSLATION_URL" in source
     assert "GITHUB_TOKEN" not in source
     assert "ghp_" not in source
+
+
+def test_ciata_translation_portal_is_the_default_online_endpoint():
+    assert translation_center.DEFAULT_ONLINE_TRANSLATION_URL == "https://torrent.ciata.org.br/"
+    assert translation_center.ONLINE_TRANSLATION_URL
