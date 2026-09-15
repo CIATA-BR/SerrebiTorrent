@@ -9,6 +9,7 @@ This directory documents the initial CIATA-hosted translation service for Serreb
 - Weblate runs with the official Docker deployment and is not exposed directly on the public network.
 - SerrebiTorrent defaults the in-app **Open online translation** action to this host.
 - `SERREBITORRENT_TRANSLATION_URL` can override the public URL without changing application code.
+- The built-in URL is only a default; downstream deployments can redirect contributors without rebuilding the application.
 
 ## 1. DNS
 
