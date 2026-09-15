@@ -26,8 +26,10 @@ from runtime_components_i18n import (
     LocalizedTorrentDetailsPanel,
     LocalizedTrackersListCtrl,
 )
+from runtime_create_i18n import install_create_torrent_localization
 from runtime_file_add_i18n import install_file_add_localization
 from runtime_messages_i18n import install_runtime_message_localization
+from runtime_update_i18n import install_update_localization
 
 
 def install_localized_runtime_components():
@@ -44,6 +46,8 @@ def install_localized_runtime_components():
     install_remote_preferences_localization()
     install_runtime_message_localization()
     install_file_add_localization()
+    install_create_torrent_localization()
+    install_update_localization()
 
 
 # app_entry imports this module before defining LocalizedMainFrame. Hook only
