@@ -3,6 +3,7 @@ from pathlib import Path
 from translation_catalog import (
     CatalogEntry,
     catalog_stats,
+    extract_python_catalog_strings,
     load_po,
     merge_template,
     placeholders,
@@ -60,9 +61,17 @@ def test_placeholders_support_named_format_fields():
     assert placeholders("{count} results from {source}") == {"count", "source"}
 
 
+def test_python_extraction_includes_translation_center_ui_strings():
+    strings = extract_python_catalog_strings(Path("."))
+    assert "Translation Center" in strings
+    assert "&Test in this session" in strings
+    assert "Translation validation status" in strings
+
+
 def test_seed_pt_br_catalog_is_valid():
     path = Path("locales/pt-BR.po")
     entries = load_po(path)
     assert entries["Contribute &Translations..."].msgstr == "Contribuir com &traduções..."
+    assert entries["Translation Center"].msgstr == "Central de traduções"
     for entry in entries.values():
         assert validate_entry(entry) == []
