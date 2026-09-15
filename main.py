@@ -28,7 +28,12 @@ from rss_manager import RSSManager
 import web_server
 import updater
 from torrent_creator import CreateTorrentDialog, create_torrent_bytes
-from torrent_parsing import build_magnet_from_hashes, parse_magnet_infohash, safe_torrent_info_hash
+from torrent_parsing import (
+    build_magnet_from_hashes,
+    parse_magnet_infohash,
+    safe_torrent_info_hash,
+    torrent_file_storage,
+)
 import torrent_search
 from search_dialog import TorrentSearchDialog
 
@@ -3794,7 +3799,8 @@ class MainFrame(wx.Frame):
                         info = lt.torrent_info(data)
                         name = info.name()
                         num = info.num_files()
-                        file_list = [(info.files().file_path(i), info.files().file_size(i)) for i in range(num)]
+                        fs = torrent_file_storage(info)
+                        file_list = [(fs.file_path(i), fs.file_size(i)) for i in range(num)]
                     except Exception:
                         pass
 
@@ -3956,7 +3962,8 @@ class MainFrame(wx.Frame):
                 info = lt.torrent_info(data)
                 name = info.name()
                 num = info.num_files()
-                file_list = [(info.files().file_path(i), info.files().file_size(i)) for i in range(num)]
+                fs = torrent_file_storage(info)
+                file_list = [(fs.file_path(i), fs.file_size(i)) for i in range(num)]
             except Exception:
                 pass
         
@@ -4215,7 +4222,8 @@ class MainFrame(wx.Frame):
             self.statusbar.SetStatusText("Download folder not available.", 0)
 
     def on_create_torrent(self, event):
-        dlg = CreateTorrentDialog(self)
+        dlg = CreateTorrentDialog(
+            self, self.config_manager.get_preferences().get("language", "system"))
         try:
             if dlg.ShowModal() != wx.ID_OK:
                 dlg.Destroy()

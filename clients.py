@@ -10,7 +10,7 @@ import time
 from urllib.parse import quote, urljoin, urlparse, urlunparse
 
 import requests
-from torrent_parsing import build_magnet_from_hashes
+from torrent_parsing import build_magnet_from_hashes, torrent_file_storage
 
 MAX_TORRENT_DOWNLOAD_BYTES = 64 * 1024 * 1024
 MAX_TORRENT_URL_REDIRECTS = 5
@@ -1193,7 +1193,7 @@ class LocalClient(BaseClient):
         ti = _handle_torrent_info(x)
         if ti is None:
             return []
-        fs = ti.files()
+        fs = torrent_file_storage(ti)
         pr = x.file_progress()
         prio = _handle_file_priorities(x)
         return [{"index": i, "name": fs.file_path(i), "size": fs.file_size(i), "progress": pr[i]/fs.file_size(i) if fs.file_size(i)>0 else 0, "priority": 1 if prio[i]==4 else (2 if prio[i]>4 else 0)} for i in range(ti.num_files())]

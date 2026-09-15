@@ -142,3 +142,22 @@ def test_catalogs_preserve_format_placeholders():
                 if field_name is not None
             }
             assert translated_fields == source_fields, (language, source, translated)
+
+
+def _mnemonic(label):
+    index = label.find("&")
+    return label[index + 1].casefold() if 0 <= index < len(label) - 1 else None
+
+
+def test_mnemonics_do_not_collide_within_a_dialog():
+    dialogs = (
+        ("&Search for:", "Sea&rch", "Sort &by:", "Search si&tes...",
+         "My &indexers...", "&Add selected", "&Close"),
+        ("&Indexers to search:", "Select &all", "Select &none"),
+        ("&Name:", "&URL:", "API &key:"),
+        ("&Indexers:", "&Add...", "&Edit...", "&Remove"),
+    )
+    for language in ("en", *i18n.CATALOGS):
+        for labels in dialogs:
+            keys = [_mnemonic(i18n.translate(label, language)) for label in labels]
+            assert len(keys) == len(set(keys)), (language, labels, keys)

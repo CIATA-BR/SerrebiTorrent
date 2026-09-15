@@ -150,7 +150,14 @@ class TorrentSearchDialog(wx.Dialog):
         self.query.SetFocus()
 
     def _adopt_blinddl_feeds(self):
-        """Pick up blindDL's own indexers, if it is installed on this machine."""
+        """Pick up blindDL's own indexers, if it is installed on this machine.
+
+        The two programs share an author and the same feed format, so a
+        Prowlarr set up in one should not have to be typed into the other.
+        Nothing is shipped with the app -- this reads a file on this
+        computer, and only ever adds indexers that are not configured here
+        already, so an edited URL or a replaced key is never overwritten.
+        """
         prefs = self._prefs()
         try:
             added = torrent_search.import_blinddl_feeds(prefs)
@@ -181,6 +188,8 @@ class TorrentSearchDialog(wx.Dialog):
             self._say(self._("No indexers are switched on. Use Search sites."))
             return
 
+        # Any search already running belongs to an older query; let it finish
+        # into a token nothing is listening for.
         self._stop.set()
         self._stop = threading.Event()
         self._token += 1
@@ -245,6 +254,8 @@ class TorrentSearchDialog(wx.Dialog):
             return
         self._say(self._result_count(count) + ".")
         self.add_btn.Enable(True)
+        # NVDA reads a control's name when it takes focus, which is how the
+        # count gets spoken without a status bar to point at.
         key = "Results, {count} result" if count == 1 else "Results, {count} results"
         self.list.SetName(_fmt(self._, key, count=count))
         if self.list.GetItemCount():
@@ -393,6 +404,8 @@ class SourcesDialog(wx.Dialog):
             self.checklist.Check(index, checked)
 
     def apply(self):
+        # The switched-off list is stored rather than the switched-on one, so
+        # an indexer added in a later release is searched by default.
         disabled = [source for index, source in enumerate(self.sources)
                     if not self.checklist.IsChecked(index)]
         prefs = self.config_manager.get_preferences()
@@ -513,6 +526,8 @@ class IndexersDialog(wx.Dialog):
         for row, feed in enumerate(self.feeds):
             self.list.InsertItem(row, feed["name"])
             self.list.SetItem(row, 1, feed["url"])
+            # Never redisplay the key itself; whether one is set is what the
+            # user needs to check.
             self.list.SetItem(row, 2, self._("Set") if feed["api_key"] else self._("None"))
         if self.feeds:
             row = min(max(select, 0), len(self.feeds) - 1)
@@ -591,7 +606,12 @@ class IndexersDialog(wx.Dialog):
         event.Skip()
 
     def apply(self):
-        """Save the feeds."""
+        """Save the feeds.
+
+        A renamed or removed indexer leaves its name behind in the
+        switched-off list, where it would silently switch off a later indexer
+        that happened to reuse the name.
+        """
         prefs = self.config_manager.get_preferences()
         prefs["torznab_feeds"] = [dict(feed) for feed in self.feeds]
         live = {source.casefold()

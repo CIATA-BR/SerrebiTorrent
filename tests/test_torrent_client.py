@@ -767,7 +767,9 @@ class TestIntegrationTorrentCreation:
         assert magnet.startswith("magnet:")
         info = real_libtorrent.torrent_info(data)
         assert str(info.info_hashes().v1) == ih
-        paths = [info.files().file_path(i) for i in range(info.num_files())]
+        from torrent_parsing import torrent_file_storage
+        files = torrent_file_storage(info)
+        paths = [files.file_path(i) for i in range(info.num_files())]
         assert any(path.endswith("a.txt") for path in paths)
         assert any(path.endswith("b.bin") for path in paths)
     

@@ -187,3 +187,13 @@ def safe_torrent_info_hash(data: bytes) -> Optional[str]:
         return str(info.info_hash())
     except Exception:
         return None
+
+
+def torrent_file_storage(info):
+    """Return a torrent_info's file_storage.
+
+    libtorrent 2.1 deprecates files() in favour of layout(); older bindings
+    only have files().
+    """
+    layout = getattr(info, "layout", None)
+    return layout() if layout else info.files()

@@ -152,6 +152,8 @@ def create_torrent_bytes(
     if not _include_torrent_path(source_path):
         raise ValueError("Source path must not be a symlink or Windows reparse point.")
 
+    # list_files prevents symlink/junction traversal through the predicate and
+    # returns the non-deprecated create_file_entry vector used by libtorrent 2.1.
     files = lt.list_files(source_path, _include_torrent_path)
     if not files:
         raise ValueError("No regular files found to include in torrent.")
@@ -168,13 +170,14 @@ def create_torrent_bytes(
         try:
             ct.set_priv(True)
         except Exception:
+            # Some versions expose set_priv(bool) as set_priv or set_private
             try:
                 ct.set_private(True)
             except Exception:
                 pass
 
     seen = set()
-    tier_mode_each = False
+    tier_mode_each = False  # dialog controls tiering; if callers want, they can order trackers as tiers via duplicates
     tier = 0
     for tr in trackers or []:
         tr = (tr or "").strip()
@@ -197,6 +200,7 @@ def create_torrent_bytes(
         try:
             ct.add_url_seed(ws)
         except Exception:
+            # Some bindings call this add_url_seed or add_http_seed
             try:
                 ct.add_http_seed(ws)
             except Exception:
@@ -218,6 +222,7 @@ def create_torrent_bytes(
 
     e = ct.generate()
 
+    # Add "source" inside info dict for trackers that expect it.
     if source:
         info = None
         try:
@@ -242,6 +247,7 @@ def create_torrent_bytes(
         hashes = _torrent_info_hashes(ti)
         info_hash = hashes.get("v1") or hashes.get("v2") or ""
     except Exception:
+        # Fallback: may not be available on some versions
         info_hash = ""
 
     magnet = build_magnet_from_hashes(
@@ -316,6 +322,9 @@ class CreateTorrentDialog(wx.Dialog):
 
         self._public_tracker_set = set(POPULAR_TRACKERS)
 
+        # Public trackers list (used for quick insertion, not as the source of truth).
+        # NOTE: wx.ListBox often does not reliably deliver Enter via EVT_KEY_DOWN on Windows because
+        # dialogs have default buttons. We also handle Enter at the dialog level via EVT_CHAR_HOOK.
         self.tr_list = wx.ListBox(self, choices=POPULAR_TRACKERS, style=wx.LB_EXTENDED)
         self.tr_list.Bind(wx.EVT_KEY_DOWN, self.on_public_tracker_key_down)
         try:
@@ -323,6 +332,7 @@ class CreateTorrentDialog(wx.Dialog):
         except Exception:
             pass
 
+        # Catch Enter before the dialog's default button (OK) closes the window.
         self.Bind(wx.EVT_CHAR_HOOK, self.on_char_hook)
 
         tr_box.Add(self.tr_list, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 6)
@@ -347,6 +357,7 @@ class CreateTorrentDialog(wx.Dialog):
         add_row.Add(self.remove_tracker_btn, 0)
         tr_box.Add(add_row, 0, wx.EXPAND | wx.ALL, 6)
 
+        # Keep public tracker list out of tab order when private is checked.
         self.private_chk.Bind(wx.EVT_CHECKBOX, self.on_private_toggle)
         self.on_private_toggle(None)
 
@@ -524,6 +535,7 @@ class CreateTorrentDialog(wx.Dialog):
     def on_public_tracker_key_down(self, event):
         key = event.GetKeyCode()
         if key in (wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):
+            # Treat Enter as "add selected tracker(s) to edit field".
             self.on_public_tracker_activate(event)
             try:
                 event.Skip(False)
@@ -597,12 +609,14 @@ class CreateTorrentDialog(wx.Dialog):
         """When private is enabled, ensure public trackers aren't auto-included and list isn't tabbable."""
         is_private = bool(self.private_chk.GetValue())
 
+        # Remove any public trackers from the included list when private is enabled.
         if is_private:
             current = self._get_tracker_lines()
             new_lines = [t for t in current if t.strip() not in self._public_tracker_set]
             if new_lines != current:
                 self._set_tracker_lines(new_lines)
 
+        # Keep the public tracker list out of tab order when private is enabled.
         try:
             self.tr_list.Enable(not is_private)
         except Exception:
@@ -634,8 +648,11 @@ class CreateTorrentDialog(wx.Dialog):
         piece_size = PIECE_SIZE_CHOICES[self.piece_choice.GetSelection()][1]
 
         is_private = bool(self.private_chk.GetValue())
+
+        # Trackers come from the edit field (one per line).
         trackers_raw = self._get_tracker_lines()
 
+        # De-duplicate while preserving order.
         trackers: List[str] = []
         seen = set()
         for tr in trackers_raw:
