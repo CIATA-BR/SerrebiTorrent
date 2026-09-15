@@ -32,6 +32,7 @@
         'Select': 'Selecionar',
         'Name': 'Nome',
         'Size': 'Tamanho',
+        'Status': 'Status',
         'Progress': 'Progresso',
         'Speed': 'Velocidade',
         'Torrent Details': 'Detalhes do torrent',
@@ -76,6 +77,11 @@
         'Light (Classic)': 'Claro (clássico)',
         'Dark (Night)': 'Escuro (noturno)',
         'UI Refresh Rate (ms)': 'Taxa de atualização da interface (ms)',
+        'Language': 'Idioma',
+        'System default': 'Padrão do sistema',
+        'English': 'Inglês',
+        'Portuguese (Brazil)': 'Português (Brasil)',
+        'Language changes reload this page after saving.': 'Alterações de idioma recarregam esta página após salvar.',
         'Action menu opened. Use arrow keys to navigate.': 'Menu de ações aberto. Use as setas para navegar.',
         'Selection cleared': 'Seleção limpa',
         'Please select at least one torrent first.': 'Selecione pelo menos um torrent primeiro.',
@@ -85,6 +91,7 @@
         'Error saving settings.': 'Erro ao salvar as configurações.',
         'Remote settings saved.': 'Configurações remotas salvas.',
         'Error saving remote settings.': 'Erro ao salvar as configurações remotas.',
+        'Failed to load settings.': 'Falha ao carregar as configurações.',
         'Switching client profile...': 'Alternando perfil do cliente...',
         'Copied to clipboard': 'Copiado para a área de transferência',
         'Loading...': 'Carregando...',
@@ -96,6 +103,29 @@
         'Login - SerrebiTorrent': 'Entrar - SerrebiTorrent',
         'Login': 'Entrar',
         'Invalid credentials.': 'Credenciais inválidas.'
+    };
+
+    const REMOTE_WORDS = {
+        enabled: 'ativado', enable: 'ativar', disabled: 'desativado',
+        download: 'download', downloads: 'downloads', upload: 'upload', uploads: 'uploads',
+        rate: 'taxa', limit: 'limite', limits: 'limites', path: 'caminho', directory: 'diretório',
+        default: 'padrão', maximum: 'máximo', max: 'máx.', minimum: 'mínimo', min: 'mín.',
+        connections: 'conexões', connection: 'conexão', port: 'porta', random: 'aleatória',
+        start: 'iniciar', started: 'iniciados', paused: 'pausados', files: 'arquivos', file: 'arquivo',
+        incomplete: 'incompleto', rename: 'renomear', trash: 'excluir', original: 'original',
+        cache: 'cache', size: 'tamanho', time: 'tempo', days: 'dias', day: 'dia', hour: 'hora',
+        address: 'endereço', interface: 'interface', current: 'atual', network: 'rede', peer: 'peer',
+        peers: 'peers', torrent: 'torrent', torrents: 'torrents', ratio: 'proporção', seed: 'seed',
+        seeding: 'semeadura', queue: 'fila', checking: 'verificação', memory: 'memória', disk: 'disco',
+        read: 'leitura', write: 'gravação', username: 'usuário', password: 'senha',
+        authentication: 'autenticação', auth: 'autenticação', secure: 'seguro', protection: 'proteção',
+        session: 'sessão', timeout: 'tempo limite', alternative: 'alternativa', custom: 'personalizado',
+        headers: 'cabeçalhos', header: 'cabeçalho', mail: 'e-mail', notification: 'notificação',
+        sender: 'remetente', processing: 'processamento', refresh: 'atualização', interval: 'intervalo',
+        articles: 'artigos', rules: 'regras', rule: 'regra', proxy: 'proxy', host: 'host',
+        global: 'global', local: 'local', auto: 'automático', automatic: 'automático', anonymous: 'anônimo',
+        encryption: 'criptografia', resolve: 'resolver', countries: 'países', country: 'país',
+        script: 'script', done: 'concluído', filename: 'nome do arquivo', save: 'salvar'
     };
 
     const PT_PATTERNS = [
@@ -119,6 +149,8 @@
 
     const ATTRS = ['title', 'aria-label', 'placeholder'];
     let currentLanguage = 'en';
+    let configuredLanguage = 'system';
+    let pendingLanguage = null;
     let observer = null;
 
     function normalizeLanguage(value) {
@@ -141,13 +173,22 @@
         return text;
     }
 
+    function translateRemoteLabel(value) {
+        if (currentLanguage !== 'pt-BR') return value;
+        return String(value).split(/\s+/).map((word) => REMOTE_WORDS[word.toLowerCase()] || word).join(' ');
+    }
+
     function translateTextNode(node) {
         const raw = node.nodeValue;
         if (!raw || !raw.trim()) return;
         const leading = raw.match(/^\s*/)?.[0] || '';
         const trailing = raw.match(/\s*$/)?.[0] || '';
         const core = raw.trim();
-        const translated = t(core);
+        let translated = t(core);
+        const parent = node.parentElement;
+        if (translated === core && parent && parent.matches('#remoteSettingsFields label')) {
+            translated = translateRemoteLabel(core);
+        }
         if (translated !== core) node.nodeValue = leading + translated + trailing;
     }
 
@@ -168,15 +209,34 @@
         if (currentLanguage !== 'pt-BR') return;
         document.documentElement.lang = 'pt-BR';
         if (root instanceof Element) translateElement(root);
-        const walker = document.createTreeWalker(
-            root,
-            NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT
-        );
+        const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT);
         let node;
         while ((node = walker.nextNode())) {
             if (node.nodeType === Node.TEXT_NODE) translateTextNode(node);
             else translateElement(node);
         }
+    }
+
+    function ensureLanguageControl() {
+        const form = document.getElementById('settingsForm');
+        if (!form || document.getElementById('appLanguage')) return;
+        const tray = document.getElementById('minToTray');
+        const trayGroup = tray ? tray.closest('.form-check') : null;
+        const group = document.createElement('div');
+        group.className = 'mb-3';
+        group.innerHTML = `
+            <label class="form-label" for="appLanguage">Language</label>
+            <select class="form-select" id="appLanguage" name="language">
+                <option value="system">System default</option>
+                <option value="en">English</option>
+                <option value="pt-BR">Portuguese (Brazil)</option>
+            </select>
+            <div class="form-text">Language changes reload this page after saving.</div>`;
+        if (trayGroup) form.insertBefore(group, trayGroup);
+        else form.insertBefore(group, form.querySelector('button[type="submit"]'));
+        const select = document.getElementById('appLanguage');
+        if (select) select.value = configuredLanguage || 'system';
+        if (currentLanguage === 'pt-BR') translateTree(group);
     }
 
     function installObserver() {
@@ -204,7 +264,14 @@
 
     const originalAlert = window.alert.bind(window);
     const originalConfirm = window.confirm.bind(window);
-    window.alert = (message) => originalAlert(t(message));
+    window.alert = (message) => {
+        originalAlert(t(message));
+        if (message === 'Settings saved.' && pendingLanguage && pendingLanguage !== configuredLanguage) {
+            const resolved = pendingLanguage === 'system' ? systemLanguage() : normalizeLanguage(pendingLanguage);
+            try { localStorage.setItem('serrebitorrent-language', resolved); } catch (_error) {}
+            setTimeout(() => window.location.reload(), 700);
+        }
+    };
     window.confirm = (message) => originalConfirm(t(message));
 
     function wrapAnnouncements() {
@@ -229,11 +296,15 @@
             configured = null;
         }
 
-        if (configured === 'pt-BR') currentLanguage = 'pt-BR';
-        else if (configured === 'en') currentLanguage = 'en';
+        configuredLanguage = configured || 'system';
+        if (configuredLanguage === 'pt-BR') currentLanguage = 'pt-BR';
+        else if (configuredLanguage === 'en') currentLanguage = 'en';
         else currentLanguage = systemLanguage();
 
         try { localStorage.setItem('serrebitorrent-language', currentLanguage); } catch (_error) {}
+        ensureLanguageControl();
+        const select = document.getElementById('appLanguage');
+        if (select) select.value = configuredLanguage;
         if (currentLanguage === 'pt-BR') translateTree(document);
         else document.documentElement.lang = 'en';
         wrapAnnouncements();
@@ -256,6 +327,14 @@
     window.SerrebiI18n.ready = loadLanguagePreference();
 
     document.addEventListener('DOMContentLoaded', () => {
+        ensureLanguageControl();
+        const form = document.getElementById('settingsForm');
+        if (form) {
+            form.addEventListener('submit', () => {
+                const select = document.getElementById('appLanguage');
+                pendingLanguage = select ? select.value : null;
+            }, true);
+        }
         if (currentLanguage === 'pt-BR') translateTree(document);
         setTimeout(wrapAnnouncements, 0);
         installObserver();
