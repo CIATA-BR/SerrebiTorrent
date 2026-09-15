@@ -59,6 +59,38 @@ def test_search_ui_labels_have_pt_br_translations():
         assert i18n.translate(source, "pt-BR") != source
 
 
+def test_torrent_creator_labels_have_pt_br_translations():
+    source_strings = (
+        "Create Torrent",
+        "Source (file or folder):",
+        "File...",
+        "Folder...",
+        "Output .torrent file:",
+        "Save As...",
+        "Torrent Options",
+        "Private torrent (disables DHT/PEX/LSD in most clients)",
+        "Piece size:",
+        "Public tracker list (press Enter to add to Included trackers).",
+        "Included trackers (one per line):",
+        "Add Tracker",
+        "Remove Selected",
+        "Web Seeds (optional)",
+        "One URL per line (HTTP/HTTPS).",
+        "Metadata (optional)",
+        "Comment:",
+        "Source (written into info dict as 'source'):",
+        "Created by:",
+        "After Creation",
+        "Add created torrent to the currently connected client",
+        "Copy magnet link to clipboard",
+        "Select File",
+        "Select Folder",
+        "Save Torrent As",
+    )
+    for source in source_strings:
+        assert i18n.translate(source, "pt-BR") != source
+
+
 def test_pt_br_mnemonics_are_preserved_for_keyboard_navigation():
     source_strings = (
         "&Search for:",
