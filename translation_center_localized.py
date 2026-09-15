@@ -10,7 +10,7 @@ import wx
 import i18n
 from translation_catalog import load_po, merge_template
 from translation_center import FILTERS, TranslationCenterDialog
-from translation_runtime import user_catalog_path
+from translation_runtime import available_languages, user_catalog_path
 from translation_seed import seed_entries
 
 
@@ -51,6 +51,15 @@ class LocalizedTranslationCenterDialog(TranslationCenterDialog):
     def __init__(self, parent):
         self._ui_language = self._language_from_parent(parent)
         super().__init__(parent)
+
+        resolved = self._ui_language
+        if resolved in (None, "", "system"):
+            resolved = i18n.system_language()
+        resolved = i18n.normalize_language(resolved)
+        if resolved not in ("en", "system") and resolved != self.language:
+            self._load_language(resolved)
+
+        self._populate_languages()
         self._localize_controls()
 
     @staticmethod
@@ -63,8 +72,17 @@ class LocalizedTranslationCenterDialog(TranslationCenterDialog):
     def _(self, text):
         return i18n.translate(text, self._ui_language)
 
+    def _populate_languages(self):
+        current = self.language_ctrl.GetValue()
+        self.language_ctrl.Clear()
+        for tag, display_name in available_languages():
+            self.language_ctrl.Append(f"{tag} — {display_name}", tag)
+        self.language_ctrl.SetValue(current)
+
     def _load_language(self, language: str):
         language = language.strip().replace("_", "-") or "en"
+        if " — " in language:
+            language = language.split(" — ", 1)[0].strip()
         self.language = language
         self.language_ctrl.SetValue(language)
 
