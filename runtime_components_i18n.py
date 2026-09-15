@@ -8,7 +8,7 @@ from __future__ import annotations
 import wx
 
 import main as legacy
-from main_ui_i18n import tr_main
+from main_ui_i18n import resolved_language, tr_main
 
 
 _TRAY_PT_BR = {
@@ -37,17 +37,20 @@ def _language(frame):
             return "system"
 
 
+def _frame_from_list_parent(parent):
+    try:
+        details_panel = parent.GetParent().GetParent()
+        return getattr(details_panel, "frame", details_panel)
+    except Exception:
+        return parent
+
+
 def tr_runtime(text, language=None):
     translated = tr_main(text, language)
     if translated != text:
         return translated
-    try:
-        from main_ui_i18n import resolved_language
-
-        if resolved_language(language) == "pt-BR":
-            return _TRAY_PT_BR.get(text, text)
-    except Exception:
-        pass
+    if resolved_language(language) == "pt-BR":
+        return _TRAY_PT_BR.get(text, text)
     return text
 
 
@@ -63,7 +66,7 @@ def _set_column_text(control, index, label):
 class LocalizedFilesListCtrl(legacy.FilesListCtrl):
     def __init__(self, parent):
         super().__init__(parent)
-        language = _language(parent.GetParent().GetParent()) if parent else "system"
+        language = _language(_frame_from_list_parent(parent))
         self._runtime_language = language
         self.SetName(tr_runtime("Files", language))
         for index, source in enumerate(("Name", "Size", "Progress", "Priority")):
@@ -79,7 +82,7 @@ class LocalizedFilesListCtrl(legacy.FilesListCtrl):
 class LocalizedPeersListCtrl(legacy.PeersListCtrl):
     def __init__(self, parent):
         super().__init__(parent)
-        language = _language(parent.GetParent().GetParent()) if parent else "system"
+        language = _language(_frame_from_list_parent(parent))
         self.SetName(tr_runtime("Peers", language))
         for index, source in enumerate(("IP", "Client", "Progress", "Down Speed", "Up Speed")):
             _set_column_text(self, index, tr_runtime(source, language))
@@ -88,7 +91,7 @@ class LocalizedPeersListCtrl(legacy.PeersListCtrl):
 class LocalizedTrackersListCtrl(legacy.TrackersListCtrl):
     def __init__(self, parent):
         super().__init__(parent)
-        language = _language(parent.GetParent().GetParent()) if parent else "system"
+        language = _language(_frame_from_list_parent(parent))
         self.SetName(tr_runtime("Trackers", language))
         for index, source in enumerate(("URL", "Status", "Peers", "Message")):
             _set_column_text(self, index, tr_runtime(source, language))
