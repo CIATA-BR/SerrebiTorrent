@@ -1,4 +1,5 @@
 import importlib
+import inspect
 from pathlib import Path
 
 
@@ -12,6 +13,14 @@ def test_localized_entry_point_imports_without_starting_gui():
     module = importlib.import_module("app_entry")
     assert module.LocalizedMainFrame.__name__ == "LocalizedMainFrame"
     assert callable(module.main)
+
+
+def test_import_keeps_legacy_mainframe_constructor_inspectable():
+    import main
+
+    source = inspect.getsource(main.MainFrame.__init__)
+    assert "wx.EVT_LIST_ITEM_FOCUSED" in source
+    assert "self._closing = False" in source
 
 
 def test_localized_entry_point_uses_extracted_dialogs_and_subclass():
