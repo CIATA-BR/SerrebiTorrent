@@ -90,7 +90,7 @@ class LocalizedMainFrame(legacy.MainFrame):
                 label = str(profile.get("name") or pid)
                 if default_id and pid == default_id:
                     label += f" ({_('Default')})"
-                item = connect_menu.Append(wx.ID_ANY, label, "Connect to this profile")
+                item = connect_menu.Append(wx.ID_ANY, label, _("Connect to this profile"))
                 self._connect_menu_id_to_profile[item.GetId()] = pid
                 self.Bind(wx.EVT_MENU, self.on_connect_profile_menu, item)
 
@@ -98,60 +98,129 @@ class LocalizedMainFrame(legacy.MainFrame):
             manage_item = connect_menu.Append(
                 wx.ID_ANY,
                 _("Connection Manager...\tCtrl+Shift+C"),
-                "Add/edit/delete profiles and connect",
+                _("Add/edit/delete profiles and connect"),
             )
             self.Bind(wx.EVT_MENU, self.on_connect, manage_item)
-            file_menu.AppendSubMenu(connect_menu, _("&Connect"), "Connect or switch profile")
+            file_menu.AppendSubMenu(connect_menu, _("&Connect"), _("Connect or switch profile"))
         else:
             connect_item = file_menu.Append(
                 wx.ID_ANY,
                 _("&Connect...\tCtrl+Shift+C"),
-                "Manage Profiles & Connect",
+                _("Manage Profiles & Connect"),
             )
             self.Bind(wx.EVT_MENU, self.on_connect, connect_item)
 
         add_file_item = file_menu.Append(
-            wx.ID_ANY, _("&Add Torrent File...\tCtrl+O"), "Add a torrent from a local file")
+            wx.ID_ANY,
+            _("&Add Torrent File...\tCtrl+O"),
+            _("Add a torrent from a local file"),
+        )
         add_url_item = file_menu.Append(
-            wx.ID_ANY, _("Add &URL/Magnet...\tCtrl+U"), "Add a torrent from a URL or Magnet link")
+            wx.ID_ANY,
+            _("Add &URL/Magnet...\tCtrl+U"),
+            _("Add a torrent from a URL or Magnet link"),
+        )
         create_torrent_item = file_menu.Append(
-            wx.ID_ANY, _("Create &Torrent...\tCtrl+N"), "Create a .torrent file from a file or folder")
+            wx.ID_ANY,
+            _("Create &Torrent...\tCtrl+N"),
+            _("Create a .torrent file from a file or folder"),
+        )
         file_menu.AppendSeparator()
-        exit_item = file_menu.Append(wx.ID_EXIT, _("E&xit"), "Exit application")
+        exit_item = file_menu.Append(wx.ID_EXIT, _("E&xit"), _("Exit application"))
         menubar.Append(file_menu, _("&File"))
 
         actions_menu = wx.Menu()
-        start_item = actions_menu.Append(wx.ID_ANY, _("&Start\tCtrl+S"), "Start selected torrents")
-        pause_item = actions_menu.Append(wx.ID_ANY, _("&Pause\tCtrl+P"), "Pause selected torrents")
-        resume_item = actions_menu.Append(wx.ID_ANY, _("&Resume\tCtrl+R"), "Resume selected torrents")
+        start_item = actions_menu.Append(
+            wx.ID_ANY, _("&Start\tCtrl+S"), _("Start selected torrents")
+        )
+        pause_item = actions_menu.Append(
+            wx.ID_ANY, _("&Pause\tCtrl+P"), _("Pause selected torrents")
+        )
+        resume_item = actions_menu.Append(
+            wx.ID_ANY, _("&Resume\tCtrl+R"), _("Resume selected torrents")
+        )
         actions_menu.AppendSeparator()
-        recheck_item = actions_menu.Append(wx.ID_ANY, _("Force Re&check"), "Force a recheck/verification (if supported)")
-        reannounce_item = actions_menu.Append(wx.ID_ANY, _("Force Reannoun&ce"), "Force an immediate tracker announce (if supported)")
+        recheck_item = actions_menu.Append(
+            wx.ID_ANY,
+            _("Force Re&check"),
+            _("Force a recheck/verification (if supported)"),
+        )
+        reannounce_item = actions_menu.Append(
+            wx.ID_ANY,
+            _("Force Reannoun&ce"),
+            _("Force an immediate tracker announce (if supported)"),
+        )
         actions_menu.AppendSeparator()
-        copy_hash_item = actions_menu.Append(wx.ID_ANY, _("Copy &Info Hash\tCtrl+I"), "Copy the info hash for selected torrents")
-        copy_magnet_item = actions_menu.Append(wx.ID_ANY, _("Copy &Magnet Link\tCtrl+M"), "Copy a magnet link for selected torrents")
-        open_folder_item = actions_menu.Append(wx.ID_ANY, _("Open Download &Folder"), "Open the download folder (if available)")
+        copy_hash_item = actions_menu.Append(
+            wx.ID_ANY,
+            _("Copy &Info Hash\tCtrl+I"),
+            _("Copy the info hash for selected torrents"),
+        )
+        copy_magnet_item = actions_menu.Append(
+            wx.ID_ANY,
+            _("Copy &Magnet Link\tCtrl+M"),
+            _("Copy a magnet link for selected torrents"),
+        )
+        open_folder_item = actions_menu.Append(
+            wx.ID_ANY,
+            _("Open Download &Folder"),
+            _("Open the download folder (if available)"),
+        )
         actions_menu.AppendSeparator()
-        remove_item = actions_menu.Append(wx.ID_ANY, _("&Remove\tDel"), "Remove selected torrents")
-        remove_data_item = actions_menu.Append(wx.ID_ANY, _("Remove with &Data\tShift+Del"), "Remove selected torrents and data")
-        select_all_item = actions_menu.Append(wx.ID_SELECTALL, _("Select &All\tCtrl+A"), "Select all torrents")
+        remove_item = actions_menu.Append(
+            wx.ID_ANY, _("&Remove\tDel"), _("Remove selected torrents")
+        )
+        remove_data_item = actions_menu.Append(
+            wx.ID_ANY,
+            _("Remove with &Data\tShift+Del"),
+            _("Remove selected torrents and data"),
+        )
+        select_all_item = actions_menu.Append(
+            wx.ID_SELECTALL,
+            _("Select &All\tCtrl+A"),
+            _("Select all torrents"),
+        )
         menubar.Append(actions_menu, _("&Actions"))
 
         tools_menu = wx.Menu()
-        search_item = tools_menu.Append(wx.ID_ANY, _("&Search for Torrents...\tCtrl+F"), "Search torrent indexers and add what you find")
+        search_item = tools_menu.Append(
+            wx.ID_ANY,
+            _("&Search for Torrents...\tCtrl+F"),
+            _("Search torrent indexers and add what you find"),
+        )
         tools_menu.AppendSeparator()
-        assoc_item = tools_menu.Append(wx.ID_ANY, _("Register &Associations"), "Associate .torrent and magnet links with this app")
-        update_item = tools_menu.Append(wx.ID_ANY, _("Check for &Updates...\tF5"), "Check for updates")
+        assoc_item = tools_menu.Append(
+            wx.ID_ANY,
+            _("Register &Associations"),
+            _("Associate .torrent and magnet links with this app"),
+        )
+        update_item = tools_menu.Append(
+            wx.ID_ANY,
+            _("Check for &Updates...\tF5"),
+            _("Check for updates"),
+        )
         tools_menu.AppendSeparator()
 
-        self.qbit_remote_prefs_item = tools_menu.Append(wx.ID_ANY, _("qBittorrent Remote &Settings..."), "Edit connected qBittorrent settings")
-        self.trans_remote_prefs_item = tools_menu.Append(wx.ID_ANY, _("Transmission Remote &Settings..."), "Edit connected Transmission settings")
-        self.rtorrent_remote_prefs_item = tools_menu.Append(wx.ID_ANY, _("rTorrent Remote &Settings..."), "Edit connected rTorrent settings")
+        self.qbit_remote_prefs_item = tools_menu.Append(
+            wx.ID_ANY,
+            _("qBittorrent Remote &Settings..."),
+            _("Edit connected qBittorrent settings"),
+        )
+        self.trans_remote_prefs_item = tools_menu.Append(
+            wx.ID_ANY,
+            _("Transmission Remote &Settings..."),
+            _("Edit connected Transmission settings"),
+        )
+        self.rtorrent_remote_prefs_item = tools_menu.Append(
+            wx.ID_ANY,
+            _("rTorrent Remote &Settings..."),
+            _("Edit connected rTorrent settings"),
+        )
         tools_menu.AppendSeparator()
         local_settings_item = tools_menu.Append(
             wx.ID_PREFERENCES,
             _("Local Session &Settings...\tCtrl+,"),
-            "Configure local session and application settings",
+            _("Configure local session and application settings"),
         )
 
         self.qbit_remote_prefs_item.Enable(False)
@@ -160,7 +229,9 @@ class LocalizedMainFrame(legacy.MainFrame):
         menubar.Append(tools_menu, _("&Tools"))
 
         help_menu = wx.Menu()
-        about_item = help_menu.Append(wx.ID_ABOUT, _("&About SerrebiTorrent"), "About this application")
+        about_item = help_menu.Append(
+            wx.ID_ABOUT, _("&About SerrebiTorrent"), _("About this application")
+        )
         menubar.Append(help_menu, _("&Help"))
         self.SetMenuBar(menubar)
 
@@ -218,7 +289,7 @@ class LocalizedMainFrame(legacy.MainFrame):
             try:
                 legacy.SessionManager.get_instance().apply_preferences(prefs)
             except Exception as exc:  # noqa: BLE001 - UI boundary
-                wx.LogError(f"Failed to apply settings: {exc}")
+                wx.LogError(self._("Failed to apply settings: {error}").format(error=exc))
             self._update_client_default_save_path()
             self._update_web_ui()
             self._schedule_auto_update_check()
@@ -261,7 +332,9 @@ class LocalizedMainFrame(legacy.MainFrame):
         if error or not client:
             self.statusbar.SetStatusText(self._("Connection Failed"), 0)
             return
-        message = self._("Connected to {name}").format(name=profile.get("name", "Profile"))
+        message = self._("Connected to {name}").format(
+            name=profile.get("name", self._("Profile"))
+        )
         if profile.get("type") != "local":
             message += f" ({self._('Local session active')})"
         self.statusbar.SetStatusText(message, 0)
@@ -388,8 +461,8 @@ def main():
         checker = wx.SingleInstanceChecker(name)
         if checker.IsAnotherRunning():
             wx.MessageBox(
-                "Another instance of SerrebiTorrent is already running.",
-                "Error",
+                tr_main("Another instance of SerrebiTorrent is already running.", "system"),
+                tr_main("Error", "system"),
                 wx.OK | wx.ICON_ERROR,
             )
             return 0
