@@ -26,18 +26,24 @@ from runtime_components_i18n import (
     LocalizedTrackersListCtrl,
 )
 
-# main.py resolves these class names when MainFrame is instantiated. Replacing
-# only the runtime bindings keeps the maintainer-reviewed legacy implementation
-# intact while adding localized presentation/accessibility behavior.
-legacy.FilesListCtrl = LocalizedFilesListCtrl
-legacy.PeersListCtrl = LocalizedPeersListCtrl
-legacy.TrackersListCtrl = LocalizedTrackersListCtrl
-legacy.TorrentDetailsPanel = LocalizedTorrentDetailsPanel
-legacy.TaskBarIcon = LocalizedTaskBarIcon
-legacy.ArticleListCtrl = LocalizedArticleListCtrl
-legacy.RuleEditDialog = LocalizedRuleEditDialog
-legacy.RulesManagerDialog = LocalizedRulesManagerDialog
-legacy.RSSPanel = LocalizedRSSPanel
+
+def install_localized_runtime_components():
+    """Install localized legacy bindings immediately before MainFrame creation.
+
+    Keeping this explicit avoids mutating ``main`` merely by importing
+    ``app_entry``. Upstream regression tests can therefore continue inspecting
+    the maintainer's original classes, while the real localized application
+    still constructs the localized subclasses.
+    """
+    legacy.FilesListCtrl = LocalizedFilesListCtrl
+    legacy.PeersListCtrl = LocalizedPeersListCtrl
+    legacy.TrackersListCtrl = LocalizedTrackersListCtrl
+    legacy.TorrentDetailsPanel = LocalizedTorrentDetailsPanel
+    legacy.TaskBarIcon = LocalizedTaskBarIcon
+    legacy.ArticleListCtrl = LocalizedArticleListCtrl
+    legacy.RuleEditDialog = LocalizedRuleEditDialog
+    legacy.RulesManagerDialog = LocalizedRulesManagerDialog
+    legacy.RSSPanel = LocalizedRSSPanel
 
 
 _PT_BR = {
