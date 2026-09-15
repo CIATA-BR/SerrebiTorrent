@@ -5,6 +5,7 @@ from typing import List, Optional, Tuple
 
 import wx
 
+from i18n import translator
 from libtorrent_env import prepare_libtorrent_dlls
 from torrent_parsing import build_magnet_from_hashes, clean_tracker_urls
 
@@ -151,8 +152,6 @@ def create_torrent_bytes(
     if not _include_torrent_path(source_path):
         raise ValueError("Source path must not be a symlink or Windows reparse point.")
 
-    # list_files prevents symlink/junction traversal through the predicate and
-    # returns the non-deprecated create_file_entry vector used by libtorrent 2.1.
     files = lt.list_files(source_path, _include_torrent_path)
     if not files:
         raise ValueError("No regular files found to include in torrent.")
@@ -169,15 +168,13 @@ def create_torrent_bytes(
         try:
             ct.set_priv(True)
         except Exception:
-            # Some versions expose set_priv(bool) as set_priv or set_private
             try:
                 ct.set_private(True)
             except Exception:
                 pass
 
-    # Trackers
     seen = set()
-    tier_mode_each = False  # dialog controls tiering; if callers want, they can order trackers as tiers via duplicates
+    tier_mode_each = False
     tier = 0
     for tr in trackers or []:
         tr = (tr or "").strip()
@@ -193,7 +190,6 @@ def create_torrent_bytes(
         if tier_mode_each:
             tier += 1
 
-    # Web seeds
     for ws in web_seeds or []:
         ws = (ws or "").strip()
         if not ws:
@@ -201,7 +197,6 @@ def create_torrent_bytes(
         try:
             ct.add_url_seed(ws)
         except Exception:
-            # Some bindings call this add_url_seed or add_http_seed
             try:
                 ct.add_http_seed(ws)
             except Exception:
@@ -219,12 +214,10 @@ def create_torrent_bytes(
         except Exception:
             pass
 
-    # Hash pieces
     lt.set_piece_hashes(ct, _piece_hash_base_path(source_path))
 
     e = ct.generate()
 
-    # Add "source" inside info dict for trackers that expect it.
     if source:
         info = None
         try:
@@ -249,7 +242,6 @@ def create_torrent_bytes(
         hashes = _torrent_info_hashes(ti)
         info_hash = hashes.get("v1") or hashes.get("v2") or ""
     except Exception:
-        # Fallback: may not be available on some versions
         info_hash = ""
 
     magnet = build_magnet_from_hashes(
@@ -268,62 +260,62 @@ def create_torrent_bytes(
 
 
 class CreateTorrentDialog(wx.Dialog):
-    def __init__(self, parent):
-        super().__init__(parent, title="Create Torrent", size=(700, 650))
+    def __init__(self, parent, language=None):
+        self._ = translator(language)
+        super().__init__(parent, title=self._("Create Torrent"), size=(700, 650))
 
         self.source_path = ""
         self.output_path = ""
 
         root = wx.BoxSizer(wx.VERTICAL)
 
-        # Source selection
-        root.Add(wx.StaticText(self, label="Source (file or folder):"), 0, wx.ALL, 8)
+        root.Add(wx.StaticText(self, label=self._("Source (file or folder):")), 0, wx.ALL, 8)
         src_row = wx.BoxSizer(wx.HORIZONTAL)
         self.src_input = wx.TextCtrl(self, value="")
         src_row.Add(self.src_input, 1, wx.EXPAND | wx.RIGHT, 6)
-        pick_file = wx.Button(self, label="File...")
-        pick_dir = wx.Button(self, label="Folder...")
+        pick_file = wx.Button(self, label=self._("File..."))
+        pick_dir = wx.Button(self, label=self._("Folder..."))
         pick_file.Bind(wx.EVT_BUTTON, self.on_pick_file)
         pick_dir.Bind(wx.EVT_BUTTON, self.on_pick_folder)
         src_row.Add(pick_file, 0, wx.RIGHT, 6)
         src_row.Add(pick_dir, 0)
         root.Add(src_row, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 8)
 
-        # Output selection
-        root.Add(wx.StaticText(self, label="Output .torrent file:"), 0, wx.ALL, 8)
+        root.Add(wx.StaticText(self, label=self._("Output .torrent file:")), 0, wx.ALL, 8)
         out_row = wx.BoxSizer(wx.HORIZONTAL)
         self.out_input = wx.TextCtrl(self, value="")
         out_row.Add(self.out_input, 1, wx.EXPAND | wx.RIGHT, 6)
-        pick_out = wx.Button(self, label="Save As...")
+        pick_out = wx.Button(self, label=self._("Save As..."))
         pick_out.Bind(wx.EVT_BUTTON, self.on_pick_output)
         out_row.Add(pick_out, 0)
         root.Add(out_row, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 8)
 
-        # Options: private + piece size
-        opt_box = wx.StaticBoxSizer(wx.StaticBox(self, label="Torrent Options"), wx.VERTICAL)
+        opt_box = wx.StaticBoxSizer(wx.StaticBox(self, label=self._("Torrent Options")), wx.VERTICAL)
 
-        self.private_chk = wx.CheckBox(self, label="Private torrent (disables DHT/PEX/LSD in most clients)")
+        self.private_chk = wx.CheckBox(
+            self, label=self._("Private torrent (disables DHT/PEX/LSD in most clients)"))
         self.private_chk.SetValue(False)
         opt_box.Add(self.private_chk, 0, wx.ALL, 6)
 
         piece_row = wx.BoxSizer(wx.HORIZONTAL)
-        piece_row.Add(wx.StaticText(self, label="Piece size:"), 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 8)
-        self.piece_choice = wx.Choice(self, choices=[label for label, _ in PIECE_SIZE_CHOICES])
+        piece_row.Add(wx.StaticText(self, label=self._("Piece size:")), 0,
+                      wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 8)
+        self.piece_choice = wx.Choice(
+            self, choices=[self._(label) for label, _ in PIECE_SIZE_CHOICES])
         self.piece_choice.SetSelection(0)
         piece_row.Add(self.piece_choice, 0)
         opt_box.Add(piece_row, 0, wx.ALL, 6)
 
         root.Add(opt_box, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 8)
 
-        # Trackers
-        tr_box = wx.StaticBoxSizer(wx.StaticBox(self, label="Trackers"), wx.VERTICAL)
-        tr_box.Add(wx.StaticText(self, label="Public tracker list (press Enter to add to Included trackers)."), 0, wx.ALL, 6)
+        tr_box = wx.StaticBoxSizer(wx.StaticBox(self, label=self._("Trackers")), wx.VERTICAL)
+        tr_box.Add(wx.StaticText(
+            self,
+            label=self._("Public tracker list (press Enter to add to Included trackers).")),
+            0, wx.ALL, 6)
 
         self._public_tracker_set = set(POPULAR_TRACKERS)
 
-        # Public trackers list (used for quick insertion, not as the source of truth).
-        # NOTE: wx.ListBox often does not reliably deliver Enter via EVT_KEY_DOWN on Windows because
-        # dialogs have default buttons. We also handle Enter at the dialog level via EVT_CHAR_HOOK.
         self.tr_list = wx.ListBox(self, choices=POPULAR_TRACKERS, style=wx.LB_EXTENDED)
         self.tr_list.Bind(wx.EVT_KEY_DOWN, self.on_public_tracker_key_down)
         try:
@@ -331,21 +323,23 @@ class CreateTorrentDialog(wx.Dialog):
         except Exception:
             pass
 
-        # Catch Enter before the dialog's default button (OK) closes the window.
         self.Bind(wx.EVT_CHAR_HOOK, self.on_char_hook)
 
         tr_box.Add(self.tr_list, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 6)
 
-        tr_box.Add(wx.StaticText(self, label="Included trackers (one per line):"), 0, wx.LEFT | wx.RIGHT | wx.BOTTOM, 6)
-        self.trackers_edit = wx.TextCtrl(self, value="", style=wx.TE_MULTILINE | wx.TE_DONTWRAP | wx.HSCROLL)
+        tr_box.Add(wx.StaticText(
+            self, label=self._("Included trackers (one per line):")),
+            0, wx.LEFT | wx.RIGHT | wx.BOTTOM, 6)
+        self.trackers_edit = wx.TextCtrl(
+            self, value="", style=wx.TE_MULTILINE | wx.TE_DONTWRAP | wx.HSCROLL)
         self.trackers_edit.SetMinSize((-1, 140))
         tr_box.Add(self.trackers_edit, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 6)
 
         add_row = wx.BoxSizer(wx.HORIZONTAL)
         self.custom_tr_input = wx.TextCtrl(self, value="", style=wx.TE_PROCESS_ENTER)
         add_row.Add(self.custom_tr_input, 1, wx.EXPAND | wx.RIGHT, 6)
-        add_btn = wx.Button(self, label="Add Tracker")
-        self.remove_tracker_btn = wx.Button(self, label="Remove Selected")
+        add_btn = wx.Button(self, label=self._("Add Tracker"))
+        self.remove_tracker_btn = wx.Button(self, label=self._("Remove Selected"))
         add_btn.Bind(wx.EVT_BUTTON, self.on_add_tracker)
         self.remove_tracker_btn.Bind(wx.EVT_BUTTON, self.on_remove_selected_trackers)
         self.custom_tr_input.Bind(wx.EVT_TEXT_ENTER, self.on_add_tracker)
@@ -353,49 +347,51 @@ class CreateTorrentDialog(wx.Dialog):
         add_row.Add(self.remove_tracker_btn, 0)
         tr_box.Add(add_row, 0, wx.EXPAND | wx.ALL, 6)
 
-        # Keep public tracker list out of tab order when private is checked.
         self.private_chk.Bind(wx.EVT_CHECKBOX, self.on_private_toggle)
         self.on_private_toggle(None)
 
         root.Add(tr_box, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 8)
 
-        # Web seeds
-        ws_box = wx.StaticBoxSizer(wx.StaticBox(self, label="Web Seeds (optional)"), wx.VERTICAL)
-        ws_box.Add(wx.StaticText(self, label="One URL per line (HTTP/HTTPS)."), 0, wx.ALL, 6)
+        ws_box = wx.StaticBoxSizer(
+            wx.StaticBox(self, label=self._("Web Seeds (optional)")), wx.VERTICAL)
+        ws_box.Add(wx.StaticText(self, label=self._("One URL per line (HTTP/HTTPS).")),
+                   0, wx.ALL, 6)
         self.webseeds_input = wx.TextCtrl(self, value="", style=wx.TE_MULTILINE)
         ws_box.Add(self.webseeds_input, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 6)
         root.Add(ws_box, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 8)
 
-        # Metadata
-        meta_box = wx.StaticBoxSizer(wx.StaticBox(self, label="Metadata (optional)"), wx.VERTICAL)
+        meta_box = wx.StaticBoxSizer(
+            wx.StaticBox(self, label=self._("Metadata (optional)")), wx.VERTICAL)
 
-        meta_box.Add(wx.StaticText(self, label="Comment:"), 0, wx.ALL, 6)
+        meta_box.Add(wx.StaticText(self, label=self._("Comment:")), 0, wx.ALL, 6)
         self.comment_input = wx.TextCtrl(self, value="")
         meta_box.Add(self.comment_input, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 6)
 
-        meta_box.Add(wx.StaticText(self, label="Source (written into info dict as 'source'):"), 0, wx.ALL, 6)
+        meta_box.Add(wx.StaticText(
+            self, label=self._("Source (written into info dict as 'source'):")), 0, wx.ALL, 6)
         self.source_input = wx.TextCtrl(self, value="")
         meta_box.Add(self.source_input, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 6)
 
-        meta_box.Add(wx.StaticText(self, label="Created by:"), 0, wx.ALL, 6)
+        meta_box.Add(wx.StaticText(self, label=self._("Created by:")), 0, wx.ALL, 6)
         self.creator_input = wx.TextCtrl(self, value="SerrebiTorrent")
         meta_box.Add(self.creator_input, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 6)
 
         root.Add(meta_box, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 8)
 
-        # Post-actions
-        post_box = wx.StaticBoxSizer(wx.StaticBox(self, label="After Creation"), wx.VERTICAL)
-        self.add_to_client_chk = wx.CheckBox(self, label="Add created torrent to the currently connected client")
+        post_box = wx.StaticBoxSizer(
+            wx.StaticBox(self, label=self._("After Creation")), wx.VERTICAL)
+        self.add_to_client_chk = wx.CheckBox(
+            self, label=self._("Add created torrent to the currently connected client"))
         self.add_to_client_chk.SetValue(False)
         post_box.Add(self.add_to_client_chk, 0, wx.ALL, 6)
 
-        self.copy_magnet_chk = wx.CheckBox(self, label="Copy magnet link to clipboard")
+        self.copy_magnet_chk = wx.CheckBox(
+            self, label=self._("Copy magnet link to clipboard"))
         self.copy_magnet_chk.SetValue(True)
         post_box.Add(self.copy_magnet_chk, 0, wx.ALL, 6)
 
         root.Add(post_box, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 8)
 
-        # Buttons
         btns = wx.StdDialogButtonSizer()
         btns.AddButton(wx.Button(self, wx.ID_OK))
         btns.AddButton(wx.Button(self, wx.ID_CANCEL))
@@ -424,7 +420,9 @@ class CreateTorrentDialog(wx.Dialog):
         return os.path.abspath(os.path.join(parent, name + ".torrent"))
 
     def on_pick_file(self, event):
-        with wx.FileDialog(self, "Select File", style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST) as dlg:
+        with wx.FileDialog(
+                self, self._("Select File"),
+                style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST) as dlg:
             if dlg.ShowModal() == wx.ID_OK:
                 path = dlg.GetPath()
                 self.src_input.SetValue(path)
@@ -432,7 +430,7 @@ class CreateTorrentDialog(wx.Dialog):
                     self.out_input.SetValue(self._auto_output_path(path))
 
     def on_pick_folder(self, event):
-        with wx.DirDialog(self, "Select Folder") as dlg:
+        with wx.DirDialog(self, self._("Select Folder")) as dlg:
             if dlg.ShowModal() == wx.ID_OK:
                 path = dlg.GetPath()
                 self.src_input.SetValue(path)
@@ -442,8 +440,8 @@ class CreateTorrentDialog(wx.Dialog):
     def on_pick_output(self, event):
         with wx.FileDialog(
             self,
-            "Save Torrent As",
-            wildcard="Torrent files (*.torrent)|*.torrent",
+            self._("Save Torrent As"),
+            wildcard=self._("Torrent files (*.torrent)|*.torrent"),
             style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
         ) as dlg:
             if dlg.ShowModal() == wx.ID_OK:
@@ -484,7 +482,7 @@ class CreateTorrentDialog(wx.Dialog):
     def _remove_trackers_from_edit(self, trackers_to_remove: List[str]) -> None:
         if not trackers_to_remove:
             return
-        remove_set = { (t or "").strip() for t in trackers_to_remove if (t or "").strip() }
+        remove_set = {(t or "").strip() for t in trackers_to_remove if (t or "").strip()}
         if not remove_set:
             return
         existing = self._get_tracker_lines()
@@ -526,7 +524,6 @@ class CreateTorrentDialog(wx.Dialog):
     def on_public_tracker_key_down(self, event):
         key = event.GetKeyCode()
         if key in (wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):
-            # Treat Enter as "add selected tracker(s) to edit field".
             self.on_public_tracker_activate(event)
             try:
                 event.Skip(False)
@@ -600,14 +597,12 @@ class CreateTorrentDialog(wx.Dialog):
         """When private is enabled, ensure public trackers aren't auto-included and list isn't tabbable."""
         is_private = bool(self.private_chk.GetValue())
 
-        # Remove any public trackers from the included list when private is enabled.
         if is_private:
             current = self._get_tracker_lines()
             new_lines = [t for t in current if t.strip() not in self._public_tracker_set]
             if new_lines != current:
                 self._set_tracker_lines(new_lines)
 
-        # Keep the public tracker list out of tab order when private is enabled.
         try:
             self.tr_list.Enable(not is_private)
         except Exception:
@@ -621,7 +616,6 @@ class CreateTorrentDialog(wx.Dialog):
                 self.remove_tracker_btn.Enable(not is_private)
             except Exception:
                 pass
-
 
         if event is not None:
             try:
@@ -640,11 +634,8 @@ class CreateTorrentDialog(wx.Dialog):
         piece_size = PIECE_SIZE_CHOICES[self.piece_choice.GetSelection()][1]
 
         is_private = bool(self.private_chk.GetValue())
-
-        # Trackers come from the edit field (one per line).
         trackers_raw = self._get_tracker_lines()
 
-        # De-duplicate while preserving order.
         trackers: List[str] = []
         seen = set()
         for tr in trackers_raw:

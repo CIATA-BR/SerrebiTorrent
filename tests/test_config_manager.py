@@ -17,6 +17,7 @@ def test_load_config_handles_corrupt_json(tmp_path, monkeypatch):
     cm = config_manager.ConfigManager()
     prefs = cm.get_preferences()
     assert "download_path" in prefs
+    assert prefs["language"] == "system"
     assert cm.get_profiles()
 
 
@@ -28,6 +29,7 @@ def test_load_config_migrates_legacy(tmp_path, monkeypatch):
     )
     cm = config_manager.ConfigManager()
     assert cm.get_preferences().get("download_path") == "C:\\Downloads"
+    assert cm.get_preferences().get("language") == "system"
     assert config_path.exists()
 
 
@@ -38,6 +40,19 @@ def test_normalize_prefs_missing_keys(tmp_path, monkeypatch):
     prefs = cm.get_preferences()
     assert prefs.get("download_path") == "C:\\X"
     assert "web_ui_port" in prefs
+    assert prefs.get("language") == "system"
+
+
+def test_explicit_language_preference_is_preserved(tmp_path, monkeypatch):
+    config_path, _ = _configure_paths(tmp_path, monkeypatch)
+    config_path.write_text(
+        json.dumps({"preferences": {"language": "pt-BR"}, "profiles": {}}),
+        encoding="utf-8",
+    )
+
+    cm = config_manager.ConfigManager()
+
+    assert cm.get_preferences()["language"] == "pt-BR"
 
 
 def test_get_profiles_returns_copy(tmp_path, monkeypatch):
