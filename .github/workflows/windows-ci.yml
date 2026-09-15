@@ -31,8 +31,8 @@ jobs:
           python -m pip install --disable-pip-version-check --upgrade pip
           python -m pip install --disable-pip-version-check -r requirements.txt -r requirements-build.txt pytest hypothesis
 
-      - name: Import localized runtime
-        run: python -c "import app_entry; print(app_entry.LocalizedMainFrame.__name__)"
+      - name: Import translation-aware runtime
+        run: python -c "import app_translation_entry; print(app_translation_entry.TranslationMainFrame.__name__)"
 
       - name: Run tests
         run: python -m pytest -q
