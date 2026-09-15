@@ -71,10 +71,23 @@ _PT_BR_MAIN = {
     "Transmission Remote &Settings...": "&Configurações remotas do Transmission...",
     "rTorrent Remote &Settings...": "&Configurações remotas do rTorrent...",
     "&About SerrebiTorrent": "&Sobre o SerrebiTorrent",
+    # Context menu.
+    "Start": "Iniciar",
+    "Pause": "Pausar",
+    "Resume": "Retomar",
+    "Force Recheck": "Forçar reverificação",
+    "Force Reannounce": "Forçar novo anúncio",
+    "Copy Info Hash": "Copiar info hash",
+    "Copy Magnet Link": "Copiar link magnet",
+    "Open Download Folder": "Abrir pasta de download",
+    "Remove": "Remover",
+    "Remove with Data": "Remover com dados",
     # Common status text.
     "Disconnected": "Desconectado",
     "Connecting...": "Conectando...",
     "Connection Failed": "Falha na conexão",
+    "Connected to {name}": "Conectado a {name}",
+    "Local session active": "Sessão local ativa",
     "Not connected to any client.": "Nenhum cliente conectado.",
     "No torrents selected.": "Nenhum torrent selecionado.",
     "No torrent selected.": "Nenhum torrent selecionado.",
@@ -83,6 +96,9 @@ _PT_BR_MAIN = {
     "Failed to access clipboard.": "Falha ao acessar a área de transferência.",
     "Opened download folder.": "Pasta de download aberta.",
     "Download folder not available.": "Pasta de download indisponível.",
+    # About dialog.
+    "A Windows desktop torrent manager designed for keyboard-first use and screen readers.":
+        "Um gerenciador de torrents para Windows projetado para uso prioritário pelo teclado e leitores de tela.",
 }
 
 
