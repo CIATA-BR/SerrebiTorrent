@@ -9,3 +9,1779 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+msgid "&About SerrebiTorrent"
+msgstr ""
+
+msgid "&Actions"
+msgstr ""
+
+msgid "&Add selected"
+msgstr ""
+
+msgid "&Add Torrent File...\tCtrl+O"
+msgstr ""
+
+msgid "&Add..."
+msgstr ""
+
+msgid "&Close"
+msgstr ""
+
+msgid "&Connect"
+msgstr ""
+
+msgid "&Connect...\tCtrl+Shift+C"
+msgstr ""
+
+msgid "&Edit..."
+msgstr ""
+
+msgid "&File"
+msgstr ""
+
+msgid "&Help"
+msgstr ""
+
+msgid "&Indexers to search:"
+msgstr ""
+
+msgid "&Indexers:"
+msgstr ""
+
+msgid "&Name:"
+msgstr ""
+
+msgid "&Pause\tCtrl+P"
+msgstr ""
+
+msgid "&Remove"
+msgstr ""
+
+msgid "&Remove\tDel"
+msgstr ""
+
+msgid "&Resume\tCtrl+R"
+msgstr ""
+
+msgid "&Search for Torrents...\tCtrl+F"
+msgstr ""
+
+msgid "&Search for:"
+msgstr ""
+
+msgid "&Start\tCtrl+S"
+msgstr ""
+
+msgid "&Tools"
+msgstr ""
+
+msgid "&URL:"
+msgstr ""
+
+msgid "1 feed"
+msgstr ""
+
+msgid "A Torznab or Newznab search endpoint. Prowlarr: {prowlarr}. Jackett, all trackers at once: {jackett}"
+msgstr ""
+
+msgid "A Windows desktop torrent manager designed for keyboard-first use and screen readers."
+msgstr ""
+
+msgid "About this application"
+msgstr ""
+
+msgid "Accept"
+msgstr ""
+
+msgid "Action menu opened. Use arrow keys to navigate."
+msgstr ""
+
+msgid "Active"
+msgstr ""
+
+msgid "Add"
+msgstr ""
+
+msgid "Add &URL/Magnet...\tCtrl+U"
+msgstr ""
+
+msgid "Add a torrent from a local file"
+msgstr ""
+
+msgid "Add a torrent from a URL or Magnet link"
+msgstr ""
+
+msgid "Add Connection Profile"
+msgstr ""
+
+msgid "Add created torrent to the currently connected client"
+msgstr ""
+
+msgid "Add Feed"
+msgstr ""
+
+msgid "Add indexer"
+msgstr ""
+
+msgid "Add Profile"
+msgstr ""
+
+msgid "Add RSS Rule"
+msgstr ""
+
+msgid "Add Rule"
+msgstr ""
+
+msgid "Add Torrent"
+msgstr ""
+
+msgid "Add Torrent: {name}"
+msgstr ""
+
+msgid "Add Tracker"
+msgstr ""
+
+msgid "Add/edit/delete profiles and connect"
+msgstr ""
+
+msgid "Added from RSS: {title}"
+msgstr ""
+
+msgid "Added your blindDL indexer: {names}."
+msgstr ""
+
+msgid "Added your blindDL indexers: {names}."
+msgstr ""
+
+msgid "Added {title}"
+msgstr ""
+
+msgid "Adding created torrent..."
+msgstr ""
+
+msgid "Adding magnet link from CLI..."
+msgstr ""
+
+msgid "Adding magnet link..."
+msgstr ""
+
+msgid "Adding torrent file from CLI..."
+msgstr ""
+
+msgid "Adding torrent..."
+msgstr ""
+
+msgid "Adding torrent: {title}..."
+msgstr ""
+
+msgid "Adding {count} torrent..."
+msgstr ""
+
+msgid "Adding {count} torrents..."
+msgstr ""
+
+msgid "After Creation"
+msgstr ""
+
+msgid "Age"
+msgstr ""
+
+msgid "All"
+msgstr ""
+
+msgid "An indexer needs both a name and a URL."
+msgstr ""
+
+msgid "An update check or install is already in progress."
+msgstr ""
+
+msgid "An update is already in progress."
+msgstr ""
+
+msgid "Announce IP (reported to trackers, blank = auto):"
+msgstr ""
+
+msgid "Another indexer is already called {name}. Choose a different name."
+msgstr ""
+
+msgid "Another instance of SerrebiTorrent is already running."
+msgstr ""
+
+msgid "Anti-leech"
+msgstr ""
+
+msgid "API &key:"
+msgstr ""
+
+msgid "API key"
+msgstr ""
+
+msgid "Application"
+msgstr ""
+
+msgid "Apply to Feeds (Uncheck all for Global):"
+msgstr ""
+
+msgid "Applying update..."
+msgstr ""
+
+msgid "Are you sure you want to clear ALL RSS feeds and rules?"
+msgstr ""
+
+msgid "Associate .torrent and magnet links with this app"
+msgstr ""
+
+msgid "Association is only supported on Windows for now."
+msgstr ""
+
+msgid "Associations registered successfully!"
+msgstr ""
+
+msgid "Authentication (if required):"
+msgstr ""
+
+msgid "Auto"
+msgstr ""
+
+msgid "Auto-added from RSS: {title}"
+msgstr ""
+
+msgid "Auto-start failed: {error}"
+msgstr ""
+
+msgid "Auto-started new torrent(s)"
+msgstr ""
+
+msgid "Auto-update is not available for this build."
+msgstr ""
+
+msgid "Automatically add trackers from URL"
+msgstr ""
+
+msgid "Automatically start torrents"
+msgstr ""
+
+msgid "Availability"
+msgstr ""
+
+msgid "Best match"
+msgstr ""
+
+msgid "Bind Host:"
+msgstr ""
+
+msgid "BitTorrent"
+msgstr ""
+
+msgid "Browse..."
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Categories"
+msgstr ""
+
+msgid "Category"
+msgstr ""
+
+msgid "Check"
+msgstr ""
+
+msgid "Check All"
+msgstr ""
+
+msgid "Check for &Updates...\tF5"
+msgstr ""
+
+msgid "Check for updates"
+msgstr ""
+
+msgid "Check for Updates"
+msgstr ""
+
+msgid "Check for updates automatically on startup"
+msgstr ""
+
+msgid "Checking"
+msgstr ""
+
+msgid "Checking for updates..."
+msgstr ""
+
+msgid "Choose a profile, then connect or manage it with the buttons below."
+msgstr ""
+
+msgid "Choose Download Directory"
+msgstr ""
+
+msgid "Choose Download Folder"
+msgstr ""
+
+msgid "Client"
+msgstr ""
+
+msgid "Client Type"
+msgstr ""
+
+msgid "Client Type:"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Close to System Tray"
+msgstr ""
+
+msgid "Comment:"
+msgstr ""
+
+msgid "Configure local session and application settings"
+msgstr ""
+
+msgid "Confirm"
+msgstr ""
+
+msgid "Confirm Reset"
+msgstr ""
+
+msgid "Connect"
+msgstr ""
+
+msgid "Connect or switch profile"
+msgstr ""
+
+msgid "Connect to a client before adding torrents."
+msgstr ""
+
+msgid "Connect to this profile"
+msgstr ""
+
+msgid "Connected to {name}"
+msgstr ""
+
+msgid "Connecting..."
+msgstr ""
+
+msgid "Connection"
+msgstr ""
+
+msgid "Connection Failed"
+msgstr ""
+
+msgid "Connection Manager"
+msgstr ""
+
+msgid "Connection Manager..."
+msgstr ""
+
+msgid "Connection Manager...\tCtrl+Shift+C"
+msgstr ""
+
+msgid "Connection profiles"
+msgstr ""
+
+msgid "Context / validation:"
+msgstr ""
+
+msgid "Copied to clipboard"
+msgstr ""
+
+msgid "Copied {count} magnet link."
+msgstr ""
+
+msgid "Copied {count} magnet links."
+msgstr ""
+
+msgid "Copy &Info Hash\tCtrl+I"
+msgstr ""
+
+msgid "Copy &Magnet Link\tCtrl+M"
+msgstr ""
+
+msgid "Copy a magnet link for selected torrents"
+msgstr ""
+
+msgid "Copy Info Hash"
+msgstr ""
+
+msgid "Copy it from Prowlarr or Jackett's own settings. Leave it empty if the endpoint needs no key."
+msgstr ""
+
+msgid "Copy Magnet Link"
+msgstr ""
+
+msgid "Copy magnet link to clipboard"
+msgstr ""
+
+msgid "Copy the info hash for selected torrents"
+msgstr ""
+
+msgid "Create &Torrent...\tCtrl+N"
+msgstr ""
+
+msgid "Create a .torrent file from a file or folder"
+msgstr ""
+
+msgid "Create Profile"
+msgstr ""
+
+msgid "Create Torrent"
+msgstr ""
+
+msgid "Created by:"
+msgstr ""
+
+msgid "Created torrent added"
+msgstr ""
+
+msgid "Created torrent, but failed to add to client: {error}"
+msgstr ""
+
+msgid "Current"
+msgstr ""
+
+msgid "Dark (Night)"
+msgstr ""
+
+msgid "Default"
+msgstr ""
+
+msgid "Default Download Path:"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Delete this profile?"
+msgstr ""
+
+msgid "Deselect All"
+msgstr ""
+
+msgid "Disconnected"
+msgstr ""
+
+msgid "Down Speed"
+msgstr ""
+
+msgid "Download folder not available."
+msgstr ""
+
+msgid "Download Path"
+msgstr ""
+
+msgid "Download Path:"
+msgstr ""
+
+msgid "Download Rate (bytes/s):"
+msgstr ""
+
+msgid "Downloaded update failed SHA-256 verification."
+msgstr ""
+
+msgid "Downloaded: {percent:.1f}%"
+msgstr ""
+
+msgid "Downloading"
+msgstr ""
+
+msgid "Downloading torrent file..."
+msgstr ""
+
+msgid "Downloading update..."
+msgstr ""
+
+msgid "Downloads"
+msgstr ""
+
+msgid "E&xit"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Edit connected qBittorrent settings"
+msgstr ""
+
+msgid "Edit connected rTorrent settings"
+msgstr ""
+
+msgid "Edit connected Transmission settings"
+msgstr ""
+
+msgid "Edit indexer"
+msgstr ""
+
+msgid "Edit Profile"
+msgstr ""
+
+msgid "Edit RSS Rule"
+msgstr ""
+
+msgid "Edit Rule"
+msgstr ""
+
+msgid "Enable DHT"
+msgstr ""
+
+msgid "Enable Local Service Discovery (LSD)"
+msgstr ""
+
+msgid "Enable NAT-PMP Port Mapping"
+msgstr ""
+
+msgid "Enable UPnP Port Mapping"
+msgstr ""
+
+msgid "Enable Web UI"
+msgstr ""
+
+msgid "Enabled"
+msgstr ""
+
+msgid "English"
+msgstr ""
+
+msgid "Enter a JSON object (e.g. {\"/watched\": \"/home/user\"})."
+msgstr ""
+
+msgid "Enter adds the selected torrents. Control C copies the magnet link."
+msgstr ""
+
+msgid "Enter edits the selected indexer. Delete removes it."
+msgstr ""
+
+msgid "Enter Magnet Link or URL:"
+msgstr ""
+
+msgid "Enter RSS Feed URL:"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+msgid "Error adding file: {error}"
+msgstr ""
+
+msgid "Error adding URL: {error}"
+msgstr ""
+
+msgid "Error fetching preferences"
+msgstr ""
+
+msgid "Error saving remote settings."
+msgstr ""
+
+msgid "Error saving settings."
+msgstr ""
+
+msgid "Every day"
+msgstr ""
+
+msgid "Every Friday"
+msgstr ""
+
+msgid "Every Monday"
+msgstr ""
+
+msgid "Every Saturday"
+msgstr ""
+
+msgid "Every Sunday"
+msgstr ""
+
+msgid "Every Thursday"
+msgstr ""
+
+msgid "Every Tuesday"
+msgstr ""
+
+msgid "Every Wednesday"
+msgstr ""
+
+msgid "Every weekday"
+msgstr ""
+
+msgid "Every weekend"
+msgstr ""
+
+msgid "Exit"
+msgstr ""
+
+msgid "Exit application"
+msgstr ""
+
+msgid "Export PO..."
+msgstr ""
+
+msgid "Extracted update does not contain application files."
+msgstr ""
+
+msgid "Extracting update..."
+msgstr ""
+
+msgid "Failed"
+msgstr ""
+
+msgid "Failed to access clipboard."
+msgstr ""
+
+msgid "Failed to add from RSS: {error}"
+msgstr ""
+
+msgid "Failed to add magnet: {error}"
+msgstr ""
+
+msgid "Failed to add torrent: {error}"
+msgstr ""
+
+msgid "Failed to add torrents."
+msgstr ""
+
+msgid "Failed to apply settings: {error}"
+msgstr ""
+
+msgid "Failed to download torrent from URL: {error}"
+msgstr ""
+
+msgid "Failed to fetch preferences"
+msgstr ""
+
+msgid "Failed to fetch remote preferences: {error}"
+msgstr ""
+
+msgid "Failed to fetch {title}: {error}"
+msgstr ""
+
+msgid "Failed to load settings."
+msgstr ""
+
+msgid "Failed to read torrent file: {error}"
+msgstr ""
+
+msgid "Failed to register associations: {error}"
+msgstr ""
+
+msgid "Failed to retrieve preferences from remote client."
+msgstr ""
+
+msgid "Failed to retrieve preferences from remote client. The client might not support this feature or there is a connection issue."
+msgstr ""
+
+msgid "Failed to update remote preferences: {error}"
+msgstr ""
+
+msgid "Failed to {action} torrent: {error}"
+msgstr ""
+
+msgid "Failed to {action}: {error}"
+msgstr ""
+
+msgid "Fastest upload"
+msgstr ""
+
+msgid "Fetching {name} preferences..."
+msgstr ""
+
+msgid "File list not available (Magnet link)."
+msgstr ""
+
+msgid "File..."
+msgstr ""
+
+msgid "Files"
+msgstr ""
+
+msgid "Files:"
+msgstr ""
+
+msgid "Filter:"
+msgstr ""
+
+msgid "Finished"
+msgstr ""
+
+msgid "Fixed slots"
+msgstr ""
+
+msgid "Folder..."
+msgstr ""
+
+msgid "Force a recheck/verification (if supported)"
+msgstr ""
+
+msgid "Force an immediate tracker announce (if supported)"
+msgstr ""
+
+msgid "Force encryption off"
+msgstr ""
+
+msgid "Force encryption on"
+msgstr ""
+
+msgid "Force Re&check"
+msgstr ""
+
+msgid "Force Reannoun&ce"
+msgstr ""
+
+msgid "Force Reannounce"
+msgstr ""
+
+msgid "Force Recheck"
+msgstr ""
+
+msgid "General"
+msgstr ""
+
+msgid "Global"
+msgstr ""
+
+msgid "Global DL Limit (B/s)"
+msgstr ""
+
+msgid "Global Limits (0 or -1 for unlimited):"
+msgstr ""
+
+msgid "Global UL Limit (B/s)"
+msgstr ""
+
+msgid "Hash"
+msgstr ""
+
+msgid "Hashing pieces and generating torrent metadata..."
+msgstr ""
+
+msgid "High"
+msgstr ""
+
+msgid "Host:"
+msgstr ""
+
+msgid "HTTP (no auth)"
+msgstr ""
+
+msgid "HTTP (with auth)"
+msgstr ""
+
+msgid "Import Complete"
+msgstr ""
+
+msgid "Import Failed: {error}"
+msgstr ""
+
+msgid "Import FlexGet"
+msgstr ""
+
+msgid "Import FlexGet Config"
+msgstr ""
+
+msgid "Imported {feeds} feeds and {rules} rules."
+msgstr ""
+
+msgid "Included trackers (one per line):"
+msgstr ""
+
+msgid "Indexer"
+msgstr ""
+
+msgid "Indexer name"
+msgstr ""
+
+msgid "Indexer URL"
+msgstr ""
+
+msgid "Indexers to search"
+msgstr ""
+
+msgid "Info"
+msgstr ""
+
+msgid "Info hash copied to clipboard."
+msgstr ""
+
+msgid "Info Hash: {hash}"
+msgstr ""
+
+msgid "Install directory not found."
+msgstr ""
+
+msgid "Invalid argument: {arg}"
+msgstr ""
+
+msgid "Invalid credentials."
+msgstr ""
+
+msgid "Invalid integer for {label}: {error}"
+msgstr ""
+
+msgid "Invalid JSON for {label}: {error}"
+msgstr ""
+
+msgid "Invalid number for {label}: {error}"
+msgstr ""
+
+msgid "Invalid torrent URL."
+msgstr ""
+
+msgid "Language"
+msgstr ""
+
+msgid "Language changes reload this page after saving."
+msgstr ""
+
+msgid "Language code:"
+msgstr ""
+
+msgid "Language name:"
+msgstr ""
+
+msgid "Language:"
+msgstr ""
+
+msgid "Largest"
+msgstr ""
+
+msgid "Leave blank to retain the current password."
+msgstr ""
+
+msgid "Leechers"
+msgstr ""
+
+msgid "libtorrent is not available. Torrent creation requires python-libtorrent."
+msgstr ""
+
+msgid "Light (Classic)"
+msgstr ""
+
+msgid "Limits"
+msgstr ""
+
+msgid "Link"
+msgstr ""
+
+msgid "Listening Port:"
+msgstr ""
+
+msgid "Loading remote settings..."
+msgstr ""
+
+msgid "Loading..."
+msgstr ""
+
+msgid "Local libtorrent"
+msgstr ""
+
+msgid "Local Session &Settings...\tCtrl+,"
+msgstr ""
+
+msgid "Local session active"
+msgstr ""
+
+msgid "Local Session Settings"
+msgstr ""
+
+msgid "Local Session Settings..."
+msgstr ""
+
+msgid "Login"
+msgstr ""
+
+msgid "Login - SerrebiTorrent"
+msgstr ""
+
+msgid "Logout"
+msgstr ""
+
+msgid "Magnet copied to clipboard."
+msgstr ""
+
+msgid "Magnet Link"
+msgstr ""
+
+msgid "Magnet link added"
+msgstr ""
+
+msgid "Magnet link added from CLI"
+msgstr ""
+
+msgid "Magnet link(s) copied to clipboard."
+msgstr ""
+
+msgid "Magnet: {magnet}"
+msgstr ""
+
+msgid "Manage Profiles & Connect"
+msgstr ""
+
+msgid "Max Connections:"
+msgstr ""
+
+msgid "Max Upload Slots:"
+msgstr ""
+
+msgid "Menu closed"
+msgstr ""
+
+msgid "Menu opened"
+msgstr ""
+
+msgid "Message"
+msgstr ""
+
+msgid "Metadata (optional)"
+msgstr ""
+
+msgid "Minimize to System Tray"
+msgstr ""
+
+msgid "Minimize to Tray"
+msgstr ""
+
+msgid "Most seeders"
+msgstr ""
+
+msgid "My &indexers..."
+msgstr ""
+
+msgid "My indexers..."
+msgstr ""
+
+msgid "My Remote Server"
+msgstr ""
+
+msgid "My torrent indexers"
+msgstr ""
+
+msgid "N/A"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Navigation"
+msgstr ""
+
+msgid "Navigation Sidebar"
+msgstr ""
+
+msgid "Needs review"
+msgstr ""
+
+msgid "Network"
+msgstr ""
+
+msgid "Newest"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "No client connected."
+msgstr ""
+
+msgid "No indexers are switched on. Use Search sites."
+msgstr ""
+
+msgid "No regular files found to include in torrent."
+msgstr ""
+
+msgid "No remote settings available (or Local client active)."
+msgstr ""
+
+msgid "No torrent selected."
+msgstr ""
+
+msgid "No torrents selected to {action}."
+msgstr ""
+
+msgid "No torrents selected."
+msgstr ""
+
+msgid "No torrents to start."
+msgstr ""
+
+msgid "No torrents to stop."
+msgstr ""
+
+msgid "No updates available."
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "None (No feeds)"
+msgstr ""
+
+msgid "Normal"
+msgstr ""
+
+msgid "Not connected to any client."
+msgstr ""
+
+msgid "Nothing found. Try fewer words, or switch on more indexers in Search sites."
+msgstr ""
+
+msgid "Notifications"
+msgstr ""
+
+msgid "Off"
+msgstr ""
+
+msgid "OK"
+msgstr ""
+
+msgid "On"
+msgstr ""
+
+msgid "One URL per line (HTTP/HTTPS)."
+msgstr ""
+
+msgid "Open Download &Folder"
+msgstr ""
+
+msgid "Open Download Folder"
+msgstr ""
+
+msgid "Open online translation"
+msgstr ""
+
+msgid "Open the download folder (if available)"
+msgstr ""
+
+msgid "Open Torrent File"
+msgstr ""
+
+msgid "Open {name}"
+msgstr ""
+
+msgid "Opened download folder."
+msgstr ""
+
+msgid "Other"
+msgstr ""
+
+msgid "Output .torrent file:"
+msgstr ""
+
+msgid "Output .torrent path is required."
+msgstr ""
+
+msgid "Password"
+msgstr ""
+
+msgid "Password:"
+msgstr ""
+
+msgid "Path"
+msgstr ""
+
+msgid "Pattern"
+msgstr ""
+
+msgid "Pause"
+msgstr ""
+
+msgid "Pause selected torrents"
+msgstr ""
+
+msgid "Pause torrent"
+msgstr ""
+
+msgid "Paused"
+msgstr ""
+
+msgid "Pausing torrents..."
+msgstr ""
+
+msgid "Peer proportional"
+msgstr ""
+
+msgid "Peers"
+msgstr ""
+
+msgid "Piece size:"
+msgstr ""
+
+msgid "Please select a profile to connect."
+msgstr ""
+
+msgid "Please select at least one torrent first."
+msgstr ""
+
+msgid "Port:"
+msgstr ""
+
+msgid "Portuguese (Brazil)"
+msgstr ""
+
+msgid "Prefer encryption"
+msgstr ""
+
+msgid "Prefer TCP"
+msgstr ""
+
+msgid "Preferences"
+msgstr ""
+
+msgid "Preparing restart..."
+msgstr ""
+
+msgid "Previous"
+msgstr ""
+
+msgid "Priority"
+msgstr ""
+
+msgid "Private torrent (disables DHT/PEX/LSD in most clients)"
+msgstr ""
+
+msgid "Private trackers work through Prowlarr or Jackett, which\nkeep your tracker logins. SerrebiTorrent stores only this\nURL and key."
+msgstr ""
+
+msgid "Profile"
+msgstr ""
+
+msgid "Profile Name"
+msgstr ""
+
+msgid "Profile Name:"
+msgstr ""
+
+msgid "Profiles"
+msgstr ""
+
+msgid "PROFILES"
+msgstr ""
+
+msgid "Progress"
+msgstr ""
+
+msgid "Proxy"
+msgstr ""
+
+msgid "Proxy disabled"
+msgstr ""
+
+msgid "Proxy Type:"
+msgstr ""
+
+msgid "Public tracker list (press Enter to add to Included trackers)."
+msgstr ""
+
+msgid "qBittorrent Remote &Settings..."
+msgstr ""
+
+msgid "qBittorrent Remote Settings..."
+msgstr ""
+
+msgid "Queue"
+msgstr ""
+
+msgid "Ratio"
+msgstr ""
+
+msgid "Reannounce not supported by this client."
+msgstr ""
+
+msgid "Reannouncing torrents..."
+msgstr ""
+
+msgid "Recheck not supported by this client."
+msgstr ""
+
+msgid "Rechecking torrents..."
+msgstr ""
+
+msgid "Refresh"
+msgstr ""
+
+msgid "Refresh All"
+msgstr ""
+
+msgid "Regex Pattern:"
+msgstr ""
+
+msgid "Register &Associations"
+msgstr ""
+
+msgid "Reject"
+msgstr ""
+
+msgid "Remote Client"
+msgstr ""
+
+msgid "Remote client did not return any recognized preferences."
+msgstr ""
+
+msgid "Remote settings saved."
+msgstr ""
+
+msgid "Remove"
+msgstr ""
+
+msgid "Remove Feed"
+msgstr ""
+
+msgid "Remove feed {url}?"
+msgstr ""
+
+msgid "Remove Selected"
+msgstr ""
+
+msgid "Remove selected torrents"
+msgstr ""
+
+msgid "Remove selected torrents and data"
+msgstr ""
+
+msgid "Remove torrent"
+msgstr ""
+
+msgid "Remove with &Data\tShift+Del"
+msgstr ""
+
+msgid "Remove with Data"
+msgstr ""
+
+msgid "Removed {name}."
+msgstr ""
+
+msgid "Reset failed: {error}"
+msgstr ""
+
+msgid "Reset RSS (Clear all feeds and rules)"
+msgstr ""
+
+msgid "Results"
+msgstr ""
+
+msgid "Results, {count} result"
+msgstr ""
+
+msgid "Results, {count} results"
+msgstr ""
+
+msgid "Resume"
+msgstr ""
+
+msgid "Resume selected torrents"
+msgstr ""
+
+msgid "Resuming torrents..."
+msgstr ""
+
+msgid "Round-robin"
+msgstr ""
+
+msgid "RSS Articles"
+msgstr ""
+
+msgid "RSS data reset successfully."
+msgstr ""
+
+msgid "RSS Downloader"
+msgstr ""
+
+msgid "RSS Feeds"
+msgstr ""
+
+msgid "RSS Rules Manager"
+msgstr ""
+
+msgid "RSS Update Interval (s)"
+msgstr ""
+
+msgid "RSS Update Interval (seconds):"
+msgstr ""
+
+msgid "rTorrent Remote &Settings..."
+msgstr ""
+
+msgid "rTorrent Remote Settings..."
+msgstr ""
+
+msgid "Rule Type:"
+msgstr ""
+
+msgid "Rules"
+msgstr ""
+
+msgid "Save App Settings"
+msgstr ""
+
+msgid "Save As..."
+msgstr ""
+
+msgid "Save entry"
+msgstr ""
+
+msgid "Save Path"
+msgstr ""
+
+msgid "Save Path (Optional)"
+msgstr ""
+
+msgid "Save Path:"
+msgstr ""
+
+msgid "Save Remote Settings"
+msgstr ""
+
+msgid "Save Torrent As"
+msgstr ""
+
+msgid "Scheduler"
+msgstr ""
+
+msgid "Scheduling"
+msgstr ""
+
+msgid "Scope"
+msgstr ""
+
+msgid "Scripts"
+msgstr ""
+
+msgid "Sea&rch"
+msgstr ""
+
+msgid "Search"
+msgstr ""
+
+msgid "Search failed: {error}"
+msgstr ""
+
+msgid "Search for"
+msgstr ""
+
+msgid "Search for Torrents"
+msgstr ""
+
+msgid "Search si&tes..."
+msgstr ""
+
+msgid "Search sites"
+msgstr ""
+
+msgid "Search sites..."
+msgstr ""
+
+msgid "Search torrent indexers and add what you find"
+msgstr ""
+
+msgid "Searching {count} indexer..."
+msgstr ""
+
+msgid "Searching {count} indexers..."
+msgstr ""
+
+msgid "Seeding"
+msgstr ""
+
+msgid "Seeds"
+msgstr ""
+
+msgid "Select"
+msgstr ""
+
+msgid "Select &all"
+msgstr ""
+
+msgid "Select &All\tCtrl+A"
+msgstr ""
+
+msgid "Select &none"
+msgstr ""
+
+msgid "Select a result first."
+msgstr ""
+
+msgid "Select a torrent."
+msgstr ""
+
+msgid "Select All"
+msgstr ""
+
+msgid "Select all torrents"
+msgstr ""
+
+msgid "Select File"
+msgstr ""
+
+msgid "Select Folder"
+msgstr ""
+
+msgid "Select {name}"
+msgstr ""
+
+msgid "Selection cleared"
+msgstr ""
+
+msgid "Set"
+msgstr ""
+
+msgid "Set Default"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Settings saved."
+msgstr ""
+
+msgid "Size"
+msgstr ""
+
+msgid "Skip"
+msgstr ""
+
+msgid "Skip to torrent list"
+msgstr ""
+
+msgid "SOCKS4 (no auth)"
+msgstr ""
+
+msgid "SOCKS5 (no auth)"
+msgstr ""
+
+msgid "SOCKS5 (with auth)"
+msgstr ""
+
+msgid "Sort &by:"
+msgstr ""
+
+msgid "Sort by"
+msgstr ""
+
+msgid "Sorted by {label}."
+msgstr ""
+
+msgid "Source (file or folder):"
+msgstr ""
+
+msgid "Source (written into info dict as 'source'):"
+msgstr ""
+
+msgid "Source path is required."
+msgstr ""
+
+msgid "Source path must not be a symlink or Windows reparse point."
+msgstr ""
+
+msgid "Source text"
+msgstr ""
+
+msgid "Source text:"
+msgstr ""
+
+msgid "Speed"
+msgstr ""
+
+msgid "Start"
+msgstr ""
+
+msgid "Start All"
+msgstr ""
+
+msgid "Start selected torrents"
+msgstr ""
+
+msgid "Starting all torrents..."
+msgstr ""
+
+msgid "Starting torrents..."
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "Status Filters"
+msgstr ""
+
+msgid "Stop All"
+msgstr ""
+
+msgid "Stopped"
+msgstr ""
+
+msgid "Stopping all torrents..."
+msgstr ""
+
+msgid "Stopping torrents..."
+msgstr ""
+
+msgid "Success"
+msgstr ""
+
+msgid "Switch Profile"
+msgstr ""
+
+msgid "Switching client profile..."
+msgstr ""
+
+msgid "System"
+msgstr ""
+
+msgid "System default"
+msgstr ""
+
+msgid "TCP and uTP"
+msgstr ""
+
+msgid "Theme"
+msgstr ""
+
+msgid "Those results carry a tracker file rather than a magnet link."
+msgstr ""
+
+msgid "Time Left"
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "Toggle"
+msgstr ""
+
+msgid "Torrent Actions"
+msgstr ""
+
+msgid "Torrent actions"
+msgstr ""
+
+msgid "Torrent added"
+msgstr ""
+
+msgid "Torrent created:\n{path}"
+msgstr ""
+
+msgid "Torrent Details"
+msgstr ""
+
+msgid "Torrent download finished after the active profile changed."
+msgstr ""
+
+msgid "Torrent File"
+msgstr ""
+
+msgid "Torrent file added from CLI"
+msgstr ""
+
+msgid "Torrent Files"
+msgstr ""
+
+msgid "Torrent files (*.torrent)|*.torrent"
+msgstr ""
+
+msgid "Torrent List"
+msgstr ""
+
+msgid "Torrent Options"
+msgstr ""
+
+msgid "torrents"
+msgstr ""
+
+msgid "Torrents"
+msgstr ""
+
+msgid "Tracker List URL:"
+msgstr ""
+
+msgid "Trackers"
+msgstr ""
+
+msgid "Translated"
+msgstr ""
+
+msgid "Translation"
+msgstr ""
+
+msgid "Translation Center"
+msgstr ""
+
+msgid "Translation:"
+msgstr ""
+
+msgid "Transmission Remote &Settings..."
+msgstr ""
+
+msgid "Transmission Remote Settings..."
+msgstr ""
+
+msgid "Type"
+msgstr ""
+
+msgid "Type what to look for first."
+msgstr ""
+
+msgid "Type what to look for."
+msgstr ""
+
+msgid "UI Refresh Rate (ms)"
+msgstr ""
+
+msgid "Uncheck"
+msgstr ""
+
+msgid "Uncheck All"
+msgstr ""
+
+msgid "Unknown"
+msgstr ""
+
+msgid "Untranslated"
+msgstr ""
+
+msgid "Up Speed"
+msgstr ""
+
+msgid "Update Available"
+msgstr ""
+
+msgid "Update canceled."
+msgstr ""
+
+msgid "Update Check Failed"
+msgstr ""
+
+msgid "Update check failed."
+msgstr ""
+
+msgid "Update Failed"
+msgstr ""
+
+msgid "Update failed."
+msgstr ""
+
+msgid "Update helper script not found."
+msgstr ""
+
+msgid "Update postponed."
+msgstr ""
+
+msgid "Update prepared. Closing to install..."
+msgstr ""
+
+msgid "Update prepared. The app will restart after it exits."
+msgstr ""
+
+msgid "Updated executable not found."
+msgstr ""
+
+msgid "Updates"
+msgstr ""
+
+msgid "Updates are only available in the packaged app."
+msgstr ""
+
+msgid "Updating SerrebiTorrent"
+msgstr ""
+
+msgid "Updating..."
+msgstr ""
+
+msgid "Upload Rate (bytes/s):"
+msgstr ""
+
+msgid "Upload-rate based"
+msgstr ""
+
+msgid "URL (e.g. scgi://... or http://...):"
+msgstr ""
+
+msgid "URL / Path"
+msgstr ""
+
+msgid "URL or download path"
+msgstr ""
+
+msgid "URL:Magnet Link"
+msgstr ""
+
+msgid "URLs / Magnets (one per line)"
+msgstr ""
+
+msgid "Use DyDNS"
+msgstr ""
+
+msgid "Use NOIP"
+msgstr ""
+
+msgid "Username"
+msgstr ""
+
+msgid "Username:"
+msgstr ""
+
+msgid "Verifying download..."
+msgstr ""
+
+msgid "Verifying signature..."
+msgstr ""
+
+msgid "Warning"
+msgstr ""
+
+msgid "Web Seeds (optional)"
+msgstr ""
+
+msgid "Web UI"
+msgstr ""
+
+msgid "YAML files (*.yml;*.yaml)|*.yml;*.yaml"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "You're already on the latest version."
+msgstr ""
+
+msgid "{action} complete"
+msgstr ""
+
+msgid "{action} complete ({failed} failed). Last error: {error}"
+msgstr ""
+
+msgid "{client} Remote Settings"
+msgstr ""
+
+msgid "{count} feeds"
+msgstr ""
+
+msgid "{count} indexer switched on."
+msgstr ""
+
+msgid "{count} indexers switched on."
+msgstr ""
+
+msgid "{count} of your own indexer configured."
+msgstr ""
+
+msgid "{count} of your own indexers configured."
+msgstr ""
+
+msgid "{count} result"
+msgstr ""
+
+msgid "{count} result so far, {pending} still searching. Last: {source}."
+msgstr ""
+
+msgid "{count} results"
+msgstr ""
+
+msgid "{count} results so far, {pending} still searching. Last: {source}."
+msgstr ""
+
+msgid "{count} torrents"
+msgstr ""
+
+msgid "{name} preferences saved"
+msgstr ""
