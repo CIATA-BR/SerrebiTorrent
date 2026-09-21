@@ -16,6 +16,7 @@ from pathlib import Path
 from string import Formatter
 import json
 import os
+import re
 
 
 @dataclass(frozen=True)
@@ -28,6 +29,10 @@ class CatalogInfo:
 
 
 _PLACEHOLDER_RE = Formatter()
+_PRINTF_RE = re.compile(
+    r"%(?:\([A-Za-z_][A-Za-z0-9_]*\))?(?:\d+\$)?[-+0 #]*\d*(?:\.\d+)?[diouxXeEfFgGcrsab]"
+)
+_MNEMONIC_RE = re.compile(r"(?<!&)&(?!&)")
 
 
 def _bundle_root() -> Path:
@@ -177,6 +182,19 @@ def _fields(value: str) -> set[str]:
     return fields
 
 
+def _printf_placeholders(value: str) -> list[str]:
+    cleaned = value.replace("%%", "")
+    return sorted(_PRINTF_RE.findall(cleaned))
+
+
+def _tab_suffixes(value: str) -> list[str]:
+    return sorted(item.strip() for item in re.findall(r"\t([^\r\n]+)", value))
+
+
+def _mnemonic_count(value: str) -> int:
+    return len(_MNEMONIC_RE.findall(value))
+
+
 def validate_translation(source: str, translated: str) -> list[str]:
     """Return contributor-facing validation messages for one translation."""
     errors: list[str] = []
@@ -189,8 +207,37 @@ def validate_translation(source: str, translated: str) -> list[str]:
             "Placeholders differ: expected "
             f"{sorted(source_fields)}, got {sorted(translated_fields)}."
         )
-    if "&" in source and "&" not in translated:
-        errors.append("Keyboard mnemonic marker '&' is missing.")
+    source_printf = _printf_placeholders(source)
+    translated_printf = _printf_placeholders(translated)
+    if source_printf != translated_printf:
+        errors.append(
+            "Printf placeholders differ: expected "
+            f"{source_printf}, got {translated_printf}."
+        )
+
+    source_shortcuts = _tab_suffixes(source)
+    translated_shortcuts = _tab_suffixes(translated)
+    if source_shortcuts != translated_shortcuts:
+        errors.append(
+            "Keyboard shortcuts differ: expected "
+            f"{source_shortcuts}, got {translated_shortcuts}."
+        )
+
+    source_newlines = source.count("\n")
+    translated_newlines = translated.count("\n")
+    if source_newlines != translated_newlines:
+        errors.append(
+            "Newline count differs: expected "
+            f"{source_newlines}, got {translated_newlines}."
+        )
+
+    source_mnemonics = _mnemonic_count(source)
+    translated_mnemonics = _mnemonic_count(translated)
+    if source_mnemonics != translated_mnemonics:
+        errors.append(
+            "Keyboard mnemonic count differs: expected "
+            f"{source_mnemonics}, got {translated_mnemonics}."
+        )
     return errors
 
 

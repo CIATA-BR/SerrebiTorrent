@@ -52,6 +52,7 @@ msgstr "&Pause\tCtrl+P"
 msgid "&Remove"
 msgstr "&REMOVE"
 
+#, fuzzy
 msgid "&Remove\tDel"
 msgstr "&Remove\tDEL"
 
@@ -388,6 +389,7 @@ msgstr "Copiat link-ul magnet {count}."
 msgid "Copied {count} magnet links."
 msgstr "Copiat link-uri magnet {count}."
 
+#, fuzzy
 msgid "Copy &Info Hash\tCtrl+I"
 msgstr "Copie &Info HashzzTABZZCtrl+I \t"
 
@@ -1237,6 +1239,7 @@ msgstr "Elimină torentele și datele selectate"
 msgid "Remove torrent"
 msgstr "Elimină torentul"
 
+#, fuzzy
 msgid "Remove with &Data\tShift+Del"
 msgstr "Elimină cu &DATA\tShift. Del"
 

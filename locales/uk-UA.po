@@ -13,6 +13,7 @@ msgstr "&Actions"
 msgid "&Add selected"
 msgstr "&Add вибрано"
 
+#, fuzzy
 msgid "&Add Torrent File...\tCtrl+O"
 msgstr "\tCtrl+O &"
 
@@ -25,6 +26,7 @@ msgstr "&"
 msgid "&Connect"
 msgstr "&Connect"
 
+#, fuzzy
 msgid "&Connect...\tCtrl+Shift+C"
 msgstr "\tCtrl+Shift+C &"
 
@@ -52,12 +54,15 @@ msgstr "&Pause\tCtrl+P"
 msgid "&Remove"
 msgstr "&Робота"
 
+#, fuzzy
 msgid "&Remove\tDel"
 msgstr "ЗПАМПЦЗРЗДАТЕЛЬ & \t"
 
+#, fuzzy
 msgid "&Resume\tCtrl+R"
 msgstr "ЗАМПЦЗЗЗЗТАБЗЦТРЛ+Р & \t"
 
+#, fuzzy
 msgid "&Search for Torrents...\tCtrl+F"
 msgstr "\tCtrl+F &"
 
@@ -97,6 +102,7 @@ msgstr "Активний"
 msgid "Add"
 msgstr "Додати"
 
+#, fuzzy
 msgid "Add &URL/Magnet...\tCtrl+U"
 msgstr "\tCtrl+U &"
 
@@ -388,9 +394,11 @@ msgstr "Запечена магнітна посилання {count}."
 msgid "Copied {count} magnet links."
 msgstr "Скопійовані магнітні посилання {count}."
 
+#, fuzzy
 msgid "Copy &Info Hash\tCtrl+I"
 msgstr "Статус на сервери & \t"
 
+#, fuzzy
 msgid "Copy &Magnet Link\tCtrl+M"
 msgstr "Статус на сервери & \t"
 
@@ -412,6 +420,7 @@ msgstr "Скопіювати магнітне посилання на буфер
 msgid "Copy the info hash for selected torrents"
 msgstr "Статус на сервери"
 
+#, fuzzy
 msgid "Create &Torrent...\tCtrl+N"
 msgstr "\tCtrl+N &"
 
@@ -718,6 +727,7 @@ msgstr "Захист сил на"
 msgid "Force Re&check"
 msgstr "Примус Re&check"
 
+#, fuzzy
 msgid "Force Reannoun&ce"
 msgstr "Примус ReannounZZZZce &"
 
@@ -1237,6 +1247,7 @@ msgstr "Видалити вибрані торрент-файли та дані"
 msgid "Remove torrent"
 msgstr "Видалення торрентів"
 
+#, fuzzy
 msgid "Remove with &Data\tShift+Del"
 msgstr "Видалити з &TABZZShift+ Про компанію \t"
 
@@ -1342,6 +1353,7 @@ msgstr "Навігація"
 msgid "Scripts"
 msgstr "Списки"
 
+#, fuzzy
 msgid "Sea&rch"
 msgstr "ЗАЗОКЗПАРК &"
 

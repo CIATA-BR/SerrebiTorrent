@@ -227,7 +227,7 @@
     "Failed to {action}: {error}": "Falha ao {action}: {error}",
     "Fastest upload": "Upload mais rápido",
     "Fetching {name} preferences...": "Obtendo preferências do {name}...",
-    "File list not available (Magnet link).": "Lista de arquivos indisponível no (Link Magnet)",
+    "File list not available (Magnet link).": "Lista de arquivos indisponível (link magnet).",
     "File...": "Arquivo...",
     "Files": "Arquivos",
     "Files:": "Arquivos:",

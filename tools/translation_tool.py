@@ -16,7 +16,6 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from translation_catalog import (  # noqa: E402
-    discover_catalogs,
     load_po,
     render_pot,
     sort_key,
@@ -27,6 +26,38 @@ from translation_inventory import collect_source_messages  # noqa: E402
 
 def source_messages() -> list[str]:
     return collect_source_messages(ROOT, include_web=True)
+
+
+def _discover_catalogs_strict(directory: Path):
+    catalogs = {}
+    errors: list[str] = []
+
+    if not directory.exists():
+        return catalogs, errors
+
+    for path in sorted(directory.glob("*.po")):
+        try:
+            info = load_po(path)
+        except (OSError, ValueError, json.JSONDecodeError) as exc:
+            errors.append(f"{path.name}: failed to parse catalog: {exc}")
+            continue
+
+        if info.code in catalogs:
+            errors.append(
+                f"{path.name}: duplicate language code {info.code!r}; "
+                f"already provided by {catalogs[info.code].path.name}"
+            )
+            continue
+
+        catalogs[info.code] = info
+
+    return catalogs, errors
+
+
+def _report_catalog_errors(errors: list[str]) -> bool:
+    for error in errors:
+        print(error, file=sys.stderr)
+    return bool(errors)
 
 
 def render_web_catalog(info) -> str:
@@ -90,7 +121,9 @@ def cmd_compile_web(args) -> int:
     output = Path(args.output or ROOT / "web_static" / "locales" / f"{info.code}.json")
     _write_web_catalog(info, output)
     if not args.no_index:
-        catalogs = discover_catalogs(ROOT / "locales")
+        catalogs, catalog_errors = _discover_catalogs_strict(ROOT / "locales")
+        if _report_catalog_errors(catalog_errors):
+            return 1
         if info.code not in catalogs:
             catalogs[info.code] = info
         _write_web_index(output.parent, catalogs)
@@ -100,8 +133,10 @@ def cmd_compile_web(args) -> int:
 
 def cmd_compile_all_web(args) -> int:
     output_dir = Path(args.output_dir or ROOT / "web_static" / "locales")
-    catalogs = discover_catalogs(Path(args.locales_dir or ROOT / "locales"))
-    failures = 0
+    catalogs, catalog_errors = _discover_catalogs_strict(
+        Path(args.locales_dir or ROOT / "locales")
+    )
+    failures = 1 if _report_catalog_errors(catalog_errors) else 0
     for code, info in catalogs.items():
         problems = validate_catalog(info.translations)
         if problems and not args.allow_invalid:
@@ -120,8 +155,8 @@ def cmd_sync(_args) -> int:
     pot_path.write_text(render_pot(source_messages()), encoding="utf-8")
     print(f"Updated {pot_path.relative_to(ROOT)}")
 
-    catalogs = discover_catalogs(ROOT / "locales")
-    failures = 0
+    catalogs, catalog_errors = _discover_catalogs_strict(ROOT / "locales")
+    failures = 1 if _report_catalog_errors(catalog_errors) else 0
     for code, info in catalogs.items():
         problems = validate_catalog(info.translations)
         if problems:
@@ -154,7 +189,9 @@ def cmd_check(_args) -> int:
         )
         failures += 1
 
-    catalogs = discover_catalogs(ROOT / "locales")
+    catalogs, catalog_errors = _discover_catalogs_strict(ROOT / "locales")
+    if _report_catalog_errors(catalog_errors):
+        failures += 1
     output_dir = ROOT / "web_static" / "locales"
 
     for code, info in catalogs.items():

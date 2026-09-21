@@ -683,7 +683,7 @@ msgid "Fetching {name} preferences..."
 msgstr "Obtendo preferências do {name}..."
 
 msgid "File list not available (Magnet link)."
-msgstr "Lista de arquivos indisponível no (Link Magnet)"
+msgstr "Lista de arquivos indisponível (link magnet)."
 
 msgid "File..."
 msgstr "Arquivo..."

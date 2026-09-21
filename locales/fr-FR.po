@@ -14,7 +14,7 @@ msgid "&Add selected"
 msgstr "&Ajouter sélectionné"
 
 msgid "&Add Torrent File...\tCtrl+O"
-msgstr "&Ajouter le fichier Torrent...ZZTABZCtrl+O \t"
+msgstr "&Ajouter le fichier Torrent...\tCtrl+O"
 
 msgid "&Add..."
 msgstr "&Ajouter..."
@@ -26,7 +26,7 @@ msgid "&Connect"
 msgstr "&Connect"
 
 msgid "&Connect...\tCtrl+Shift+C"
-msgstr "&Connect...ZZTABZCtrl+Shift+C \t"
+msgstr "&Connect...\tCtrl+Shift+C"
 
 msgid "&Edit..."
 msgstr "&Edit..."
@@ -47,11 +47,12 @@ msgid "&Name:"
 msgstr "&Nom:"
 
 msgid "&Pause\tCtrl+P"
-msgstr "&PauseZZTABZCtrl+P \t"
+msgstr "&Pause\tCtrl+P"
 
 msgid "&Remove"
 msgstr "&Supprimer"
 
+#, fuzzy
 msgid "&Remove\tDel"
 msgstr "&RemoveZTABZZDel \t"
 
@@ -65,7 +66,7 @@ msgid "&Search for:"
 msgstr "&Rechercher pour :"
 
 msgid "&Start\tCtrl+S"
-msgstr "&StartZTABZCtrl+S \t"
+msgstr "&Start\tCtrl+S"
 
 msgid "&Tools"
 msgstr "&Outils"
@@ -98,7 +99,7 @@ msgid "Add"
 msgstr "Ajouter"
 
 msgid "Add &URL/Magnet...\tCtrl+U"
-msgstr "Ajouter &URL/Aimante...ZZTABZCtrl+U \t"
+msgstr "Ajouter &URL/Aimante...\tCtrl+U"
 
 msgid "Add a torrent from a local file"
 msgstr "Ajouter un torrent à partir d'un fichier local"
@@ -287,7 +288,7 @@ msgid "Check All"
 msgstr "Tout vérifier"
 
 msgid "Check for &Updates...\tF5"
-msgstr "Vérifier les mises à jour de &...ZZTABZF5 \t"
+msgstr "Vérifier les mises à jour de &...\tF5"
 
 msgid "Check for Updates"
 msgstr "Vérifier les mises à jour"
@@ -371,7 +372,7 @@ msgid "Connection Manager..."
 msgstr "Gestionnaire de connexion..."
 
 msgid "Connection Manager...\tCtrl+Shift+C"
-msgstr "Gestionnaire de connexion...ZZTABZCtrl+Shift+C \t"
+msgstr "Gestionnaire de connexion...\tCtrl+Shift+C"
 
 msgid "Connection profiles"
 msgstr "Profils de connexion"
@@ -389,10 +390,10 @@ msgid "Copied {count} magnet links."
 msgstr "Liaisons magnétiques avec {count}."
 
 msgid "Copy &Info Hash\tCtrl+I"
-msgstr "Copier &Info HashZZTABZCtrl+I \t"
+msgstr "Copier &Info Hash\tCtrl+I"
 
 msgid "Copy &Magnet Link\tCtrl+M"
-msgstr "Copier &Magnet LinkZTABZCtrl+M \t"
+msgstr "Copier &Magnet Link\tCtrl+M"
 
 msgid "Copy a magnet link for selected torrents"
 msgstr "Copier un lien magnétique pour les torrents sélectionnés"
@@ -413,7 +414,7 @@ msgid "Copy the info hash for selected torrents"
 msgstr "Copier le hash d'info pour les torrents sélectionnés"
 
 msgid "Create &Torrent...\tCtrl+N"
-msgstr "Créer &Torrent...ZZTABZCtrl+N \t"
+msgstr "Créer &Torrent...\tCtrl+N"
 
 msgid "Create a .torrent file from a file or folder"
 msgstr "Créer un fichier .torrent à partir d'un fichier ou d'un dossier"
@@ -688,9 +689,11 @@ msgstr "Fichier..."
 msgid "Files"
 msgstr "Fichiers"
 
+#, fuzzy
 msgid "Files:"
 msgstr "Fichiers & #160;:"
 
+#, fuzzy
 msgid "Filter:"
 msgstr "Filtre & #160;:"
 
@@ -718,6 +721,7 @@ msgstr "Forcer le chiffrement"
 msgid "Force Re&check"
 msgstr "Force Re&check"
 
+#, fuzzy
 msgid "Force Reannoun&ce"
 msgstr "Force RenounZAMPZZce &"
 
@@ -869,7 +873,7 @@ msgid "Local libtorrent"
 msgstr "Libtorrent local"
 
 msgid "Local Session &Settings...\tCtrl+,"
-msgstr "Session locale &Paramètres...ZZTABZCtrl+, \t"
+msgstr "Session locale &Paramètres...\tCtrl+,"
 
 msgid "Local session active"
 msgstr "Session locale active"
@@ -1060,6 +1064,7 @@ msgstr "Dossier de téléchargement ouvert."
 msgid "Other"
 msgstr "Autres"
 
+#, fuzzy
 msgid "Output .torrent file:"
 msgstr "Fichier de sortie .torrent & #160;:"
 
@@ -1237,6 +1242,7 @@ msgstr "Supprimer les torrents et les données sélectionnés"
 msgid "Remove torrent"
 msgstr "Supprimer le torrent"
 
+#, fuzzy
 msgid "Remove with &Data\tShift+Del"
 msgstr "Supprimer avec &DataZTABZZShift+ Del \t"
 
@@ -1321,6 +1327,7 @@ msgstr "Enregistrer le chemin"
 msgid "Save Path (Optional)"
 msgstr "Enregistrer le chemin (facultatif)"
 
+#, fuzzy
 msgid "Save Path:"
 msgstr "Enregistrer le chemin & #160;:"
 
@@ -1388,7 +1395,7 @@ msgid "Select &all"
 msgstr "Sélectionner &all"
 
 msgid "Select &All\tCtrl+A"
-msgstr "Sélectionner &AllZTABZCtrl+A \t"
+msgstr "Sélectionner &All\tCtrl+A"
 
 msgid "Select &none"
 msgstr "Sélectionner &none"

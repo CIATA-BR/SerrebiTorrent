@@ -4,33 +4,40 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SerrebiTorrent\\nLanguage: pl-PL\\nX-Language-Name: Polski\\nMIME-Version: 1.0\\nContent-Type: text/plain; charset=UTF-8\\nContent-Transfer-Encoding: 8bit\\n"
 
+#, fuzzy
 msgid "&About SerrebiTorrent"
 msgstr "ZZAMPZO About SerrebiTorrent &"
 
+#, fuzzy
 msgid "&Actions"
 msgstr "ZZAMPZActions &"
 
+#, fuzzy
 msgid "&Add selected"
 msgstr "ZZAMPZAdd wybrany &"
 
+#, fuzzy
 msgid "&Add Torrent File...\tCtrl+O"
 msgstr "ZZAMPZAdd plik torrenta... ZZTABZCtrl + O & \t"
 
 msgid "&Add..."
 msgstr "&Add..."
 
+#, fuzzy
 msgid "&Close"
 msgstr "ZZAMPZClose &"
 
 msgid "&Connect"
 msgstr "&Connect"
 
+#, fuzzy
 msgid "&Connect...\tCtrl+Shift+C"
 msgstr "ZZAMPZConnect... ZZTABZCtrl + Shift + C & \t"
 
 msgid "&Edit..."
 msgstr "&Edit..."
 
+#, fuzzy
 msgid "&File"
 msgstr "ZZAMPZFile &"
 
@@ -43,27 +50,33 @@ msgstr "&Indexers do wyszukiwania:"
 msgid "&Indexers:"
 msgstr "&Indexers:"
 
+#, fuzzy
 msgid "&Name:"
 msgstr "ZZAMPZName: &"
 
+#, fuzzy
 msgid "&Pause\tCtrl+P"
 msgstr "ZZAMPZPauseZZTABZCtrl + P & \t"
 
 msgid "&Remove"
 msgstr "&Usuń"
 
+#, fuzzy
 msgid "&Remove\tDel"
 msgstr "ZZAMPZRemove\tDel &"
 
+#, fuzzy
 msgid "&Resume\tCtrl+R"
 msgstr "ZZAMPZResumeZZTABZCtrl + R & \t"
 
+#, fuzzy
 msgid "&Search for Torrents...\tCtrl+F"
 msgstr "ZZAMZZSearch for Torrents... ZZTABZCtrl + F & \t"
 
 msgid "&Search for:"
 msgstr "&Search dla:"
 
+#, fuzzy
 msgid "&Start\tCtrl+S"
 msgstr "ZZAMPZStartZZTABZCtrl + S & \t"
 
@@ -97,6 +110,7 @@ msgstr "Aktywne"
 msgid "Add"
 msgstr "Dodaj"
 
+#, fuzzy
 msgid "Add &URL/Magnet...\tCtrl+U"
 msgstr "Dodaj ZZAMZZURL / Magnet... ZZTABZCtrl + U & \t"
 
@@ -205,6 +219,7 @@ msgstr "Kolejny przykład SerrebiTorrent już działa."
 msgid "Anti-leech"
 msgstr "Anti-leech"
 
+#, fuzzy
 msgid "API &key:"
 msgstr "API ZZAMPZKY: &"
 
@@ -287,7 +302,7 @@ msgid "Check All"
 msgstr "Sprawdź wszystkie"
 
 msgid "Check for &Updates...\tF5"
-msgstr "Sprawdź &Updates... ZZTABZF5 \t"
+msgstr "Sprawdź &Updates... \tF5"
 
 msgid "Check for Updates"
 msgstr "Sprawdź aktualizacje"
@@ -370,6 +385,7 @@ msgstr "Menedżer połączeń"
 msgid "Connection Manager..."
 msgstr "Kierownik połączeń..."
 
+#, fuzzy
 msgid "Connection Manager...\tCtrl+Shift+C"
 msgstr "Kierownik połączeń... ZZTABZCtrl + Shift + C \t"
 
@@ -388,9 +404,11 @@ msgstr "Kopiowane {count} magnes link."
 msgid "Copied {count} magnet links."
 msgstr "Kopiowane ogniwa magnetyczne {count}."
 
+#, fuzzy
 msgid "Copy &Info Hash\tCtrl+I"
 msgstr "Kopiuj ZZAMPZInfo HashZTABZCtrl + I & \t"
 
+#, fuzzy
 msgid "Copy &Magnet Link\tCtrl+M"
 msgstr "Kopiuj ZZAMZMagnet LinkZTABZCtrl + M & \t"
 
@@ -412,6 +430,7 @@ msgstr "Kopiuj link magnesu do schowka"
 msgid "Copy the info hash for selected torrents"
 msgstr "Kopiuj hash informacji dla wybranych torrentów"
 
+#, fuzzy
 msgid "Create &Torrent...\tCtrl+N"
 msgstr "Utwórz ZZAMZTorrent... ZZTABZCtrl + N & \t"
 
@@ -490,6 +509,7 @@ msgstr "Pobieranie aktualizacji..."
 msgid "Downloads"
 msgstr "Pliki do pobrania"
 
+#, fuzzy
 msgid "E&xit"
 msgstr "EZZAMPZXIT &"
 
@@ -715,9 +735,11 @@ msgstr "Wyłączcie szyfrowanie"
 msgid "Force encryption on"
 msgstr "Wymuś szyfrowanie"
 
+#, fuzzy
 msgid "Force Re&check"
 msgstr "Siła ReZZAMPZcheck &"
 
+#, fuzzy
 msgid "Force Reannoun&ce"
 msgstr "Force ReconvenienZZAMZZCE &"
 
@@ -868,6 +890,7 @@ msgstr "Ładowanie..."
 msgid "Local libtorrent"
 msgstr "Lokalny libtorrent"
 
+#, fuzzy
 msgid "Local Session &Settings...\tCtrl+,"
 msgstr "Lokalna sesja &Settings... ZZTABZCtrl +, \t"
 
@@ -1036,6 +1059,7 @@ msgstr "On"
 msgid "One URL per line (HTTP/HTTPS)."
 msgstr "Jeden URL na linię (HTTP / HTTPS)."
 
+#, fuzzy
 msgid "Open Download &Folder"
 msgstr "Open Download ZZAMPZFolder &"
 
@@ -1237,6 +1261,7 @@ msgstr "Usuń wybrane torrenty i dane"
 msgid "Remove torrent"
 msgstr "Usuń torrent"
 
+#, fuzzy
 msgid "Remove with &Data\tShift+Del"
 msgstr "Usuń ZZAMPZDataZZTABZShift + Del & \t"
 
@@ -1342,6 +1367,7 @@ msgstr "Zakres"
 msgid "Scripts"
 msgstr "Skrypt"
 
+#, fuzzy
 msgid "Sea&rch"
 msgstr "SeaZZAMZZrch &"
 
@@ -1357,6 +1383,7 @@ msgstr "Szukaj"
 msgid "Search for Torrents"
 msgstr "Szukaj Torrentów"
 
+#, fuzzy
 msgid "Search si&tes..."
 msgstr "Szukaj siZZAMPZTES... &"
 
@@ -1384,12 +1411,15 @@ msgstr "Nasiona"
 msgid "Select"
 msgstr "Wybierz"
 
+#, fuzzy
 msgid "Select &all"
 msgstr "Wybierz ZZAMPZall &"
 
+#, fuzzy
 msgid "Select &All\tCtrl+A"
 msgstr "Wybierz ZZAMPZALZZTABZCtrl + A & \t"
 
+#, fuzzy
 msgid "Select &none"
 msgstr "Wybierz ZZAMPZNone &"
 
