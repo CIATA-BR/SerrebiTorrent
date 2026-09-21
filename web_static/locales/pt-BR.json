@@ -1,6 +1,6 @@
 {
   "language": "pt-BR",
-  "name": "Português (Brasil)",
+  "name": "Português — Brasil",
   "translations": {
     "&About SerrebiTorrent": "&Sobre o SerrebiTorrent",
     "&Actions": "&Ações",
@@ -66,7 +66,7 @@
     "An update check or install is already in progress.": "Já existe uma verificação ou instalação de atualização em andamento.",
     "An update is already in progress.": "Já existe uma atualização em andamento.",
     "Announce IP (reported to trackers, blank = auto):": "Anunciar IP (reportados para os rastereadores, vazio = auto):",
-    "Another indexer is already called {name}. Choose a different name.": "Já existe outro indexador chamado {name}. Escolha um nome diferente.",
+    "Another indexer is already called {name}. Choose a different name.": "Já existe outro indexador chamado {name}. Informe um nome diferente.",
     "Another instance of SerrebiTorrent is already running.": "Outra instância do SerrebiTorrent já está em execução.",
     "Anti-leech": "Proteção anti-leech",
     "API &key:": "&Chave de API:",

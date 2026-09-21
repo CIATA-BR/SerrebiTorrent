@@ -1,0 +1,1781 @@
+# SerrebiTorrent translation catalog.
+# SPDX-License-Identifier: MIT
+msgid ""
+msgstr ""
+"Project-Id-Version: SerrebiTorrent\\nLanguage: nl-NL\\nX-Language-Name: Nederlands\\nMIME-Version: 1.0\\nContent-Type: text/plain; charset=UTF-8\\nContent-Transfer-Encoding: 8bit\\n"
+
+msgid "&About SerrebiTorrent"
+msgstr "&Over SerrebiTorrent"
+
+msgid "&Actions"
+msgstr "&Acties"
+
+msgid "&Add selected"
+msgstr "&Add geselecteerd"
+
+msgid "&Add Torrent File...\tCtrl+O"
+msgstr "&Add Torrent File...\tCtrl+O"
+
+msgid "&Add..."
+msgstr "&Add..."
+
+msgid "&Close"
+msgstr "&CLOSE"
+
+msgid "&Connect"
+msgstr "&Connect"
+
+msgid "&Connect...\tCtrl+Shift+C"
+msgstr "&Connect...\tCtrl+Shift+C"
+
+msgid "&Edit..."
+msgstr "&Edit..."
+
+msgid "&File"
+msgstr "&File"
+
+msgid "&Help"
+msgstr "&Help"
+
+msgid "&Indexers to search:"
+msgstr "&Indexers te zoeken:"
+
+msgid "&Indexers:"
+msgstr "&Indexers:"
+
+msgid "&Name:"
+msgstr "&Naam:"
+
+msgid "&Pause\tCtrl+P"
+msgstr "&Pause\tCtrl+P"
+
+msgid "&Remove"
+msgstr "&Verwijderen"
+
+msgid "&Remove\tDel"
+msgstr "&Remove\tDel"
+
+msgid "&Resume\tCtrl+R"
+msgstr "&Resume\tCtrl+R"
+
+msgid "&Search for Torrents...\tCtrl+F"
+msgstr "&Zoeken naar Torrents...\tCtrl+F"
+
+msgid "&Search for:"
+msgstr "&Zoek naar:"
+
+msgid "&Start\tCtrl+S"
+msgstr "&Start\tCtrl+S"
+
+msgid "&Tools"
+msgstr "&Tools"
+
+msgid "&URL:"
+msgstr "&URL:"
+
+msgid "1 feed"
+msgstr "1 voer"
+
+msgid "A Torznab or Newznab search endpoint. Prowlarr: {prowlarr}. Jackett, all trackers at once: {jackett}"
+msgstr "Een Torznab of Newznab zoek eindpunt. {prowlarr}. Jackett, alle trackers tegelijk: {jackett}"
+
+msgid "A Windows desktop torrent manager designed for keyboard-first use and screen readers."
+msgstr "Een Windows desktop torrent manager ontworpen voor toetsenbord-eerste gebruik en schermlezers."
+
+msgid "About this application"
+msgstr "Info over deze toepassing"
+
+msgid "Accept"
+msgstr "Accepteren"
+
+msgid "Action menu opened. Use arrow keys to navigate."
+msgstr "Actiemenu geopend. Gebruik de pijltjestoetsen om te navigeren."
+
+msgid "Active"
+msgstr "Actief"
+
+msgid "Add"
+msgstr "Voeg toe"
+
+msgid "Add &URL/Magnet...\tCtrl+U"
+msgstr "&URL/Magnet...\tCtrl+U toevoegen"
+
+msgid "Add a torrent from a local file"
+msgstr "Een torrent toevoegen uit een lokaal bestand"
+
+msgid "Add a torrent from a URL or Magnet link"
+msgstr "Een torrent toevoegen aan een URL- of Magnet-link"
+
+msgid "Add Connection Profile"
+msgstr "Verbindingsprofiel toevoegen"
+
+msgid "Add created torrent to the currently connected client"
+msgstr "Aangemaakte torrent toevoegen aan de huidige verbonden client"
+
+msgid "Add Feed"
+msgstr "Feed toevoegen"
+
+msgid "Add indexer"
+msgstr "Indexer toevoegen"
+
+msgid "Add Profile"
+msgstr "Profiel toevoegen"
+
+msgid "Add RSS Rule"
+msgstr "RSS-regel toevoegen"
+
+msgid "Add Rule"
+msgstr "Regel toevoegen"
+
+msgid "Add Torrent"
+msgstr "Torrent toevoegen"
+
+msgid "Add Torrent: {name}"
+msgstr "Torrent toevoegen: {name}"
+
+msgid "Add Tracker"
+msgstr "Tracker toevoegen"
+
+msgid "Add/edit/delete profiles and connect"
+msgstr "Profielen toevoegen/bewerken/verwijderen en verbinden"
+
+msgid "Added from RSS: {title}"
+msgstr "Toegevoegd uit RSS: {title}"
+
+msgid "Added your blindDL indexer: {names}."
+msgstr "Uw blindDL indexer toegevoegd: {names}."
+
+msgid "Added your blindDL indexers: {names}."
+msgstr "Uw blindDL indexers toegevoegd: {names}."
+
+msgid "Added {title}"
+msgstr "Toegevoegd {title}"
+
+msgid "Adding created torrent..."
+msgstr "Aangemaakte torrent wordt toegevoegd..."
+
+msgid "Adding magnet link from CLI..."
+msgstr "Magnetenkoppeling van CLI wordt toegevoegd..."
+
+msgid "Adding magnet link..."
+msgstr "Magnetenkoppeling wordt toegevoegd..."
+
+msgid "Adding torrent file from CLI..."
+msgstr "Torrent-bestand van CLI wordt toegevoegd..."
+
+msgid "Adding torrent..."
+msgstr "Torrent wordt toegevoegd..."
+
+msgid "Adding torrent: {title}..."
+msgstr "Torrent wordt toegevoegd: {title}..."
+
+msgid "Adding {count} torrent..."
+msgstr "{count} torrent wordt toegevoegd..."
+
+msgid "Adding {count} torrents..."
+msgstr "{count} torrents toevoegen..."
+
+msgid "After Creation"
+msgstr "Na aanmaak"
+
+msgid "Age"
+msgstr "Leeftijd"
+
+msgid "All"
+msgstr "Alles"
+
+msgid "An indexer needs both a name and a URL."
+msgstr "Een indexer heeft zowel een naam als een URL nodig."
+
+msgid "An update check or install is already in progress."
+msgstr "Een updatecontrole of installatie is al bezig."
+
+msgid "An update is already in progress."
+msgstr "Er is al een update gaande."
+
+msgid "Announce IP (reported to trackers, blank = auto):"
+msgstr "IP aankondigen (aan trackers gemeld, leeg = auto):"
+
+msgid "Another indexer is already called {name}. Choose a different name."
+msgstr "Een andere indexer wordt al {name} genoemd. Kies een andere naam."
+
+msgid "Another instance of SerrebiTorrent is already running."
+msgstr "Een ander voorbeeld van SerrebiTorrent loopt al."
+
+msgid "Anti-leech"
+msgstr "Antileuk"
+
+msgid "API &key:"
+msgstr "API &key:"
+
+msgid "API key"
+msgstr "API-sleutel"
+
+msgid "Application"
+msgstr "Toepassing"
+
+msgid "Apply to Feeds (Uncheck all for Global):"
+msgstr "Toepassen op Feeds (alles verwijderen voor Global):"
+
+msgid "Applying update..."
+msgstr "Bijwerken..."
+
+msgid "Are you sure you want to clear ALL RSS feeds and rules?"
+msgstr "Weet u zeker dat u ALLE RSS-feeds en regels wilt wissen?"
+
+msgid "Associate .torrent and magnet links with this app"
+msgstr "Associate .torrent en magnet links met deze app"
+
+msgid "Association is only supported on Windows for now."
+msgstr "Vereniging wordt alleen ondersteund op Windows voor nu."
+
+msgid "Associations registered successfully!"
+msgstr "Verenigingen met succes geregistreerd!"
+
+msgid "Authentication (if required):"
+msgstr "Authenticatie (indien vereist):"
+
+msgid "Auto"
+msgstr "Automatisch"
+
+msgid "Auto-added from RSS: {title}"
+msgstr "Automatisch toegevoegd van RSS: {title}"
+
+msgid "Auto-start failed: {error}"
+msgstr "Autostart mislukt: {error}"
+
+msgid "Auto-started new torrent(s)"
+msgstr "Automatisch gestarte nieuwe torrent(s)"
+
+msgid "Auto-update is not available for this build."
+msgstr "Auto-update is niet beschikbaar voor deze build."
+
+msgid "Automatically add trackers from URL"
+msgstr "Automatisch trackers van URL toevoegen"
+
+msgid "Automatically start torrents"
+msgstr "Automatisch torrents starten"
+
+msgid "Availability"
+msgstr "Beschikbaarheid"
+
+msgid "Best match"
+msgstr "Beste match"
+
+msgid "Bind Host:"
+msgstr "Bindhost:"
+
+msgid "BitTorrent"
+msgstr "BitTorrent"
+
+msgid "Browse..."
+msgstr "Bladeren..."
+
+msgid "Cancel"
+msgstr "Annuleren"
+
+msgid "Categories"
+msgstr "Categorieën"
+
+msgid "Category"
+msgstr "Categorie"
+
+msgid "Check"
+msgstr "Controleren"
+
+msgid "Check All"
+msgstr "Alles controleren"
+
+msgid "Check for &Updates...\tF5"
+msgstr "Controleer op &Updates...\tF5"
+
+msgid "Check for Updates"
+msgstr "Controleren op updates"
+
+msgid "Check for updates"
+msgstr "Controleren op updates"
+
+msgid "Check for updates automatically on startup"
+msgstr "Controleer automatisch op updates bij opstarten"
+
+msgid "Checking"
+msgstr "Controle"
+
+msgid "Checking for updates..."
+msgstr "Controleren op updates..."
+
+msgid "Choose a profile, then connect or manage it with the buttons below."
+msgstr "Kies een profiel, dan verbinden of beheren met de onderstaande knoppen."
+
+msgid "Choose Download Directory"
+msgstr "Kies Downloadmap"
+
+msgid "Choose Download Folder"
+msgstr "Downloadmap kiezen"
+
+msgid "Client"
+msgstr "Client"
+
+msgid "Client Type"
+msgstr "Clienttype"
+
+msgid "Client Type:"
+msgstr "Clienttype:"
+
+msgid "Close"
+msgstr "Sluiten"
+
+msgid "Close to System Tray"
+msgstr "Dicht bij systeemvak"
+
+msgid "Comment:"
+msgstr "Opmerking:"
+
+msgid "Configure local session and application settings"
+msgstr "Lokale sessie- en toepassingsinstellingen configureren"
+
+msgid "Confirm"
+msgstr "Bevestigen"
+
+msgid "Confirm Reset"
+msgstr "Reset bevestigen"
+
+msgid "Connect"
+msgstr "Verbinden"
+
+msgid "Connect or switch profile"
+msgstr "Profiel verbinden of schakelen"
+
+msgid "Connect to a client before adding torrents."
+msgstr "Verbinden met een client voordat torrents worden toegevoegd."
+
+msgid "Connect to this profile"
+msgstr "Verbinden met dit profiel"
+
+msgid "Connected to {name}"
+msgstr "Verbonden met {name}"
+
+msgid "Connecting..."
+msgstr "Verbinden..."
+
+msgid "Connection"
+msgstr "Verbinding"
+
+msgid "Connection Failed"
+msgstr "Verbinding mislukt"
+
+msgid "Connection Manager"
+msgstr "Verbindingsbeheer"
+
+msgid "Connection Manager..."
+msgstr "Verbindingsbeheer..."
+
+msgid "Connection Manager...\tCtrl+Shift+C"
+msgstr "Verbindingsbeheer..\tCtrl+Shift+C"
+
+msgid "Connection profiles"
+msgstr "Verbindingsprofielen"
+
+msgid "Context / validation:"
+msgstr "Context / validatie:"
+
+msgid "Copied to clipboard"
+msgstr "Naar klembord gekopieerd"
+
+msgid "Copied {count} magnet link."
+msgstr "Gekopiëerde {count} magneetkoppeling."
+
+msgid "Copied {count} magnet links."
+msgstr "Gekopieerde {count} magneetkoppelingen."
+
+msgid "Copy &Info Hash\tCtrl+I"
+msgstr "&Info Hash\tCtrl+I kopiëren"
+
+msgid "Copy &Magnet Link\tCtrl+M"
+msgstr "&Magnet Link\tCtrl+M kopiëren"
+
+msgid "Copy a magnet link for selected torrents"
+msgstr "Kopieer een magneetkoppeling voor geselecteerde torrents"
+
+msgid "Copy Info Hash"
+msgstr "Info Hash kopiëren"
+
+msgid "Copy it from Prowlarr or Jackett's own settings. Leave it empty if the endpoint needs no key."
+msgstr "Kopieer het van Prowlarr of Jacketts eigen instellingen. Laat het leeg als het eindpunt geen sleutel nodig heeft."
+
+msgid "Copy Magnet Link"
+msgstr "Magneetkoppeling kopiëren"
+
+msgid "Copy magnet link to clipboard"
+msgstr "Kopieer magneetkoppeling naar klembord"
+
+msgid "Copy the info hash for selected torrents"
+msgstr "Kopieer de info hash voor geselecteerde torrents"
+
+msgid "Create &Torrent...\tCtrl+N"
+msgstr "&Torrent aanmaken...\tCtrl+N"
+
+msgid "Create a .torrent file from a file or folder"
+msgstr "Een .torrent-bestand maken vanuit een bestand of map"
+
+msgid "Create Profile"
+msgstr "Profiel aanmaken"
+
+msgid "Create Torrent"
+msgstr "Torrent aanmaken"
+
+msgid "Created by:"
+msgstr "Aangemaakt door:"
+
+msgid "Created torrent added"
+msgstr "Torrent toegevoegd"
+
+msgid "Created torrent, but failed to add to client: {error}"
+msgstr "Torrent aangemaakt, maar aan client toegevoegd: {error}"
+
+msgid "Current"
+msgstr "Lopend"
+
+msgid "Dark (Night)"
+msgstr "Donker (nacht)"
+
+msgid "Default"
+msgstr "Standaard"
+
+msgid "Default Download Path:"
+msgstr "Standaard Downloadpad:"
+
+msgid "Delete"
+msgstr "Verwijderen"
+
+msgid "Delete this profile?"
+msgstr "Dit profiel verwijderen?"
+
+msgid "Deselect All"
+msgstr "Alles deselecteren"
+
+msgid "Disconnected"
+msgstr "Verbinding verbroken"
+
+msgid "Down Speed"
+msgstr "Omlaagsnelheid"
+
+msgid "Download folder not available."
+msgstr "Downloadmap niet beschikbaar."
+
+msgid "Download Path"
+msgstr "Pad downloaden"
+
+msgid "Download Path:"
+msgstr "Downloadpad:"
+
+msgid "Download Rate (bytes/s):"
+msgstr "Downloadsnelheid (bytes/s):"
+
+msgid "Downloaded update failed SHA-256 verification."
+msgstr "Gedownloade update mislukt SHA-256 verificatie."
+
+msgid "Downloaded: {percent:.1f}%"
+msgstr "Gedownload: {percent:.1f}%"
+
+msgid "Downloading"
+msgstr "Downloaden"
+
+msgid "Downloading torrent file..."
+msgstr "Torrent-bestand wordt gedownload..."
+
+msgid "Downloading update..."
+msgstr "Downloaden van update..."
+
+msgid "Downloads"
+msgstr "Downloads"
+
+msgid "E&xit"
+msgstr "E&xit"
+
+msgid "Edit"
+msgstr "Bewerken"
+
+msgid "Edit connected qBittorrent settings"
+msgstr "Verbonden qBittorrent-instellingen bewerken"
+
+msgid "Edit connected rTorrent settings"
+msgstr "Gekoppelde rTorrent-instellingen bewerken"
+
+msgid "Edit connected Transmission settings"
+msgstr "Verbonden transmissie-instellingen bewerken"
+
+msgid "Edit indexer"
+msgstr "Indexer bewerken"
+
+msgid "Edit Profile"
+msgstr "Profiel bewerken"
+
+msgid "Edit RSS Rule"
+msgstr "RSS-regel bewerken"
+
+msgid "Edit Rule"
+msgstr "Regel bewerken"
+
+msgid "Enable DHT"
+msgstr "DHT inschakelen"
+
+msgid "Enable Local Service Discovery (LSD)"
+msgstr "Local Service Discovery (LSD) inschakelen"
+
+msgid "Enable NAT-PMP Port Mapping"
+msgstr "NAT-PMP Port Mapping inschakelen"
+
+msgid "Enable UPnP Port Mapping"
+msgstr "UPnP Port Mapping inschakelen"
+
+msgid "Enable Web UI"
+msgstr "Web-UI inschakelen"
+
+msgid "Enabled"
+msgstr "Ingeschakeld"
+
+msgid "English"
+msgstr "Engels"
+
+msgid "Enter a JSON object (e.g. {\"/watched\": \"/home/user\"})."
+msgstr "Voer een JSON-object in (bv. {\"/watched\": \"/home/user\"})."
+
+msgid "Enter adds the selected torrents. Control C copies the magnet link."
+msgstr "Enter voegt de geselecteerde torrents toe. Controle C kopieert de magneetkoppeling."
+
+msgid "Enter edits the selected indexer. Delete removes it."
+msgstr "Enter bewerkt de geselecteerde indexer. Verwijdert verwijdert het."
+
+msgid "Enter Magnet Link or URL:"
+msgstr "Voer Magneetkoppeling of URL in:"
+
+msgid "Enter RSS Feed URL:"
+msgstr "Voer RSS Feed-URL in:"
+
+msgid "Error"
+msgstr "Fout"
+
+msgid "Error adding file: {error}"
+msgstr "Fout bij toevoegen bestand: {error}"
+
+msgid "Error adding URL: {error}"
+msgstr "Fout bij toevoegen URL: {error}"
+
+msgid "Error fetching preferences"
+msgstr "Fout bij het ophalen van voorkeuren"
+
+msgid "Error saving remote settings."
+msgstr "Fout bij het opslaan van externe instellingen."
+
+msgid "Error saving settings."
+msgstr "Fout bij opslaan instellingen."
+
+msgid "Every day"
+msgstr "Elke dag"
+
+msgid "Every Friday"
+msgstr "Elke vrijdag"
+
+msgid "Every Monday"
+msgstr "Elke maandag"
+
+msgid "Every Saturday"
+msgstr "Elke zaterdag"
+
+msgid "Every Sunday"
+msgstr "Elke zondag"
+
+msgid "Every Thursday"
+msgstr "Elke donderdag"
+
+msgid "Every Tuesday"
+msgstr "Elke dinsdag"
+
+msgid "Every Wednesday"
+msgstr "Elke woensdag"
+
+msgid "Every weekday"
+msgstr "Elke werkdag"
+
+msgid "Every weekend"
+msgstr "Elk weekend"
+
+msgid "Exit"
+msgstr "Afsluiten"
+
+msgid "Exit application"
+msgstr "Programma afsluiten"
+
+msgid "Export PO..."
+msgstr "PO exporteren..."
+
+msgid "Extracted update does not contain application files."
+msgstr "Uitgelezen update bevat geen toepassingsbestanden."
+
+msgid "Extracting update..."
+msgstr "Bijwerken..."
+
+msgid "Failed"
+msgstr "Mislukt"
+
+msgid "Failed to access clipboard."
+msgstr "Toegang tot klembord is mislukt."
+
+msgid "Failed to add from RSS: {error}"
+msgstr "Kon niet toevoegen van RSS: {error}"
+
+msgid "Failed to add magnet: {error}"
+msgstr "Kon magneet niet toevoegen: {error}"
+
+msgid "Failed to add torrent: {error}"
+msgstr "Kon torrent niet toevoegen: {error}"
+
+msgid "Failed to add torrents."
+msgstr "Kon torrents niet toevoegen."
+
+msgid "Failed to apply settings: {error}"
+msgstr "Toepassen van instellingen is mislukt: {error}"
+
+msgid "Failed to download torrent from URL: {error}"
+msgstr "Kon torrent niet downloaden van URL: {error}"
+
+msgid "Failed to fetch preferences"
+msgstr "Ophalen voorkeuren mislukt"
+
+msgid "Failed to fetch remote preferences: {error}"
+msgstr "Ophalen van externe voorkeuren is mislukt: {error}"
+
+msgid "Failed to fetch {title}: {error}"
+msgstr "Kon {title} niet ophalen: {error}"
+
+msgid "Failed to load settings."
+msgstr "Kon instellingen niet laden."
+
+msgid "Failed to read torrent file: {error}"
+msgstr "Kon torrentbestand niet lezen: {error}"
+
+msgid "Failed to register associations: {error}"
+msgstr "Registratie van verenigingen mislukt: {error}"
+
+msgid "Failed to retrieve preferences from remote client."
+msgstr "Ophalen voorkeuren van client op afstand is mislukt."
+
+msgid "Failed to retrieve preferences from remote client. The client might not support this feature or there is a connection issue."
+msgstr "Ophalen voorkeuren van client op afstand is mislukt. De client kan deze functie niet ondersteunen of er is een verbinding probleem."
+
+msgid "Failed to update remote preferences: {error}"
+msgstr "Bijwerken van externe voorkeuren is mislukt: {error}"
+
+msgid "Failed to {action} torrent: {error}"
+msgstr "{action} torrent is mislukt: {error}"
+
+msgid "Failed to {action}: {error}"
+msgstr "{action}: {error} is mislukt"
+
+msgid "Fastest upload"
+msgstr "Snelste upload"
+
+msgid "Fetching {name} preferences..."
+msgstr "{name} voorkeuren ophalen..."
+
+msgid "File list not available (Magnet link)."
+msgstr "Bestandenlijst niet beschikbaar (Magnet-link)."
+
+msgid "File..."
+msgstr "Bestand"
+
+msgid "Files"
+msgstr "Bestanden"
+
+msgid "Files:"
+msgstr "Bestanden:"
+
+msgid "Filter:"
+msgstr "Filter:"
+
+msgid "Finished"
+msgstr "Klaar"
+
+msgid "Fixed slots"
+msgstr "Vaste slots"
+
+msgid "Folder..."
+msgstr "Map"
+
+msgid "Force a recheck/verification (if supported)"
+msgstr "Een hercontrole/verificatie forceren (indien ondersteund)"
+
+msgid "Force an immediate tracker announce (if supported)"
+msgstr "Dwing een directe tracker aan te kondigen (indien ondersteund)"
+
+msgid "Force encryption off"
+msgstr "Versleuteling uitschakelen"
+
+msgid "Force encryption on"
+msgstr "Versleuteling forceren aan"
+
+msgid "Force Re&check"
+msgstr "Re&controle forceren"
+
+msgid "Force Reannoun&ce"
+msgstr "Dwing Reannoun&ce"
+
+msgid "Force Reannounce"
+msgstr "Heraanmelding forceren"
+
+msgid "Force Recheck"
+msgstr "Hercontrole forceren"
+
+msgid "General"
+msgstr "Algemeen"
+
+msgid "Global"
+msgstr "Algemeen"
+
+msgid "Global DL Limit (B/s)"
+msgstr "Global DL Limit (B/s)"
+
+msgid "Global Limits (0 or -1 for unlimited):"
+msgstr "Algemene grenswaarden (0 of -1 voor onbeperkt):"
+
+msgid "Global UL Limit (B/s)"
+msgstr "Algemene UL-limiet (B/s)"
+
+msgid "Hash"
+msgstr "Hash"
+
+msgid "Hashing pieces and generating torrent metadata..."
+msgstr "Metadata genereren..."
+
+msgid "High"
+msgstr "Hoog"
+
+msgid "Host:"
+msgstr "Host:"
+
+msgid "HTTP (no auth)"
+msgstr "HTTP (geen auth)"
+
+msgid "HTTP (with auth)"
+msgstr "HTTP (met auth)"
+
+msgid "Import Complete"
+msgstr "Importeren voltooid"
+
+msgid "Import Failed: {error}"
+msgstr "Importeren mislukt: {error}"
+
+msgid "Import FlexGet"
+msgstr "FlexGet importeren"
+
+msgid "Import FlexGet Config"
+msgstr "FlexGet-configuratie importeren"
+
+msgid "Imported {feeds} feeds and {rules} rules."
+msgstr "Geïmporteerde {feeds} feeds en {rules} regels."
+
+msgid "Included trackers (one per line):"
+msgstr "Inclusief trackers (één per lijn):"
+
+msgid "Indexer"
+msgstr "Indexer"
+
+msgid "Indexer name"
+msgstr "Indexeernaam"
+
+msgid "Indexer URL"
+msgstr "Indexer-URL"
+
+msgid "Indexers to search"
+msgstr "Indexers om te zoeken"
+
+msgid "Info"
+msgstr "Informatie"
+
+msgid "Info hash copied to clipboard."
+msgstr "Info hash gekopieerd naar klembord."
+
+msgid "Info Hash: {hash}"
+msgstr "Info Hash: {hash}"
+
+msgid "Install directory not found."
+msgstr "Map installeren niet gevonden."
+
+msgid "Invalid argument: {arg}"
+msgstr "Ongeldig argument: {arg}"
+
+msgid "Invalid credentials."
+msgstr "Ongeldige referenties."
+
+msgid "Invalid integer for {label}: {error}"
+msgstr "Ongeldig geheel getal voor {label}: {error}"
+
+msgid "Invalid JSON for {label}: {error}"
+msgstr "Ongeldig JSON voor {label}: {error}"
+
+msgid "Invalid number for {label}: {error}"
+msgstr "Ongeldig nummer voor {label}: {error}"
+
+msgid "Invalid torrent URL."
+msgstr "Ongeldige torrent URL."
+
+msgid "Language"
+msgstr "Taal"
+
+msgid "Language changes reload this page after saving."
+msgstr "Taalwijzigingen herladen deze pagina na het opslaan."
+
+msgid "Language code:"
+msgstr "Taalcode:"
+
+msgid "Language name:"
+msgstr "Taalnaam:"
+
+msgid "Language:"
+msgstr "Taal:"
+
+msgid "Largest"
+msgstr "Grootste"
+
+msgid "Leave blank to retain the current password."
+msgstr "Laat leeg om het huidige wachtwoord te behouden."
+
+msgid "Leechers"
+msgstr "Bloedzuigers"
+
+msgid "libtorrent is not available. Torrent creation requires python-libtorrent."
+msgstr "libtorrent is niet beschikbaar. Torrent creatie vereist python-libtorrent."
+
+msgid "Light (Classic)"
+msgstr "Licht (Klassiek)"
+
+msgid "Limits"
+msgstr "Grenswaarden"
+
+msgid "Link"
+msgstr "Verband"
+
+msgid "Listening Port:"
+msgstr "Luisterpoort:"
+
+msgid "Loading remote settings..."
+msgstr "Instellingen op afstand laden..."
+
+msgid "Loading..."
+msgstr "Laden..."
+
+msgid "Local libtorrent"
+msgstr "Lokaal librarrent"
+
+msgid "Local Session &Settings...\tCtrl+,"
+msgstr "Lokale sessie &Settings...\tCtrl+,"
+
+msgid "Local session active"
+msgstr "Lokale sessie actief"
+
+msgid "Local Session Settings"
+msgstr "Lokale sessieinstellingen"
+
+msgid "Local Session Settings..."
+msgstr "Lokale sessieinstellingen..."
+
+msgid "Login"
+msgstr "Aanmelden"
+
+msgid "Login - SerrebiTorrent"
+msgstr "Login - SerrebiTorrent"
+
+msgid "Logout"
+msgstr "Afmelden"
+
+msgid "Magnet copied to clipboard."
+msgstr "Magneet gekopieerd naar klembord."
+
+msgid "Magnet Link"
+msgstr "Magneetkoppeling"
+
+msgid "Magnet link added"
+msgstr "Magneetkoppeling toegevoegd"
+
+msgid "Magnet link added from CLI"
+msgstr "Magneetlink toegevoegd door CLI"
+
+msgid "Magnet link(s) copied to clipboard."
+msgstr "Magneetlink(s) gekopieerd naar klembord."
+
+msgid "Magnet: {magnet}"
+msgstr "Magneet: {magnet}"
+
+msgid "Manage Profiles & Connect"
+msgstr "Profielen beheren & Connect"
+
+msgid "Max Connections:"
+msgstr "Max verbindingen:"
+
+msgid "Max Upload Slots:"
+msgstr "Max Upload Slots:"
+
+msgid "Menu closed"
+msgstr "Menu gesloten"
+
+msgid "Menu opened"
+msgstr "Menu geopend"
+
+msgid "Message"
+msgstr "Bericht"
+
+msgid "Metadata (optional)"
+msgstr "Metagegevens (facultatief)"
+
+msgid "Minimize to System Tray"
+msgstr "Minimaliseren naar systeemvak"
+
+msgid "Minimize to Tray"
+msgstr "Minimaliseren naar tray"
+
+msgid "Most seeders"
+msgstr "De meeste zaaimachines"
+
+msgid "My &indexers..."
+msgstr "Mijn &indexers..."
+
+msgid "My indexers..."
+msgstr "Mijn indexers..."
+
+msgid "My Remote Server"
+msgstr "Mijn remote server"
+
+msgid "My torrent indexers"
+msgstr "Mijn torrent indexers"
+
+msgid "N/A"
+msgstr "nvt"
+
+msgid "Name"
+msgstr "Naam"
+
+msgid "Navigation"
+msgstr "Navigatie"
+
+msgid "Navigation Sidebar"
+msgstr "Navigatiezijbalk"
+
+msgid "Needs review"
+msgstr "Behoefte aan herziening"
+
+msgid "Network"
+msgstr "Netwerk"
+
+msgid "Newest"
+msgstr "Nieuwste"
+
+msgid "Next"
+msgstr "Volgende"
+
+msgid "No"
+msgstr "Nee"
+
+msgid "No client connected."
+msgstr "Geen cliënt verbonden."
+
+msgid "No indexers are switched on. Use Search sites."
+msgstr "Er zijn geen indexers ingeschakeld. Gebruik Search sites."
+
+msgid "No regular files found to include in torrent."
+msgstr "Geen reguliere bestanden gevonden om in torrent op te nemen."
+
+msgid "No remote settings available (or Local client active)."
+msgstr "Geen externe instellingen beschikbaar (of lokale client actief)."
+
+msgid "No torrent selected."
+msgstr "Geen torrent geselecteerd."
+
+msgid "No torrents selected to {action}."
+msgstr "Geen torrents geselecteerd voor {action}."
+
+msgid "No torrents selected."
+msgstr "Geen torrents geselecteerd."
+
+msgid "No torrents to start."
+msgstr "Geen torrents om te beginnen."
+
+msgid "No torrents to stop."
+msgstr "Geen torrents om te stoppen."
+
+msgid "No updates available."
+msgstr "Geen updates beschikbaar."
+
+msgid "None"
+msgstr "Geen"
+
+msgid "None (No feeds)"
+msgstr "Geen (geen diervoeders)"
+
+msgid "Normal"
+msgstr "Normaal"
+
+msgid "Not connected to any client."
+msgstr "Niet verbonden met een klant."
+
+msgid "Nothing found. Try fewer words, or switch on more indexers in Search sites."
+msgstr "Niets gevonden. Probeer minder woorden, of schakel meer indexers in Search sites."
+
+msgid "Notifications"
+msgstr "Kennisgevingen"
+
+msgid "Off"
+msgstr "Uit"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "On"
+msgstr "Aan"
+
+msgid "One URL per line (HTTP/HTTPS)."
+msgstr "Eén URL per regel (HTTP/HTTPS)."
+
+msgid "Open Download &Folder"
+msgstr "Download &Folder openen"
+
+msgid "Open Download Folder"
+msgstr "Downloadmap openen"
+
+msgid "Open online translation"
+msgstr "Online vertaling openen"
+
+msgid "Open the download folder (if available)"
+msgstr "De downloadmap openen (indien beschikbaar)"
+
+msgid "Open Torrent File"
+msgstr "Torrent-bestand openen"
+
+msgid "Open {name}"
+msgstr "{name} openen"
+
+msgid "Opened download folder."
+msgstr "Geopend downloadmap."
+
+msgid "Other"
+msgstr "Andere"
+
+msgid "Output .torrent file:"
+msgstr "Uitvoer .torrent-bestand:"
+
+msgid "Output .torrent path is required."
+msgstr "Uitvoer .torrent pad is vereist."
+
+msgid "Password"
+msgstr "Wachtwoord"
+
+msgid "Password:"
+msgstr "Wachtwoord:"
+
+msgid "Path"
+msgstr "Pad"
+
+msgid "Pattern"
+msgstr "Patroon"
+
+msgid "Pause"
+msgstr "Pauze"
+
+msgid "Pause selected torrents"
+msgstr "Geselecteerde torrents pauzeren"
+
+msgid "Pause torrent"
+msgstr "Torrent pauzeren"
+
+msgid "Paused"
+msgstr "Gepauzeerd"
+
+msgid "Pausing torrents..."
+msgstr "Torrents pauzeren..."
+
+msgid "Peer proportional"
+msgstr "Peerproportioneel"
+
+msgid "Peers"
+msgstr "Peers"
+
+msgid "Piece size:"
+msgstr "Stukgrootte:"
+
+msgid "Please select a profile to connect."
+msgstr "Selecteer een profiel om te verbinden."
+
+msgid "Please select at least one torrent first."
+msgstr "Gelieve eerst ten minste één torrent te selecteren."
+
+msgid "Port:"
+msgstr "Poort:"
+
+msgid "Portuguese (Brazil)"
+msgstr "Portugees (Brazilië)"
+
+msgid "Prefer encryption"
+msgstr "Versleuteling prefereren"
+
+msgid "Prefer TCP"
+msgstr "TCP verkiezen"
+
+msgid "Preferences"
+msgstr "Voorkeuren"
+
+msgid "Preparing restart..."
+msgstr "Herstart voorbereiden..."
+
+msgid "Previous"
+msgstr "Vorige"
+
+msgid "Priority"
+msgstr "Prioriteit"
+
+msgid "Private torrent (disables DHT/PEX/LSD in most clients)"
+msgstr "Privé torrent ( schakelt DHT/PEX/LSD in de meeste clients uit)"
+
+msgid "Private trackers work through Prowlarr or Jackett, which\nkeep your tracker logins. SerrebiTorrent stores only this\nURL and key."
+msgstr "Privé-trackers werken via Prowlarr of Jackett, die\nHou je tracker aanmeldt. SerrebiTorrent slaat alleen dit op\nURL en sleutel."
+
+msgid "Profile"
+msgstr "Profiel"
+
+msgid "Profile Name"
+msgstr "Profielnaam"
+
+msgid "Profile Name:"
+msgstr "Profielnaam:"
+
+msgid "PROFILES"
+msgstr "PROFIELS"
+
+msgid "Profiles"
+msgstr "Profielen"
+
+msgid "Progress"
+msgstr "Voortgang"
+
+msgid "Proxy"
+msgstr "Proxy"
+
+msgid "Proxy disabled"
+msgstr "Proxy uitgeschakeld"
+
+msgid "Proxy Type:"
+msgstr "Proxytype:"
+
+msgid "Public tracker list (press Enter to add to Included trackers)."
+msgstr "Public tracker list (press Enter to add to Included trackers)."
+
+msgid "qBittorrent Remote &Settings..."
+msgstr "qBittorrent Remote &Settings..."
+
+msgid "qBittorrent Remote Settings..."
+msgstr "qBittorrent Remote Instellingen..."
+
+msgid "Queue"
+msgstr "Wachtrij"
+
+msgid "Ratio"
+msgstr "Verhouding"
+
+msgid "Reannounce not supported by this client."
+msgstr "Reanimeren niet ondersteund door deze client."
+
+msgid "Reannouncing torrents..."
+msgstr "Torrents herroepen..."
+
+msgid "Recheck not supported by this client."
+msgstr "Hercontroleren wordt niet ondersteund door deze client."
+
+msgid "Rechecking torrents..."
+msgstr "Torrents opnieuw controleren..."
+
+msgid "Refresh"
+msgstr "Verversen"
+
+msgid "Refresh All"
+msgstr "Alles verversen"
+
+msgid "Regex Pattern:"
+msgstr "Regex-patroon:"
+
+msgid "Register &Associations"
+msgstr "Registreer &Associations"
+
+msgid "Reject"
+msgstr "Weigeren"
+
+msgid "Remote Client"
+msgstr "Client op afstand"
+
+msgid "Remote client did not return any recognized preferences."
+msgstr "De client op afstand gaf geen erkende voorkeuren terug."
+
+msgid "Remote settings saved."
+msgstr "Instellingen op afstand opgeslagen."
+
+msgid "Remove"
+msgstr "Verwijderen"
+
+msgid "Remove Feed"
+msgstr "Feed verwijderen"
+
+msgid "Remove feed {url}?"
+msgstr "Voer {url} verwijderen?"
+
+msgid "Remove Selected"
+msgstr "Geselecteerd verwijderen"
+
+msgid "Remove selected torrents"
+msgstr "Geselecteerde torrents verwijderen"
+
+msgid "Remove selected torrents and data"
+msgstr "Verwijder geselecteerde torrents en gegevens"
+
+msgid "Remove torrent"
+msgstr "Torrent verwijderen"
+
+msgid "Remove with &Data\tShift+Del"
+msgstr "Verwijderen met &Data\tShift+ Del"
+
+msgid "Remove with Data"
+msgstr "Verwijderen met gegevens"
+
+msgid "Removed {name}."
+msgstr "Verwijderd {name}."
+
+msgid "Reset failed: {error}"
+msgstr "Reset mislukt: {error}"
+
+msgid "Reset RSS (Clear all feeds and rules)"
+msgstr "RSS resetten (alle feeds en regels wissen)"
+
+msgid "Results"
+msgstr "Resultaten"
+
+msgid "Results, {count} result"
+msgstr "Resultaten, {count} resultaat"
+
+msgid "Results, {count} results"
+msgstr "Resultaten, {count} resultaten"
+
+msgid "Resume"
+msgstr "Hervatten"
+
+msgid "Resume selected torrents"
+msgstr "Geselecteerde torrents hervatten"
+
+msgid "Resuming torrents..."
+msgstr "Hervat torrents..."
+
+msgid "Round-robin"
+msgstr "Rondrobine"
+
+msgid "RSS Articles"
+msgstr "RSS-artikelen"
+
+msgid "RSS data reset successfully."
+msgstr "RSS data reset succesvol."
+
+msgid "RSS Downloader"
+msgstr "RSS-downloader"
+
+msgid "RSS Feeds"
+msgstr "RSS-feeds"
+
+msgid "RSS Rules Manager"
+msgstr "RSS-regelsbeheer"
+
+msgid "RSS Update Interval (s)"
+msgstr "RSS Update Interval (s)"
+
+msgid "RSS Update Interval (seconds):"
+msgstr "RSS Update Interval (seconden):"
+
+msgid "rTorrent Remote &Settings..."
+msgstr "rTorrent Remote &Settings..."
+
+msgid "rTorrent Remote Settings..."
+msgstr "rTorrent Remote Instellingen..."
+
+msgid "Rule Type:"
+msgstr "Regeltype:"
+
+msgid "Rules"
+msgstr "Regels"
+
+msgid "Save App Settings"
+msgstr "Appinstellingen opslaan"
+
+msgid "Save As..."
+msgstr "Opslaan als..."
+
+msgid "Save entry"
+msgstr "item opslaan"
+
+msgid "Save Path"
+msgstr "Pad opslaan"
+
+msgid "Save Path (Optional)"
+msgstr "Pad opslaan (facultatief)"
+
+msgid "Save Path:"
+msgstr "Pad opslaan:"
+
+msgid "Save Remote Settings"
+msgstr "Instellingen op afstand opslaan"
+
+msgid "Save Torrent As"
+msgstr "Torrent opslaan als"
+
+msgid "Scheduler"
+msgstr "Planner"
+
+msgid "Scheduling"
+msgstr "Planning"
+
+msgid "Scope"
+msgstr "Toepassingsgebied"
+
+msgid "Scripts"
+msgstr "Scripts"
+
+msgid "Sea&rch"
+msgstr "Sea&rch"
+
+msgid "Search"
+msgstr "Zoeken"
+
+msgid "Search failed: {error}"
+msgstr "Zoeken mislukt: {error}"
+
+msgid "Search for"
+msgstr "Zoeken"
+
+msgid "Search for Torrents"
+msgstr "Torrents zoeken"
+
+msgid "Search si&tes..."
+msgstr "Si&tes zoeken..."
+
+msgid "Search sites"
+msgstr "Zoek sites"
+
+msgid "Search sites..."
+msgstr "Zoeken naar sites..."
+
+msgid "Search torrent indexers and add what you find"
+msgstr "Torrent indexers zoeken en toevoegen wat je vindt"
+
+msgid "Searching {count} indexer..."
+msgstr "Zoeken naar {count} indexer..."
+
+msgid "Searching {count} indexers..."
+msgstr "Zoeken naar {count} indexers..."
+
+msgid "Seeding"
+msgstr "Zaad"
+
+msgid "Seeds"
+msgstr "Zaden"
+
+msgid "Select"
+msgstr "Selecteren"
+
+msgid "Select &all"
+msgstr "Selecteer &all"
+
+msgid "Select &All\tCtrl+A"
+msgstr "Selecteer &All\tCtrl+A"
+
+msgid "Select &none"
+msgstr "Selecteer &non"
+
+msgid "Select a result first."
+msgstr "Selecteer eerst een resultaat."
+
+msgid "Select a torrent."
+msgstr "Kies een torrent."
+
+msgid "Select All"
+msgstr "Alles selecteren"
+
+msgid "Select all torrents"
+msgstr "Alle torrents selecteren"
+
+msgid "Select File"
+msgstr "Bestand selecteren"
+
+msgid "Select Folder"
+msgstr "Map selecteren"
+
+msgid "Select {name}"
+msgstr "{name} selecteren"
+
+msgid "Selection cleared"
+msgstr "Selectie goedgekeurd"
+
+msgid "Set"
+msgstr "Instellen"
+
+msgid "Set Default"
+msgstr "Standaard instellen"
+
+msgid "Settings"
+msgstr "Instellingen"
+
+msgid "Settings saved."
+msgstr "Instellingen opgeslagen."
+
+msgid "Size"
+msgstr "Grootte"
+
+msgid "Skip"
+msgstr "Overslaan"
+
+msgid "Skip to torrent list"
+msgstr "Skip to torrent list"
+
+msgid "SOCKS4 (no auth)"
+msgstr "SOCKS4 (geen auth)"
+
+msgid "SOCKS5 (no auth)"
+msgstr "SOCKS5 (geen auth)"
+
+msgid "SOCKS5 (with auth)"
+msgstr "SOCKS5 (met auth)"
+
+msgid "Sort &by:"
+msgstr "Sorteer &by:"
+
+msgid "Sort by"
+msgstr "Sorteren op"
+
+msgid "Sorted by {label}."
+msgstr "Gesorteerd door {label}."
+
+msgid "Source (file or folder):"
+msgstr "Bron (bestand of map):"
+
+msgid "Source (written into info dict as 'source'):"
+msgstr "Bron (geschreven in info dict als 'bron'):"
+
+msgid "Source path is required."
+msgstr "Bron pad is vereist."
+
+msgid "Source path must not be a symlink or Windows reparse point."
+msgstr "Bron pad mag geen symbolische koppeling of Windows reparse punt zijn."
+
+msgid "Source text"
+msgstr "Brontekst"
+
+msgid "Source text:"
+msgstr "Brontekst:"
+
+msgid "Speed"
+msgstr "Snelheid"
+
+msgid "Start"
+msgstr "Begin"
+
+msgid "Start All"
+msgstr "Alles starten"
+
+msgid "Start selected torrents"
+msgstr "Geselecteerde torrents starten"
+
+msgid "Starting all torrents..."
+msgstr "Alle torrents starten..."
+
+msgid "Starting torrents..."
+msgstr "Torrents starten..."
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Status Filters"
+msgstr "Statusfilters"
+
+msgid "Stop All"
+msgstr "Alles stoppen"
+
+msgid "Stopped"
+msgstr "Stoppen"
+
+msgid "Stopping all torrents..."
+msgstr "Alle torrents stoppen..."
+
+msgid "Stopping torrents..."
+msgstr "Torrents stoppen..."
+
+msgid "Success"
+msgstr "Succes"
+
+msgid "Switch Profile"
+msgstr "Profiel wisselen"
+
+msgid "Switching client profile..."
+msgstr "Veranderen van clientprofiel..."
+
+msgid "System"
+msgstr "Systeem"
+
+msgid "System default"
+msgstr "Systeemstandaard"
+
+msgid "TCP and uTP"
+msgstr "TCP en uTP"
+
+msgid "Theme"
+msgstr "Thema"
+
+msgid "Those results carry a tracker file rather than a magnet link."
+msgstr "Deze resultaten bevatten een tracker bestand in plaats van een magneet koppeling."
+
+msgid "Time Left"
+msgstr "Links"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Toggle"
+msgstr "Schakel"
+
+msgid "Torrent Actions"
+msgstr "Torrent-acties"
+
+msgid "Torrent actions"
+msgstr "Torrent-acties"
+
+msgid "Torrent added"
+msgstr "Torrent toegevoegd"
+
+msgid "Torrent created:\n{path}"
+msgstr "Torrent aangemaakt:\n{path}"
+
+msgid "Torrent Details"
+msgstr "Torrent Details"
+
+msgid "Torrent download finished after the active profile changed."
+msgstr "Torrent download voltooid na het wijzigen van het actieve profiel."
+
+msgid "Torrent File"
+msgstr "Torrent-bestand"
+
+msgid "Torrent file added from CLI"
+msgstr "Torrent-bestand toegevoegd van CLI"
+
+msgid "Torrent Files"
+msgstr "Torrent-bestanden"
+
+msgid "Torrent files (*.torrent)|*.torrent"
+msgstr "Torrent-bestanden (*.torrent)"
+
+msgid "Torrent List"
+msgstr "Torrent-lijst"
+
+msgid "Torrent Options"
+msgstr "Torrent-opties"
+
+msgid "Torrents"
+msgstr "Torrents"
+
+msgid "torrents"
+msgstr "torrents"
+
+msgid "Tracker List URL:"
+msgstr "Tracker List URL:"
+
+msgid "Trackers"
+msgstr "Trackers"
+
+msgid "Translated"
+msgstr "Vertaald"
+
+msgid "Translation"
+msgstr "Vertaling"
+
+msgid "Translation Center"
+msgstr "Vertaalcentrum"
+
+msgid "Translation:"
+msgstr "Vertaling:"
+
+msgid "Transmission Remote &Settings..."
+msgstr "Transmission Remote &Instellingen..."
+
+msgid "Transmission Remote Settings..."
+msgstr "Transmission Remote Instellingen..."
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Type what to look for first."
+msgstr "Typ eerst wat je zoekt."
+
+msgid "Type what to look for."
+msgstr "Typ wat je zoekt."
+
+msgid "UI Refresh Rate (ms)"
+msgstr "UI Refresh rate (ms)"
+
+msgid "Uncheck"
+msgstr "Uitvinken"
+
+msgid "Uncheck All"
+msgstr "Alles verwijderen"
+
+msgid "Unknown"
+msgstr "Onbekend"
+
+msgid "Untranslated"
+msgstr "Niet vertaald"
+
+msgid "Up Speed"
+msgstr "Snelheid omhoog"
+
+msgid "Update Available"
+msgstr "Beschikbaar bijwerken"
+
+msgid "Update canceled."
+msgstr "Update geannuleerd."
+
+msgid "Update Check Failed"
+msgstr "Controle bijwerken mislukt"
+
+msgid "Update check failed."
+msgstr "Updatecontrole mislukt."
+
+msgid "Update Failed"
+msgstr "Bijwerken mislukt"
+
+msgid "Update failed."
+msgstr "Update mislukt."
+
+msgid "Update helper script not found."
+msgstr "Helpscript bijwerken niet gevonden."
+
+msgid "Update postponed."
+msgstr "Update uitgesteld."
+
+msgid "Update prepared. Closing to install..."
+msgstr "Update voorbereid. Sluiten om te installeren..."
+
+msgid "Update prepared. The app will restart after it exits."
+msgstr "Update voorbereid. De app zal herstarten nadat het is afgesloten."
+
+msgid "Updated executable not found."
+msgstr "Bijgewerkt uitvoerbaar bestand niet gevonden."
+
+msgid "Updates"
+msgstr "Bijwerken"
+
+msgid "Updates are only available in the packaged app."
+msgstr "Updates zijn alleen beschikbaar in de verpakte app."
+
+msgid "Updating SerrebiTorrent"
+msgstr "Bijwerken van SerrebiTorrent"
+
+msgid "Updating..."
+msgstr "Bijwerken..."
+
+msgid "Upload Rate (bytes/s):"
+msgstr "Uploadsnelheid (bytes/s):"
+
+msgid "Upload-rate based"
+msgstr "Op basis van uploadsnelheid"
+
+msgid "URL (e.g. scgi://... or http://...):"
+msgstr "URL-adres (bv. scgi://... of http://...):"
+
+msgid "URL / Path"
+msgstr "URL / pad"
+
+msgid "URL or download path"
+msgstr "URL- of downloadpad"
+
+msgid "URL:Magnet Link"
+msgstr "URL:Magnet-link"
+
+msgid "URLs / Magnets (one per line)"
+msgstr "URL's / magneten (één per regel)"
+
+msgid "Use DyDNS"
+msgstr "DyDNS gebruiken"
+
+msgid "Use NOIP"
+msgstr "NOIP gebruiken"
+
+msgid "Username"
+msgstr "Gebruikersnaam"
+
+msgid "Username:"
+msgstr "Gebruikersnaam:"
+
+msgid "Verifying download..."
+msgstr "Download controleren..."
+
+msgid "Verifying signature..."
+msgstr "Handtekening verifiëren..."
+
+msgid "Warning"
+msgstr "Waarschuwing"
+
+msgid "Web Seeds (optional)"
+msgstr "Webzaden (facultatief)"
+
+msgid "Web UI"
+msgstr "Web-UI"
+
+msgid "YAML files (*.yml;*.yaml)|*.yml;*.yaml"
+msgstr "YAML-bestanden (*.yml;*.yaml)"
+
+msgid "Yes"
+msgstr "Ja."
+
+msgid "You're already on the latest version."
+msgstr "Je bent al op de laatste versie."
+
+msgid "{action} complete"
+msgstr "{action} voltooid"
+
+msgid "{action} complete ({failed} failed). Last error: {error}"
+msgstr "{action} compleet ({failed} mislukt). Laatste fout: {error}"
+
+msgid "{client} Remote Settings"
+msgstr "{client} Remote Instellingen"
+
+msgid "{count} feeds"
+msgstr "{count}-feeds"
+
+msgid "{count} indexer switched on."
+msgstr "{count} indexer ingeschakeld."
+
+msgid "{count} indexers switched on."
+msgstr "{count} indexers ingeschakeld."
+
+msgid "{count} of your own indexer configured."
+msgstr "{count} van uw eigen indexer geconfigureerd."
+
+msgid "{count} of your own indexers configured."
+msgstr "{count} van uw eigen indexers ingesteld."
+
+msgid "{count} result"
+msgstr "{count} resultaat"
+
+msgid "{count} result so far, {pending} still searching. Last: {source}."
+msgstr "{count} resultaat tot nu toe, {pending} nog steeds zoeken. Laatste: {source}."
+
+msgid "{count} results"
+msgstr "{count} resultaten"
+
+msgid "{count} results so far, {pending} still searching. Last: {source}."
+msgstr "{count} resultaten tot nu toe, {pending} nog zoeken. Laatste: {source}."
+
+msgid "{count} torrents"
+msgstr "{count} torrents"
+
+msgid "{name} preferences saved"
+msgstr "{name} voorkeuren opgeslagen"

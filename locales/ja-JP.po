@@ -1,0 +1,1781 @@
+# SerrebiTorrent translation catalog.
+# SPDX-License-Identifier: MIT
+msgid ""
+msgstr ""
+"Project-Id-Version: SerrebiTorrent\\nLanguage: ja-JP\\nX-Language-Name: 日本語\\nMIME-Version: 1.0\\nContent-Type: text/plain; charset=UTF-8\\nContent-Transfer-Encoding: 8bit\\n"
+
+msgid "&About SerrebiTorrent"
+msgstr "&について"
+
+msgid "&Actions"
+msgstr "ジャズアクティビティ &"
+
+msgid "&Add selected"
+msgstr "&追加選択"
+
+msgid "&Add Torrent File...\tCtrl+O"
+msgstr "&追加トレントファイル...\t+O"
+
+msgid "&Add..."
+msgstr "&追加..."
+
+msgid "&Close"
+msgstr "&閉じる"
+
+msgid "&Connect"
+msgstr "&コネクト"
+
+msgid "&Connect...\tCtrl+Shift+C"
+msgstr "&Connect...\tCtrl+シフト+C"
+
+msgid "&Edit..."
+msgstr "&編集..."
+
+msgid "&File"
+msgstr "&Fileの特長"
+
+msgid "&Help"
+msgstr "&Helpの特長"
+
+msgid "&Indexers to search:"
+msgstr "検索する &Indexers:"
+
+msgid "&Indexers:"
+msgstr "&Inデキサ:"
+
+msgid "&Name:"
+msgstr "&Name:"
+
+msgid "&Pause\tCtrl+P"
+msgstr "&Pause\tCtrl+Pの特長"
+
+msgid "&Remove"
+msgstr "&Removeの特長"
+
+msgid "&Remove\tDel"
+msgstr "&Remove\tDELの特長"
+
+msgid "&Resume\tCtrl+R"
+msgstr "&Resume\tCtrl+Rの特長"
+
+msgid "&Search for Torrents...\tCtrl+F"
+msgstr "&Tの検索...\t+F"
+
+msgid "&Search for:"
+msgstr "&Search について:"
+
+msgid "&Start\tCtrl+S"
+msgstr "&スタート\tCtrl+S"
+
+msgid "&Tools"
+msgstr "&ツール"
+
+msgid "&URL:"
+msgstr "&URL:"
+
+msgid "1 feed"
+msgstr "1 フィード"
+
+msgid "A Torznab or Newznab search endpoint. Prowlarr: {prowlarr}. Jackett, all trackers at once: {jackett}"
+msgstr "TorznabまたはNewznab検索エンドポイント。 プロワラー: ZZTOKENZZ0. ジャケット、一度にすべてのトラッカー:{jackett} {prowlarr}"
+
+msgid "A Windows desktop torrent manager designed for keyboard-first use and screen readers."
+msgstr "キーボード・ファーストの使用およびスクリーンの読者のために設計されているWindowsデスクトップのトレントのマネージャー。"
+
+msgid "About this application"
+msgstr "このアプリケーションについて"
+
+msgid "Accept"
+msgstr "お問い合わせ"
+
+msgid "Action menu opened. Use arrow keys to navigate."
+msgstr "アクションメニューが開きます。 矢印キーを使用して移動します。"
+
+msgid "Active"
+msgstr "アクティブ"
+
+msgid "Add"
+msgstr "追加する"
+
+msgid "Add &URL/Magnet...\tCtrl+U"
+msgstr "&URL/Magnet...\t+Uを追加"
+
+msgid "Add a torrent from a local file"
+msgstr "ローカルファイルからトレントを追加"
+
+msgid "Add a torrent from a URL or Magnet link"
+msgstr "URLまたはマグネットリンクからトレントを追加"
+
+msgid "Add Connection Profile"
+msgstr "接続プロファイルの追加"
+
+msgid "Add created torrent to the currently connected client"
+msgstr "現在接続しているクライアントに作成したトレントを追加"
+
+msgid "Add Feed"
+msgstr "フィードを追加"
+
+msgid "Add indexer"
+msgstr "インデックスを追加"
+
+msgid "Add Profile"
+msgstr "プロフィールを追加"
+
+msgid "Add RSS Rule"
+msgstr "RSSルールを追加"
+
+msgid "Add Rule"
+msgstr "ルールを追加"
+
+msgid "Add Torrent"
+msgstr "Torrent を追加"
+
+msgid "Add Torrent: {name}"
+msgstr "トレントを追加: {name}"
+
+msgid "Add Tracker"
+msgstr "トラッカーを追加"
+
+msgid "Add/edit/delete profiles and connect"
+msgstr "プロファイルの追加/編集/削除と接続"
+
+msgid "Added from RSS: {title}"
+msgstr "RSSから追加: {title}"
+
+msgid "Added your blindDL indexer: {names}."
+msgstr "あなたの盲目DLのindexer:{names}を加えて下さい。"
+
+msgid "Added your blindDL indexers: {names}."
+msgstr "ブラインドDL インデックス作成者: {names}."
+
+msgid "Added {title}"
+msgstr "{title}を追加"
+
+msgid "Adding created torrent..."
+msgstr "作成したトレントを追加..."
+
+msgid "Adding magnet link from CLI..."
+msgstr "CLIからマグネットリンクを追加..."
+
+msgid "Adding magnet link..."
+msgstr "マグネットリンクを追加..."
+
+msgid "Adding torrent file from CLI..."
+msgstr "CLIからトレントファイルを追加する..."
+
+msgid "Adding torrent..."
+msgstr "トレントを追加..."
+
+msgid "Adding torrent: {title}..."
+msgstr "トレントを追加する: {title} ..."
+
+msgid "Adding {count} torrent..."
+msgstr "{count} トレントを追加..."
+
+msgid "Adding {count} torrents..."
+msgstr "{count} トレントを追加..."
+
+msgid "After Creation"
+msgstr "創作後"
+
+msgid "Age"
+msgstr "年齢"
+
+msgid "All"
+msgstr "すべて"
+
+msgid "An indexer needs both a name and a URL."
+msgstr "インデックスは、名前とURLの両方を必要とします。"
+
+msgid "An update check or install is already in progress."
+msgstr "アップデートチェックやインストールは進行中です。"
+
+msgid "An update is already in progress."
+msgstr "アップデートは既に進行中です。"
+
+msgid "Announce IP (reported to trackers, blank = auto):"
+msgstr "IPを発表(トラッカー、空白 = 自動に報告):"
+
+msgid "Another indexer is already called {name}. Choose a different name."
+msgstr "既に{name} と呼びます。 別の名前を選択してください。"
+
+msgid "Another instance of SerrebiTorrent is already running."
+msgstr "SerrebiTorrent の別のインスタンスは既に実行中です。"
+
+msgid "Anti-leech"
+msgstr "アンチリーナ"
+
+msgid "API &key:"
+msgstr "APIの&key:"
+
+msgid "API key"
+msgstr "APIキー"
+
+msgid "Application"
+msgstr "アプリケーション"
+
+msgid "Apply to Feeds (Uncheck all for Global):"
+msgstr "フィードに適用(グローバルですべてチェックしない):"
+
+msgid "Applying update..."
+msgstr "アップデートの適用"
+
+msgid "Are you sure you want to clear ALL RSS feeds and rules?"
+msgstr "すべてのRSSフィードとルールをクリアしたいですか?"
+
+msgid "Associate .torrent and magnet links with this app"
+msgstr ".torrent と磁石のリンクをこのアプリと関連付ける"
+
+msgid "Association is only supported on Windows for now."
+msgstr "現在はWindowsでのみ対応しております。"
+
+msgid "Associations registered successfully!"
+msgstr "協会が正常に登録された!"
+
+msgid "Authentication (if required):"
+msgstr "認証(必要に応じて):"
+
+msgid "Auto"
+msgstr "オートマチック"
+
+msgid "Auto-added from RSS: {title}"
+msgstr "RSSから自動追加: {title}"
+
+msgid "Auto-start failed: {error}"
+msgstr "自動起動失敗: ZZTOKENZZ {error}"
+
+msgid "Auto-started new torrent(s)"
+msgstr "自動開始された新しいトレント(s)"
+
+msgid "Auto-update is not available for this build."
+msgstr "このビルドでは自動更新は利用できません。"
+
+msgid "Automatically add trackers from URL"
+msgstr "URLからトラッカーを自動的に追加"
+
+msgid "Automatically start torrents"
+msgstr "自動的にトレントを開始します"
+
+msgid "Availability"
+msgstr "交通アクセス"
+
+msgid "Best match"
+msgstr "ベストマッチ"
+
+msgid "Bind Host:"
+msgstr "ホストを結合して下さい:"
+
+msgid "BitTorrent"
+msgstr "ビットトレント"
+
+msgid "Browse..."
+msgstr "ブラウザ"
+
+msgid "Cancel"
+msgstr "キャンセル"
+
+msgid "Categories"
+msgstr "カテゴリー"
+
+msgid "Category"
+msgstr "カテゴリー"
+
+msgid "Check"
+msgstr "チェックイン"
+
+msgid "Check All"
+msgstr "すべてチェック"
+
+msgid "Check for &Updates...\tF5"
+msgstr "&Updatesのチェック...\tF5"
+
+msgid "Check for Updates"
+msgstr "アップデートの確認"
+
+msgid "Check for updates"
+msgstr "アップデートの確認"
+
+msgid "Check for updates automatically on startup"
+msgstr "起動時に自動的に更新をチェック"
+
+msgid "Checking"
+msgstr "チェックイン"
+
+msgid "Checking for updates..."
+msgstr "アップデートの確認"
+
+msgid "Choose a profile, then connect or manage it with the buttons below."
+msgstr "プロファイルを選択し、下のボタンで接続または管理します。"
+
+msgid "Choose Download Directory"
+msgstr "ダウンロードディレクトリを選択"
+
+msgid "Choose Download Folder"
+msgstr "ダウンロードフォルダを選択"
+
+msgid "Client"
+msgstr "クライアント"
+
+msgid "Client Type"
+msgstr "クライアントタイプ"
+
+msgid "Client Type:"
+msgstr "クライアントタイプ:"
+
+msgid "Close"
+msgstr "ふりがな"
+
+msgid "Close to System Tray"
+msgstr "システムトレイを閉じる"
+
+msgid "Comment:"
+msgstr "コメント:"
+
+msgid "Configure local session and application settings"
+msgstr "ローカルセッションとアプリケーションの設定"
+
+msgid "Confirm"
+msgstr "お問い合わせ"
+
+msgid "Confirm Reset"
+msgstr "リセットを確認する"
+
+msgid "Connect"
+msgstr "コネクト"
+
+msgid "Connect or switch profile"
+msgstr "プロフィールを接続するか、または転換して下さい"
+
+msgid "Connect to a client before adding torrents."
+msgstr "トレントを追加する前にクライアントに接続します。"
+
+msgid "Connect to this profile"
+msgstr "このプロフィールに接続する"
+
+msgid "Connected to {name}"
+msgstr "{name}に接続する"
+
+msgid "Connecting..."
+msgstr "つながる..."
+
+msgid "Connection"
+msgstr "コネクション"
+
+msgid "Connection Failed"
+msgstr "接続失敗"
+
+msgid "Connection Manager"
+msgstr "接続マネージャ"
+
+msgid "Connection Manager..."
+msgstr "接続マネージャ..."
+
+msgid "Connection Manager...\tCtrl+Shift+C"
+msgstr "接続マネージャ...\tCtrl+Shift+C"
+
+msgid "Connection profiles"
+msgstr "接続プロファイル"
+
+msgid "Context / validation:"
+msgstr "コンテキスト/検証:"
+
+msgid "Copied to clipboard"
+msgstr "クリップボードにコピー"
+
+msgid "Copied {count} magnet link."
+msgstr "Copied {count}の磁石リンク。"
+
+msgid "Copied {count} magnet links."
+msgstr "コピッド{count}マグネットリンク"
+
+msgid "Copy &Info Hash\tCtrl+I"
+msgstr "コピー&Info Hash\tCtrl+I"
+
+msgid "Copy &Magnet Link\tCtrl+M"
+msgstr "コピー&Magnet Link\tCtrl+M"
+
+msgid "Copy a magnet link for selected torrents"
+msgstr "選択したトレント用のマグネットリンクをコピーする"
+
+msgid "Copy Info Hash"
+msgstr "コピー情報ハッシュ"
+
+msgid "Copy it from Prowlarr or Jackett's own settings. Leave it empty if the endpoint needs no key."
+msgstr "Prowlarr や Jackett 独自の設定からコピーします。 エンドポイントがキーを必要としない場合、空にします。"
+
+msgid "Copy Magnet Link"
+msgstr "コピーマグネットリンク"
+
+msgid "Copy magnet link to clipboard"
+msgstr "マグネットリンクをクリップボードにコピーする"
+
+msgid "Copy the info hash for selected torrents"
+msgstr "選択したトレントの情報をコピーする"
+
+msgid "Create &Torrent...\tCtrl+N"
+msgstr "&Torrentを作成します。...\t+N"
+
+msgid "Create a .torrent file from a file or folder"
+msgstr "ファイルまたはフォルダーから .torrent ファイルを作成する"
+
+msgid "Create Profile"
+msgstr "プロフィールを作成する"
+
+msgid "Create Torrent"
+msgstr "Torrent の作成"
+
+msgid "Created by:"
+msgstr "作者:"
+
+msgid "Created torrent added"
+msgstr "作成されたトレントを追加"
+
+msgid "Created torrent, but failed to add to client: {error}"
+msgstr "トレントを作成しましたが、クライアントに追加できませんでした: {error}"
+
+msgid "Current"
+msgstr "現在の位置:"
+
+msgid "Dark (Night)"
+msgstr "ダーク(夜)"
+
+msgid "Default"
+msgstr "デフォルト"
+
+msgid "Default Download Path:"
+msgstr "デフォルトダウンロードパス:"
+
+msgid "Delete"
+msgstr "削除"
+
+msgid "Delete this profile?"
+msgstr "このプロファイルを削除しますか?"
+
+msgid "Deselect All"
+msgstr "すべて選択解除"
+
+msgid "Disconnected"
+msgstr "接続解除"
+
+msgid "Down Speed"
+msgstr "速度を下げて下さい"
+
+msgid "Download folder not available."
+msgstr "フォルダをダウンロードできません。"
+
+msgid "Download Path"
+msgstr "パスをダウンロード"
+
+msgid "Download Path:"
+msgstr "パスをダウンロード:"
+
+msgid "Download Rate (bytes/s):"
+msgstr "ダウンロード率(バイト/秒):"
+
+msgid "Downloaded update failed SHA-256 verification."
+msgstr "ダウンロードしたアップデートでSHA-256認証が失敗しました。"
+
+msgid "Downloaded: {percent:.1f}%"
+msgstr "ダウンロード: {percent:.1f}%"
+
+msgid "Downloading"
+msgstr "ダウンロード"
+
+msgid "Downloading torrent file..."
+msgstr "トレントファイルをダウンロード..."
+
+msgid "Downloading update..."
+msgstr "ダウンロード更新..."
+
+msgid "Downloads"
+msgstr "ダウンロード"
+
+msgid "E&xit"
+msgstr "E&Xitの特長"
+
+msgid "Edit"
+msgstr "編集"
+
+msgid "Edit connected qBittorrent settings"
+msgstr "接続された qBittorrent の設定を編集する"
+
+msgid "Edit connected rTorrent settings"
+msgstr "接続された rTorrent の設定を編集する"
+
+msgid "Edit connected Transmission settings"
+msgstr "接続された伝送設定の編集"
+
+msgid "Edit indexer"
+msgstr "インデックス作成"
+
+msgid "Edit Profile"
+msgstr "編集プロファイル"
+
+msgid "Edit RSS Rule"
+msgstr "RSSルールの編集"
+
+msgid "Edit Rule"
+msgstr "ルールの編集"
+
+msgid "Enable DHT"
+msgstr "DHTを有効にする"
+
+msgid "Enable Local Service Discovery (LSD)"
+msgstr "ローカルサービスディスカバリーを有効にする (LSD)"
+
+msgid "Enable NAT-PMP Port Mapping"
+msgstr "NAT-PMPポートマッピングを有効にする"
+
+msgid "Enable UPnP Port Mapping"
+msgstr "UPnPポートマッピングを有効にする"
+
+msgid "Enable Web UI"
+msgstr "Web UIを有効にする"
+
+msgid "Enabled"
+msgstr "有効化"
+
+msgid "English"
+msgstr "日本語 English"
+
+msgid "Enter a JSON object (e.g. {\"/watched\": \"/home/user\"})."
+msgstr "JSONオブジェクト({\"/watched\": \"/home/user\"}など)を入力します。"
+
+msgid "Enter adds the selected torrents. Control C copies the magnet link."
+msgstr "選択したトレントを追加します。 C は磁石リンクをコピーします。"
+
+msgid "Enter edits the selected indexer. Delete removes it."
+msgstr "選択したインデックスを編集します。 削除します。"
+
+msgid "Enter Magnet Link or URL:"
+msgstr "マグネットリンクまたはURLを入力してください。"
+
+msgid "Enter RSS Feed URL:"
+msgstr "RSSフィードURLを入力してください:"
+
+msgid "Error"
+msgstr "エラー"
+
+msgid "Error adding file: {error}"
+msgstr "ファイルを追加するエラー: {error}"
+
+msgid "Error adding URL: {error}"
+msgstr "URLを追加するエラー: {error}"
+
+msgid "Error fetching preferences"
+msgstr "エラー取得の好み"
+
+msgid "Error saving remote settings."
+msgstr "リモート設定を解除するエラー。"
+
+msgid "Error saving settings."
+msgstr "エラー保存の設定。"
+
+msgid "Every day"
+msgstr "日替わり"
+
+msgid "Every Friday"
+msgstr "毎週金曜日"
+
+msgid "Every Monday"
+msgstr "毎週月曜日"
+
+msgid "Every Saturday"
+msgstr "毎週土曜日"
+
+msgid "Every Sunday"
+msgstr "毎週日曜日"
+
+msgid "Every Thursday"
+msgstr "毎週木曜日"
+
+msgid "Every Tuesday"
+msgstr "毎週火曜日"
+
+msgid "Every Wednesday"
+msgstr "毎週水曜日"
+
+msgid "Every weekday"
+msgstr "毎週日曜日"
+
+msgid "Every weekend"
+msgstr "毎週日曜日"
+
+msgid "Exit"
+msgstr "アクセス"
+
+msgid "Exit application"
+msgstr "出口の塗布"
+
+msgid "Export PO..."
+msgstr "輸出PO ..."
+
+msgid "Extracted update does not contain application files."
+msgstr "抽出された更新はアプリケーションファイルを含んでいません。"
+
+msgid "Extracting update..."
+msgstr "抽出の更新..."
+
+msgid "Failed"
+msgstr "失敗した"
+
+msgid "Failed to access clipboard."
+msgstr "クリップボードにアクセスできない。"
+
+msgid "Failed to add from RSS: {error}"
+msgstr "RSSから追加できなかった: {error}"
+
+msgid "Failed to add magnet: {error}"
+msgstr "磁石を追加する失敗: {error}"
+
+msgid "Failed to add torrent: {error}"
+msgstr "トレントを追加する失敗: {error}"
+
+msgid "Failed to add torrents."
+msgstr "トレントを追加する失敗。"
+
+msgid "Failed to apply settings: {error}"
+msgstr "設定を適用する失敗: {error}"
+
+msgid "Failed to download torrent from URL: {error}"
+msgstr "URLからトレントをダウンロードできない: {error}"
+
+msgid "Failed to fetch preferences"
+msgstr "好みをフェッチする失敗"
+
+msgid "Failed to fetch remote preferences: {error}"
+msgstr "リモート設定を取得できなかった: {error}"
+
+msgid "Failed to fetch {title}: {error}"
+msgstr "{title}をフェッチする失敗:{error}"
+
+msgid "Failed to load settings."
+msgstr "設定をロードできませんでした。"
+
+msgid "Failed to read torrent file: {error}"
+msgstr "トレントファイルを読むのに失敗しました: {error}"
+
+msgid "Failed to register associations: {error}"
+msgstr "{error}ZZ の登録に失敗しました"
+
+msgid "Failed to retrieve preferences from remote client."
+msgstr "リモートクライアントから設定を取得できません。"
+
+msgid "Failed to retrieve preferences from remote client. The client might not support this feature or there is a connection issue."
+msgstr "リモートクライアントから設定を取得できません。 クライアントは、この機能をサポートしていないか、接続の問題が発生する可能性があります。"
+
+msgid "Failed to update remote preferences: {error}"
+msgstr "リモート設定を更新できなかった: {error}"
+
+msgid "Failed to {action} torrent: {error}"
+msgstr "{action} トレントに失敗: {error}"
+
+msgid "Failed to {action}: {error}"
+msgstr "{action}に失敗:{error}"
+
+msgid "Fastest upload"
+msgstr "最速アップロード"
+
+msgid "Fetching {name} preferences..."
+msgstr "Fetching {name} 好み..."
+
+msgid "File list not available (Magnet link)."
+msgstr "ファイルリストは利用できません(Magnetリンク)。"
+
+msgid "File..."
+msgstr "ファイル..."
+
+msgid "Files"
+msgstr "ファイル"
+
+msgid "Files:"
+msgstr "ファイル:"
+
+msgid "Filter:"
+msgstr "フィルター:"
+
+msgid "Finished"
+msgstr "仕上げ"
+
+msgid "Fixed slots"
+msgstr "固定スロット"
+
+msgid "Folder..."
+msgstr "フォルダ..."
+
+msgid "Force a recheck/verification (if supported)"
+msgstr "再チェック/検証を強制する(サポートされている場合)"
+
+msgid "Force an immediate tracker announce (if supported)"
+msgstr "即時追跡者発表を強制する(サポートされている場合)"
+
+msgid "Force encryption off"
+msgstr "強制暗号化オフ"
+
+msgid "Force encryption on"
+msgstr "強制暗号化"
+
+msgid "Force Re&check"
+msgstr "力のRe&check"
+
+msgid "Force Reannoun&ce"
+msgstr "力 Reannoun&ce"
+
+msgid "Force Reannounce"
+msgstr "力の再発"
+
+msgid "Force Recheck"
+msgstr "強制再チェック"
+
+msgid "General"
+msgstr "インフォメーション"
+
+msgid "Global"
+msgstr "グローバル"
+
+msgid "Global DL Limit (B/s)"
+msgstr "グローバルDLリミット(B/s)"
+
+msgid "Global Limits (0 or -1 for unlimited):"
+msgstr "グローバルリミット (0 または -1 無制限):"
+
+msgid "Global UL Limit (B/s)"
+msgstr "グローバルULリミット(B/s)"
+
+msgid "Hash"
+msgstr "ハッシュ"
+
+msgid "Hashing pieces and generating torrent metadata..."
+msgstr "ハッシュピースとトレントメタデータを生成する..."
+
+msgid "High"
+msgstr "高い"
+
+msgid "Host:"
+msgstr "ホスト:"
+
+msgid "HTTP (no auth)"
+msgstr "HTTP(authなし)"
+
+msgid "HTTP (with auth)"
+msgstr "HTTP (auth で)"
+
+msgid "Import Complete"
+msgstr "インポート完了"
+
+msgid "Import Failed: {error}"
+msgstr "インポート失敗:ZZTOKENZZ {error}"
+
+msgid "Import FlexGet"
+msgstr "インポート FlexGet"
+
+msgid "Import FlexGet Config"
+msgstr "インポート FlexGet Config"
+
+msgid "Imported {feeds} feeds and {rules} rules."
+msgstr "{feeds}フィードと{rules}ルールをインポートしました。"
+
+msgid "Included trackers (one per line):"
+msgstr "含まれている追跡者(ラインごとの1つ):"
+
+msgid "Indexer"
+msgstr "インデックス"
+
+msgid "Indexer name"
+msgstr "インデックス名"
+
+msgid "Indexer URL"
+msgstr "インデックス URL"
+
+msgid "Indexers to search"
+msgstr "検索するインデックス"
+
+msgid "Info"
+msgstr "インフォメーション"
+
+msgid "Info hash copied to clipboard."
+msgstr "情報ハッシュはクリップボードにコピーしました。"
+
+msgid "Info Hash: {hash}"
+msgstr "情報ハッシュ:{hash}"
+
+msgid "Install directory not found."
+msgstr "ディレクトリが見つかりません。"
+
+msgid "Invalid argument: {arg}"
+msgstr "無効な引数: ZZTOKENZZ {arg}"
+
+msgid "Invalid credentials."
+msgstr "無効な資格情報。"
+
+msgid "Invalid integer for {label}: {error}"
+msgstr "{label}のための無効な整数:{error}"
+
+msgid "Invalid JSON for {label}: {error}"
+msgstr "{label}のための無効なJSON:{error}"
+
+msgid "Invalid number for {label}: {error}"
+msgstr "ZZTOKENZZのための無効な番号:{error} {label}"
+
+msgid "Invalid torrent URL."
+msgstr "無効なトレントURL。"
+
+msgid "Language"
+msgstr "用語集"
+
+msgid "Language changes reload this page after saving."
+msgstr "保存後にこのページをリロードする言語変更。"
+
+msgid "Language code:"
+msgstr "言語コード:"
+
+msgid "Language name:"
+msgstr "言語名:"
+
+msgid "Language:"
+msgstr "言語:"
+
+msgid "Largest"
+msgstr "スタンダード"
+
+msgid "Leave blank to retain the current password."
+msgstr "現在のパスワードを保持するために空白のままにします。"
+
+msgid "Leechers"
+msgstr "リーチャーズ"
+
+msgid "libtorrent is not available. Torrent creation requires python-libtorrent."
+msgstr "libtorrent は利用できません。 トレント作成には、python-libtorrent が必要です。"
+
+msgid "Light (Classic)"
+msgstr "ライト(クラシック)"
+
+msgid "Limits"
+msgstr "制限事項"
+
+msgid "Link"
+msgstr "サイトマップ"
+
+msgid "Listening Port:"
+msgstr "リスニングポート:"
+
+msgid "Loading remote settings..."
+msgstr "リモート設定をロードする..."
+
+msgid "Loading..."
+msgstr "ローディング..."
+
+msgid "Local libtorrent"
+msgstr "ローカル libtorrent"
+
+msgid "Local Session &Settings...\tCtrl+,"
+msgstr "ローカルセッション&Settings...\t+,"
+
+msgid "Local session active"
+msgstr "ローカルセッションのアクティブ"
+
+msgid "Local Session Settings"
+msgstr "ローカルセッション設定"
+
+msgid "Local Session Settings..."
+msgstr "ローカルセッション設定..."
+
+msgid "Login"
+msgstr "ログイン"
+
+msgid "Login - SerrebiTorrent"
+msgstr "ログイン - SerrebiTorrent"
+
+msgid "Logout"
+msgstr "ログイン"
+
+msgid "Magnet copied to clipboard."
+msgstr "マグネットはクリップボードにコピーしました。"
+
+msgid "Magnet Link"
+msgstr "マグネットリンク"
+
+msgid "Magnet link added"
+msgstr "マグネットリンク追加"
+
+msgid "Magnet link added from CLI"
+msgstr "CLIから追加されたマグネットリンク"
+
+msgid "Magnet link(s) copied to clipboard."
+msgstr "クリップボードにコピーされるマグネットリンク。"
+
+msgid "Magnet: {magnet}"
+msgstr "マグネット:{magnet}"
+
+msgid "Manage Profiles & Connect"
+msgstr "プロフィールを管理 & Connect"
+
+msgid "Max Connections:"
+msgstr "最高の関係:"
+
+msgid "Max Upload Slots:"
+msgstr "最高のアップロード スロット:"
+
+msgid "Menu closed"
+msgstr "メニュー閉じる"
+
+msgid "Menu opened"
+msgstr "メニューが開きます"
+
+msgid "Message"
+msgstr "メッセージ"
+
+msgid "Metadata (optional)"
+msgstr "メタデータ(オプション)"
+
+msgid "Minimize to System Tray"
+msgstr "システムトレイへの最小化"
+
+msgid "Minimize to Tray"
+msgstr "トレイへの最小化"
+
+msgid "Most seeders"
+msgstr "ほとんどのシーダー"
+
+msgid "My &indexers..."
+msgstr "私の&indexers..."
+
+msgid "My indexers..."
+msgstr "私のインデックス"
+
+msgid "My Remote Server"
+msgstr "私のリモートサーバー"
+
+msgid "My torrent indexers"
+msgstr "私のトレントインデックス"
+
+msgid "N/A"
+msgstr "N・A"
+
+msgid "Name"
+msgstr "お名前 (必須)"
+
+msgid "Navigation"
+msgstr "ナビゲーション"
+
+msgid "Navigation Sidebar"
+msgstr "ナビゲーションサイドバー"
+
+msgid "Needs review"
+msgstr "ニーズレビュー"
+
+msgid "Network"
+msgstr "ネットワーク"
+
+msgid "Newest"
+msgstr "新着情報"
+
+msgid "Next"
+msgstr "次へ"
+
+msgid "No"
+msgstr "なし"
+
+msgid "No client connected."
+msgstr "クライアントは接続しません。"
+
+msgid "No indexers are switched on. Use Search sites."
+msgstr "インデックスは切り替えられません。 検索サイトの利用"
+
+msgid "No regular files found to include in torrent."
+msgstr "トレントに含まれている規則的なファイルはありません。"
+
+msgid "No remote settings available (or Local client active)."
+msgstr "リモート設定なし(またはローカルクライアントアクティブ)。"
+
+msgid "No torrent selected."
+msgstr "選択したトレントはありません。"
+
+msgid "No torrents selected to {action}."
+msgstr "ZZTOKENZZ0に選ばれたトレントはありません。 {action}"
+
+msgid "No torrents selected."
+msgstr "選択したトレントはありません。"
+
+msgid "No torrents to start."
+msgstr "起動するトレントはありません。"
+
+msgid "No torrents to stop."
+msgstr "停止するトレントはありません。"
+
+msgid "No updates available."
+msgstr "アップデートはありません。"
+
+msgid "None"
+msgstr "なし"
+
+msgid "None (No feeds)"
+msgstr "なし(フィードなし)"
+
+msgid "Normal"
+msgstr "ノーマル"
+
+msgid "Not connected to any client."
+msgstr "クライアントに接続されていない"
+
+msgid "Nothing found. Try fewer words, or switch on more indexers in Search sites."
+msgstr "コメントはありません。 少数の単語を試したり、検索サイトでより多くのインデックスを切り替えたりしてください。"
+
+msgid "Notifications"
+msgstr "お知らせ"
+
+msgid "Off"
+msgstr "オフ"
+
+msgid "OK"
+msgstr "お問い合わせ"
+
+msgid "On"
+msgstr "お問い合わせ"
+
+msgid "One URL per line (HTTP/HTTPS)."
+msgstr "1行あたりのURL(HTTP/HTTPS)"
+
+msgid "Open Download &Folder"
+msgstr "ダウンロード &Folder"
+
+msgid "Open Download Folder"
+msgstr "ダウンロードフォルダを開く"
+
+msgid "Open online translation"
+msgstr "オンライン翻訳を開く"
+
+msgid "Open the download folder (if available)"
+msgstr "ダウンロードフォルダを開きます(利用可能な場合)"
+
+msgid "Open Torrent File"
+msgstr "Torrent ファイルを開きます"
+
+msgid "Open {name}"
+msgstr "{name}オープン"
+
+msgid "Opened download folder."
+msgstr "ダウンロードフォルダを開きます。"
+
+msgid "Other"
+msgstr "その他"
+
+msgid "Output .torrent file:"
+msgstr "出力 .torrent ファイル:"
+
+msgid "Output .torrent path is required."
+msgstr "出力 .torrent パスが必要です。"
+
+msgid "Password"
+msgstr "パスワード"
+
+msgid "Password:"
+msgstr "パスワード:"
+
+msgid "Path"
+msgstr "パス"
+
+msgid "Pattern"
+msgstr "パターン"
+
+msgid "Pause"
+msgstr "パデュース"
+
+msgid "Pause selected torrents"
+msgstr "パユース選択したトレント"
+
+msgid "Pause torrent"
+msgstr "パユーストレント"
+
+msgid "Paused"
+msgstr "パユース"
+
+msgid "Pausing torrents..."
+msgstr "トレントをパユース..."
+
+msgid "Peer proportional"
+msgstr "ピアの比例"
+
+msgid "Peers"
+msgstr "ピーラー"
+
+msgid "Piece size:"
+msgstr "部分のサイズ:"
+
+msgid "Please select a profile to connect."
+msgstr "接続するプロファイルを選択してください。"
+
+msgid "Please select at least one torrent first."
+msgstr "まずは、少なくとも1つのトレントを選択してください。"
+
+msgid "Port:"
+msgstr "港:"
+
+msgid "Portuguese (Brazil)"
+msgstr "ポルトガル語(ブラジル)"
+
+msgid "Prefer encryption"
+msgstr "プリファー暗号化"
+
+msgid "Prefer TCP"
+msgstr "プリファーTCP"
+
+msgid "Preferences"
+msgstr "リファレンス"
+
+msgid "Preparing restart..."
+msgstr "再起動の準備..."
+
+msgid "Previous"
+msgstr "新着情報"
+
+msgid "Priority"
+msgstr "優先順位"
+
+msgid "Private torrent (disables DHT/PEX/LSD in most clients)"
+msgstr "プライベートトレント(ほとんどのクライアントでDHT/PEX/LSDを無効に)"
+
+msgid "Private trackers work through Prowlarr or Jackett, which\nkeep your tracker logins. SerrebiTorrent stores only this\nURL and key."
+msgstr "プライベートトラッカーは、Prowlarr や Jackett を通じて動作します。\nトラッカーのログインを保存します。 SerrebiTorrent ストアのみ\nURLとキー。"
+
+msgid "Profile"
+msgstr "プロフィール"
+
+msgid "Profile Name"
+msgstr "プロフィール名"
+
+msgid "Profile Name:"
+msgstr "プロフィールの名前:"
+
+msgid "PROFILES"
+msgstr "プロフィール"
+
+msgid "Profiles"
+msgstr "プロフィール"
+
+msgid "Progress"
+msgstr "プロジェクト"
+
+msgid "Proxy"
+msgstr "プロキシ"
+
+msgid "Proxy disabled"
+msgstr "プロキシ無効"
+
+msgid "Proxy Type:"
+msgstr "プロキシタイプ:"
+
+msgid "Public tracker list (press Enter to add to Included trackers)."
+msgstr "パブリックトラッカーリスト(含まれているトラッカーに追加するために Enter を押します)。"
+
+msgid "qBittorrent Remote &Settings..."
+msgstr "qBittorrentリモート&Settings..."
+
+msgid "qBittorrent Remote Settings..."
+msgstr "qBittorrentリモート設定..."
+
+msgid "Queue"
+msgstr "キュー"
+
+msgid "Ratio"
+msgstr "レポート"
+
+msgid "Reannounce not supported by this client."
+msgstr "このクライアントではサポートされていないリリース。"
+
+msgid "Reannouncing torrents..."
+msgstr "トレントを強化する..."
+
+msgid "Recheck not supported by this client."
+msgstr "このクライアントではサポートされていないことを確認してください。"
+
+msgid "Rechecking torrents..."
+msgstr "トレントのチェック..."
+
+msgid "Refresh"
+msgstr "リフレッシュ"
+
+msgid "Refresh All"
+msgstr "すべて更新"
+
+msgid "Regex Pattern:"
+msgstr "Regex パターン:"
+
+msgid "Register &Associations"
+msgstr "&Associationsを登録する"
+
+msgid "Reject"
+msgstr "リジェクト"
+
+msgid "Remote Client"
+msgstr "リモートクライアント"
+
+msgid "Remote client did not return any recognized preferences."
+msgstr "リモートクライアントは、認識された設定を返さなかった。"
+
+msgid "Remote settings saved."
+msgstr "リモート設定を保存しました。"
+
+msgid "Remove"
+msgstr "削除"
+
+msgid "Remove Feed"
+msgstr "フィードの削除"
+
+msgid "Remove feed {url}?"
+msgstr "フィード{url}を削除しますか?"
+
+msgid "Remove Selected"
+msgstr "選択解除"
+
+msgid "Remove selected torrents"
+msgstr "選択したトレントを削除します"
+
+msgid "Remove selected torrents and data"
+msgstr "選択したトレントとデータを削除する"
+
+msgid "Remove torrent"
+msgstr "トレントを削除"
+
+msgid "Remove with &Data\tShift+Del"
+msgstr "&Data\tShift+で取除いて下さい ログイン"
+
+msgid "Remove with Data"
+msgstr "データの削除"
+
+msgid "Removed {name}."
+msgstr "{name}を削除。"
+
+msgid "Reset failed: {error}"
+msgstr "リセット失敗: {error}"
+
+msgid "Reset RSS (Clear all feeds and rules)"
+msgstr "リセットRSS(すべてのフィードとルールをクリア)"
+
+msgid "Results"
+msgstr "結果発表"
+
+msgid "Results, {count} result"
+msgstr "結果、{count}の結果"
+
+msgid "Results, {count} results"
+msgstr "結果, {count}結果"
+
+msgid "Resume"
+msgstr "ログイン"
+
+msgid "Resume selected torrents"
+msgstr "選択したトレントを再開"
+
+msgid "Resuming torrents..."
+msgstr "トレントを再開..."
+
+msgid "Round-robin"
+msgstr "ラウンドロビン"
+
+msgid "RSS Articles"
+msgstr "RSSの記事"
+
+msgid "RSS data reset successfully."
+msgstr "RSSデータが正常にリセットされます。"
+
+msgid "RSS Downloader"
+msgstr "RSSダウンローダー"
+
+msgid "RSS Feeds"
+msgstr "RSSフィード"
+
+msgid "RSS Rules Manager"
+msgstr "RSSのルールマネージャ"
+
+msgid "RSS Update Interval (s)"
+msgstr "RSS 更新間隔 (s)"
+
+msgid "RSS Update Interval (seconds):"
+msgstr "RSSの更新間隔(秒):"
+
+msgid "rTorrent Remote &Settings..."
+msgstr "rTorrent リモート &Settings..."
+
+msgid "rTorrent Remote Settings..."
+msgstr "rTorrentリモート設定..."
+
+msgid "Rule Type:"
+msgstr "ルールのタイプ:"
+
+msgid "Rules"
+msgstr "ルールルール"
+
+msgid "Save App Settings"
+msgstr "アプリ設定を保存"
+
+msgid "Save As..."
+msgstr "として保存..."
+
+msgid "Save entry"
+msgstr "エントリーを保存"
+
+msgid "Save Path"
+msgstr "パスを保存"
+
+msgid "Save Path (Optional)"
+msgstr "パスを保存(オプション)"
+
+msgid "Save Path:"
+msgstr "パスを保存:"
+
+msgid "Save Remote Settings"
+msgstr "リモート設定を保存"
+
+msgid "Save Torrent As"
+msgstr "トレントをそのまま保存"
+
+msgid "Scheduler"
+msgstr "スケジュール"
+
+msgid "Scheduling"
+msgstr "スケジューリング"
+
+msgid "Scope"
+msgstr "スコープ"
+
+msgid "Scripts"
+msgstr "スクリプト"
+
+msgid "Sea&rch"
+msgstr "シーズキャンプ &"
+
+msgid "Search"
+msgstr "インフォメーション"
+
+msgid "Search failed: {error}"
+msgstr "失敗検索: {error}"
+
+msgid "Search for"
+msgstr "お問い合わせ"
+
+msgid "Search for Torrents"
+msgstr "トレント検索"
+
+msgid "Search si&tes..."
+msgstr "si&tesを検索..."
+
+msgid "Search sites"
+msgstr "サイトを検索"
+
+msgid "Search sites..."
+msgstr "サイトマップ"
+
+msgid "Search torrent indexers and add what you find"
+msgstr "トレントインデックスを検索し、見つけたものを追加"
+
+msgid "Searching {count} indexer..."
+msgstr "{count}のインデックスを検索..."
+
+msgid "Searching {count} indexers..."
+msgstr "{count}のインデックスを検索..."
+
+msgid "Seeding"
+msgstr "シード"
+
+msgid "Seeds"
+msgstr "シード"
+
+msgid "Select"
+msgstr "選択する"
+
+msgid "Select &all"
+msgstr "&allを選ぶ"
+
+msgid "Select &All\tCtrl+A"
+msgstr "&ALL\tCtrl+Aを選ぶ"
+
+msgid "Select &none"
+msgstr "&noneを選ぶ"
+
+msgid "Select a result first."
+msgstr "最初に結果を選択します。"
+
+msgid "Select a torrent."
+msgstr "トレントを選択します。"
+
+msgid "Select All"
+msgstr "すべてを選択"
+
+msgid "Select all torrents"
+msgstr "すべてのトレントを選択"
+
+msgid "Select File"
+msgstr "ファイルの選択"
+
+msgid "Select Folder"
+msgstr "フォルダを選択"
+
+msgid "Select {name}"
+msgstr "{name}を選ぶ理由"
+
+msgid "Selection cleared"
+msgstr "選択クリア"
+
+msgid "Set"
+msgstr "セット"
+
+msgid "Set Default"
+msgstr "デフォルト設定"
+
+msgid "Settings"
+msgstr "コンテンツ"
+
+msgid "Settings saved."
+msgstr "保存された設定。"
+
+msgid "Size"
+msgstr "サイズ:"
+
+msgid "Skip"
+msgstr "ツイート"
+
+msgid "Skip to torrent list"
+msgstr "トレントリストへのスキップ"
+
+msgid "SOCKS4 (no auth)"
+msgstr "SOCKS4(なし)"
+
+msgid "SOCKS5 (no auth)"
+msgstr "SOCKS5(なし)"
+
+msgid "SOCKS5 (with auth)"
+msgstr "SOCKS5(authあり)"
+
+msgid "Sort &by:"
+msgstr "&byを分類して下さい:"
+
+msgid "Sort by"
+msgstr "並び替え"
+
+msgid "Sorted by {label}."
+msgstr "{label}でソート"
+
+msgid "Source (file or folder):"
+msgstr "ソース(ファイルまたはフォルダ):"
+
+msgid "Source (written into info dict as 'source'):"
+msgstr "ソース(「ソース」として情報 dict に書き込む):"
+
+msgid "Source path is required."
+msgstr "ソースパスが必要です。"
+
+msgid "Source path must not be a symlink or Windows reparse point."
+msgstr "ソースパスは、symplink または Windows のリペアポイントでなければなりません。"
+
+msgid "Source text"
+msgstr "ソーステキスト"
+
+msgid "Source text:"
+msgstr "ソーステキスト:"
+
+msgid "Speed"
+msgstr "スピード"
+
+msgid "Start"
+msgstr "スタート"
+
+msgid "Start All"
+msgstr "スタート"
+
+msgid "Start selected torrents"
+msgstr "選択したトレントを開始"
+
+msgid "Starting all torrents..."
+msgstr "すべてのトレントの開始..."
+
+msgid "Starting torrents..."
+msgstr "トレントの開始..."
+
+msgid "Status"
+msgstr "ステータス"
+
+msgid "Status Filters"
+msgstr "ステータスフィルタ"
+
+msgid "Stop All"
+msgstr "すべて停止"
+
+msgid "Stopped"
+msgstr "停止"
+
+msgid "Stopping all torrents..."
+msgstr "すべてのトレントを停止..."
+
+msgid "Stopping torrents..."
+msgstr "トレントの停止..."
+
+msgid "Success"
+msgstr "成功事例"
+
+msgid "Switch Profile"
+msgstr "スイッチプロファイル"
+
+msgid "Switching client profile..."
+msgstr "クライアントプロファイルを切り替える..."
+
+msgid "System"
+msgstr "システム"
+
+msgid "System default"
+msgstr "システムデフォルト"
+
+msgid "TCP and uTP"
+msgstr "TCPとuTP"
+
+msgid "Theme"
+msgstr "テーマ:"
+
+msgid "Those results carry a tracker file rather than a magnet link."
+msgstr "これらの結果は、磁石リンクではなく、トラッカーファイルを運ぶ。"
+
+msgid "Time Left"
+msgstr "時間 左"
+
+msgid "Title"
+msgstr "タイトル"
+
+msgid "Toggle"
+msgstr "トピックス"
+
+msgid "Torrent Actions"
+msgstr "トレントアクション"
+
+msgid "Torrent actions"
+msgstr "トレントアクション"
+
+msgid "Torrent added"
+msgstr "トレント追加"
+
+msgid "Torrent created:\n{path}"
+msgstr "トレント作成:\n{path}の特長"
+
+msgid "Torrent Details"
+msgstr "トレントの詳細"
+
+msgid "Torrent download finished after the active profile changed."
+msgstr "アクティブなプロファイルが変更された後にダウンロードが終了しました。"
+
+msgid "Torrent File"
+msgstr "トレントファイル"
+
+msgid "Torrent file added from CLI"
+msgstr "CLIから追加したトレントファイル"
+
+msgid "Torrent Files"
+msgstr "トレントファイル"
+
+msgid "Torrent files (*.torrent)|*.torrent"
+msgstr "トレントファイル(*.torrent)|*.torrent"
+
+msgid "Torrent List"
+msgstr "トレントリスト"
+
+msgid "Torrent Options"
+msgstr "トレントオプション"
+
+msgid "Torrents"
+msgstr "トレント"
+
+msgid "torrents"
+msgstr "トレント"
+
+msgid "Tracker List URL:"
+msgstr "トラッカーリスト URL:"
+
+msgid "Trackers"
+msgstr "トラッカー"
+
+msgid "Translated"
+msgstr "翻訳済み"
+
+msgid "Translation"
+msgstr "コンテンツ"
+
+msgid "Translation Center"
+msgstr "翻訳センター"
+
+msgid "Translation:"
+msgstr "翻訳:"
+
+msgid "Transmission Remote &Settings..."
+msgstr "トランスミッションリモート&Settings..."
+
+msgid "Transmission Remote Settings..."
+msgstr "トランスミッションリモート設定..."
+
+msgid "Type"
+msgstr "タイプ:"
+
+msgid "Type what to look for first."
+msgstr "最初に探すものを入力します。"
+
+msgid "Type what to look for."
+msgstr "探しているものを入力します。"
+
+msgid "UI Refresh Rate (ms)"
+msgstr "UIリフレッシュレート(ms)"
+
+msgid "Uncheck"
+msgstr "チェック解除"
+
+msgid "Uncheck All"
+msgstr "チェック解除"
+
+msgid "Unknown"
+msgstr "未知の"
+
+msgid "Untranslated"
+msgstr "未翻訳"
+
+msgid "Up Speed"
+msgstr "速度を上げる"
+
+msgid "Update Available"
+msgstr "利用できる更新"
+
+msgid "Update canceled."
+msgstr "キャンセルの通知"
+
+msgid "Update Check Failed"
+msgstr "更新 失敗したチェック"
+
+msgid "Update check failed."
+msgstr "更新チェックが失敗しました。"
+
+msgid "Update Failed"
+msgstr "失敗した更新"
+
+msgid "Update failed."
+msgstr "更新が失敗しました。"
+
+msgid "Update helper script not found."
+msgstr "ヘルパースクリプトが見つかりません。"
+
+msgid "Update postponed."
+msgstr "投稿された投稿を更新します。"
+
+msgid "Update prepared. Closing to install..."
+msgstr "準備完了の更新。 インストールを閉じる..."
+
+msgid "Update prepared. The app will restart after it exits."
+msgstr "準備完了の更新。 終了後にアプリが再起動します。"
+
+msgid "Updated executable not found."
+msgstr "実行可能が見つからなかった更新。"
+
+msgid "Updates"
+msgstr "アップデート"
+
+msgid "Updates are only available in the packaged app."
+msgstr "アップデートは、パッケージされたアプリでのみ利用できます。"
+
+msgid "Updating SerrebiTorrent"
+msgstr "SerrebiTorrentの更新"
+
+msgid "Updating..."
+msgstr "最近の投稿"
+
+msgid "Upload Rate (bytes/s):"
+msgstr "アップロード率(バイト/秒):"
+
+msgid "Upload-rate based"
+msgstr "アップロードレートベース"
+
+msgid "URL (e.g. scgi://... or http://...):"
+msgstr "URL(例:scgi://... または http://...):"
+
+msgid "URL / Path"
+msgstr "URL/パス"
+
+msgid "URL or download path"
+msgstr "URLまたはダウンロードパス"
+
+msgid "URL:Magnet Link"
+msgstr "URL:マグネットリンク"
+
+msgid "URLs / Magnets (one per line)"
+msgstr "URL / マグネット(ライン1本)"
+
+msgid "Use DyDNS"
+msgstr "DyDNSの使用"
+
+msgid "Use NOIP"
+msgstr "NOIP の使用"
+
+msgid "Username"
+msgstr "ユーザ名"
+
+msgid "Username:"
+msgstr "ユーザー名:"
+
+msgid "Verifying download..."
+msgstr "ダウンロードの確認"
+
+msgid "Verifying signature..."
+msgstr "署名の検証..."
+
+msgid "Warning"
+msgstr "インフォメーション"
+
+msgid "Web Seeds (optional)"
+msgstr "ウェブシード(オプション)"
+
+msgid "Web UI"
+msgstr "ウェブUI"
+
+msgid "YAML files (*.yml;*.yaml)|*.yml;*.yaml"
+msgstr "YAMLファイル(*.yml;*.yaml)|*.yml;*.yaml"
+
+msgid "Yes"
+msgstr "お問い合わせ"
+
+msgid "You're already on the latest version."
+msgstr "最新バージョンに既にあります。"
+
+msgid "{action} complete"
+msgstr "{action} 完成"
+
+msgid "{action} complete ({failed} failed). Last error: {error}"
+msgstr "{action} 完了 ({failed} 失敗). 最後のエラー: {error}"
+
+msgid "{client} Remote Settings"
+msgstr "{client}リモート設定"
+
+msgid "{count} feeds"
+msgstr "{count} フィード"
+
+msgid "{count} indexer switched on."
+msgstr "{count} のインディケーターは転換しました。"
+
+msgid "{count} indexers switched on."
+msgstr "{count}のindexersは転換しました。"
+
+msgid "{count} of your own indexer configured."
+msgstr "{count} は、独自のインディケーターで構成されたものです。"
+
+msgid "{count} of your own indexers configured."
+msgstr "{count} は、独自のインデックス作成者の構成です。"
+
+msgid "{count} result"
+msgstr "{count}の結果"
+
+msgid "{count} result so far, {pending} still searching. Last: {source}."
+msgstr "{count}の結果は、{pending}はまだ検索します。 最後に: {source}."
+
+msgid "{count} results"
+msgstr "{count}の結果"
+
+msgid "{count} results so far, {pending} still searching. Last: {source}."
+msgstr "{count} はこれまでのところ、{pending} の検索結果です。 最後に: {source}."
+
+msgid "{count} torrents"
+msgstr "{count} トレント"
+
+msgid "{name} preferences saved"
+msgstr "{name}の好みは保存しました"
