@@ -47,6 +47,16 @@ def test_language_selector_uses_canonical_preference_values():
     assert "window.location.reload()" in I18N
 
 
+def test_community_languages_load_from_generated_web_catalogs():
+    assert "'/locales/index.json'" in I18N
+    assert "availableLanguages" in I18N
+    assert "populateExternalLanguageOptions" in I18N
+    assert "loadExternalCatalog" in I18N
+    assert "`/locales/${encodeURIComponent(language)}.json`" in I18N
+    assert "externalTranslations" in I18N
+    assert "Object.prototype.hasOwnProperty.call(externalTranslations, text)" in I18N
+
+
 def test_dynamic_content_and_accessible_attributes_are_localized():
     assert "MutationObserver" in I18N
     assert "'aria-label'" in I18N
