@@ -7,6 +7,7 @@ msgstr ""
 msgid "&About SerrebiTorrent"
 msgstr "&について"
 
+#, fuzzy
 msgid "&Actions"
 msgstr "ジャズアクティビティ &"
 
@@ -1358,6 +1359,7 @@ msgstr "スコープ"
 msgid "Scripts"
 msgstr "スクリプト"
 
+#, fuzzy
 msgid "Sea&rch"
 msgstr "シーズキャンプ &"
 

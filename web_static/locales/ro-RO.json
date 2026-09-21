@@ -2,7 +2,6 @@
   "language": "ro-RO",
   "name": "Română",
   "translations": {
-    "&About SerrebiTorrent": "& Despre SerrebiTorrent",
     "&Actions": "&Actions",
     "&Add selected": "&Add selectat",
     "&Add Torrent File...\tCtrl+O": "&Add Torrent...\tCtrl+O",
@@ -450,7 +449,6 @@
     "Search failed: {error}": "Căutare eșuată: {error}",
     "Search for": "Caută",
     "Search for Torrents": "Caută torente",
-    "Search si&tes...": "Caută sizzampzztes... &",
     "Search sites": "Locuri de căutare",
     "Search sites...": "Site-uri de căutare...",
     "Search torrent indexers and add what you find": "Caută indexeri torent și adaugă ceea ce găsești",

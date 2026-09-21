@@ -3,7 +3,6 @@
   "name": "日本語",
   "translations": {
     "&About SerrebiTorrent": "&について",
-    "&Actions": "ジャズアクティビティ &",
     "&Add selected": "&追加選択",
     "&Add...": "&追加...",
     "&Close": "&閉じる",
@@ -432,7 +431,6 @@
     "Scheduling": "スケジューリング",
     "Scope": "スコープ",
     "Scripts": "スクリプト",
-    "Sea&rch": "シーズキャンプ &",
     "Search": "インフォメーション",
     "Search failed: {error}": "失敗検索: {error}",
     "Search for": "お問い合わせ",

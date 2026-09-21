@@ -19,6 +19,7 @@ msgstr "&Ajouter le fichier Torrent...\tCtrl+O"
 msgid "&Add..."
 msgstr "&Ajouter..."
 
+#, fuzzy
 msgid "&Close"
 msgstr "& Fermer"
 
@@ -71,6 +72,7 @@ msgstr "&Start\tCtrl+S"
 msgid "&Tools"
 msgstr "&Outils"
 
+#, fuzzy
 msgid "&URL:"
 msgstr "- Oui. &"
 
@@ -689,13 +691,11 @@ msgstr "Fichier..."
 msgid "Files"
 msgstr "Fichiers"
 
-#, fuzzy
 msgid "Files:"
-msgstr "Fichiers & #160;:"
+msgstr "Fichiers  :"
 
-#, fuzzy
 msgid "Filter:"
-msgstr "Filtre & #160;:"
+msgstr "Filtre  :"
 
 msgid "Finished"
 msgstr "Terminé"
@@ -1064,9 +1064,8 @@ msgstr "Dossier de téléchargement ouvert."
 msgid "Other"
 msgstr "Autres"
 
-#, fuzzy
 msgid "Output .torrent file:"
-msgstr "Fichier de sortie .torrent & #160;:"
+msgstr "Fichier de sortie .torrent  :"
 
 msgid "Output .torrent path is required."
 msgstr "Le chemin .torrent de sortie est nécessaire."
@@ -1327,9 +1326,8 @@ msgstr "Enregistrer le chemin"
 msgid "Save Path (Optional)"
 msgstr "Enregistrer le chemin (facultatif)"
 
-#, fuzzy
 msgid "Save Path:"
-msgstr "Enregistrer le chemin & #160;:"
+msgstr "Enregistrer le chemin  :"
 
 msgid "Save Remote Settings"
 msgstr "Enregistrer les paramètres distants"
@@ -1349,6 +1347,7 @@ msgstr "Portée"
 msgid "Scripts"
 msgstr "Scripts"
 
+#, fuzzy
 msgid "Sea&rch"
 msgstr "- Oui. &"
 

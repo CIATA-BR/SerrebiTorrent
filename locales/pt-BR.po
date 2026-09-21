@@ -911,7 +911,7 @@ msgid "Magnet: {magnet}"
 msgstr "Magnet: {magnet}"
 
 msgid "Manage Profiles & Connect"
-msgstr "Gerenciar perfis e &conectar"
+msgstr "Gerenciar perfis e conectar"
 
 msgid "Max Connections:"
 msgstr "Máximo de conexões:"

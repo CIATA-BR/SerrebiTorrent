@@ -10,6 +10,7 @@ msgstr "&ABout SerrebiTorrent"
 msgid "&Actions"
 msgstr "&Actions"
 
+#, fuzzy
 msgid "&Add selected"
 msgstr "selezionato &"
 
@@ -37,12 +38,14 @@ msgstr "&AZIONE"
 msgid "&Help"
 msgstr "&A"
 
+#, fuzzy
 msgid "&Indexers to search:"
 msgstr "Per saperne di più: &"
 
 msgid "&Indexers:"
 msgstr "&Indexers:"
 
+#, fuzzy
 msgid "&Name:"
 msgstr "Nome: &"
 
@@ -50,6 +53,7 @@ msgstr "Nome: &"
 msgid "&Pause\tCtrl+P"
 msgstr "&OPause\tCTTrl+P"
 
+#, fuzzy
 msgid "&Remove"
 msgstr "Condividi su Twitter &"
 
@@ -62,6 +66,7 @@ msgstr "&Resume\tCtrl+R"
 msgid "&Search for Torrents...\tCtrl+F"
 msgstr "&Search per Torrents...\tCtrl+F"
 
+#, fuzzy
 msgid "&Search for:"
 msgstr "Ricerca per: &"
 
@@ -69,6 +74,7 @@ msgstr "Ricerca per: &"
 msgid "&Start\tCtrl+S"
 msgstr "&OStellareBZZCtrl+S \t"
 
+#, fuzzy
 msgid "&Tools"
 msgstr "Strumentazione &"
 

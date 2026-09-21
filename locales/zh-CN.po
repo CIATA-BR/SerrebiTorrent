@@ -7,6 +7,7 @@ msgstr ""
 msgid "&About SerrebiTorrent"
 msgstr "&关于塞雷比托伦特"
 
+#, fuzzy
 msgid "&Actions"
 msgstr "& 行动"
 
@@ -24,6 +25,7 @@ msgstr "&ZAD(英语:&AZ Add."
 msgid "&Close"
 msgstr "ZZAMPZ 关闭 &"
 
+#, fuzzy
 msgid "&Connect"
 msgstr "& 连接"
 
@@ -35,9 +37,11 @@ msgstr "&Connect... ZZTAB ZZCtrl+Shift+C 齐克·克克克克克克克克克克�
 msgid "&Edit..."
 msgstr "ZZAMPZ 编辑... &"
 
+#, fuzzy
 msgid "&File"
 msgstr "ZZAMP ZZFILE 软件 &"
 
+#, fuzzy
 msgid "&Help"
 msgstr "& 帮助"
 
@@ -49,6 +53,7 @@ msgstr "要搜索的 ZZAMPZ Indexers : &"
 msgid "&Indexers:"
 msgstr "ZZAMPZ 插图: &"
 
+#, fuzzy
 msgid "&Name:"
 msgstr "& 名称 :"
 
@@ -56,6 +61,7 @@ msgstr "& 名称 :"
 msgid "&Pause\tCtrl+P"
 msgstr "ZZAMP ZZZPAUSE ZZTAB ZZCtrl+P ZZ克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克. & \t"
 
+#, fuzzy
 msgid "&Remove"
 msgstr "& 移动"
 
@@ -71,6 +77,7 @@ msgstr "ZZAMPZ 续作ZZZTAB ZZCtrl+R & \t"
 msgid "&Search for Torrents...\tCtrl+F"
 msgstr "用于种子的 ZZAMP ZZSearch... ZZTAB ZZCtrl + F & \t"
 
+#, fuzzy
 msgid "&Search for:"
 msgstr "ZZAMP ZZSearch 用于: &"
 
@@ -82,6 +89,7 @@ msgstr "& 开始ZZZTAB ZZCtrl+S 维基语录链接:名人名言 - 文学作品 -
 msgid "&Tools"
 msgstr "ZZAMP ZZZ 工具软件 &"
 
+#, fuzzy
 msgid "&URL:"
 msgstr "赞普苏尔: &"
 
@@ -514,6 +522,7 @@ msgstr "正在下载更新..."
 msgid "Downloads"
 msgstr "下载"
 
+#, fuzzy
 msgid "E&xit"
 msgstr "电磁脉冲轴 &"
 
@@ -896,6 +905,7 @@ msgstr "正在装入..."
 msgid "Local libtorrent"
 msgstr "地方政府"
 
+#, fuzzy
 msgid "Local Session &Settings...\tCtrl+,"
 msgstr "本地会话 & 设置... \tCtrl+,"
 
@@ -1064,6 +1074,7 @@ msgstr "打开"
 msgid "One URL per line (HTTP/HTTPS)."
 msgstr "每行1个URL(HTTP/HTTPS)."
 
+#, fuzzy
 msgid "Open Download &Folder"
 msgstr "打开下载 & Folder"
 
@@ -1196,6 +1207,7 @@ msgstr "代理类型 :"
 msgid "Public tracker list (press Enter to add to Included trackers)."
 msgstr "公共跟踪器列表(press Enter要添加到包含的跟踪器中)."
 
+#, fuzzy
 msgid "qBittorrent Remote &Settings..."
 msgstr "qBittorrent 远程 & 设置..."
 
@@ -1323,6 +1335,7 @@ msgstr "RSS 更新间隔( s)"
 msgid "RSS Update Interval (seconds):"
 msgstr "RSS 更新间隔( 秒) :"
 
+#, fuzzy
 msgid "rTorrent Remote &Settings..."
 msgstr "Torrent 远程 & 设置..."
 
@@ -1371,6 +1384,7 @@ msgstr "范围"
 msgid "Scripts"
 msgstr "脚本"
 
+#, fuzzy
 msgid "Sea&rch"
 msgstr "ZZ: &"
 
@@ -1386,6 +1400,7 @@ msgstr "搜索"
 msgid "Search for Torrents"
 msgstr "寻找种子"
 
+#, fuzzy
 msgid "Search si&tes..."
 msgstr "搜索 siZZAMP 启动... &"
 
@@ -1420,6 +1435,7 @@ msgstr "选择 &AL"
 msgid "Select &All\tCtrl+A"
 msgstr "选择 ZZAMPZ 全部 ZZZTAB ZZCtrl+A & \t"
 
+#, fuzzy
 msgid "Select &none"
 msgstr "选择 ZZAMP ZZNone &"
 
@@ -1636,6 +1652,7 @@ msgstr "翻译中心"
 msgid "Translation:"
 msgstr "翻译 :"
 
+#, fuzzy
 msgid "Transmission Remote &Settings..."
 msgstr "传输远程 & 设置..."
 

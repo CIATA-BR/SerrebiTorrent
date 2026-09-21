@@ -20,6 +20,7 @@ msgstr "\tCtrl+O &"
 msgid "&Add..."
 msgstr "&Додати ..."
 
+#, fuzzy
 msgid "&Close"
 msgstr "&"
 
@@ -36,6 +37,7 @@ msgstr "&Edit ..."
 msgid "&File"
 msgstr "&File"
 
+#, fuzzy
 msgid "&Help"
 msgstr "&"
 
@@ -81,6 +83,7 @@ msgstr "&URL:"
 msgid "1 feed"
 msgstr "1 корм"
 
+#, fuzzy
 msgid "A Torznab or Newznab search endpoint. Prowlarr: {prowlarr}. Jackett, all trackers at once: {jackett}"
 msgstr "A Torznab або Newznab точка пошуку. Совар: ЗЗТОКЕН0ZZ. Куртка, всі трекери одночасно: {jackett} {prowlarr}"
 
@@ -154,6 +157,7 @@ msgstr "Додано індексатор сліпихДЛ: {names}."
 msgid "Added your blindDL indexers: {names}."
 msgstr "Додано індексатори сліпихДЛ: {names}."
 
+#, fuzzy
 msgid "Added {title}"
 msgstr "Додано ЗЗТОКЕН0ZZ {title}"
 
@@ -358,6 +362,7 @@ msgstr "Підключення до клієнта перед додавання
 msgid "Connect to this profile"
 msgstr "Підключення до цього профілю"
 
+#, fuzzy
 msgid "Connected to {name}"
 msgstr "З'єднання до ЗЗТОКЕН0ZZ {name}"
 
@@ -499,6 +504,7 @@ msgstr "Завантаження оновлення..."
 msgid "Downloads"
 msgstr "Завантаження"
 
+#, fuzzy
 msgid "E&xit"
 msgstr "ЕЗПЕМПЦИТ &"
 
@@ -655,6 +661,7 @@ msgstr "Вимкнено до налаштувань fetch"
 msgid "Failed to fetch remote preferences: {error}"
 msgstr "В'язаний до лютих дистанційних уподобань: {error}"
 
+#, fuzzy
 msgid "Failed to fetch {title}: {error}"
 msgstr "ЗПТОКЕН0ZZ {title} {error}"
 
@@ -679,6 +686,7 @@ msgstr "Заборонено оновити віддалені налаштув�
 msgid "Failed to {action} torrent: {error}"
 msgstr "В'язаний до {action} торрент: {error}"
 
+#, fuzzy
 msgid "Failed to {action}: {error}"
 msgstr "ЗПТОКЕН0ZZ: ЗЗТОКЕН1ZZ {action} {error}"
 
@@ -824,6 +832,7 @@ msgstr "Інвалідне ціле для {label}: {error}"
 msgid "Invalid JSON for {label}: {error}"
 msgstr "Інвалідний JSON для {label}: {error}"
 
+#, fuzzy
 msgid "Invalid number for {label}: {error}"
 msgstr "Неточний номер для ЗЗТОКЕН0ZZ: ЗЗТОКЕН1ZZ {label} {error}"
 
@@ -947,6 +956,7 @@ msgstr "Мінімізувати лоток"
 msgid "Most seeders"
 msgstr "Більшість сівалок"
 
+#, fuzzy
 msgid "My &indexers..."
 msgstr "Моя ЗПАМПЦІНДексери ... &"
 
@@ -1254,6 +1264,7 @@ msgstr "Видалити з &TABZZShift+ Про компанію \t"
 msgid "Remove with Data"
 msgstr "Видалення даних"
 
+#, fuzzy
 msgid "Removed {name}."
 msgstr "Вилучено ЗЗТОКЕН0ZZ. {name}"
 
@@ -1465,6 +1476,7 @@ msgstr "Сорт &by:"
 msgid "Sort by"
 msgstr "Сортувати за"
 
+#, fuzzy
 msgid "Sorted by {label}."
 msgstr "Сортований ЗЗТОКЕН0ZZ. {label}"
 
@@ -1753,6 +1765,7 @@ msgstr "Ви вже на останню версію."
 msgid "{action} complete"
 msgstr "{action} завершено"
 
+#, fuzzy
 msgid "{action} complete ({failed} failed). Last error: {error}"
 msgstr "{action} завершений (ЗЗТКЕН1ZZ не вдалося). Останнє повідомлення: {error} {failed}"
 

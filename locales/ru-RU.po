@@ -4,6 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SerrebiTorrent\\nLanguage: ru-RU\\nX-Language-Name: Русский\\nMIME-Version: 1.0\\nContent-Type: text/plain; charset=UTF-8\\nContent-Transfer-Encoding: 8bit\\n"
 
+#, fuzzy
 msgid "&About SerrebiTorrent"
 msgstr "& О компании SerrebiTorrent"
 

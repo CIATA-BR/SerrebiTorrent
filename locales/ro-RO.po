@@ -4,6 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SerrebiTorrent\\nLanguage: ro-RO\\nX-Language-Name: Română\\nMIME-Version: 1.0\\nContent-Type: text/plain; charset=UTF-8\\nContent-Transfer-Encoding: 8bit\\n"
 
+#, fuzzy
 msgid "&About SerrebiTorrent"
 msgstr "& Despre SerrebiTorrent"
 
@@ -1360,6 +1361,7 @@ msgstr "Caută"
 msgid "Search for Torrents"
 msgstr "Caută torente"
 
+#, fuzzy
 msgid "Search si&tes..."
 msgstr "Caută sizzampzztes... &"
 
