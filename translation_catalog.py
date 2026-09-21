@@ -48,6 +48,9 @@ _LEAKED_TOKEN_RE = re.compile(
 )
 # wx introspection strings that leaked in as translations.
 _WX_MARKER_RE = re.compile(r"@ info:\s*\w+")
+# Catalog language codes become filenames in generated Web assets. Keep this
+# intentionally conservative: canonical BCP47-style subtags separated by '-'.
+_LANGUAGE_CODE_RE = re.compile(r"^[A-Za-z0-9]{1,8}(?:-[A-Za-z0-9]{1,8})*$")
 
 
 def _bundle_root() -> Path:
@@ -160,9 +163,20 @@ def parse_po_text(text: str) -> tuple[dict[str, str], dict[str, str]]:
     return metadata, translations
 
 
+def normalize_catalog_code(value: str) -> str:
+    return str(value or "").strip().replace("_", "-").casefold()
+
+
+def validate_catalog_code(value: str) -> str:
+    code = str(value or "").strip()
+    if not code or len(code) > 63 or not _LANGUAGE_CODE_RE.fullmatch(code):
+        raise ValueError(f"invalid catalog language code: {code!r}")
+    return code
+
+
 def load_po(path: Path) -> CatalogInfo:
     metadata, translations = parse_po_text(path.read_text(encoding="utf-8"))
-    code = metadata.get("Language") or path.stem
+    code = validate_catalog_code(metadata.get("Language") or path.stem)
     name = metadata.get("X-Language-Name") or metadata.get("Language-Team") or code
     return CatalogInfo(code=code, name=name, path=path, metadata=metadata, translations=translations)
 
@@ -182,9 +196,9 @@ def discover_catalogs(directory: Path | None = None) -> dict[str, CatalogInfo]:
 
 
 def catalog_for(language: str) -> CatalogInfo | None:
-    wanted = str(language or "").replace("_", "-").lower()
+    wanted = normalize_catalog_code(language)
     for code, info in discover_catalogs().items():
-        if code.replace("_", "-").lower() == wanted:
+        if normalize_catalog_code(code) == wanted:
             return info
     return None
 
