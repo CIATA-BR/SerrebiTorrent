@@ -16,7 +16,6 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from translation_catalog import (  # noqa: E402
-    discover_catalogs,
     load_po,
     render_pot,
     sort_key,
