@@ -1,4 +1,5 @@
 import ast
+import json
 import subprocess
 from pathlib import Path
 
@@ -151,7 +152,11 @@ def _add_translation_assets(bundle):
         encoding="utf-8",
     )
     (web_locales / "pt-BR.json").write_text(
-        '{"language":"pt-BR","name":"Português (Brasil)","translations":{}}\n',
+        json.dumps({
+            "language": "pt-BR",
+            "name": "Português (Brasil)",
+            "translations": {audit_bundle.REQUIRED_WEB_MESSAGES[0]: "Traduzido"},
+        }),
         encoding="utf-8",
     )
     (web_locales / "index.json").write_text(

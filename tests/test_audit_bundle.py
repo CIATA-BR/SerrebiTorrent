@@ -3,8 +3,12 @@ from pathlib import Path
 import subprocess
 import sys
 
+from tools import audit_bundle
 
-def _make_bundle(root: Path, *, include_json: bool = True) -> Path:
+REQUIRED_MESSAGE = audit_bundle.REQUIRED_WEB_MESSAGES[0]
+
+
+def _make_bundle(root: Path, *, include_json: bool = True, translations=None) -> Path:
     bundle = root / "bundle"
     (bundle / "locales").mkdir(parents=True)
     (bundle / "web_static" / "locales").mkdir(parents=True)
@@ -24,22 +28,28 @@ def _make_bundle(root: Path, *, include_json: bool = True) -> Path:
             json.dumps({
                 "language": "pt-BR",
                 "name": "Português (Brasil)",
-                "translations": {},
+                "translations": (
+                    {REQUIRED_MESSAGE: "Traduzido"} if translations is None else translations
+                ),
             }),
             encoding="utf-8",
         )
     return bundle
 
 
-def test_bundle_audit_accepts_complete_translation_assets(tmp_path):
-    bundle = _make_bundle(tmp_path)
-
-    result = subprocess.run(
+def _audit(bundle: Path) -> subprocess.CompletedProcess:
+    return subprocess.run(
         [sys.executable, "tools/audit_bundle.py", str(bundle)],
         check=False,
         capture_output=True,
         text=True,
     )
+
+
+def test_bundle_audit_accepts_complete_translation_assets(tmp_path):
+    bundle = _make_bundle(tmp_path)
+
+    result = _audit(bundle)
 
     assert result.returncode == 0, result.stderr
     assert "translation catalogs: 1" in result.stdout
@@ -48,12 +58,30 @@ def test_bundle_audit_accepts_complete_translation_assets(tmp_path):
 def test_bundle_audit_rejects_missing_web_translation_asset(tmp_path):
     bundle = _make_bundle(tmp_path, include_json=False)
 
-    result = subprocess.run(
-        [sys.executable, "tools/audit_bundle.py", str(bundle)],
-        check=False,
-        capture_output=True,
-        text=True,
-    )
+    result = _audit(bundle)
 
     assert result.returncode != 0
     assert "Expected one bundled Web catalog for pt-BR" in (result.stderr + result.stdout)
+
+
+def test_bundle_audit_rejects_catalog_missing_a_required_message(tmp_path):
+    bundle = _make_bundle(tmp_path, translations={"Some other string": "Outra string"})
+
+    result = _audit(bundle)
+
+    assert result.returncode != 0
+    assert "missing required messages" in (result.stderr + result.stdout)
+    assert REQUIRED_MESSAGE in (result.stderr + result.stdout)
+
+
+def test_bundle_audit_rejects_catalog_without_translations_object(tmp_path):
+    bundle = _make_bundle(tmp_path)
+    (bundle / "web_static" / "locales" / "pt-BR.json").write_text(
+        json.dumps({"language": "pt-BR", "name": "Português (Brasil)"}),
+        encoding="utf-8",
+    )
+
+    result = _audit(bundle)
+
+    assert result.returncode != 0
+    assert "has no translations object" in (result.stderr + result.stdout)

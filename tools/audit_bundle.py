@@ -18,6 +18,13 @@ FORBIDDEN_PARTS = {
 }
 LEGACY_OPENSSL_PREFIXES = ("libcrypto-1_1", "libssl-1_1")
 
+# Messages a shipped Web catalog must carry in every language. These explain
+# state the user cannot otherwise infer, so falling back to English would hide
+# the reason a request was refused.
+REQUIRED_WEB_MESSAGES = (
+    "Too many failed attempts. Try again later.",
+)
+
 
 def main() -> int:
     parser = argparse.ArgumentParser()
@@ -91,6 +98,24 @@ def main() -> int:
         if len(json_files) != 1:
             raise SystemExit(
                 f"Expected one bundled Web catalog for {code}, found: {json_files}"
+            )
+
+        try:
+            web_catalog = json.loads((bundle / json_files[0]).read_text(encoding="utf-8"))
+        except (OSError, ValueError, TypeError) as exc:
+            raise SystemExit(
+                f"Bundled Web catalog for {code} is invalid: {exc}"
+            ) from exc
+
+        translations = web_catalog.get("translations")
+        if not isinstance(translations, dict):
+            raise SystemExit(
+                f"Bundled Web catalog for {code} has no translations object."
+            )
+        missing = [message for message in REQUIRED_WEB_MESSAGES if not translations.get(message)]
+        if missing:
+            raise SystemExit(
+                f"Bundled Web catalog for {code} is missing required messages: {missing}"
             )
 
     if sys.platform == "win32":
