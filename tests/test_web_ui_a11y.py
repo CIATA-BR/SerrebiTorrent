@@ -16,9 +16,13 @@ pytestmark = pytest.mark.e2e
 class DummyConfigManager:
     def __init__(self, profiles):
         self._profiles = profiles
+        self._preferences = {"language": "pt-BR"}
 
     def get_profiles(self):
         return self._profiles
+
+    def get_preferences(self):
+        return dict(self._preferences)
 
 
 class DummyApp:
@@ -109,7 +113,7 @@ def _block_cdn(route):
     route.fulfill(status=200, body="")
 
 
-def _login(page, base_url):
+def _login(page, base_url, expected_language="pt-BR"):
     page.route("https://cdn.jsdelivr.net/**", _block_cdn)
     page.goto(f"{base_url}/login.html")
     page.fill("#username", "admin")
@@ -118,6 +122,11 @@ def _login(page, base_url):
     page.wait_for_url(f"{base_url}/")
     page.wait_for_selector("#torrentTable")
     page.wait_for_selector("tr[data-hash]")
+    if expected_language:
+        page.wait_for_function(
+            "(lang) => document.documentElement.lang === lang",
+            arg=expected_language,
+        )
 
 
 def test_web_ui_axe(page, web_ui_server):
@@ -145,4 +154,42 @@ def test_web_ui_landmarks(page, web_ui_server):
     _login(page, web_ui_server)
     assert page.locator("header[role='banner']").count() == 1
     assert page.locator("main[role='main']").count() == 1
-    assert page.locator("nav[aria-label='Navigation']").count() == 1
+    assert page.locator("nav[aria-label='Navegação']").count() == 1
+
+
+def test_web_ui_pt_br_accessible_labels(page, web_ui_server):
+    _login(page, web_ui_server)
+    assert page.locator("html").get_attribute("lang") == "pt-BR"
+    assert page.locator("a[href='#torrentTable']").inner_text() == "Pular para a lista de torrents"
+    assert page.locator("#contextMenu").get_attribute("aria-label") == "Ações do torrent"
+    assert page.locator("#torrentTable").get_attribute("aria-label") == "torrents"
+
+
+def test_web_ui_loads_community_catalog_and_keeps_user_data(page, web_ui_server):
+    def prefs(route):
+        route.fulfill(status=200, content_type="application/json", body='{"language":"es-ES"}')
+
+    def language_index(route):
+        route.fulfill(
+            status=200,
+            content_type="application/json",
+            body='{"languages":[{"code":"es-ES","name":"Español (España)"}]}',
+        )
+
+    def catalog(route):
+        route.fulfill(
+            status=200,
+            content_type="application/json",
+            body='{"language":"es-ES","name":"Español (España)","translations":{"Navigation":"Navegación","Torrent Actions":"Acciones del torrent","Settings":"Configuración"}}',
+        )
+
+    page.route("**/api/v2/app/prefs", prefs)
+    page.route("**/locales/index.json", language_index)
+    page.route("**/locales/es-ES.json", catalog)
+    _login(page, web_ui_server, expected_language="es-ES")
+
+    assert page.locator("nav").first.get_attribute("aria-label") == "Navegación"
+    assert page.locator("#torrentActionsBtn").inner_text() == "Acciones del torrent"
+    # Torrent names are data, not localization source strings.
+    assert page.locator("tr[data-hash] .col-name").first.inner_text() == "Alpha"
+    assert page.locator("#appLanguage option[value='es-ES']").count() == 1

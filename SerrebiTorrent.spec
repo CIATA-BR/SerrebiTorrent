@@ -20,6 +20,8 @@ if not libtorrent_version:
 print(f'Packaging libtorrent {libtorrent_version} from {libtorrent_spec.origin}')
 
 datas = [(os.path.abspath('web_static'), 'web_static')]
+if os.path.isdir('locales'):
+    datas.append((os.path.abspath('locales'), 'locales'))
 if sys.platform == 'win32':
     datas.append((os.path.abspath('update_helper.bat'), '.'))
 if os.path.exists('icon.ico'):
@@ -31,7 +33,7 @@ if os.path.exists('icon.ico'):
 binaries = [(os.path.abspath(libtorrent_spec.origin), '.')]
 
 a = Analysis(
-    ['main.py'],
+    ['app_entry.py'],
     pathex=[os.path.abspath('.')],
     binaries=binaries,
     datas=datas,
