@@ -34,3 +34,13 @@ def test_language_value_falls_back_to_system_for_invalid_selection():
     options = [("system", "Sistema"), ("en", "English")]
     assert _language_value(options, -1) == "system"
     assert _language_value(options, 99) == "system"
+
+
+def test_missing_saved_language_falls_back_to_english_option():
+    options = (
+        ("system", "System"),
+        ("en", "English"),
+        ("pt-BR", "Português (Brasil)"),
+    )
+
+    assert preferences_dialog._language_index(options, "fr-FR") == 1
