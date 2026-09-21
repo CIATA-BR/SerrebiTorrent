@@ -119,6 +119,23 @@ def _write_web_index(directory: Path, catalogs) -> None:
     (directory / "index.json").write_text(render_web_index(catalogs), encoding="utf-8")
 
 
+def _stale_web_catalogs(directory: Path, catalogs) -> list[Path]:
+    expected = {f"{code}.json" for code in catalogs}
+    if not directory.exists():
+        return []
+    return sorted(
+        path
+        for path in directory.glob("*.json")
+        if path.name != "index.json" and path.name not in expected
+    )
+
+
+def _remove_stale_web_catalogs(directory: Path, catalogs) -> None:
+    for path in _stale_web_catalogs(directory, catalogs):
+        path.unlink()
+        print(f"Removed stale Web catalog: {path}")
+
+
 def cmd_compile_web(args) -> int:
     info = load_po(Path(args.catalog))
     problems = validate_catalog(info.translations)
@@ -159,6 +176,7 @@ def cmd_compile_all_web(args) -> int:
     for code, info in catalogs.items():
         _write_web_catalog(info, output_dir / f"{code}.json")
         print(f"Compiled {code}: {len(info.translations)} entries")
+    _remove_stale_web_catalogs(output_dir, catalogs)
     _write_web_index(output_dir, catalogs)
     return 0
 
@@ -183,6 +201,7 @@ def cmd_sync(_args) -> int:
     output_dir = ROOT / "web_static" / "locales"
     for code, info in catalogs.items():
         _write_web_catalog(info, output_dir / f"{code}.json")
+    _remove_stale_web_catalogs(output_dir, catalogs)
     _write_web_index(output_dir, catalogs)
     print(f"Compiled {len(catalogs)} Web catalog(s).")
     return 0
@@ -227,6 +246,15 @@ def cmd_check(_args) -> int:
                 file=sys.stderr,
             )
             failures += 1
+
+    stale_catalogs = _stale_web_catalogs(output_dir, catalogs)
+    for stale in stale_catalogs:
+        print(
+            f"{stale.relative_to(ROOT)} has no matching locales/*.po catalog. "
+            "Run: python tools/translation_tool.py sync",
+            file=sys.stderr,
+        )
+        failures += 1
 
     expected_index = json.loads(render_web_index(catalogs))
     index_path = output_dir / "index.json"
