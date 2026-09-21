@@ -293,6 +293,17 @@ def validate_manifest(manifest: Dict[str, Any], release: Dict[str, Any]) -> Dict
     asset_url = str(asset["browser_download_url"])
     _validate_download_url(asset_url)
 
+    # GitHub exposes a per-asset digest for newer releases. When present it is an
+    # independent copy of the archive checksum, so a stale or inconsistent
+    # manifest is caught before anything is downloaded.
+    digest = str(asset.get("digest") or "").strip().lower()
+    if digest.startswith("sha256:"):
+        digest_value = digest.partition(":")[2]
+        if not _is_sha256(digest_value):
+            raise UpdateError("Release asset digest is not a valid sha256 checksum.")
+        if digest_value != str(manifest["sha256"]).lower():
+            raise UpdateError("Update manifest checksum does not match the release asset digest.")
+
     if not manifest.get("download_url"):
         manifest["download_url"] = asset_url
     elif str(manifest.get("download_url")) != asset_url:

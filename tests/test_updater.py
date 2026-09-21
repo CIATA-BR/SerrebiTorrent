@@ -63,15 +63,16 @@ def windows_subprocess(monkeypatch):
     return updater.subprocess
 
 
-def release_with_asset(tag="v1.0.0", url=ASSET_URL):
+def release_with_asset(tag="v1.0.0", url=ASSET_URL, digest=None):
+    asset = {
+        "name": "app.zip",
+        "browser_download_url": url,
+    }
+    if digest is not None:
+        asset["digest"] = digest
     return {
         "tag_name": tag,
-        "assets": [
-            {
-                "name": "app.zip",
-                "browser_download_url": url,
-            }
-        ],
+        "assets": [asset],
     }
 
 
@@ -110,6 +111,72 @@ def test_validate_manifest_success():
     }
     validated = validate_manifest(manifest, release)
     assert validated == manifest
+
+def test_validate_manifest_accepts_matching_release_asset_digest():
+    release = release_with_asset(digest="sha256:" + "A" * 64)
+    manifest = {
+        "version": "1.0.0",
+        "asset_filename": "app.zip",
+        "download_url": ASSET_URL,
+        "sha256": "a" * 64,
+        "published_at": "2023-01-01",
+        "signing_thumbprint": SIGNING_THUMBPRINT,
+    }
+    assert validate_manifest(manifest, release) == manifest
+
+
+def test_validate_manifest_rejects_mismatched_release_asset_digest():
+    release = release_with_asset(digest="sha256:" + "b" * 64)
+    manifest = {
+        "version": "1.0.0",
+        "asset_filename": "app.zip",
+        "download_url": ASSET_URL,
+        "sha256": "a" * 64,
+        "published_at": "2023-01-01",
+        "signing_thumbprint": SIGNING_THUMBPRINT,
+    }
+    with pytest.raises(UpdateError):
+        validate_manifest(manifest, release)
+
+
+def test_validate_manifest_rejects_malformed_release_asset_digest():
+    release = release_with_asset(digest="sha256:not-a-checksum")
+    manifest = {
+        "version": "1.0.0",
+        "asset_filename": "app.zip",
+        "download_url": ASSET_URL,
+        "sha256": "a" * 64,
+        "published_at": "2023-01-01",
+        "signing_thumbprint": SIGNING_THUMBPRINT,
+    }
+    with pytest.raises(UpdateError):
+        validate_manifest(manifest, release)
+
+
+def test_validate_manifest_tolerates_release_without_digest():
+    manifest = {
+        "version": "1.0.0",
+        "asset_filename": "app.zip",
+        "download_url": ASSET_URL,
+        "sha256": "a" * 64,
+        "published_at": "2023-01-01",
+        "signing_thumbprint": SIGNING_THUMBPRINT,
+    }
+    assert validate_manifest(manifest, release_with_asset()) == manifest
+
+
+def test_validate_manifest_ignores_non_sha256_release_asset_digest():
+    release = release_with_asset(digest="sha512:" + "c" * 128)
+    manifest = {
+        "version": "1.0.0",
+        "asset_filename": "app.zip",
+        "download_url": ASSET_URL,
+        "sha256": "a" * 64,
+        "published_at": "2023-01-01",
+        "signing_thumbprint": SIGNING_THUMBPRINT,
+    }
+    assert validate_manifest(manifest, release) == manifest
+
 
 def test_validate_manifest_missing_fields():
     release = release_with_asset()
