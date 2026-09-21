@@ -21,6 +21,7 @@ from translation_catalog import (  # noqa: E402
     render_pot,
     sort_key,
     validate_catalog,
+    validate_translation,
 )
 from translation_inventory import collect_source_messages  # noqa: E402
 
