@@ -1,7 +1,10 @@
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
+
+import pytest
 
 from translation_catalog import render_po
 
@@ -77,6 +80,7 @@ def test_compile_all_web_rejects_malformed_catalog(tmp_path):
     assert "failed to parse catalog" in result.stderr
 
 
+@pytest.mark.skipif(os.name == "nt", reason="case-only catalog filenames collide on Windows")
 def test_compile_all_web_rejects_duplicate_language_codes(tmp_path):
     locales = tmp_path / "locales"
     output = tmp_path / "web"
@@ -134,6 +138,7 @@ def test_compile_all_web_rejects_unsafe_language_code(tmp_path):
     assert not (tmp_path / "escape.json").exists()
 
 
+@pytest.mark.skipif(os.name == "nt", reason="case-only catalog filenames collide on Windows")
 def test_compile_all_web_rejects_case_insensitive_duplicate_codes(tmp_path):
     locales = tmp_path / "locales"
     output = tmp_path / "web"
