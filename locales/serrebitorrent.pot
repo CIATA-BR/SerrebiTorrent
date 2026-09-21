@@ -2,10 +2,7 @@
 # SPDX-License-Identifier: MIT
 msgid ""
 msgstr ""
-"Project-Id-Version: SerrebiTorrent\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Project-Id-Version: SerrebiTorrent\\nMIME-Version: 1.0\\nContent-Type: text/plain; charset=UTF-8\\nContent-Transfer-Encoding: 8bit\\n"
 
 msgid "&About SerrebiTorrent"
 msgstr ""
@@ -292,10 +289,10 @@ msgstr ""
 msgid "Check for &Updates...\tF5"
 msgstr ""
 
-msgid "Check for updates"
+msgid "Check for Updates"
 msgstr ""
 
-msgid "Check for Updates"
+msgid "Check for updates"
 msgstr ""
 
 msgid "Check for updates automatically on startup"
@@ -1150,10 +1147,10 @@ msgstr ""
 msgid "Profile Name:"
 msgstr ""
 
-msgid "Profiles"
+msgid "PROFILES"
 msgstr ""
 
-msgid "PROFILES"
+msgid "Profiles"
 msgstr ""
 
 msgid "Progress"
@@ -1582,10 +1579,10 @@ msgstr ""
 msgid "Torrent Options"
 msgstr ""
 
-msgid "torrents"
+msgid "Torrents"
 msgstr ""
 
-msgid "Torrents"
+msgid "torrents"
 msgstr ""
 
 msgid "Tracker List URL:"

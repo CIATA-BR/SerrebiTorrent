@@ -19,6 +19,7 @@ from translation_catalog import (  # noqa: E402
     discover_catalogs,
     load_po,
     render_pot,
+    sort_key,
     validate_catalog,
 )
 from translation_inventory import collect_source_messages  # noqa: E402
@@ -32,7 +33,7 @@ def render_web_catalog(info) -> str:
     payload = {
         "language": info.code,
         "name": info.name,
-        "translations": dict(sorted(info.translations.items(), key=lambda item: item[0].casefold())),
+        "translations": dict(sorted(info.translations.items(), key=lambda item: sort_key(item[0]))),
     }
     return json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
 
@@ -41,7 +42,7 @@ def render_web_index(catalogs) -> str:
     payload = {
         "languages": [
             {"code": code, "name": catalogs[code].name}
-            for code in sorted(catalogs, key=str.casefold)
+            for code in sorted(catalogs, key=sort_key)
         ]
     }
     return json.dumps(payload, ensure_ascii=False, indent=2) + "\n"

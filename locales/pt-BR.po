@@ -2,6 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SerrebiTorrent\n"
 "Language: pt-BR\n"
+"X-Language-Name: Português (Brasil)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -301,7 +302,7 @@ msgid "Check for updates automatically on startup"
 msgstr "Buscar por atualizações automaticamente ao iniciar"
 
 msgid "Checking"
-msgstr "Verificação"
+msgstr "Verificando"
 
 msgid "Checking for updates..."
 msgstr "Verificando atualizações..."
@@ -1081,7 +1082,7 @@ msgid "Pattern"
 msgstr "Padrão"
 
 msgid "Pause"
-msgstr "Pausing torrents..."
+msgstr "Pausar"
 
 msgid "Pause selected torrents"
 msgstr "Pausar os torrents selecionados"
@@ -1264,7 +1265,7 @@ msgid "Results, {count} results"
 msgstr "Resultados, {count} resultados"
 
 msgid "Resume"
-msgstr "Resuming torrents..."
+msgstr "Retomar"
 
 msgid "Resume selected torrents"
 msgstr "Retomar os torrents selecionados"
@@ -1378,7 +1379,7 @@ msgid "Searching {count} indexers..."
 msgstr "Pesquisando em {count} indexadores..."
 
 msgid "Seeding"
-msgstr "Semeadura"
+msgstr "Semeando"
 
 msgid "Seeds"
 msgstr "Sementes"
@@ -1480,7 +1481,7 @@ msgid "Speed"
 msgstr "Velocidade"
 
 msgid "Start"
-msgstr "Starting torrents..."
+msgstr "Iniciar"
 
 msgid "Start All"
 msgstr "Iniciar todos"
@@ -1624,7 +1625,7 @@ msgid "UI Refresh Rate (ms)"
 msgstr "Taxa de atualização da interface do usuário (ms)"
 
 msgid "Uncheck"
-msgstr "Desmarcado"
+msgstr "Desmarcar"
 
 msgid "Uncheck All"
 msgstr "Desmarcar todos"

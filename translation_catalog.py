@@ -47,11 +47,23 @@ def locales_dir() -> Path:
     return Path(override) if override else _bundle_root() / "locales"
 
 
+def sort_key(value: str) -> tuple[str, str]:
+    """Total ordering for catalog entries.
+
+    Casefolding alone ties on entries such as "Torrents"/"torrents", which makes
+    the rendered order depend on set iteration order and therefore on
+    PYTHONHASHSEED. The trailing raw value breaks those ties deterministically.
+    """
+    return (value.casefold(), value)
+
+
 def _decode_po_string(token: str) -> str:
     token = token.strip()
     if not token.startswith('"'):
         raise ValueError(f"invalid PO string: {token!r}")
-    return json.loads(token)
+    # strict=False accepts raw control characters (notably tabs in wx keyboard
+    # accelerator labels) that hand-authored and portal-exported PO files carry.
+    return json.loads(token, strict=False)
 
 
 def _parse_metadata(value: str) -> dict[str, str]:
@@ -219,7 +231,7 @@ def render_po(
         _quote_po(header),
         "",
     ]
-    for source in sorted(entries, key=str.casefold):
+    for source in sorted(entries, key=sort_key):
         lines.extend((f"msgid {_quote_po(source)}", f"msgstr {_quote_po(entries[source])}", ""))
     return "\n".join(lines)
 
@@ -239,6 +251,6 @@ def render_pot(messages: list[str], *, project: str = "SerrebiTorrent") -> str:
         _quote_po(header),
         "",
     ]
-    for source in sorted(set(messages), key=str.casefold):
+    for source in sorted(set(messages), key=sort_key):
         lines.extend((f"msgid {_quote_po(source)}", 'msgstr ""', ""))
     return "\n".join(lines)

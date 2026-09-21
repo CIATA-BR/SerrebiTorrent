@@ -5,17 +5,17 @@ import add_torrent_dialog
 
 def test_add_torrent_dialog_strings_translate_to_pt_br():
     expected = {
-        "Save Path:": "Pasta de destino:",
-        "Save Path": "Pasta de destino",
+        "Save Path:": "Salvar caminho:",
+        "Save Path": "Salvar caminho",
         "Files:": "Arquivos:",
         "Files": "Arquivos",
         "Select All": "Selecionar tudo",
         "Deselect All": "Desmarcar tudo",
-        "Choose Download Directory": "Escolher pasta de download",
+        "Choose Download Directory": "Selecione o diretório de download",
         "Check": "Marcar",
         "Uncheck": "Desmarcar",
-        "Check All": "Marcar tudo",
-        "Uncheck All": "Desmarcar tudo",
+        "Check All": "Marcar todos",
+        "Uncheck All": "Desmarcar todos",
     }
     for source, translated in expected.items():
         assert add_torrent_dialog.tr_add(source, "pt-BR") == translated
@@ -24,7 +24,7 @@ def test_add_torrent_dialog_strings_translate_to_pt_br():
 def test_add_torrent_title_preserves_torrent_name():
     assert (
         add_torrent_dialog.tr_add("Add Torrent: {name}", "pt-BR").format(name="Ubuntu")
-        == "Adicionar torrent: Ubuntu"
+        == "Adicionar o Torrent: Ubuntu"
     )
 
 
