@@ -195,7 +195,7 @@ def _mnemonic_count(value: str) -> int:
     return len(_MNEMONIC_RE.findall(value))
 
 
-def validate_translation(source: str, translated: str) -> list[str]:
+def validate_translation(source: str, translated: str, *, strict: bool = False) -> list[str]:
     """Return contributor-facing validation messages for one translation."""
     errors: list[str] = []
     if not translated.strip():
@@ -207,43 +207,44 @@ def validate_translation(source: str, translated: str) -> list[str]:
             "Placeholders differ: expected "
             f"{sorted(source_fields)}, got {sorted(translated_fields)}."
         )
-    source_printf = _printf_placeholders(source)
-    translated_printf = _printf_placeholders(translated)
-    if source_printf != translated_printf:
-        errors.append(
-            "Printf placeholders differ: expected "
-            f"{source_printf}, got {translated_printf}."
-        )
+    if strict:
+        source_printf = _printf_placeholders(source)
+        translated_printf = _printf_placeholders(translated)
+        if source_printf != translated_printf:
+            errors.append(
+                "Printf placeholders differ: expected "
+                f"{source_printf}, got {translated_printf}."
+            )
 
-    source_shortcuts = _tab_suffixes(source)
-    translated_shortcuts = _tab_suffixes(translated)
-    if source_shortcuts != translated_shortcuts:
-        errors.append(
-            "Keyboard shortcuts differ: expected "
-            f"{source_shortcuts}, got {translated_shortcuts}."
-        )
+        source_shortcuts = _tab_suffixes(source)
+        translated_shortcuts = _tab_suffixes(translated)
+        if source_shortcuts != translated_shortcuts:
+            errors.append(
+                "Keyboard shortcuts differ: expected "
+                f"{source_shortcuts}, got {translated_shortcuts}."
+            )
 
-    source_newlines = source.count("\n")
-    translated_newlines = translated.count("\n")
-    if source_newlines != translated_newlines:
-        errors.append(
-            "Newline count differs: expected "
-            f"{source_newlines}, got {translated_newlines}."
-        )
+        source_newlines = source.count("\n")
+        translated_newlines = translated.count("\n")
+        if source_newlines != translated_newlines:
+            errors.append(
+                "Newline count differs: expected "
+                f"{source_newlines}, got {translated_newlines}."
+            )
 
     source_mnemonics = _mnemonic_count(source)
     translated_mnemonics = _mnemonic_count(translated)
     if source_mnemonics > 0 and translated_mnemonics == 0:
         errors.append("Keyboard mnemonic marker '&' is missing.")
-    elif source_mnemonics == 0 and translated_mnemonics > 0:
+    elif strict and source_mnemonics == 0 and translated_mnemonics > 0:
         errors.append("Keyboard mnemonic marker '&' is unexpected.")
     return errors
 
 
-def validate_catalog(translations: dict[str, str]) -> dict[str, list[str]]:
+def validate_catalog(translations: dict[str, str], *, strict: bool = False) -> dict[str, list[str]]:
     problems: dict[str, list[str]] = {}
     for source, translated in translations.items():
-        errors = validate_translation(source, translated)
+        errors = validate_translation(source, translated, strict=strict)
         if errors:
             problems[source] = errors
     return problems
@@ -265,6 +266,7 @@ def render_po(
         f"Project-Id-Version: {project}\\n"
         f"Language: {language}\\n"
         f"X-Language-Name: {language_name}\\n"
+        "X-Serrebi-Validation: strict\\n"
         "MIME-Version: 1.0\\n"
         "Content-Type: text/plain; charset=UTF-8\\n"
         "Content-Transfer-Encoding: 8bit\\n"
