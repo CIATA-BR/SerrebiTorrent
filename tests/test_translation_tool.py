@@ -160,3 +160,41 @@ def test_compile_all_web_rejects_case_insensitive_duplicate_codes(tmp_path):
 
     assert result.returncode == 1
     assert "duplicate normalized language code" in result.stderr
+
+
+def test_compile_all_web_does_not_partially_write_on_validation_failure(tmp_path):
+    locales = tmp_path / "locales"
+    output = tmp_path / "web"
+    locales.mkdir()
+    output.mkdir()
+
+    valid = render_po("es-ES", "Español", {"Settings": "Configuración"})
+    invalid = render_po(
+        "fr-FR",
+        "Français",
+        {"Connected to {name}": "Connecté"},
+    )
+    (locales / "es-ES.po").write_text(valid, encoding="utf-8")
+    (locales / "fr-FR.po").write_text(invalid, encoding="utf-8")
+    existing = output / "es-ES.json"
+    existing.write_text("sentinel\n", encoding="utf-8")
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "tools/translation_tool.py",
+            "compile-all-web",
+            "--locales-dir",
+            str(locales),
+            "--output-dir",
+            str(output),
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 1
+    assert existing.read_text(encoding="utf-8") == "sentinel\n"
+    assert not (output / "fr-FR.json").exists()
+    assert not (output / "index.json").exists()
