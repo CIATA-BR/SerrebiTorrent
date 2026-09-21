@@ -32,7 +32,7 @@ _PLACEHOLDER_RE = Formatter()
 _PRINTF_RE = re.compile(
     r"%(?:\([A-Za-z_][A-Za-z0-9_]*\))?(?:\d+\$)?[-+0 #]*\d*(?:\.\d+)?[diouxXeEfFgGcrsab]"
 )
-_MNEMONIC_RE = re.compile(r"(?<!&)&(?!&)")
+_MNEMONIC_RE = re.compile(r"(?<!&)&(?=\\S)(?!&)")
 
 
 def _bundle_root() -> Path:
