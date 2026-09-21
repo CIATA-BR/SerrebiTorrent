@@ -102,7 +102,7 @@ def test_compile_all_web_rejects_duplicate_language_codes(tmp_path):
     )
 
     assert result.returncode == 1
-    assert "duplicate language code" in result.stderr
+    assert "duplicate normalized language code" in result.stderr
 
 
 def test_compile_all_web_rejects_unsafe_language_code(tmp_path):
