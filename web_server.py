@@ -234,6 +234,20 @@ def _csrf_token():
     return token
 
 
+@app.after_request
+def add_security_headers(response):
+    response.headers.setdefault("X-Content-Type-Options", "nosniff")
+    response.headers.setdefault("X-Frame-Options", "DENY")
+    response.headers.setdefault("Referrer-Policy", "no-referrer")
+    response.headers.setdefault(
+        "Permissions-Policy",
+        "camera=(), microphone=(), geolocation=()",
+    )
+    if request.path == "/login.html" or request.path.startswith("/api/"):
+        response.headers["Cache-Control"] = "no-store"
+    return response
+
+
 @app.before_request
 def protect_mutating_requests():
     if request.method not in ('POST', 'PUT', 'PATCH', 'DELETE'):
