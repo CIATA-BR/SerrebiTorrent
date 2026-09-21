@@ -80,16 +80,18 @@ def test_remote_labels_are_translated_without_changing_api_keys():
     assert "translateRemoteLabel" in I18N
 
 
-def test_login_keeps_english_source_and_pt_br_browser_fallback():
+def test_login_uses_generated_catalogs_with_english_source_fallback():
     assert '<html lang="en">' in LOGIN
     assert "navigator.language" in LOGIN
-    assert "document.documentElement.lang = 'pt-BR'" in LOGIN
+    assert "'serrebitorrent-language'" in LOGIN
+    assert "'/locales/index.json'" in LOGIN
+    assert "`/locales/${encodeURIComponent(language)}.json`" in LOGIN
+    assert "document.documentElement.lang = language" in LOGIN
+    assert "translations['Login - SerrebiTorrent']" in LOGIN
+    assert 'data-i18n="Username"' in LOGIN
+    assert 'data-i18n="Invalid credentials."' in LOGIN
     assert 'role="alert"' in LOGIN
     assert 'aria-live="assertive"' in LOGIN
-    assert "Nome de usuário" in LOGIN
-    assert "Credenciais inválidas." in LOGIN
-
-
 def test_removed_configured_language_keeps_selector_on_effective_fallback():
     assert "configuredLanguage = currentLanguage;" in I18N
     assert "If a configured catalog was removed or renamed" in I18N

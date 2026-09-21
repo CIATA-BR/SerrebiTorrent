@@ -149,3 +149,16 @@ def test_rss_feeds_endpoint(auth_client):
     assert rv.status_code == 200
     data = json.loads(rv.data)
     assert 'http://feed' in data
+
+
+def test_translation_catalogs_are_public_before_login(client):
+    response = client.get('/locales/index.json')
+    assert response.status_code == 200
+    payload = response.get_json()
+    assert isinstance(payload.get('languages'), list)
+
+
+def test_non_locale_static_assets_remain_protected_before_login(client):
+    response = client.get('/app.js')
+    assert response.status_code in (301, 302)
+    assert response.headers['Location'].endswith('/login.html')
