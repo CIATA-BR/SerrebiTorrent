@@ -162,3 +162,17 @@ def test_non_locale_static_assets_remain_protected_before_login(client):
     response = client.get('/app.js')
     assert response.status_code in (301, 302)
     assert response.headers['Location'].endswith('/login.html')
+
+
+def test_web_responses_include_baseline_security_headers(client):
+    response = client.get('/login.html')
+    assert response.headers['X-Content-Type-Options'] == 'nosniff'
+    assert response.headers['X-Frame-Options'] == 'DENY'
+    assert response.headers['Referrer-Policy'] == 'no-referrer'
+    assert 'camera=()' in response.headers['Permissions-Policy']
+    assert response.headers['Cache-Control'] == 'no-store'
+
+
+def test_api_responses_are_not_cached(client):
+    response = client.post('/api/v2/auth/login', data={'username': 'admin', 'password': 'wrong'})
+    assert response.headers['Cache-Control'] == 'no-store'
