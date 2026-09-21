@@ -95,3 +95,10 @@ def test_login_uses_generated_catalogs_with_english_source_fallback():
 def test_removed_configured_language_keeps_selector_on_effective_fallback():
     assert "configuredLanguage = currentLanguage;" in I18N
     assert "If a configured catalog was removed or renamed" in I18N
+
+
+def test_login_distinguishes_rate_limit_from_invalid_credentials():
+    assert "res.status === 429" in LOGIN
+    assert "'Too many failed attempts. Try again later.'" in LOGIN
+    assert "error.textContent = loginT(source)" in LOGIN
+    assert "aria-live=\"assertive\"" in LOGIN
