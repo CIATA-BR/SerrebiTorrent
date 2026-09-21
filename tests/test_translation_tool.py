@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+import re
 import subprocess
 import sys
 
@@ -268,3 +269,51 @@ def test_compile_all_web_rejects_filename_header_mismatch(tmp_path):
     assert "filename must match Language header" in result.stderr
     assert "fr-FR.po" in result.stderr
     assert not (output / "fr-FR.json").exists()
+
+
+def _coverage(*args):
+    return subprocess.run(
+        [sys.executable, "tools/translation_tool.py", "coverage", *args],
+        check=False,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+
+
+def test_coverage_reports_every_catalog_and_does_not_block_by_default():
+    result = _coverage()
+
+    assert result.returncode == 0, result.stderr
+    for catalog in Path("locales").glob("*.po"):
+        assert f"{catalog.stem}:" in result.stdout
+
+
+def test_coverage_json_arithmetic_is_consistent():
+    result = _coverage("--json")
+
+    assert result.returncode == 0, result.stderr
+    payload = json.loads(result.stdout)
+    assert payload["total_source_messages"] > 200
+    for row in payload["locales"]:
+        assert row["translated"] + row["missing"] == row["total"]
+        assert row["total"] == payload["total_source_messages"]
+        assert 0 <= row["percent"] <= 100
+
+
+def test_coverage_threshold_only_fails_when_requested():
+    assert _coverage("--min-percent", "0").returncode == 0
+
+    result = _coverage("--min-percent", "100.1")
+    assert result.returncode == 1
+    assert "below the required" in result.stderr
+
+
+def test_coverage_counts_fuzzy_entries_as_needs_review():
+    payload = json.loads(_coverage("--json").stdout)
+
+    assert any(row["needs_review"] for row in payload["locales"])
+    for row in payload["locales"]:
+        po_text = (Path("locales") / f"{row['code']}.po").read_text(encoding="utf-8")
+        expected = len(re.findall(r"^#,\s*.*\bfuzzy\b", po_text, re.MULTILINE))
+        assert row["needs_review"] == expected

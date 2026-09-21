@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 import json
+import re
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -188,6 +189,74 @@ def cmd_compile_all_web(args) -> int:
     return 0
 
 
+def _needs_review_count(info) -> int:
+    """Fuzzy entries: kept in the PO for review but ignored by the runtime."""
+    try:
+        text = info.path.read_text(encoding="utf-8")
+    except OSError:
+        return 0
+    return len(re.findall(r"^#,\s*.*\bfuzzy\b", text, re.MULTILINE))
+
+
+def coverage_rows(catalogs, messages) -> list[dict]:
+    wanted = set(messages)
+    total = len(wanted)
+    rows = []
+    for code in sorted(catalogs, key=sort_key):
+        info = catalogs[code]
+        translated = sum(1 for source in wanted if info.translations.get(source))
+        rows.append(
+            {
+                "code": info.code,
+                "name": info.name,
+                "total": total,
+                "translated": translated,
+                "missing": total - translated,
+                "needs_review": _needs_review_count(info),
+                "percent": round(translated * 100.0 / total, 1) if total else 100.0,
+            }
+        )
+    return rows
+
+
+def cmd_coverage(args) -> int:
+    messages = source_messages()
+    catalogs, catalog_errors = _discover_catalogs_strict(ROOT / "locales")
+    if _report_catalog_errors(catalog_errors):
+        return 1
+
+    rows = coverage_rows(catalogs, messages)
+
+    if args.json:
+        # Locale names are non-ASCII; the Windows console code page is not UTF-8.
+        sys.stdout.reconfigure(encoding="utf-8")
+        print(json.dumps(
+            {"total_source_messages": len(messages), "locales": rows},
+            ensure_ascii=False,
+            indent=2,
+        ))
+    else:
+        print(f"{len(messages)} source messages, {len(rows)} catalog(s).")
+        for row in rows:
+            print(
+                f"{row['code']}: {row['percent']}% "
+                f"({row['translated']}/{row['total']} translated, "
+                f"{row['missing']} missing, {row['needs_review']} needs review)"
+            )
+
+    if args.min_percent is None:
+        return 0
+
+    below = [row for row in rows if row["percent"] < args.min_percent]
+    for row in below:
+        print(
+            f"{row['code']}: {row['percent']}% is below the required "
+            f"{args.min_percent}%.",
+            file=sys.stderr,
+        )
+    return 1 if below else 0
+
+
 def cmd_sync(_args) -> int:
     messages = source_messages()
     catalogs, catalog_errors = _discover_catalogs_strict(ROOT / "locales")
@@ -323,6 +392,18 @@ def build_parser() -> argparse.ArgumentParser:
         help="fail when POT, PO validation or generated Web catalogs are out of sync",
     )
     check.set_defaults(func=cmd_check)
+
+    coverage = sub.add_parser(
+        "coverage",
+        help="report per-locale coverage of the current source strings",
+    )
+    coverage.add_argument("--json", action="store_true", help="emit a machine-readable report")
+    coverage.add_argument(
+        "--min-percent",
+        type=float,
+        help="exit non-zero when a locale is below this coverage percentage",
+    )
+    coverage.set_defaults(func=cmd_coverage)
 
     return parser
 
