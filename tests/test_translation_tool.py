@@ -47,3 +47,59 @@ def test_checked_in_translation_artifacts_are_synchronized():
         text=True,
     )
     assert result.returncode == 0, result.stderr
+
+
+def test_compile_all_web_rejects_malformed_catalog(tmp_path):
+    locales = tmp_path / "locales"
+    output = tmp_path / "web"
+    locales.mkdir()
+    (locales / "broken.po").write_text(
+        'msgid "Settings"\nmsgstr "unterminated\n',
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "tools/translation_tool.py",
+            "compile-all-web",
+            "--locales-dir",
+            str(locales),
+            "--output-dir",
+            str(output),
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 1
+    assert "failed to parse catalog" in result.stderr
+
+
+def test_compile_all_web_rejects_duplicate_language_codes(tmp_path):
+    locales = tmp_path / "locales"
+    output = tmp_path / "web"
+    locales.mkdir()
+    first = render_po("es-ES", "Español", {"Settings": "Configuración"})
+    second = render_po("es-ES", "Español alternativo", {"Search": "Buscar"})
+    (locales / "es-ES.po").write_text(first, encoding="utf-8")
+    (locales / "duplicate.po").write_text(second, encoding="utf-8")
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "tools/translation_tool.py",
+            "compile-all-web",
+            "--locales-dir",
+            str(locales),
+            "--output-dir",
+            str(output),
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 1
+    assert "duplicate language code" in result.stderr
