@@ -13,6 +13,7 @@ msgstr "ZZMPZActions &"
 msgid "&Add selected"
 msgstr "ZZAMPZADE &"
 
+#, fuzzy
 msgid "&Add Torrent File...\tCtrl+O"
 msgstr "ZZMPZZAdd Torrent Filter... ZZTBZZCtrl + O & \t"
 
@@ -25,6 +26,7 @@ msgstr "ZZMPZZClose &"
 msgid "&Connect"
 msgstr "ZZMPZConnect &"
 
+#, fuzzy
 msgid "&Connect...\tCtrl+Shift+C"
 msgstr "ZZMPZZConnect & \t"
 
@@ -46,24 +48,29 @@ msgstr "ZZMPZZIndexers: &"
 msgid "&Name:"
 msgstr "ZZMPZName: &"
 
+#, fuzzy
 msgid "&Pause\tCtrl+P"
 msgstr "ZZAMPZPausEZZBZZZCtrl + P & \t"
 
 msgid "&Remove"
 msgstr "ZZAMPZOUNE &"
 
+#, fuzzy
 msgid "&Remove\tDel"
 msgstr "ZZMPZZRemoveZZTBZZDel & \t"
 
+#, fuzzy
 msgid "&Resume\tCtrl+R"
 msgstr "&REsumeZZTBZZZCtrl + R \t"
 
+#, fuzzy
 msgid "&Search for Torrents...\tCtrl+F"
 msgstr "ZZMPZZTorrents paieška... ZZTBZZCtrl + F & \t"
 
 msgid "&Search for:"
 msgstr "ZZMPZIeškoti: &"
 
+#, fuzzy
 msgid "&Start\tCtrl+S"
 msgstr "ZZMPZZStarTZZZZCtrl + S & \t"
 
@@ -97,6 +104,7 @@ msgstr "Aktyvus"
 msgid "Add"
 msgstr "Pridėti"
 
+#, fuzzy
 msgid "Add &URL/Magnet...\tCtrl+U"
 msgstr "Pridėti ZZMPZZURL / Magnet... ZZTBZZZCtrl + U & \t"
 
@@ -286,6 +294,7 @@ msgstr "Patikrinti"
 msgid "Check All"
 msgstr "Patikrinti visus"
 
+#, fuzzy
 msgid "Check for &Updates...\tF5"
 msgstr "Ieškoti ZZMPZZUpdates... ZZTBZZF5 & \t"
 
@@ -370,6 +379,7 @@ msgstr "Comment"
 msgid "Connection Manager..."
 msgstr "Comment"
 
+#, fuzzy
 msgid "Connection Manager...\tCtrl+Shift+C"
 msgstr "ZZBAZZCtrl + Shift + C \t"
 
@@ -388,9 +398,11 @@ msgstr "Kopijuota {count} magnetas nuoroda."
 msgid "Copied {count} magnet links."
 msgstr "Kopijuotos {count} magneto nuorodos."
 
+#, fuzzy
 msgid "Copy &Info Hash\tCtrl+I"
 msgstr "Kopijuoti &Info HashZBAZZZCtrl + I \t"
 
+#, fuzzy
 msgid "Copy &Magnet Link\tCtrl+M"
 msgstr "Kopijuoti &Magnet LinkZBAZZZCtrl + M \t"
 
@@ -412,6 +424,7 @@ msgstr "Kopijuoti magneto nuorodą į iškarpinę"
 msgid "Copy the info hash for selected torrents"
 msgstr "Kopijuoti pasirinktų torrentų informacijos maišą"
 
+#, fuzzy
 msgid "Create &Torrent...\tCtrl+N"
 msgstr "Sukurti ZZMPZTorrent... ZZTBZZCtrl + N & \t"
 
@@ -868,6 +881,7 @@ msgstr "Įkeliama..."
 msgid "Local libtorrent"
 msgstr "Lokalus libtorrent"
 
+#, fuzzy
 msgid "Local Session &Settings...\tCtrl+,"
 msgstr "vietinis ZZMPZZSettings... ZZTBZZCtrl +, & \t"
 
@@ -1237,6 +1251,7 @@ msgstr "Pašalinti pasirinktus torrentus ir duomenis"
 msgid "Remove torrent"
 msgstr "Pašalinti torrentą"
 
+#, fuzzy
 msgid "Remove with &Data\tShift+Del"
 msgstr "Pašalinti su &DataZZBZZZShift + Del \t"
 
@@ -1387,6 +1402,7 @@ msgstr "Žymėti"
 msgid "Select &all"
 msgstr "Pasirinkite ZZMPZZall &"
 
+#, fuzzy
 msgid "Select &All\tCtrl+A"
 msgstr "Pasirinkite &ZAlLZZBZZZZCtrl + A \t"
 

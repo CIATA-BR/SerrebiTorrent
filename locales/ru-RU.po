@@ -52,6 +52,7 @@ msgstr "&Pause\tCtrl+P"
 msgid "&Remove"
 msgstr "&Удалить"
 
+#, fuzzy
 msgid "&Remove\tDel"
 msgstr "&RemoveZTABZZDel \t"
 
@@ -1237,6 +1238,7 @@ msgstr "Удалить выбранные торренты и данные"
 msgid "Remove torrent"
 msgstr "Удалить торрент"
 
+#, fuzzy
 msgid "Remove with &Data\tShift+Del"
 msgstr "Удалить &Data\tShift+ Дель"
 

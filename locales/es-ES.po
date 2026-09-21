@@ -14,7 +14,7 @@ msgid "&Add selected"
 msgstr "&Add selected"
 
 msgid "&Add Torrent File...\tCtrl+O"
-msgstr "&Add Torrent File...ZTABZCtrl+O \t"
+msgstr "&Add Torrent File...\tCtrl+O"
 
 msgid "&Add..."
 msgstr "&Add..."
@@ -26,7 +26,7 @@ msgid "&Connect"
 msgstr "&Connect"
 
 msgid "&Connect...\tCtrl+Shift+C"
-msgstr "&Connect...ZTABZCtrl+Shift+C \t"
+msgstr "&Connect...\tCtrl+Shift+C"
 
 msgid "&Edit..."
 msgstr "&Editar..."
@@ -47,25 +47,27 @@ msgid "&Name:"
 msgstr "&Name:"
 
 msgid "&Pause\tCtrl+P"
-msgstr "&PauseZTABZCtrl+P \t"
+msgstr "&Pause\tCtrl+P"
 
 msgid "&Remove"
 msgstr "ZZAMPZRemove &"
 
+#, fuzzy
 msgid "&Remove\tDel"
 msgstr "ZZAMPZRemoveZTABZDel & \t"
 
+#, fuzzy
 msgid "&Resume\tCtrl+R"
 msgstr "ZZAMPZResumeZZTABZCtrl+R & \t"
 
 msgid "&Search for Torrents...\tCtrl+F"
-msgstr "&Search for Torrents...ZTABZCtrl+F \t"
+msgstr "&Search for Torrents...\tCtrl+F"
 
 msgid "&Search for:"
 msgstr "&Search for:"
 
 msgid "&Start\tCtrl+S"
-msgstr "&StartZTABZCtrl+S \t"
+msgstr "&Start\tCtrl+S"
 
 msgid "&Tools"
 msgstr "&Tools"
@@ -98,7 +100,7 @@ msgid "Add"
 msgstr "Añadir"
 
 msgid "Add &URL/Magnet...\tCtrl+U"
-msgstr "Añadir &URL/Magnet...ZTABZCtrl+U \t"
+msgstr "Añadir &URL/Magnet...\tCtrl+U"
 
 msgid "Add a torrent from a local file"
 msgstr "Añadir un torrente de un archivo local"
@@ -286,6 +288,7 @@ msgstr "Check"
 msgid "Check All"
 msgstr "Ver todo"
 
+#, fuzzy
 msgid "Check for &Updates...\tF5"
 msgstr "Chequeo para ZZAMPZUpdates...ZTABZF5 & \t"
 
@@ -371,7 +374,7 @@ msgid "Connection Manager..."
 msgstr "Gerente de conexión..."
 
 msgid "Connection Manager...\tCtrl+Shift+C"
-msgstr "Gerente de conexión...ZTABZCtrl+Shift+C \t"
+msgstr "Gerente de conexión...\tCtrl+Shift+C"
 
 msgid "Connection profiles"
 msgstr "Perfiles de conexión"
@@ -388,9 +391,11 @@ msgstr "Copiado ZZTOKEN0Z enlace imán. {count}"
 msgid "Copied {count} magnet links."
 msgstr "Enlaces de imán ZZTOKEN0Z. {count}"
 
+#, fuzzy
 msgid "Copy &Info Hash\tCtrl+I"
 msgstr "Copiado ZZAMPZInfo HashZTABZCtrl+I & \t"
 
+#, fuzzy
 msgid "Copy &Magnet Link\tCtrl+M"
 msgstr "Copiado ZZAMPZMagnet LinkZTABZCtrl+M & \t"
 
@@ -412,6 +417,7 @@ msgstr "Copie el enlace del imán al portapapeles"
 msgid "Copy the info hash for selected torrents"
 msgstr "Copiar el hash de información para torrentes seleccionados"
 
+#, fuzzy
 msgid "Create &Torrent...\tCtrl+N"
 msgstr "Crear ZZAMPZTorrent...ZTABZCtrl+N & \t"
 
@@ -869,7 +875,7 @@ msgid "Local libtorrent"
 msgstr "Local libtorrent"
 
 msgid "Local Session &Settings...\tCtrl+,"
-msgstr "Sesión local &Settings...ZTABZCtrl+, \t"
+msgstr "Sesión local &Settings...\tCtrl+,"
 
 msgid "Local session active"
 msgstr "Período de sesiones local activo"
@@ -1237,6 +1243,7 @@ msgstr "Eliminar torrentes seleccionados y datos"
 msgid "Remove torrent"
 msgstr "Quitar torrente"
 
+#, fuzzy
 msgid "Remove with &Data\tShift+Del"
 msgstr "Quitar con ZZAMPZDataZTABZShift+ Del & \t"
 
@@ -1388,7 +1395,7 @@ msgid "Select &all"
 msgstr "Seleccione &all"
 
 msgid "Select &All\tCtrl+A"
-msgstr "Seleccione &AllZTABZCtrl+A \t"
+msgstr "Seleccione &All\tCtrl+A"
 
 msgid "Select &none"
 msgstr "Seleccione ZZAMPZnone &"

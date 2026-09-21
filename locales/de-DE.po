@@ -1237,6 +1237,7 @@ msgstr "Entfernen Sie ausgewÃ¤hlte Torrents und Daten"
 msgid "Remove torrent"
 msgstr "Torrent entfernen"
 
+#, fuzzy
 msgid "Remove with &Data\tShift+Del"
 msgstr "Entfernen mit &Data\tShift+ Del"
 

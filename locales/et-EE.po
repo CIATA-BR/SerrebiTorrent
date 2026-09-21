@@ -13,6 +13,7 @@ msgstr "ZZAMPZActions &"
 msgid "&Add selected"
 msgstr "&Add valitud"
 
+#, fuzzy
 msgid "&Add Torrent File...\tCtrl+O"
 msgstr "ZZAMPZAdd Torrent File...ZZTABZCtrl+O & \t"
 
@@ -46,15 +47,18 @@ msgstr "&Indexers :"
 msgid "&Name:"
 msgstr "&Nimi:"
 
+#, fuzzy
 msgid "&Pause\tCtrl+P"
 msgstr "&PauseZTABZZCtrl+P \t"
 
 msgid "&Remove"
 msgstr "&Remove"
 
+#, fuzzy
 msgid "&Remove\tDel"
 msgstr "ZZAMPZRemoveZZTABZDel & \t"
 
+#, fuzzy
 msgid "&Resume\tCtrl+R"
 msgstr "ZZAMPZResumeZZTABZCtrl+R & \t"
 
@@ -64,6 +68,7 @@ msgstr "&Torrenti otsing...Z\tCtrl+F"
 msgid "&Search for:"
 msgstr "&Ootsimine:"
 
+#, fuzzy
 msgid "&Start\tCtrl+S"
 msgstr "ZZAMPZStart\tCtrl+S &"
 
@@ -371,7 +376,7 @@ msgid "Connection Manager..."
 msgstr "Ãœhenduse haldur..."
 
 msgid "Connection Manager...\tCtrl+Shift+C"
-msgstr "Ãœhenduse haldur...ZZTABZCtrl+Shift+C \t"
+msgstr "Ãœhenduse haldur...\tCtrl+Shift+C"
 
 msgid "Connection profiles"
 msgstr "Ãœhenduse profiilid"
@@ -389,8 +394,9 @@ msgid "Copied {count} magnet links."
 msgstr "Koopia {count} magnetlinkidest."
 
 msgid "Copy &Info Hash\tCtrl+I"
-msgstr "Copy &Info HashZTABZCtrl+I \t"
+msgstr "Copy &Info Hash\tCtrl+I"
 
+#, fuzzy
 msgid "Copy &Magnet Link\tCtrl+M"
 msgstr "Kopeeri ZZAMPZMagnet LinkZZTABZCtrl+M & \t"
 
@@ -412,6 +418,7 @@ msgstr "Kopeeri magnetlink lÃµikepuhvrisse"
 msgid "Copy the info hash for selected torrents"
 msgstr "Kopeeri valitud torrentide info rÃ¤si"
 
+#, fuzzy
 msgid "Create &Torrent...\tCtrl+N"
 msgstr "Loo ZZAMPZTorrent... \tCtrl+N &"
 
@@ -868,6 +875,7 @@ msgstr "Laadimine..."
 msgid "Local libtorrent"
 msgstr "Kohalik libtorrent"
 
+#, fuzzy
 msgid "Local Session &Settings...\tCtrl+,"
 msgstr "Kohalik istung ZZAMPZSettings...\tCtrl+, &"
 
@@ -1237,6 +1245,7 @@ msgstr "Eemalda valitud torrorid ja andmed"
 msgid "Remove torrent"
 msgstr "Torrenti eemaldamine"
 
+#, fuzzy
 msgid "Remove with &Data\tShift+Del"
 msgstr "Eemaldage ZZAMPZData\tShift+ Del &"
 
@@ -1387,6 +1396,7 @@ msgstr "Vali"
 msgid "Select &all"
 msgstr "Vali &all"
 
+#, fuzzy
 msgid "Select &All\tCtrl+A"
 msgstr "Vali ZZAMPZAll\tCtrl+A &"
 

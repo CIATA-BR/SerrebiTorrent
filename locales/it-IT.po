@@ -46,6 +46,7 @@ msgstr "&Indexers:"
 msgid "&Name:"
 msgstr "Nome: &"
 
+#, fuzzy
 msgid "&Pause\tCtrl+P"
 msgstr "&OPause\tCTTrl+P"
 
@@ -64,6 +65,7 @@ msgstr "&Search per Torrents...\tCtrl+F"
 msgid "&Search for:"
 msgstr "Ricerca per: &"
 
+#, fuzzy
 msgid "&Start\tCtrl+S"
 msgstr "&OStellareBZZCtrl+S \t"
 
@@ -1237,6 +1239,7 @@ msgstr "Rimuovere torrent e dati selezionati"
 msgid "Remove torrent"
 msgstr "Rimuovi torrent"
 
+#, fuzzy
 msgid "Remove with &Data\tShift+Del"
 msgstr "Rimuovi con &Data\tShift+ Delitto"
 

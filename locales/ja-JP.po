@@ -13,6 +13,7 @@ msgstr "ジャズアクティビティ &"
 msgid "&Add selected"
 msgstr "&追加選択"
 
+#, fuzzy
 msgid "&Add Torrent File...\tCtrl+O"
 msgstr "&追加トレントファイル...\t+O"
 
@@ -25,6 +26,7 @@ msgstr "&閉じる"
 msgid "&Connect"
 msgstr "&コネクト"
 
+#, fuzzy
 msgid "&Connect...\tCtrl+Shift+C"
 msgstr "&Connect...\tCtrl+シフト+C"
 
@@ -46,18 +48,22 @@ msgstr "&Inデキサ:"
 msgid "&Name:"
 msgstr "&Name:"
 
+#, fuzzy
 msgid "&Pause\tCtrl+P"
 msgstr "&Pause\tCtrl+Pの特長"
 
 msgid "&Remove"
 msgstr "&Removeの特長"
 
+#, fuzzy
 msgid "&Remove\tDel"
 msgstr "&Remove\tDELの特長"
 
+#, fuzzy
 msgid "&Resume\tCtrl+R"
 msgstr "&Resume\tCtrl+Rの特長"
 
+#, fuzzy
 msgid "&Search for Torrents...\tCtrl+F"
 msgstr "&Tの検索...\t+F"
 
@@ -97,6 +103,7 @@ msgstr "アクティブ"
 msgid "Add"
 msgstr "追加する"
 
+#, fuzzy
 msgid "Add &URL/Magnet...\tCtrl+U"
 msgstr "&URL/Magnet...\t+Uを追加"
 
@@ -412,6 +419,7 @@ msgstr "マグネットリンクをクリップボードにコピーする"
 msgid "Copy the info hash for selected torrents"
 msgstr "選択したトレントの情報をコピーする"
 
+#, fuzzy
 msgid "Create &Torrent...\tCtrl+N"
 msgstr "&Torrentを作成します。...\t+N"
 
@@ -868,6 +876,7 @@ msgstr "ローディング..."
 msgid "Local libtorrent"
 msgstr "ローカル libtorrent"
 
+#, fuzzy
 msgid "Local Session &Settings...\tCtrl+,"
 msgstr "ローカルセッション&Settings...\t+,"
 
@@ -1237,6 +1246,7 @@ msgstr "選択したトレントとデータを削除する"
 msgid "Remove torrent"
 msgstr "トレントを削除"
 
+#, fuzzy
 msgid "Remove with &Data\tShift+Del"
 msgstr "&Data\tShift+で取除いて下さい ログイン"
 
@@ -1387,6 +1397,7 @@ msgstr "選択する"
 msgid "Select &all"
 msgstr "&allを選ぶ"
 
+#, fuzzy
 msgid "Select &All\tCtrl+A"
 msgstr "&ALL\tCtrl+Aを選ぶ"
 

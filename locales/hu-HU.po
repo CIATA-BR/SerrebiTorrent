@@ -13,6 +13,7 @@ msgstr "&Actions"
 msgid "&Add selected"
 msgstr "&Add kijelölve"
 
+#, fuzzy
 msgid "&Add Torrent File...\tCtrl+O"
 msgstr "&Add Torrent File... ZZTABZCtrl + O \t"
 
@@ -25,6 +26,7 @@ msgstr "&Close"
 msgid "&Connect"
 msgstr "&Connect"
 
+#, fuzzy
 msgid "&Connect...\tCtrl+Shift+C"
 msgstr "&ZConnect... ZZTABZCtrl + Shift + C \t"
 
@@ -46,6 +48,7 @@ msgstr "&Indexers:"
 msgid "&Name:"
 msgstr "&Name:"
 
+#, fuzzy
 msgid "&Pause\tCtrl+P"
 msgstr "&PausezZTABZZCtrl + P \t"
 
@@ -55,15 +58,18 @@ msgstr "&Távolítás"
 msgid "&Remove\tDel"
 msgstr "&Remove\tDel"
 
+#, fuzzy
 msgid "&Resume\tCtrl+R"
 msgstr "&ResumezZTABZZCtrl + R \t"
 
+#, fuzzy
 msgid "&Search for Torrents...\tCtrl+F"
 msgstr "&Search for Torrents... ZZTABZCtrl + F \t"
 
 msgid "&Search for:"
 msgstr "&Search for:"
 
+#, fuzzy
 msgid "&Start\tCtrl+S"
 msgstr "&StartZTABZZCtrl + S \t"
 
@@ -97,6 +103,7 @@ msgstr "Aktív"
 msgid "Add"
 msgstr "Hozzáadás"
 
+#, fuzzy
 msgid "Add &URL/Magnet...\tCtrl+U"
 msgstr "&URL / Magnet hozzáadása... ZZTABZCtrl + U \t"
 
@@ -370,6 +377,7 @@ msgstr "Kapcsolatkezelő"
 msgid "Connection Manager..."
 msgstr "Kapcsolatkezelő..."
 
+#, fuzzy
 msgid "Connection Manager...\tCtrl+Shift+C"
 msgstr "Kapcsolatkezelő... ZZTABZCtrl + Shift + C \t"
 
@@ -388,9 +396,11 @@ msgstr "Másolt {count} mágnes link."
 msgid "Copied {count} magnet links."
 msgstr "Másolt {count} mágnes linkek."
 
+#, fuzzy
 msgid "Copy &Info Hash\tCtrl+I"
 msgstr "Másolás &Info HashZZTABZCtrl + I \t"
 
+#, fuzzy
 msgid "Copy &Magnet Link\tCtrl+M"
 msgstr "Másolás &Magnet LinkZZTABZCtrl + M \t"
 
@@ -412,6 +422,7 @@ msgstr "Mágneses kapcsolat másolása a vágólapra"
 msgid "Copy the info hash for selected torrents"
 msgstr "Másolja le az info hash a kiválasztott torrent"
 
+#, fuzzy
 msgid "Create &Torrent...\tCtrl+N"
 msgstr "&Torrent... ZZTABZCtrl + N \t"
 
@@ -868,6 +879,7 @@ msgstr "Betöltés..."
 msgid "Local libtorrent"
 msgstr "Helyi libtorrent"
 
+#, fuzzy
 msgid "Local Session &Settings...\tCtrl+,"
 msgstr "Helyi munkamenet &Settings... ZZTABZCtrl +, \t"
 
@@ -1237,6 +1249,7 @@ msgstr "A kijelölt torrentek és adatok eltávolítása"
 msgid "Remove torrent"
 msgstr "Torrent eltávolítása"
 
+#, fuzzy
 msgid "Remove with &Data\tShift+Del"
 msgstr "Távolítás &Data\tShift + Del"
 
@@ -1387,6 +1400,7 @@ msgstr "Kijelölés"
 msgid "Select &all"
 msgstr "Válassza ki a &allt"
 
+#, fuzzy
 msgid "Select &All\tCtrl+A"
 msgstr "Válassza ki a &AlZZTABZCtrl + A \t"
 
