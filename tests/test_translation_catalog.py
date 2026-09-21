@@ -79,9 +79,9 @@ def test_newline_count_must_be_preserved():
     assert any("Newline count differs" in problem for problem in problems)
 
 
-def test_mnemonic_count_must_match_and_escaped_ampersands_are_ignored():
+def test_mnemonic_presence_is_validated_and_escaped_ampersands_are_ignored():
     assert validate_translation("Save && E&xit", "Salvar && Sai&r") == []
     missing = validate_translation("&Search", "Pesquisar")
     extra = validate_translation("Search", "&Pesquisar")
-    assert any("Keyboard mnemonic count differs" in problem for problem in missing)
-    assert any("Keyboard mnemonic count differs" in problem for problem in extra)
+    assert "Keyboard mnemonic marker '&' is missing." in missing
+    assert "Keyboard mnemonic marker '&' is unexpected." in extra
