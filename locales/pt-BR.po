@@ -1546,6 +1546,9 @@ msgstr "Título"
 msgid "Toggle"
 msgstr "Alternar"
 
+msgid "Too many failed attempts. Try again later."
+msgstr "Muitas tentativas de login falharam. Tente novamente mais tarde."
+
 msgid "Torrent Actions"
 msgstr "Ações do Torrent"
 

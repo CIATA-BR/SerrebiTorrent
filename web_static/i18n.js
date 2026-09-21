@@ -103,7 +103,8 @@
         'N/A': 'N/D',
         'Login - SerrebiTorrent': 'Entrar - SerrebiTorrent',
         'Login': 'Entrar',
-        'Invalid credentials.': 'Credenciais inválidas.'
+        'Invalid credentials.': 'Credenciais inválidas.',
+        'Too many failed attempts. Try again later.': 'Muitas tentativas de login falharam. Tente novamente mais tarde.'
     };
 
     const REMOTE_WORDS = {

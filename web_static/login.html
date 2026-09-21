@@ -9,6 +9,7 @@
         body { background-color: #f4f7f6; display: flex; align-items: center; justify-content: center; height: 100vh; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         .login-card { width: 400px; padding: 2rem; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); background: white; border-top: 5px solid #007bff; }
         .logo { text-align: center; margin-bottom: 1.5rem; color: #007bff; font-weight: bold; font-size: 1.5rem; }
+        #errorMsg:focus { outline: 2px solid #dc3545; outline-offset: 4px; }
     </style>
 </head>
 <body>
@@ -24,11 +25,24 @@
                 <input type="password" class="form-control" id="password" required autocomplete="current-password">
             </div>
             <button type="submit" class="btn btn-primary w-100" data-i18n="Login">Login</button>
-            <div id="errorMsg" class="text-danger mt-2 text-center" role="alert" aria-live="assertive" style="display:none;" data-i18n="Invalid credentials.">Invalid credentials.</div>
+            <div id="errorMsg" class="text-danger mt-2 text-center" role="alert" aria-live="assertive" tabindex="-1" style="display:none;" data-i18n="Invalid credentials.">Invalid credentials.</div>
         </form>
     </main>
 
     <script>
+        // Kept for runtime login feedback, not just the initial markup pass.
+        let translations = {};
+        let errorKey = '';
+
+        function showLoginError(key) {
+            errorKey = key;
+            const errorMsg = document.getElementById('errorMsg');
+            errorMsg.textContent = translations[key] || key;
+            const wasHidden = errorMsg.style.display === 'none';
+            errorMsg.style.display = 'block';
+            if (wasHidden) errorMsg.focus();
+        }
+
         async function localizeLogin() {
             let available = [];
             try {
@@ -73,7 +87,7 @@
                 const response = await fetch(`/locales/${encodeURIComponent(language)}.json`, {cache: 'no-store'});
                 if (!response.ok) return;
                 const payload = await response.json();
-                const translations = payload && payload.translations && typeof payload.translations === 'object'
+                translations = payload && payload.translations && typeof payload.translations === 'object'
                     ? payload.translations
                     : {};
                 document.title = translations['Login - SerrebiTorrent'] || document.title;
@@ -81,6 +95,9 @@
                     const value = translations[element.dataset.i18n];
                     if (value) element.textContent = value;
                 });
+                // Re-render any message already shown so a late catalog cannot
+                // replace the lockout warning with "Invalid credentials.".
+                if (errorKey) showLoginError(errorKey);
             } catch (_error) {
                 // English source text remains a safe fallback.
             }
@@ -102,7 +119,9 @@
             if (res.ok) {
                 window.location.href = '/';
             } else {
-                document.getElementById('errorMsg').style.display = 'block';
+                showLoginError(res.status === 429
+                    ? 'Too many failed attempts. Try again later.'
+                    : 'Invalid credentials.');
             }
         };
     </script>

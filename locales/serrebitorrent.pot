@@ -1543,6 +1543,9 @@ msgstr ""
 msgid "Toggle"
 msgstr ""
 
+msgid "Too many failed attempts. Try again later."
+msgstr ""
+
 msgid "Torrent Actions"
 msgstr ""
 

@@ -95,3 +95,27 @@ def test_login_uses_generated_catalogs_with_english_source_fallback():
 def test_removed_configured_language_keeps_selector_on_effective_fallback():
     assert "configuredLanguage = currentLanguage;" in I18N
     assert "If a configured catalog was removed or renamed" in I18N
+
+
+def test_login_keeps_catalog_for_runtime_feedback():
+    assert "let translations = {};" in LOGIN
+    assert "translations[key] || key" in LOGIN
+
+
+def test_login_reports_lockout_separately_from_invalid_credentials():
+    assert "showLoginError(res.status === 429" in LOGIN
+    assert "'Too many failed attempts. Try again later.'" in LOGIN
+    assert "'Invalid credentials.');" in LOGIN
+
+
+def test_login_error_target_is_focusable_and_focused():
+    assert 'tabindex="-1"' in LOGIN
+    assert "#errorMsg:focus" in LOGIN
+    assert "errorMsg.focus()" in LOGIN
+
+
+def test_pt_br_layer_covers_the_lockout_message():
+    assert (
+        "'Too many failed attempts. Try again later.': "
+        "'Muitas tentativas de login falharam. Tente novamente mais tarde.'"
+    ) in I18N
