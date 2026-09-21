@@ -85,3 +85,42 @@ def test_bundle_audit_rejects_catalog_without_translations_object(tmp_path):
 
     assert result.returncode != 0
     assert "has no translations object" in (result.stderr + result.stdout)
+
+
+def test_bundle_audit_rejects_non_object_web_catalog(tmp_path):
+    # json.loads accepts a bare null, which used to reach a .get() call and
+    # report an AttributeError traceback instead of the reason for the stop.
+    bundle = _make_bundle(tmp_path)
+    (bundle / "web_static" / "locales" / "pt-BR.json").write_text("null", encoding="utf-8")
+
+    result = _audit(bundle)
+
+    assert result.returncode != 0
+    assert "is not a JSON object" in (result.stderr + result.stdout)
+    assert "Traceback" not in (result.stderr + result.stdout)
+
+
+def test_bundle_audit_rejects_non_object_locale_index(tmp_path):
+    bundle = _make_bundle(tmp_path)
+    (bundle / "web_static" / "locales" / "index.json").write_text(
+        "[]", encoding="utf-8"
+    )
+
+    result = _audit(bundle)
+
+    assert result.returncode != 0
+    assert "Bundled Web locale index is not a JSON object" in (result.stderr + result.stdout)
+    assert "Traceback" not in (result.stderr + result.stdout)
+
+
+def test_bundle_audit_rejects_unparseable_locale_index(tmp_path):
+    bundle = _make_bundle(tmp_path)
+    (bundle / "web_static" / "locales" / "index.json").write_text(
+        "{not json", encoding="utf-8"
+    )
+
+    result = _audit(bundle)
+
+    assert result.returncode != 0
+    assert "Bundled Web locale index is invalid" in (result.stderr + result.stdout)
+    assert "Traceback" not in (result.stderr + result.stdout)

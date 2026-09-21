@@ -26,6 +26,22 @@ REQUIRED_WEB_MESSAGES = (
 )
 
 
+def _load_json_object(path: Path, description: str) -> dict:
+    """Read a bundle JSON file that must hold an object.
+
+    json.loads accepts any JSON value, so a null, list or bare string would
+    otherwise reach a .get() call and surface as an AttributeError traceback
+    instead of a readable reason the build stopped.
+    """
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError, TypeError) as exc:
+        raise SystemExit(f"{description} is invalid: {exc}") from exc
+    if not isinstance(payload, dict):
+        raise SystemExit(f"{description} is not a JSON object.")
+    return payload
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("bundle", type=Path)
@@ -76,10 +92,9 @@ def main() -> int:
             + repr(index_files)
         )
 
-    try:
-        language_index = json.loads((bundle / index_files[0]).read_text(encoding="utf-8"))
-    except (OSError, ValueError, TypeError) as exc:
-        raise SystemExit(f"Bundled Web locale index is invalid: {exc}") from exc
+    language_index = _load_json_object(
+        bundle / index_files[0], "Bundled Web locale index"
+    )
 
     languages = language_index.get("languages")
     if not isinstance(languages, list) or not languages:
@@ -100,12 +115,9 @@ def main() -> int:
                 f"Expected one bundled Web catalog for {code}, found: {json_files}"
             )
 
-        try:
-            web_catalog = json.loads((bundle / json_files[0]).read_text(encoding="utf-8"))
-        except (OSError, ValueError, TypeError) as exc:
-            raise SystemExit(
-                f"Bundled Web catalog for {code} is invalid: {exc}"
-            ) from exc
+        web_catalog = _load_json_object(
+            bundle / json_files[0], f"Bundled Web catalog for {code}"
+        )
 
         translations = web_catalog.get("translations")
         if not isinstance(translations, dict):
