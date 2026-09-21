@@ -293,6 +293,15 @@ def validate_manifest(manifest: Dict[str, Any], release: Dict[str, Any]) -> Dict
     asset_url = str(asset["browser_download_url"])
     _validate_download_url(asset_url)
 
+    asset_digest = str(asset.get("digest") or "").strip()
+    if asset_digest:
+        algorithm, separator, digest_value = asset_digest.partition(":")
+        if separator and algorithm.lower() == "sha256" and _is_sha256(digest_value):
+            if digest_value.lower() != str(manifest["sha256"]).lower():
+                raise UpdateError(
+                    "Update manifest sha256 does not match the GitHub release asset digest."
+                )
+
     if not manifest.get("download_url"):
         manifest["download_url"] = asset_url
     elif str(manifest.get("download_url")) != asset_url:
