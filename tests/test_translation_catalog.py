@@ -52,6 +52,7 @@ def test_render_po_round_trips_unicode_translation():
     text = render_po("pt-BR", "Português (Brasil)", {"Settings": "Configurações"})
     metadata, translations = parse_po_text(text)
     assert metadata["Language"] == "pt-BR"
+    assert metadata["X-Serrebi-Validation"] == "strict"
     assert translations["Settings"] == "Configurações"
 
 
@@ -62,26 +63,36 @@ def test_render_pot_contains_unique_source_messages():
 
 
 def test_printf_placeholders_must_match_exactly():
-    assert validate_translation("Downloaded: %0.1f%%", "Baixado: %0.1f%%") == []
-    problems = validate_translation("Downloaded: %0.1f%%", "Baixado: %s")
+    assert validate_translation("Downloaded: %0.1f%%", "Baixado: %0.1f%%", strict=True) == []
+    problems = validate_translation("Downloaded: %0.1f%%", "Baixado: %s", strict=True)
     assert any("Printf placeholders differ" in problem for problem in problems)
 
 
 def test_keyboard_shortcut_suffix_must_be_preserved():
-    assert validate_translation("&Open\tCtrl+O", "&Abrir\tCtrl+O") == []
-    problems = validate_translation("&Open\tCtrl+O", "&Abrir\tCtrl+A")
+    assert validate_translation("&Open\tCtrl+O", "&Abrir\tCtrl+O", strict=True) == []
+    problems = validate_translation("&Open\tCtrl+O", "&Abrir\tCtrl+A", strict=True)
     assert any("Keyboard shortcuts differ" in problem for problem in problems)
 
 
 def test_newline_count_must_be_preserved():
-    assert validate_translation("Line one\nLine two", "Linha um\nLinha dois") == []
-    problems = validate_translation("Line one\nLine two", "Linha um Linha dois")
+    assert validate_translation("Line one\nLine two", "Linha um\nLinha dois", strict=True) == []
+    problems = validate_translation("Line one\nLine two", "Linha um Linha dois", strict=True)
     assert any("Newline count differs" in problem for problem in problems)
 
 
 def test_mnemonic_presence_is_validated_and_escaped_ampersands_are_ignored():
     assert validate_translation("Save && E&xit", "Salvar && Sai&r") == []
     missing = validate_translation("&Search", "Pesquisar")
-    extra = validate_translation("Search", "&Pesquisar")
+    extra = validate_translation("Search", "&Pesquisar", strict=True)
     assert "Keyboard mnemonic marker '&' is missing." in missing
     assert "Keyboard mnemonic marker '&' is unexpected." in extra
+
+
+def test_legacy_catalog_validation_does_not_enforce_strict_shortcuts():
+    problems = validate_catalog({"&Open\tCtrl+O": "&Abrir\tCtrl+A"})
+    assert problems == {}
+
+
+def test_strict_catalog_validation_enforces_shortcuts():
+    problems = validate_catalog({"&Open\tCtrl+O": "&Abrir\tCtrl+A"}, strict=True)
+    assert "&Open\tCtrl+O" in problems
