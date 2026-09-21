@@ -727,6 +727,7 @@ msgstr "Захист сил на"
 msgid "Force Re&check"
 msgstr "Примус Re&check"
 
+#, fuzzy
 msgid "Force Reannoun&ce"
 msgstr "Примус ReannounZZZZce &"
 
@@ -1352,6 +1353,7 @@ msgstr "Навігація"
 msgid "Scripts"
 msgstr "Списки"
 
+#, fuzzy
 msgid "Sea&rch"
 msgstr "ЗАЗОКЗПАРК &"
 

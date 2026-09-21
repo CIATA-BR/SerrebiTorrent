@@ -270,7 +270,6 @@
     "Invalid credentials.": "credenziali non valide.",
     "Invalid integer for {label}: {error}": "Integer non valido per {label}: {error}",
     "Invalid JSON for {label}: {error}": "Invalid JSON per {label}: {error}",
-    "Invalid number for {label}: {error}": "NZTOKEN0ZZ: {error} {label}",
     "Invalid torrent URL.": "URL del torrente non valido.",
     "Language": "Lingua",
     "Language changes reload this page after saving.": "Le modifiche linguistiche ricaricano questa pagina dopo il salvataggio.",

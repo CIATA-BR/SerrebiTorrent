@@ -4,12 +4,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SerrebiTorrent\\nLanguage: pl-PL\\nX-Language-Name: Polski\\nMIME-Version: 1.0\\nContent-Type: text/plain; charset=UTF-8\\nContent-Transfer-Encoding: 8bit\\n"
 
+#, fuzzy
 msgid "&About SerrebiTorrent"
 msgstr "ZZAMPZO About SerrebiTorrent &"
 
+#, fuzzy
 msgid "&Actions"
 msgstr "ZZAMPZActions &"
 
+#, fuzzy
 msgid "&Add selected"
 msgstr "ZZAMPZAdd wybrany &"
 
@@ -20,6 +23,7 @@ msgstr "ZZAMPZAdd plik torrenta... ZZTABZCtrl + O & \t"
 msgid "&Add..."
 msgstr "&Add..."
 
+#, fuzzy
 msgid "&Close"
 msgstr "ZZAMPZClose &"
 
@@ -33,6 +37,7 @@ msgstr "ZZAMPZConnect... ZZTABZCtrl + Shift + C & \t"
 msgid "&Edit..."
 msgstr "&Edit..."
 
+#, fuzzy
 msgid "&File"
 msgstr "ZZAMPZFile &"
 
@@ -45,6 +50,7 @@ msgstr "&Indexers do wyszukiwania:"
 msgid "&Indexers:"
 msgstr "&Indexers:"
 
+#, fuzzy
 msgid "&Name:"
 msgstr "ZZAMPZName: &"
 
@@ -213,6 +219,7 @@ msgstr "Kolejny przykład SerrebiTorrent już działa."
 msgid "Anti-leech"
 msgstr "Anti-leech"
 
+#, fuzzy
 msgid "API &key:"
 msgstr "API ZZAMPZKY: &"
 
@@ -502,6 +509,7 @@ msgstr "Pobieranie aktualizacji..."
 msgid "Downloads"
 msgstr "Pliki do pobrania"
 
+#, fuzzy
 msgid "E&xit"
 msgstr "EZZAMPZXIT &"
 
@@ -727,9 +735,11 @@ msgstr "Wyłączcie szyfrowanie"
 msgid "Force encryption on"
 msgstr "Wymuś szyfrowanie"
 
+#, fuzzy
 msgid "Force Re&check"
 msgstr "Siła ReZZAMPZcheck &"
 
+#, fuzzy
 msgid "Force Reannoun&ce"
 msgstr "Force ReconvenienZZAMZZCE &"
 
@@ -1049,6 +1059,7 @@ msgstr "On"
 msgid "One URL per line (HTTP/HTTPS)."
 msgstr "Jeden URL na linię (HTTP / HTTPS)."
 
+#, fuzzy
 msgid "Open Download &Folder"
 msgstr "Open Download ZZAMPZFolder &"
 
@@ -1356,6 +1367,7 @@ msgstr "Zakres"
 msgid "Scripts"
 msgstr "Skrypt"
 
+#, fuzzy
 msgid "Sea&rch"
 msgstr "SeaZZAMZZrch &"
 
@@ -1371,6 +1383,7 @@ msgstr "Szukaj"
 msgid "Search for Torrents"
 msgstr "Szukaj Torrentów"
 
+#, fuzzy
 msgid "Search si&tes..."
 msgstr "Szukaj siZZAMPZTES... &"
 
@@ -1398,6 +1411,7 @@ msgstr "Nasiona"
 msgid "Select"
 msgstr "Wybierz"
 
+#, fuzzy
 msgid "Select &all"
 msgstr "Wybierz ZZAMPZall &"
 
@@ -1405,6 +1419,7 @@ msgstr "Wybierz ZZAMPZall &"
 msgid "Select &All\tCtrl+A"
 msgstr "Wybierz ZZAMPZALZZTABZCtrl + A & \t"
 
+#, fuzzy
 msgid "Select &none"
 msgstr "Wybierz ZZAMPZNone &"
 

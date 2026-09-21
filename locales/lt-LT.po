@@ -7,9 +7,11 @@ msgstr ""
 msgid "&About SerrebiTorrent"
 msgstr "&AaplinkName"
 
+#, fuzzy
 msgid "&Actions"
 msgstr "ZZMPZActions &"
 
+#, fuzzy
 msgid "&Add selected"
 msgstr "ZZAMPZADE &"
 
@@ -17,12 +19,15 @@ msgstr "ZZAMPZADE &"
 msgid "&Add Torrent File...\tCtrl+O"
 msgstr "ZZMPZZAdd Torrent Filter... ZZTBZZCtrl + O & \t"
 
+#, fuzzy
 msgid "&Add..."
 msgstr "ZZMPZAdd... &"
 
+#, fuzzy
 msgid "&Close"
 msgstr "ZZMPZZClose &"
 
+#, fuzzy
 msgid "&Connect"
 msgstr "ZZMPZConnect &"
 
@@ -30,21 +35,27 @@ msgstr "ZZMPZConnect &"
 msgid "&Connect...\tCtrl+Shift+C"
 msgstr "ZZMPZZConnect & \t"
 
+#, fuzzy
 msgid "&Edit..."
 msgstr "ZZMPZEdit... &"
 
+#, fuzzy
 msgid "&File"
 msgstr "ZZMPZFile &"
 
+#, fuzzy
 msgid "&Help"
 msgstr "ZZAMPZHelp &"
 
+#, fuzzy
 msgid "&Indexers to search:"
 msgstr "Ieškoti ZZMPZZIndexers: &"
 
+#, fuzzy
 msgid "&Indexers:"
 msgstr "ZZMPZZIndexers: &"
 
+#, fuzzy
 msgid "&Name:"
 msgstr "ZZMPZName: &"
 
@@ -52,6 +63,7 @@ msgstr "ZZMPZName: &"
 msgid "&Pause\tCtrl+P"
 msgstr "ZZAMPZPausEZZBZZZCtrl + P & \t"
 
+#, fuzzy
 msgid "&Remove"
 msgstr "ZZAMPZOUNE &"
 
@@ -67,6 +79,7 @@ msgstr "&REsumeZZTBZZZCtrl + R \t"
 msgid "&Search for Torrents...\tCtrl+F"
 msgstr "ZZMPZZTorrents paieška... ZZTBZZCtrl + F & \t"
 
+#, fuzzy
 msgid "&Search for:"
 msgstr "ZZMPZIeškoti: &"
 
@@ -74,9 +87,11 @@ msgstr "ZZMPZIeškoti: &"
 msgid "&Start\tCtrl+S"
 msgstr "ZZMPZZStarTZZZZCtrl + S & \t"
 
+#, fuzzy
 msgid "&Tools"
 msgstr "ZZMPZZTools &"
 
+#, fuzzy
 msgid "&URL:"
 msgstr "ZZMPZURL: &"
 
@@ -213,6 +228,7 @@ msgstr "Jau veikia kitas SerreBiTorrent atvejis."
 msgid "Anti-leech"
 msgstr "Antilechas"
 
+#, fuzzy
 msgid "API &key:"
 msgstr "API ZZMPZkey: &"
 
@@ -503,6 +519,7 @@ msgstr "Atsiunčiama atnaujinta..."
 msgid "Downloads"
 msgstr "Atsiuntimai"
 
+#, fuzzy
 msgid "E&xit"
 msgstr "EZZMPZXIT &"
 
@@ -731,6 +748,7 @@ msgstr "Priverstinis šifravimas įjungtas"
 msgid "Force Re&check"
 msgstr "@ info: tooltip &"
 
+#, fuzzy
 msgid "Force Reannoun&ce"
 msgstr "Karinių pajėgų pranešimasZMPZce &"
 
@@ -921,6 +939,7 @@ msgstr "Name"
 msgid "Magnet: {magnet}"
 msgstr "Magnetas: {magnet}"
 
+#, fuzzy
 msgid "Manage Profiles & Connect"
 msgstr "Valdyti profilius ZZMPZZ Connect &"
 
@@ -951,6 +970,7 @@ msgstr "Sumažinti iki dėklo"
 msgid "Most seeders"
 msgstr "Kurių didžiausia pakrautos transporto priemonės masė ne didesnė kaip 5 tonos"
 
+#, fuzzy
 msgid "My &indexers..."
 msgstr "Mano ZMPZZindeksai... &"
 
@@ -1050,6 +1070,7 @@ msgstr "@ info: tooltip"
 msgid "One URL per line (HTTP/HTTPS)."
 msgstr "@ info: whatsthis"
 
+#, fuzzy
 msgid "Open Download &Folder"
 msgstr "Open Download ZZMPZZAdcapter &"
 
@@ -1215,6 +1236,7 @@ msgstr "Atnaujinti visus"
 msgid "Regex Pattern:"
 msgstr "Name"
 
+#, fuzzy
 msgid "Register &Associations"
 msgstr "Registruotis ZZMPZAsociacijos &"
 
@@ -1357,6 +1379,7 @@ msgstr "Taikymo sritis"
 msgid "Scripts"
 msgstr "Scenarijai"
 
+#, fuzzy
 msgid "Sea&rch"
 msgstr "SeaZAMPZZRch &"
 
@@ -1372,6 +1395,7 @@ msgstr "Ieškoti"
 msgid "Search for Torrents"
 msgstr "Torrentų paieška"
 
+#, fuzzy
 msgid "Search si&tes..."
 msgstr "Paieška siZZMPZZtes... &"
 
@@ -1399,6 +1423,7 @@ msgstr "Sėklos"
 msgid "Select"
 msgstr "Žymėti"
 
+#, fuzzy
 msgid "Select &all"
 msgstr "Pasirinkite ZZMPZZall &"
 
@@ -1406,6 +1431,7 @@ msgstr "Pasirinkite ZZMPZZall &"
 msgid "Select &All\tCtrl+A"
 msgstr "Pasirinkite &ZAlLZZBZZZZCtrl + A \t"
 
+#, fuzzy
 msgid "Select &none"
 msgstr "Pasirinkite ZZMPZNONE &"
 
@@ -1463,6 +1489,7 @@ msgstr "SOCKS5 (nėra auth)"
 msgid "SOCKS5 (with auth)"
 msgstr "SOCKS5 (su auth)"
 
+#, fuzzy
 msgid "Sort &by:"
 msgstr "Rikiuoti ZZMPZBI: &"
 

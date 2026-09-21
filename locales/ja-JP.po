@@ -82,6 +82,7 @@ msgstr "&URL:"
 msgid "1 feed"
 msgstr "1 フィード"
 
+#, fuzzy
 msgid "A Torznab or Newznab search endpoint. Prowlarr: {prowlarr}. Jackett, all trackers at once: {jackett}"
 msgstr "TorznabまたはNewznab検索エンドポイント。 プロワラー: ZZTOKENZZ0. ジャケット、一度にすべてのトラッカー:{jackett} {prowlarr}"
 
@@ -248,6 +249,7 @@ msgstr "オートマチック"
 msgid "Auto-added from RSS: {title}"
 msgstr "RSSから自動追加: {title}"
 
+#, fuzzy
 msgid "Auto-start failed: {error}"
 msgstr "自動起動失敗: ZZTOKENZZ {error}"
 
@@ -771,6 +773,7 @@ msgstr "HTTP (auth で)"
 msgid "Import Complete"
 msgstr "インポート完了"
 
+#, fuzzy
 msgid "Import Failed: {error}"
 msgstr "インポート失敗:ZZTOKENZZ {error}"
 
@@ -810,6 +813,7 @@ msgstr "情報ハッシュ:{hash}"
 msgid "Install directory not found."
 msgstr "ディレクトリが見つかりません。"
 
+#, fuzzy
 msgid "Invalid argument: {arg}"
 msgstr "無効な引数: ZZTOKENZZ {arg}"
 
@@ -822,6 +826,7 @@ msgstr "{label}のための無効な整数:{error}"
 msgid "Invalid JSON for {label}: {error}"
 msgstr "{label}のための無効なJSON:{error}"
 
+#, fuzzy
 msgid "Invalid number for {label}: {error}"
 msgstr "ZZTOKENZZのための無効な番号:{error} {label}"
 
@@ -1000,6 +1005,7 @@ msgstr "リモート設定なし(またはローカルクライアントアク�
 msgid "No torrent selected."
 msgstr "選択したトレントはありません。"
 
+#, fuzzy
 msgid "No torrents selected to {action}."
 msgstr "ZZTOKENZZ0に選ばれたトレントはありません。 {action}"
 

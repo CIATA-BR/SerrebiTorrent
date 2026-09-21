@@ -1553,6 +1553,7 @@ msgstr "Torrent-Aktionen"
 msgid "Torrent added"
 msgstr "Torrent hinzugefÃ¼gt"
 
+#, fuzzy
 msgid "Torrent created:\n{path}"
 msgstr "Torrent erstellt:\nZZTOKEN {path}"
 

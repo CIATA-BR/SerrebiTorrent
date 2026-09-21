@@ -816,6 +816,7 @@ msgstr "Integer non valido per {label}: {error}"
 msgid "Invalid JSON for {label}: {error}"
 msgstr "Invalid JSON per {label}: {error}"
 
+#, fuzzy
 msgid "Invalid number for {label}: {error}"
 msgstr "NZTOKEN0ZZ: {error} {label}"
 

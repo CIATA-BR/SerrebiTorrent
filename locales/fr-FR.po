@@ -721,6 +721,7 @@ msgstr "Forcer le chiffrement"
 msgid "Force Re&check"
 msgstr "Force Re&check"
 
+#, fuzzy
 msgid "Force Reannoun&ce"
 msgstr "Force RenounZAMPZZce &"
 

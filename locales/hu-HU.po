@@ -729,6 +729,7 @@ msgstr "Titkosítás bekapcsolása"
 msgid "Force Re&check"
 msgstr "Erő RE&check"
 
+#, fuzzy
 msgid "Force Reannoun&ce"
 msgstr "Force Újranyilatkoztatás ZAMPZZce &"
 
@@ -1355,6 +1356,7 @@ msgstr "Hatály"
 msgid "Scripts"
 msgstr "Szkriptek"
 
+#, fuzzy
 msgid "Sea&rch"
 msgstr "SeazZAMPZZrch &"
 
@@ -1370,6 +1372,7 @@ msgstr "Keresés"
 msgid "Search for Torrents"
 msgstr "Torrents keresése"
 
+#, fuzzy
 msgid "Search si&tes..."
 msgstr "Keresse meg a SiZZAMPZTES... &"
 
@@ -1782,6 +1785,7 @@ msgstr "{count} eredmény"
 msgid "{count} result so far, {pending} still searching. Last: {source}."
 msgstr "{count} eredmény eddig, {pending} még mindig keresi. Utolsó: {source}."
 
+#, fuzzy
 msgid "{count} results"
 msgstr "ZTOKEN0ZZ eredmények {count}"
 

@@ -491,6 +491,7 @@ msgstr "Скачать обновление..."
 msgid "Downloads"
 msgstr "Скачать"
 
+#, fuzzy
 msgid "E&xit"
 msgstr "ЭЗЗАМПЗЗСИТ &"
 
