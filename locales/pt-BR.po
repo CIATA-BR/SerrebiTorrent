@@ -684,7 +684,7 @@ msgid "Fetching {name} preferences..."
 msgstr "Obtendo preferências do {name}..."
 
 msgid "File list not available (Magnet link)."
-msgstr "Lista de arquivos indisponível no (Link Magnet)"
+msgstr "Lista de arquivos indisponível (link magnet)."
 
 msgid "File..."
 msgstr "Arquivo..."
@@ -912,7 +912,7 @@ msgid "Magnet: {magnet}"
 msgstr "Magnet: {magnet}"
 
 msgid "Manage Profiles & Connect"
-msgstr "Gerenciar perfis e &conectar"
+msgstr "Gerenciar perfis e conectar"
 
 msgid "Max Connections:"
 msgstr "Máximo de conexões:"
