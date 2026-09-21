@@ -32,7 +32,22 @@ _PLACEHOLDER_RE = Formatter()
 _PRINTF_RE = re.compile(
     r"%(?:\([A-Za-z_][A-Za-z0-9_]*\))?(?:\d+\$)?[-+0 #]*\d*(?:\.\d+)?[diouxXeEfFgGcrsab]"
 )
-_MNEMONIC_RE = re.compile(r"(?<!&)&(?!&)")
+# A wx mnemonic is '&' before a real character. '&&' is an escaped literal
+# ampersand, and an '&' followed by whitespace is prose ("Profiles & Connect"
+# in a help string), so neither marks an accelerator.
+_MNEMONIC_RE = re.compile(r"(?<!&)&(?=[^\s&])")
+# Portal substitution markers that must never reach a catalog: the ASCII
+# Z-framed shapes, the unterminated ZZTOKEN form, and the Cyrillic
+# transliteration uk-UA carries. The Cyrillic branch keys on the transliterated
+# token words rather than on a plain З...З frame, which real words such as
+# ЗАКАЗ would otherwise match.
+_LEAKED_TOKEN_RE = re.compile(
+    r"Z[A-Z]+?Z"
+    r"|(?i:Z[A-Z0-9]*TOKEN[A-Z0-9]*)"
+    r"|[ЗZ][А-ЯІЇЄA-Z0-9]*?(?:ТОКЕН|ТКЕН|ТАБ|АМП|АБЗ)"
+)
+# wx introspection strings that leaked in as translations.
+_WX_MARKER_RE = re.compile(r"@ info:\s*\w+")
 
 
 def _bundle_root() -> Path:
@@ -195,6 +210,21 @@ def _mnemonic_count(value: str) -> int:
     return len(_MNEMONIC_RE.findall(value))
 
 
+def _mojibake_repair(value: str) -> str | None:
+    """Return the text back through cp1252 when it is UTF-8 read as cp1252.
+
+    Correctly encoded text almost never round-trips: a real 'ü' encodes to a
+    lone 0xFC, which is not a complete UTF-8 sequence, so the decode raises.
+    """
+    try:
+        repaired = value.encode("cp1252").decode("utf-8")
+    except (UnicodeEncodeError, UnicodeDecodeError):
+        return None
+    if repaired == value or "\ufffd" in repaired:
+        return None
+    return repaired
+
+
 def validate_translation(source: str, translated: str) -> list[str]:
     """Return contributor-facing validation messages for one translation."""
     errors: list[str] = []
@@ -207,6 +237,14 @@ def validate_translation(source: str, translated: str) -> list[str]:
             "Placeholders differ: expected "
             f"{sorted(source_fields)}, got {sorted(translated_fields)}."
         )
+    leaked = _LEAKED_TOKEN_RE.findall(translated)
+    if leaked:
+        errors.append(f"Translation leaks a portal substitution marker: {sorted(set(leaked))}.")
+    marker = _WX_MARKER_RE.search(translated)
+    if marker:
+        errors.append(f"Translation leaks a wx introspection marker: {marker.group(0)!r}.")
+    if _mojibake_repair(translated):
+        errors.append("Translation is double-encoded text (UTF-8 read as cp1252).")
     source_printf = _printf_placeholders(source)
     translated_printf = _printf_placeholders(translated)
     if source_printf != translated_printf:

@@ -80,3 +80,31 @@ def test_mnemonic_count_must_match_and_escaped_ampersands_are_ignored():
     extra = validate_translation("Search", "&Pesquisar")
     assert any("Keyboard mnemonic count differs" in problem for problem in missing)
     assert any("Keyboard mnemonic count differs" in problem for problem in extra)
+
+
+def test_prose_ampersand_is_not_a_mnemonic():
+    # "Manage Profiles & Connect" is help text, so its '&' is followed by a
+    # space and marks nothing. Translations may drop it, but must not invent one.
+    assert validate_translation("Manage Profiles & Connect", "Gerenciar perfis e conectar") == []
+    assert validate_translation("Manage Profiles & Connect", "Profielen beheren & Connect") == []
+    invented = validate_translation("Manage Profiles & Connect", "Gerenciar perfis e &conectar")
+    assert any("Keyboard mnemonic count differs" in problem for problem in invented)
+
+
+def test_leaked_portal_substitution_marker_is_rejected():
+    for leaked in ("Conectado a ZZTOKEN0Z {name}", "ZZAMPZActions &", "ЗЗТОКЕН0ZZ {name}", "ZZTOKEN {path}"):
+        problems = validate_translation("Connected to {name}", leaked)
+        assert any("portal substitution marker" in problem for problem in problems), leaked
+    assert validate_translation("Connected to {name}", "Conectado a {name}") == []
+
+
+def test_wx_introspection_marker_is_rejected():
+    problems = validate_translation("Settings saved.", "@ info: whatsthis")
+    assert any("wx introspection marker" in problem for problem in problems)
+    assert validate_translation("On", "Actif") == []
+
+
+def test_double_encoded_translation_is_rejected():
+    assert validate_translation("Settings", "Einstellungen") == []
+    problems = validate_translation("Close", "SchlieÃŸen")
+    assert any("double-encoded" in problem for problem in problems)
