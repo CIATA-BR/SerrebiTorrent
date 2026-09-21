@@ -233,3 +233,34 @@ def test_compile_all_web_removes_stale_generated_catalog(tmp_path):
     assert (output / "es-ES.json").exists()
     index = json.loads((output / "index.json").read_text(encoding="utf-8"))
     assert index["languages"] == [{"code": "es-ES", "name": "Español"}]
+
+
+def test_compile_all_web_rejects_filename_header_mismatch(tmp_path):
+    locales = tmp_path / "locales"
+    output = tmp_path / "web"
+    locales.mkdir()
+
+    (locales / "wrong-name.po").write_text(
+        render_po("fr-FR", "Français", {"Settings": "Paramètres"}),
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "tools/translation_tool.py",
+            "compile-all-web",
+            "--locales-dir",
+            str(locales),
+            "--output-dir",
+            str(output),
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 1
+    assert "filename must match Language header" in result.stderr
+    assert "fr-FR.po" in result.stderr
+    assert not (output / "fr-FR.json").exists()
