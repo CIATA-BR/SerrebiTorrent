@@ -162,9 +162,12 @@ def cmd_check(_args) -> int:
             print(f"{code}: {len(problems)} invalid translation entries.", file=sys.stderr)
             failures += 1
 
-        expected_json = render_web_catalog(info)
+        expected_json = json.loads(render_web_catalog(info))
         json_path = output_dir / f"{code}.json"
-        actual_json = json_path.read_text(encoding="utf-8") if json_path.exists() else ""
+        try:
+            actual_json = json.loads(json_path.read_text(encoding="utf-8"))
+        except (OSError, ValueError, TypeError):
+            actual_json = None
         if actual_json != expected_json:
             print(
                 f"{json_path.relative_to(ROOT)} is out of date. "
@@ -173,9 +176,12 @@ def cmd_check(_args) -> int:
             )
             failures += 1
 
-    expected_index = render_web_index(catalogs)
+    expected_index = json.loads(render_web_index(catalogs))
     index_path = output_dir / "index.json"
-    actual_index = index_path.read_text(encoding="utf-8") if index_path.exists() else ""
+    try:
+        actual_index = json.loads(index_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError, TypeError):
+        actual_index = None
     if actual_index != expected_index:
         print(
             f"{index_path.relative_to(ROOT)} is out of date. "
