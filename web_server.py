@@ -281,6 +281,14 @@ def index():
 def login_page():
     return send_from_directory(static_dir, 'login.html')
 
+@app.route('/locales/<path:filename>')
+def public_locale(filename):
+    # Translation catalogs contain presentation strings only and must be
+    # available before authentication so the login page can localize itself.
+    if filename != 'index.json' and not filename.endswith('.json'):
+        return "Not Found", 404
+    return send_from_directory(os.path.join(static_dir, 'locales'), filename)
+
 @app.route('/<path:filename>')
 def serve_static(filename):
     # login.html is the only public page; everything else (app.js, index.html,
