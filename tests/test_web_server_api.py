@@ -3,6 +3,7 @@ import pytest
 import sys
 import os
 import json
+import time
 from unittest.mock import MagicMock, patch
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -15,6 +16,17 @@ def client():
     web_server.app.config['SECRET_KEY'] = 'test'
     with web_server.app.test_client() as client:
         yield client
+
+@pytest.fixture
+def auth_failures():
+    """Keep throttle state out of the shared module-level cache."""
+    with web_server._auth_lock:
+        original = dict(web_server._auth_failures)
+        web_server._auth_failures.clear()
+    yield web_server._auth_failures
+    with web_server._auth_lock:
+        web_server._auth_failures.clear()
+        web_server._auth_failures.update(original)
 
 @pytest.fixture
 def auth_client(client):
@@ -162,3 +174,84 @@ def test_non_locale_static_assets_remain_protected_before_login(client):
     response = client.get('/app.js')
     assert response.status_code in (301, 302)
     assert response.headers['Location'].endswith('/login.html')
+
+
+def _fail_login(client, attempts):
+    for _ in range(attempts):
+        assert client.post(
+            '/api/v2/auth/login',
+            data={'username': 'admin', 'password': 'wrong'},
+        ).status_code == 403
+
+
+def test_lockout_reports_retry_after_and_not_invalid_credentials(client, auth_failures):
+    _fail_login(client, web_server._AUTH_FAIL_LIMIT)
+
+    response = client.post(
+        '/api/v2/auth/login',
+        data={'username': 'admin', 'password': 'password'},
+    )
+
+    assert response.status_code == 429
+    assert b"Too many failed attempts. Try again later." in response.data
+    retry_after = int(response.headers['Retry-After'])
+    assert 0 < retry_after <= web_server._AUTH_LOCK_SECONDS
+
+
+def test_successful_login_clears_throttle_state(client, auth_failures):
+    _fail_login(client, web_server._AUTH_FAIL_LIMIT - 1)
+
+    response = client.post(
+        '/api/v2/auth/login',
+        data={'username': 'admin', 'password': 'password'},
+    )
+
+    assert response.status_code == 200
+    assert web_server._auth_failures == {}
+
+
+def test_expired_throttle_record_is_pruned_on_read(client, auth_failures):
+    stale = time.time() - web_server._AUTH_LOCK_SECONDS - 1
+    with web_server._auth_lock:
+        web_server._auth_failures['10.0.0.1'] = (web_server._AUTH_FAIL_LIMIT, stale)
+
+    response = client.post(
+        '/api/v2/auth/login',
+        data={'username': 'admin', 'password': 'password'},
+    )
+
+    assert response.status_code == 200
+    assert '10.0.0.1' not in web_server._auth_failures
+
+
+def test_throttle_cache_is_bounded_and_evicts_oldest(monkeypatch, auth_failures):
+    monkeypatch.setattr(web_server, '_AUTH_MAX_TRACKED_IPS', 4)
+    now = time.time()
+    with web_server._auth_lock:
+        for index in range(4):
+            web_server._auth_failures[f'10.0.0.{index}'] = (1, now - 10 + index)
+
+    web_server._record_auth_failure('10.0.0.9')
+
+    assert len(web_server._auth_failures) == 4
+    assert '10.0.0.0' not in web_server._auth_failures
+    assert '10.0.0.9' in web_server._auth_failures
+
+
+def test_baseline_security_headers_are_sent(client):
+    response = client.get('/login.html')
+
+    assert response.headers['X-Content-Type-Options'] == 'nosniff'
+    assert response.headers['X-Frame-Options'] == 'DENY'
+    assert response.headers['Referrer-Policy'] == 'no-referrer'
+    assert response.headers['Permissions-Policy'] == 'camera=(), microphone=(), geolocation=()'
+    assert response.headers['Cache-Control'] == 'no-store'
+
+
+def test_api_responses_are_not_cached(client, auth_failures):
+    response = client.post(
+        '/api/v2/auth/login',
+        data={'username': 'admin', 'password': 'password'},
+    )
+
+    assert response.headers['Cache-Control'] == 'no-store'

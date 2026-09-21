@@ -57,6 +57,7 @@ app.config.update(
 # --- Login brute-force throttling (per client IP) ---
 _AUTH_FAIL_LIMIT = 8
 _AUTH_LOCK_SECONDS = 300
+_AUTH_MAX_TRACKED_IPS = 1024
 _auth_lock = threading.Lock()
 _auth_failures = {}  # ip -> (fail_count, window_start_ts)
 _ADD_URL_MAX_REDIRECTS = 5
@@ -68,26 +69,48 @@ def _client_ip():
     return request.remote_addr or 'unknown'
 
 
-def _is_locked_out(ip):
+def _prune_auth_failures(now):
+    """Drop records past their lock window. Caller must hold _auth_lock."""
+    expired = [
+        ip for ip, (_count, first) in _auth_failures.items()
+        if now - first >= _AUTH_LOCK_SECONDS
+    ]
+    for ip in expired:
+        _auth_failures.pop(ip, None)
+
+
+def _evict_oldest_auth_failures():
+    """Cap tracked addresses so rotating sources cannot grow this forever.
+
+    Caller must hold _auth_lock. The newest records survive, so an attacker
+    cannot evict the lock held against their own current address.
+    """
+    overflow = len(_auth_failures) - _AUTH_MAX_TRACKED_IPS
+    if overflow <= 0:
+        return
+    oldest = sorted(_auth_failures.items(), key=lambda item: item[1][1])[:overflow]
+    for ip, _record in oldest:
+        _auth_failures.pop(ip, None)
+
+
+def _auth_retry_after(ip):
+    """Seconds this address must wait, or 0 when it is not locked out."""
     with _auth_lock:
-        rec = _auth_failures.get(ip)
-        if not rec:
-            return False
-        count, first = rec
-        if count < _AUTH_FAIL_LIMIT:
-            return False
-        if time.time() - first < _AUTH_LOCK_SECONDS:
-            return True
-        _auth_failures.pop(ip, None)  # lock window expired
-        return False
+        now = time.time()
+        _prune_auth_failures(now)
+        record = _auth_failures.get(ip)
+        if not record or record[0] < _AUTH_FAIL_LIMIT:
+            return 0
+        return max(1, int(record[1] + _AUTH_LOCK_SECONDS - now))
 
 
 def _record_auth_failure(ip):
     with _auth_lock:
-        count, first = _auth_failures.get(ip, (0, time.time()))
-        if time.time() - first >= _AUTH_LOCK_SECONDS:
-            count, first = 0, time.time()
+        now = time.time()
+        _prune_auth_failures(now)
+        count, first = _auth_failures.get(ip, (0, now))
         _auth_failures[ip] = (count + 1, first)
+        _evict_oldest_auth_failures()
 
 
 def _clear_auth_failures(ip):
@@ -250,6 +273,19 @@ def protect_mutating_requests():
         return "CSRF token missing or invalid.", 403
     return None
 
+
+@app.after_request
+def add_baseline_security_headers(response):
+    # Defense in depth for the embedded UI. No CSP here: the shell relies on
+    # inline scripts from the CDN-hosted Bootstrap bundle.
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['X-Frame-Options'] = 'DENY'
+    response.headers['Referrer-Policy'] = 'no-referrer'
+    response.headers['Permissions-Policy'] = 'camera=(), microphone=(), geolocation=()'
+    if request.path.startswith('/api/') or request.path == '/login.html':
+        response.headers['Cache-Control'] = 'no-store'
+    return response
+
 # Global context to hold reference to the active torrent client and credentials
 # These are updated by the MainFrame when the Web UI is enabled or settings change.
 WEB_CONFIG = {
@@ -300,8 +336,13 @@ def serve_static(filename):
 @app.route('/api/v2/auth/login', methods=['POST'])
 def api_login():
     ip = _client_ip()
-    if _is_locked_out(ip):
-        return "Too many failed attempts. Try again later.", 429
+    retry_after = _auth_retry_after(ip)
+    if retry_after:
+        return (
+            "Too many failed attempts. Try again later.",
+            429,
+            {'Retry-After': str(retry_after)},
+        )
     user = (request.form.get('username') or '').encode('utf-8')
     pw = (request.form.get('password') or '').encode('utf-8')
     exp_user = (WEB_CONFIG.get('username') or '').encode('utf-8')
