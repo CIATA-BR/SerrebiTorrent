@@ -63,3 +63,13 @@ def test_translated_sidebar_does_not_become_filter_key():
     source = Path("app_entry.py").read_text(encoding="utf-8")
     assert "for key, item_id in self.cat_ids.items():" in source
     assert "self.current_filter = key" in source
+
+
+def test_localized_entry_point_installs_external_catalogs_before_i18n_helpers():
+    source = Path("app_entry.py").read_text(encoding="utf-8")
+    install = source.index("install_external_catalogs()")
+    helpers = source.index("from main_ui_i18n import sidebar_label, tr_main")
+    preferences = source.index("from preferences_dialog import PreferencesDialog")
+
+    assert install < helpers
+    assert install < preferences
