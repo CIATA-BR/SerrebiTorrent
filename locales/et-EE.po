@@ -1572,6 +1572,9 @@ msgstr "Pealkiri"
 msgid "Toggle"
 msgstr "Lülita"
 
+msgid "Too many failed attempts. Try again later."
+msgstr "Liiga palju ebaõnnestunud sisselogimiskatseid. Proovige hiljem uuesti."
+
 msgid "Torrent Actions"
 msgstr "Torrent Actions"
 

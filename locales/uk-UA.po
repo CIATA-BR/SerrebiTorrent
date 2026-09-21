@@ -1567,6 +1567,9 @@ msgstr "Головна"
 msgid "Toggle"
 msgstr "Виброхвост"
 
+msgid "Too many failed attempts. Try again later."
+msgstr "Занадто багато невдалих спроб. Спробуйте пізніше."
+
 msgid "Torrent Actions"
 msgstr "Торентні дії"
 

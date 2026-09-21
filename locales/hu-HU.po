@@ -1560,6 +1560,9 @@ msgstr "Cím"
 msgid "Toggle"
 msgstr "Kikapcsolás"
 
+msgid "Too many failed attempts. Try again later."
+msgstr "Túl sok sikertelen bejelentkezési kísérlet. Próbálja újra később."
+
 msgid "Torrent Actions"
 msgstr "Erőszakos intézkedések"
 

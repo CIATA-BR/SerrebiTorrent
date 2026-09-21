@@ -1619,6 +1619,9 @@ msgstr "Pavadinimas"
 msgid "Toggle"
 msgstr "Perjungti"
 
+msgid "Too many failed attempts. Try again later."
+msgstr "Per daug nepavykusių bandymų. Bandykite dar kartą vėliau."
+
 msgid "Torrent Actions"
 msgstr "Torrent veiksmai"
 

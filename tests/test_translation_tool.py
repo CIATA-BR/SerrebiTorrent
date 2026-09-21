@@ -6,7 +6,7 @@ import sys
 
 import pytest
 
-from translation_catalog import render_po
+from translation_catalog import load_po, render_po
 
 
 def test_compile_web_emits_catalog_and_language_index(tmp_path):
@@ -317,3 +317,15 @@ def test_coverage_counts_fuzzy_entries_as_needs_review():
         po_text = (Path("locales") / f"{row['code']}.po").read_text(encoding="utf-8")
         expected = len(re.findall(r"^#,\s*.*\bfuzzy\b", po_text, re.MULTILINE))
         assert row["needs_review"] == expected
+
+
+def test_every_catalog_translates_the_login_lockout_message():
+    # The message explains why a correct password was rejected, so a locale that
+    # silently falls back to English hides the reason from that user.
+    message = "Too many failed attempts. Try again later."
+    catalogs = sorted(Path("locales").glob("*.po"))
+
+    assert catalogs
+    for path in catalogs:
+        info = load_po(path)
+        assert info.translations.get(message), f"{path.name} is missing the lockout message"
