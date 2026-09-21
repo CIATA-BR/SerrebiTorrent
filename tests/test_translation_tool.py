@@ -103,3 +103,60 @@ def test_compile_all_web_rejects_duplicate_language_codes(tmp_path):
 
     assert result.returncode == 1
     assert "duplicate language code" in result.stderr
+
+
+def test_compile_all_web_rejects_unsafe_language_code(tmp_path):
+    locales = tmp_path / "locales"
+    output = tmp_path / "web"
+    locales.mkdir()
+    (locales / "unsafe.po").write_text(
+        'msgid ""\nmsgstr ""\n"Language: ../escape\\n"\n\nmsgid "Settings"\nmsgstr "Safe"\n',
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "tools/translation_tool.py",
+            "compile-all-web",
+            "--locales-dir",
+            str(locales),
+            "--output-dir",
+            str(output),
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 1
+    assert "invalid catalog language code" in result.stderr
+    assert not (tmp_path / "escape.json").exists()
+
+
+def test_compile_all_web_rejects_case_insensitive_duplicate_codes(tmp_path):
+    locales = tmp_path / "locales"
+    output = tmp_path / "web"
+    locales.mkdir()
+    first = render_po("pt-BR", "Português", {"Settings": "Configurações"})
+    second = render_po("PT-br", "Português alternativo", {"Search": "Pesquisar"})
+    (locales / "pt-BR.po").write_text(first, encoding="utf-8")
+    (locales / "duplicate.po").write_text(second, encoding="utf-8")
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "tools/translation_tool.py",
+            "compile-all-web",
+            "--locales-dir",
+            str(locales),
+            "--output-dir",
+            str(output),
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 1
+    assert "duplicate normalized language code" in result.stderr

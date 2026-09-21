@@ -1,6 +1,9 @@
 from pathlib import Path
 
+import pytest
+
 from translation_catalog import (
+    load_po,
     parse_po_text,
     render_po,
     render_pot,
@@ -108,3 +111,14 @@ def test_double_encoded_translation_is_rejected():
     assert validate_translation("Settings", "Einstellungen") == []
     problems = validate_translation("Close", "SchlieÃŸen")
     assert any("double-encoded" in problem for problem in problems)
+
+
+def test_load_po_rejects_unsafe_language_code(tmp_path):
+    catalog = tmp_path / "unsafe.po"
+    catalog.write_text(
+        'msgid ""\nmsgstr ""\n"Language: ../../outside\\n"\n',
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="invalid catalog language code"):
+        load_po(catalog)

@@ -17,6 +17,7 @@ if str(ROOT) not in sys.path:
 
 from translation_catalog import (  # noqa: E402
     load_po,
+    normalize_catalog_code,
     render_pot,
     sort_key,
     validate_catalog,
@@ -42,10 +43,16 @@ def _discover_catalogs_strict(directory: Path):
             errors.append(f"{path.name}: failed to parse catalog: {exc}")
             continue
 
-        if info.code in catalogs:
+        normalized = normalize_catalog_code(info.code)
+        duplicate = next(
+            (existing for code, existing in catalogs.items()
+             if normalize_catalog_code(code) == normalized),
+            None,
+        )
+        if duplicate is not None:
             errors.append(
-                f"{path.name}: duplicate language code {info.code!r}; "
-                f"already provided by {catalogs[info.code].path.name}"
+                f"{path.name}: duplicate normalized language code {info.code!r}; "
+                f"already provided by {duplicate.path.name}"
             )
             continue
 
