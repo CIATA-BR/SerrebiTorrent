@@ -29,6 +29,12 @@
     </main>
 
     <script>
+        let loginTranslations = {};
+
+        function loginT(source) {
+            return loginTranslations[source] || source;
+        }
+
         async function localizeLogin() {
             let available = [];
             try {
@@ -73,12 +79,12 @@
                 const response = await fetch(`/locales/${encodeURIComponent(language)}.json`, {cache: 'no-store'});
                 if (!response.ok) return;
                 const payload = await response.json();
-                const translations = payload && payload.translations && typeof payload.translations === 'object'
+                loginTranslations = payload && payload.translations && typeof payload.translations === 'object'
                     ? payload.translations
                     : {};
-                document.title = translations['Login - SerrebiTorrent'] || document.title;
+                document.title = loginT('Login - SerrebiTorrent');
                 document.querySelectorAll('[data-i18n]').forEach((element) => {
-                    const value = translations[element.dataset.i18n];
+                    const value = loginT(element.dataset.i18n);
                     if (value) element.textContent = value;
                 });
             } catch (_error) {
@@ -102,7 +108,13 @@
             if (res.ok) {
                 window.location.href = '/';
             } else {
-                document.getElementById('errorMsg').style.display = 'block';
+                const error = document.getElementById('errorMsg');
+                const source = res.status === 429
+                    ? 'Too many failed attempts. Try again later.'
+                    : 'Invalid credentials.';
+                error.textContent = loginT(source);
+                error.style.display = 'block';
+                error.focus?.();
             }
         };
     </script>
