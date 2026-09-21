@@ -14,6 +14,12 @@ import sys
 import wx
 import wx.adv
 
+from external_catalog_runtime import install_external_catalogs
+
+# External PO catalogs must be registered before localized modules import
+# normalize_language/translation helpers into their own module namespaces.
+install_external_catalogs()
+
 import main as legacy
 from add_torrent_dialog import AddTorrentDialog as LocalizedAddTorrentDialog
 from connection_dialog import ConnectDialog
