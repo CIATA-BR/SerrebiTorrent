@@ -102,6 +102,52 @@ def cmd_template(args) -> int:
     return 0
 
 
+def cmd_coverage(args) -> int:
+    catalogs, catalog_errors = _discover_catalogs_strict(
+        Path(args.locales_dir) if args.locales_dir else ROOT / "locales"
+    )
+    if _report_catalog_errors(catalog_errors):
+        return 1
+
+    messages = source_messages()
+    total = len(messages)
+    rows = []
+    failed = False
+    for code, info in sorted(catalogs.items(), key=lambda item: sort_key(item[0])):
+        translated = sum(1 for source in messages if info.translations.get(source, "").strip())
+        review = sum(
+            1
+            for source in messages
+            if info.translations.get(source, "").strip()
+            and validate_translation(source, info.translations[source])
+        )
+        missing = total - translated
+        percent = (translated / total * 100.0) if total else 100.0
+        rows.append({
+            "code": code,
+            "name": info.name,
+            "translated": translated,
+            "total": total,
+            "missing": missing,
+            "needs_review": review,
+            "percent": round(percent, 1),
+        })
+        if args.min_percent is not None and percent < args.min_percent:
+            failed = True
+
+    if args.json:
+        print(json.dumps({"languages": rows}, ensure_ascii=False, indent=2))
+    else:
+        for row in rows:
+            print(
+                f"{row['code']}: {row['translated']}/{row['total']} "
+                f"({row['percent']:.1f}%) translated; "
+                f"{row['missing']} missing; {row['needs_review']} need review"
+            )
+
+    return 1 if failed else 0
+
+
 def cmd_validate(args) -> int:
     info = load_po(Path(args.catalog))
     problems = validate_catalog(info.translations)
@@ -294,6 +340,15 @@ def build_parser() -> argparse.ArgumentParser:
     template = sub.add_parser("template", help="generate a POT template from current source strings")
     template.add_argument("--output", default=str(ROOT / "locales" / "serrebitorrent.pot"))
     template.set_defaults(func=cmd_template)
+
+    coverage = sub.add_parser(
+        "coverage",
+        help="report translation coverage and optionally enforce a minimum percentage",
+    )
+    coverage.add_argument("--locales-dir")
+    coverage.add_argument("--json", action="store_true")
+    coverage.add_argument("--min-percent", type=float)
+    coverage.set_defaults(func=cmd_coverage)
 
     validate = sub.add_parser("validate", help="validate placeholders and keyboard mnemonics in a PO file")
     validate.add_argument("catalog")
