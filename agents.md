@@ -6,7 +6,8 @@
 - Background libtorrent session lives in `session_manager.py`. Do not duplicate sessions.
 - Indexer search lives in `torrent_search.py` (network, no wx) and `search_dialog.py` (wx, no network). Ported from blindDL; keep the two in step when either changes. `torrent_search.resolve()` returns `("magnet", str)` or `("file", bytes)` and is the only thing that fetches a private tracker's `.torrent`, so it must stay off the GUI thread.
 - Never commit an indexer URL or API key. `DEFAULT_PREFERENCES` ships `torznab_feeds: []` / `disabled_torrent_sources: []`, and there are tests asserting that. `import_blinddl_feeds()` reads blindDL's config on the local machine only, adds names that are not configured here already, and never overwrites — the search dialog calls it on every open.
-
+- Pull requests arrive from the `CIATA-BR` fork. GitHub does not let the upstream maintainer push to an organization-owned fork branch (`maintainerCanModify` reports true, but the push is denied with 403), so land them by merging and then fixing forward on `main`.
+- Locale codes come from each PO file's `Language` header, not from its filename: generated assets are `web_static/locales/<header>.json` plus `index.json`, and `tools/audit_bundle.py` requires exactly one `locales/<code>.po` and one matching Web catalog for every language in the packaged index. Filename/header drift passes `translation_tool.py check` but fails the release audit.
 
 ## Runtime requirements
 - Python 3.14 (64-bit).
@@ -32,6 +33,9 @@
 - The `.spec` file uses PyInstaller's import analysis rather than collecting every dependency submodule. It explicitly requires the libtorrent extension so PyInstaller follows only its referenced native dependencies.
 - Every package runs `tools/audit_bundle.py` and `tools/verify_frozen.py` before it is accepted.
 - `icon.ico` is conditionally included in the build only if it exists in the root directory.
+- Release: run `build_exe.bat release` from a clean tree with `SIGN_CERT_THUMBPRINT=FB99DDCECA07B170E0A950F0C780AD899D28D770` exported, so the manifest keeps `signing_thumbprint` and the updater keeps trusting the build.
+- A release that dies after the version bump leaves `app_version.py` modified, and every retry then aborts with "Working tree has uncommitted tracked changes" — run `git checkout -- app_version.py` and retry. The same guard fires when `app_version.py` is already ahead of the newest tag: `release_tools.ps1` finds no tag to diff against, falls back to the full history, and publishes release notes for every commit ever made.
+- A tag push runs `ci.yml`, which builds the macOS app and attaches `SerrebiTorrent-vX.Y.Z-macos-ARM64.zip` to the release, retrying for a few minutes until the release exists. That job also runs the suite, so `main` must be green before tagging.
 
 ## Packaging
 - Ship the entire `SerrebiTorrent` folder from the `dist` directory. The main executable is `SerrebiTorrent.exe` inside that folder.
