@@ -30,8 +30,14 @@ if ($validTags) {
 $base = if ($latest) { [version]$latest.TrimStart("v") } else { $minVersion }
 $range = if ($latest) { "$latest..HEAD" } else { "HEAD" }
 
-$log = git log $range --pretty=format:%s`n%b`n--END--
-$commits = $log -split "(?m)^--END--\s*$" | Where-Object { $_.Trim() -ne "" }
+# -split applies per element, so the log has to be joined back into one string
+# first; otherwise every line becomes its own "commit" and each line of a commit
+# body is emitted as a separate release-notes bullet. The split leaves the
+# newline that followed the separator on the next chunk, hence the Trim.
+$log = (git log $range --pretty=format:%s`n%b`n--END--) -join "`n"
+$commits = $log -split "(?m)^--END--\s*$" |
+    ForEach-Object { $_.Trim() } |
+    Where-Object { $_ -ne "" }
 
 $breaking = $false
 $feature = $false
