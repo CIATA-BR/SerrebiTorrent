@@ -202,7 +202,7 @@
 
     async function loadExternalCatalog(language) {
         externalTranslations = {};
-        if (!language || language === 'en' || language === 'pt-BR') return;
+        if (!language || language === 'en') return;
         try {
             const response = await fetch(`/locales/${encodeURIComponent(language)}.json`, {cache: 'no-store'});
             if (!response.ok) return;

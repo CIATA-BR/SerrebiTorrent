@@ -25,15 +25,19 @@ A reviewed `locales/<language>.po` file is discovered automatically by the deskt
 
 The release build bundles the complete `locales/` directory, so reviewed catalogs are available in frozen Windows, macOS and Linux packages as well as source runs.
 
-For the Web UI, compile the same PO catalog to JSON. The compiler updates `web_static/locales/index.json`, which is what the Web language selector uses to discover community languages.
+The same reviewed PO catalog is also compiled to `web_static/locales/<language>.json` for the Web UI. This includes pt-BR, so the reviewed PO is authoritative for both desktop and Web strings; the older in-code pt-BR maps remain fallback only during migration.
 
 ## Command-line maintenance
 
-Generate the complete source POT template. The inventory scans desktop localization dictionaries/calls and the Web localization catalog:
+Whenever user-facing source strings change, run the single synchronization command:
 
 ```bash
-python tools/translation_tool.py template
+python tools/translation_tool.py sync
 ```
+
+It regenerates `locales/serrebitorrent.pot`, validates every reviewed PO catalog, compiles the Web JSON catalogs and rebuilds the language index. CI runs `python tools/translation_tool.py check` on every pull request and fails when a developer adds or changes a translatable string without updating these generated artifacts.
+
+The lower-level `template`, `validate`, `compile-web` and `compile-all-web` commands remain available for focused maintenance.
 
 Validate a contribution:
 
@@ -59,10 +63,10 @@ Generated Web files are written to `web_static/locales/<language>.json` and `web
 
 1. Export or edit a `.po` file.
 2. Run `python tools/translation_tool.py validate <catalog.po>`.
-3. Regenerate the POT when source strings changed.
+3. Run `python tools/translation_tool.py sync`.
 4. Keep the language code and native language name in PO metadata.
-5. Run `compile-web` for the contributed language.
-6. Open a pull request containing the catalog, generated Web JSON/index and intentional translation metadata changes only.
+5. Open a pull request containing the catalog and generated Web JSON/index.
+6. CI runs `python tools/translation_tool.py check` and blocks stale POT/JSON artifacts.
 7. Reviewers check terminology, context, keyboard mnemonics and screen-reader wording before merge.
 
 Translation pull requests should not include application credentials, Weblate tokens or unrelated code changes.

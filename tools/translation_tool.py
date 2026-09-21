@@ -28,6 +28,25 @@ def source_messages() -> list[str]:
     return collect_source_messages(ROOT, include_web=True)
 
 
+def render_web_catalog(info) -> str:
+    payload = {
+        "language": info.code,
+        "name": info.name,
+        "translations": dict(sorted(info.translations.items(), key=lambda item: item[0].casefold())),
+    }
+    return json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
+
+
+def render_web_index(catalogs) -> str:
+    payload = {
+        "languages": [
+            {"code": code, "name": catalogs[code].name}
+            for code in sorted(catalogs, key=str.casefold)
+        ]
+    }
+    return json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
+
+
 def cmd_template(args) -> int:
     messages = source_messages()
     output = Path(args.output)
@@ -53,34 +72,12 @@ def cmd_validate(args) -> int:
 
 def _write_web_catalog(info, output: Path) -> None:
     output.parent.mkdir(parents=True, exist_ok=True)
-    payload = {
-        "language": info.code,
-        "name": info.name,
-        "translations": dict(sorted(info.translations.items(), key=lambda item: item[0].casefold())),
-    }
-    output.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    output.write_text(render_web_catalog(info), encoding="utf-8")
 
 
-def _update_web_index(directory: Path, code: str, name: str) -> None:
-    path = directory / "index.json"
-    languages: dict[str, str] = {"pt-BR": "Português (Brasil)"}
-    if path.exists():
-        try:
-            existing = json.loads(path.read_text(encoding="utf-8"))
-            for item in existing.get("languages", []):
-                if item.get("code") and item.get("name"):
-                    languages[str(item["code"])] = str(item["name"])
-        except (OSError, ValueError, TypeError):
-            pass
-    languages[code] = name
-    payload = {
-        "languages": [
-            {"code": language_code, "name": languages[language_code]}
-            for language_code in sorted(languages, key=str.casefold)
-        ]
-    }
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+def _write_web_index(directory: Path, catalogs) -> None:
+    directory.mkdir(parents=True, exist_ok=True)
+    (directory / "index.json").write_text(render_web_index(catalogs), encoding="utf-8")
 
 
 def cmd_compile_web(args) -> int:
@@ -92,7 +89,10 @@ def cmd_compile_web(args) -> int:
     output = Path(args.output or ROOT / "web_static" / "locales" / f"{info.code}.json")
     _write_web_catalog(info, output)
     if not args.no_index:
-        _update_web_index(output.parent, info.code, info.name)
+        catalogs = discover_catalogs(ROOT / "locales")
+        if info.code not in catalogs:
+            catalogs[info.code] = info
+        _write_web_index(output.parent, catalogs)
     print(f"Compiled {len(info.translations)} entries to {output}")
     return 0
 
@@ -108,9 +108,90 @@ def cmd_compile_all_web(args) -> int:
             failures += 1
             continue
         _write_web_catalog(info, output_dir / f"{code}.json")
-        _update_web_index(output_dir, code, info.name)
         print(f"Compiled {code}: {len(info.translations)} entries")
+    if not failures:
+        _write_web_index(output_dir, catalogs)
     return 1 if failures else 0
+
+
+def cmd_sync(_args) -> int:
+    pot_path = ROOT / "locales" / "serrebitorrent.pot"
+    pot_path.write_text(render_pot(source_messages()), encoding="utf-8")
+    print(f"Updated {pot_path.relative_to(ROOT)}")
+
+    catalogs = discover_catalogs(ROOT / "locales")
+    failures = 0
+    for code, info in catalogs.items():
+        problems = validate_catalog(info.translations)
+        if problems:
+            print(f"{code}: {len(problems)} entries need review.", file=sys.stderr)
+            failures += 1
+
+    if failures:
+        return 1
+
+    output_dir = ROOT / "web_static" / "locales"
+    for code, info in catalogs.items():
+        _write_web_catalog(info, output_dir / f"{code}.json")
+    _write_web_index(output_dir, catalogs)
+    print(f"Compiled {len(catalogs)} Web catalog(s).")
+    return 0
+
+
+def cmd_check(_args) -> int:
+    failures = 0
+    messages = source_messages()
+
+    pot_path = ROOT / "locales" / "serrebitorrent.pot"
+    expected_pot = render_pot(messages)
+    actual_pot = pot_path.read_text(encoding="utf-8") if pot_path.exists() else ""
+    if actual_pot != expected_pot:
+        print(
+            "Translation template is out of date. Run: "
+            "python tools/translation_tool.py sync",
+            file=sys.stderr,
+        )
+        failures += 1
+
+    catalogs = discover_catalogs(ROOT / "locales")
+    output_dir = ROOT / "web_static" / "locales"
+
+    for code, info in catalogs.items():
+        problems = validate_catalog(info.translations)
+        if problems:
+            print(f"{code}: {len(problems)} invalid translation entries.", file=sys.stderr)
+            failures += 1
+
+        expected_json = render_web_catalog(info)
+        json_path = output_dir / f"{code}.json"
+        actual_json = json_path.read_text(encoding="utf-8") if json_path.exists() else ""
+        if actual_json != expected_json:
+            print(
+                f"{json_path.relative_to(ROOT)} is out of date. "
+                "Run: python tools/translation_tool.py sync",
+                file=sys.stderr,
+            )
+            failures += 1
+
+    expected_index = render_web_index(catalogs)
+    index_path = output_dir / "index.json"
+    actual_index = index_path.read_text(encoding="utf-8") if index_path.exists() else ""
+    if actual_index != expected_index:
+        print(
+            f"{index_path.relative_to(ROOT)} is out of date. "
+            "Run: python tools/translation_tool.py sync",
+            file=sys.stderr,
+        )
+        failures += 1
+
+    if failures:
+        return 1
+
+    print(
+        f"Translation pipeline is synchronized: "
+        f"{len(messages)} source messages, {len(catalogs)} catalog(s)."
+    )
+    return 0
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -137,6 +218,19 @@ def build_parser() -> argparse.ArgumentParser:
     compile_all.add_argument("--output-dir")
     compile_all.add_argument("--allow-invalid", action="store_true")
     compile_all.set_defaults(func=cmd_compile_all_web)
+
+    sync = sub.add_parser(
+        "sync",
+        help="regenerate POT and Web catalogs from the current source and PO files",
+    )
+    sync.set_defaults(func=cmd_sync)
+
+    check = sub.add_parser(
+        "check",
+        help="fail when POT, PO validation or generated Web catalogs are out of sync",
+    )
+    check.set_defaults(func=cmd_check)
+
     return parser
 
 
