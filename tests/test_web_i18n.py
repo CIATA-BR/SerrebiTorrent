@@ -87,7 +87,7 @@ def test_login_uses_generated_catalogs_with_english_source_fallback():
     assert "'/locales/index.json'" in LOGIN
     assert "`/locales/${encodeURIComponent(language)}.json`" in LOGIN
     assert "document.documentElement.lang = language" in LOGIN
-    assert "translations['Login - SerrebiTorrent']" in LOGIN
+    assert "loginT('Login - SerrebiTorrent')" in LOGIN
     assert 'data-i18n="Username"' in LOGIN
     assert 'data-i18n="Invalid credentials."' in LOGIN
     assert 'role="alert"' in LOGIN
