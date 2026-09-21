@@ -82,9 +82,9 @@ def test_compile_all_web_rejects_duplicate_language_codes(tmp_path):
     output = tmp_path / "web"
     locales.mkdir()
     first = render_po("es-ES", "Español", {"Settings": "Configuración"})
-    second = render_po("es-ES", "Español alternativo", {"Search": "Buscar"})
+    second = render_po("ES-es", "Español alternativo", {"Search": "Buscar"})
     (locales / "es-ES.po").write_text(first, encoding="utf-8")
-    (locales / "duplicate.po").write_text(second, encoding="utf-8")
+    (locales / "ES-es.po").write_text(second, encoding="utf-8")
 
     result = subprocess.run(
         [
@@ -141,7 +141,7 @@ def test_compile_all_web_rejects_case_insensitive_duplicate_codes(tmp_path):
     first = render_po("pt-BR", "Português", {"Settings": "Configurações"})
     second = render_po("PT-br", "Português alternativo", {"Search": "Pesquisar"})
     (locales / "pt-BR.po").write_text(first, encoding="utf-8")
-    (locales / "duplicate.po").write_text(second, encoding="utf-8")
+    (locales / "PT-br.po").write_text(second, encoding="utf-8")
 
     result = subprocess.run(
         [
