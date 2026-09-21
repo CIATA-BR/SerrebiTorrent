@@ -13,7 +13,7 @@ import webbrowser
 import wx
 
 import i18n
-from translation_catalog import render_po, validate_translation
+from translation_catalog import render_po, validate_catalog_code, validate_translation
 
 
 DRAFT_DIR_NAME = "translations"
@@ -285,6 +285,16 @@ class TranslationCenterDialog(wx.Dialog):
         name = self.language_name.GetValue().strip()
         if not code or not name:
             wx.MessageBox("Language code and language name are required.", "Translation Center", wx.OK | wx.ICON_ERROR)
+            return
+        try:
+            code = validate_catalog_code(code)
+        except ValueError:
+            wx.MessageBox(
+                "Language code must use hyphenated BCP47-style subtags, for example pt-BR or es-ES.",
+                "Translation Center",
+                wx.OK | wx.ICON_ERROR,
+            )
+            self.language_code.SetFocus()
             return
         problems = {source: validate_translation(source, value) for source, value in self.translations.items() if value and validate_translation(source, value)}
         if problems:
