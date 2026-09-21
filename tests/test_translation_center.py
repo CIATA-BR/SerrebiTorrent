@@ -45,3 +45,10 @@ def test_online_translation_does_not_embed_credentials():
 def test_ciata_translation_portal_is_the_default_online_endpoint():
     assert translation_center.DEFAULT_ONLINE_TRANSLATION_URL == "https://torrent.ciata.org.br/"
     assert translation_center.ONLINE_TRANSLATION_URL
+
+
+def test_translation_center_validates_language_code_before_export():
+    source = inspect.getsource(translation_center.TranslationCenterDialog._on_export)
+    assert "validate_catalog_code(code)" in source
+    assert "hyphenated BCP47-style subtags" in source
+    assert "self.language_code.SetFocus()" in source
