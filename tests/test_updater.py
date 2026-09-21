@@ -63,15 +63,16 @@ def windows_subprocess(monkeypatch):
     return updater.subprocess
 
 
-def release_with_asset(tag="v1.0.0", url=ASSET_URL):
+def release_with_asset(tag="v1.0.0", url=ASSET_URL, digest=None):
+    asset = {
+        "name": "app.zip",
+        "browser_download_url": url,
+    }
+    if digest is not None:
+        asset["digest"] = digest
     return {
         "tag_name": tag,
-        "assets": [
-            {
-                "name": "app.zip",
-                "browser_download_url": url,
-            }
-        ],
+        "assets": [asset],
     }
 
 
@@ -669,3 +670,33 @@ def test_download_and_apply_update_reports_progress(monkeypatch, tmp_path):
     assert ("Downloading update...", 0.35) in progress
     assert ("Downloading update...", 0.7) in progress
     assert ("Preparing restart...", 0.98) in progress
+
+
+def test_validate_manifest_accepts_matching_release_asset_digest():
+    sha = "a" * 64
+    release = release_with_asset(digest=f"sha256:{sha}")
+    manifest = {
+        "version": "1.0.0",
+        "asset_filename": "app.zip",
+        "download_url": ASSET_URL,
+        "sha256": sha,
+        "published_at": "2023-01-01",
+        "signing_thumbprint": SIGNING_THUMBPRINT,
+    }
+
+    assert validate_manifest(manifest, release) == manifest
+
+
+def test_validate_manifest_rejects_release_asset_digest_mismatch():
+    release = release_with_asset(digest="sha256:" + "b" * 64)
+    manifest = {
+        "version": "1.0.0",
+        "asset_filename": "app.zip",
+        "download_url": ASSET_URL,
+        "sha256": "a" * 64,
+        "published_at": "2023-01-01",
+        "signing_thumbprint": SIGNING_THUMBPRINT,
+    }
+
+    with pytest.raises(UpdateError, match="release asset digest"):
+        validate_manifest(manifest, release)
