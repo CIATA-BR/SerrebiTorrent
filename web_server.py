@@ -57,6 +57,7 @@ app.config.update(
 # --- Login brute-force throttling (per client IP) ---
 _AUTH_FAIL_LIMIT = 8
 _AUTH_LOCK_SECONDS = 300
+_AUTH_FAIL_CACHE_MAX = 4096
 _auth_lock = threading.Lock()
 _auth_failures = {}  # ip -> (fail_count, window_start_ts)
 _ADD_URL_MAX_REDIRECTS = 5
@@ -68,26 +69,40 @@ def _client_ip():
     return request.remote_addr or 'unknown'
 
 
+def _prune_auth_failures_locked(now):
+    expired = [
+        key for key, (_count, first) in _auth_failures.items()
+        if now - first >= _AUTH_LOCK_SECONDS
+    ]
+    for key in expired:
+        _auth_failures.pop(key, None)
+    while len(_auth_failures) > _AUTH_FAIL_CACHE_MAX:
+        oldest = min(_auth_failures, key=lambda key: _auth_failures[key][1])
+        _auth_failures.pop(oldest, None)
+
+
 def _is_locked_out(ip):
+    now = time.time()
     with _auth_lock:
+        _prune_auth_failures_locked(now)
         rec = _auth_failures.get(ip)
         if not rec:
             return False
         count, first = rec
         if count < _AUTH_FAIL_LIMIT:
             return False
-        if time.time() - first < _AUTH_LOCK_SECONDS:
+        if now - first < _AUTH_LOCK_SECONDS:
             return True
-        _auth_failures.pop(ip, None)  # lock window expired
         return False
 
 
 def _record_auth_failure(ip):
+    now = time.time()
     with _auth_lock:
-        count, first = _auth_failures.get(ip, (0, time.time()))
-        if time.time() - first >= _AUTH_LOCK_SECONDS:
-            count, first = 0, time.time()
+        _prune_auth_failures_locked(now)
+        count, first = _auth_failures.get(ip, (0, now))
         _auth_failures[ip] = (count + 1, first)
+        _prune_auth_failures_locked(now)
 
 
 def _clear_auth_failures(ip):
@@ -301,7 +316,11 @@ def serve_static(filename):
 def api_login():
     ip = _client_ip()
     if _is_locked_out(ip):
-        return "Too many failed attempts. Try again later.", 429
+        return (
+            "Too many failed attempts. Try again later.",
+            429,
+            {"Retry-After": str(_AUTH_LOCK_SECONDS)},
+        )
     user = (request.form.get('username') or '').encode('utf-8')
     pw = (request.form.get('password') or '').encode('utf-8')
     exp_user = (WEB_CONFIG.get('username') or '').encode('utf-8')
