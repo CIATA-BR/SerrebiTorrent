@@ -88,3 +88,8 @@ def test_login_keeps_english_source_and_pt_br_browser_fallback():
     assert 'aria-live="assertive"' in LOGIN
     assert "Nome de usuário" in LOGIN
     assert "Credenciais inválidas." in LOGIN
+
+
+def test_removed_configured_language_keeps_selector_on_effective_fallback():
+    assert "configuredLanguage = currentLanguage;" in I18N
+    assert "If a configured catalog was removed or renamed" in I18N
