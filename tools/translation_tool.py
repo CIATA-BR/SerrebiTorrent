@@ -119,13 +119,16 @@ def cmd_compile_web(args) -> int:
         print("Catalog has validation errors; run 'validate' first.", file=sys.stderr)
         return 1
     output = Path(args.output or ROOT / "web_static" / "locales" / f"{info.code}.json")
-    _write_web_catalog(info, output)
+    catalogs = None
     if not args.no_index:
         catalogs, catalog_errors = _discover_catalogs_strict(ROOT / "locales")
         if _report_catalog_errors(catalog_errors):
             return 1
         if info.code not in catalogs:
             catalogs[info.code] = info
+
+    _write_web_catalog(info, output)
+    if catalogs is not None:
         _write_web_index(output.parent, catalogs)
     print(f"Compiled {len(info.translations)} entries to {output}")
     return 0
@@ -140,21 +143,21 @@ def cmd_compile_all_web(args) -> int:
     for code, info in catalogs.items():
         problems = validate_catalog(info.translations)
         if problems and not args.allow_invalid:
-            print(f"{code}: validation failed; skipping Web catalog.", file=sys.stderr)
+            print(f"{code}: validation failed; no Web catalogs were written.", file=sys.stderr)
             failures += 1
-            continue
+
+    if failures:
+        return 1
+
+    for code, info in catalogs.items():
         _write_web_catalog(info, output_dir / f"{code}.json")
         print(f"Compiled {code}: {len(info.translations)} entries")
-    if not failures:
-        _write_web_index(output_dir, catalogs)
-    return 1 if failures else 0
+    _write_web_index(output_dir, catalogs)
+    return 0
 
 
 def cmd_sync(_args) -> int:
-    pot_path = ROOT / "locales" / "serrebitorrent.pot"
-    pot_path.write_text(render_pot(source_messages()), encoding="utf-8")
-    print(f"Updated {pot_path.relative_to(ROOT)}")
-
+    messages = source_messages()
     catalogs, catalog_errors = _discover_catalogs_strict(ROOT / "locales")
     failures = 1 if _report_catalog_errors(catalog_errors) else 0
     for code, info in catalogs.items():
@@ -165,6 +168,10 @@ def cmd_sync(_args) -> int:
 
     if failures:
         return 1
+
+    pot_path = ROOT / "locales" / "serrebitorrent.pot"
+    pot_path.write_text(render_pot(messages), encoding="utf-8")
+    print(f"Updated {pot_path.relative_to(ROOT)}")
 
     output_dir = ROOT / "web_static" / "locales"
     for code, info in catalogs.items():
