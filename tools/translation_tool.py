@@ -43,6 +43,13 @@ def _discover_catalogs_strict(directory: Path):
             errors.append(f"{path.name}: failed to parse catalog: {exc}")
             continue
 
+        if path.stem != info.code:
+            errors.append(
+                f"{path.name}: filename must match Language header {info.code!r}; "
+                f"rename the catalog to {info.code}.po"
+            )
+            continue
+
         normalized = normalize_catalog_code(info.code)
         duplicate = next(
             (existing for code, existing in catalogs.items()
