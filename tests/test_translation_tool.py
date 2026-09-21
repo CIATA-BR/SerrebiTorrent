@@ -198,3 +198,38 @@ def test_compile_all_web_does_not_partially_write_on_validation_failure(tmp_path
     assert existing.read_text(encoding="utf-8") == "sentinel\n"
     assert not (output / "fr-FR.json").exists()
     assert not (output / "index.json").exists()
+
+
+def test_compile_all_web_removes_stale_generated_catalog(tmp_path):
+    locales = tmp_path / "locales"
+    output = tmp_path / "web"
+    locales.mkdir()
+    output.mkdir()
+
+    (locales / "es-ES.po").write_text(
+        render_po("es-ES", "Español", {"Settings": "Configuración"}),
+        encoding="utf-8",
+    )
+    stale = output / "fr-FR.json"
+    stale.write_text('{"language":"fr-FR"}\n', encoding="utf-8")
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "tools/translation_tool.py",
+            "compile-all-web",
+            "--locales-dir",
+            str(locales),
+            "--output-dir",
+            str(output),
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert not stale.exists()
+    assert (output / "es-ES.json").exists()
+    index = json.loads((output / "index.json").read_text(encoding="utf-8"))
+    assert index["languages"] == [{"code": "es-ES", "name": "Español"}]
