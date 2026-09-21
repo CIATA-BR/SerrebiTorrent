@@ -141,8 +141,28 @@ def test_select_libtorrent_wheel_prefers_stable_version_then_stamp(tmp_path):
     assert version == "2.1.1"
 
 
+def _add_translation_assets(bundle):
+    locales = bundle / "locales"
+    web_locales = bundle / "web_static" / "locales"
+    locales.mkdir(parents=True, exist_ok=True)
+    web_locales.mkdir(parents=True, exist_ok=True)
+    (locales / "pt-BR.po").write_text(
+        'msgid ""\\nmsgstr ""\\n"Language: pt-BR\\\\n"\\n',
+        encoding="utf-8",
+    )
+    (web_locales / "pt-BR.json").write_text(
+        '{"language":"pt-BR","name":"Português (Brasil)","translations":{}}\\n',
+        encoding="utf-8",
+    )
+    (web_locales / "index.json").write_text(
+        '{"languages":[{"code":"pt-BR","name":"Português (Brasil)"}]}\\n',
+        encoding="utf-8",
+    )
+
+
 def test_bundle_audit_rejects_legacy_openssl_on_windows(tmp_path, monkeypatch):
     (tmp_path / "libtorrent.cp314-win_amd64.pyd").touch()
+    _add_translation_assets(tmp_path)
     (tmp_path / "libcrypto-1_1.dll").touch()
     monkeypatch.setattr(audit_bundle.sys, "platform", "win32")
     monkeypatch.setattr(
@@ -162,6 +182,7 @@ def test_bundle_audit_accepts_macos_app_symlinked_extension(tmp_path, monkeypatc
     resources.mkdir(parents=True)
     extension = frameworks / "libtorrent.cpython-314-darwin.so"
     extension.write_bytes(b"native")
+    _add_translation_assets(resources)
     try:
         (resources / extension.name).symlink_to(extension)
     except (OSError, NotImplementedError):
@@ -194,6 +215,7 @@ def test_bundle_audit_still_rejects_two_real_extensions(tmp_path, monkeypatch):
 
 def test_bundle_audit_allows_dist_info_wheel_metadata(tmp_path, monkeypatch):
     (tmp_path / "libtorrent.cp314-win_amd64.pyd").touch()
+    _add_translation_assets(tmp_path)
     metadata = tmp_path / "flask-3.1.3.dist-info"
     metadata.mkdir()
     (metadata / "WHEEL").touch()

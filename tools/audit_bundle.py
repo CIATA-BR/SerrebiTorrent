@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
@@ -54,6 +55,44 @@ def main() -> int:
     if len(extensions) != 1:
         raise SystemExit(f"Expected one bundled libtorrent extension, found: {extensions}")
 
+    def find_relative_suffix(*parts: str) -> list[Path]:
+        wanted = tuple(parts)
+        return [
+            path for path in relative
+            if len(path.parts) >= len(wanted) and tuple(path.parts[-len(wanted):]) == wanted
+        ]
+
+    index_files = find_relative_suffix("web_static", "locales", "index.json")
+    if len(index_files) != 1:
+        raise SystemExit(
+            "Expected one bundled web_static/locales/index.json, found: "
+            + repr(index_files)
+        )
+
+    try:
+        language_index = json.loads((bundle / index_files[0]).read_text(encoding="utf-8"))
+    except (OSError, ValueError, TypeError) as exc:
+        raise SystemExit(f"Bundled Web locale index is invalid: {exc}") from exc
+
+    languages = language_index.get("languages")
+    if not isinstance(languages, list) or not languages:
+        raise SystemExit("Bundled Web locale index contains no languages.")
+
+    for item in languages:
+        if not isinstance(item, dict) or not isinstance(item.get("code"), str):
+            raise SystemExit(f"Bundled Web locale index entry is invalid: {item!r}")
+        code = item["code"]
+        po_files = find_relative_suffix("locales", f"{code}.po")
+        json_files = find_relative_suffix("web_static", "locales", f"{code}.json")
+        if len(po_files) != 1:
+            raise SystemExit(
+                f"Expected one bundled PO catalog for {code}, found: {po_files}"
+            )
+        if len(json_files) != 1:
+            raise SystemExit(
+                f"Expected one bundled Web catalog for {code}, found: {json_files}"
+            )
+
     if sys.platform == "win32":
         names = {path.name.lower() for path in relative}
         legacy = sorted(
@@ -78,6 +117,7 @@ def main() -> int:
     total = sum(path.stat().st_size for path in files)
     print(f"Bundle audit passed: {len(files)} files, {total / (1024 * 1024):.1f} MiB")
     print(f"- libtorrent extension: {extensions[0].as_posix()}")
+    print(f"- translation catalogs: {len(languages)}")
     return 0
 
 
