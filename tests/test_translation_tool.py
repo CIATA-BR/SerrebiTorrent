@@ -268,3 +268,61 @@ def test_compile_all_web_rejects_filename_header_mismatch(tmp_path):
     assert "filename must match Language header" in result.stderr
     assert "fr-FR.po" in result.stderr
     assert not (output / "fr-FR.json").exists()
+
+
+def test_coverage_reports_language_progress_as_json(tmp_path):
+    locales = tmp_path / "locales"
+    locales.mkdir()
+    (locales / "es-ES.po").write_text(
+        render_po("es-ES", "Español", {"Settings": "Configuración"}),
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "tools/translation_tool.py",
+            "coverage",
+            "--locales-dir",
+            str(locales),
+            "--json",
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 0, result.stderr
+    payload = json.loads(result.stdout)
+    row = payload["languages"][0]
+    assert row["code"] == "es-ES"
+    assert row["translated"] >= 1
+    assert row["missing"] == row["total"] - row["translated"]
+    assert 0.0 <= row["percent"] <= 100.0
+
+
+def test_coverage_can_enforce_minimum_percentage(tmp_path):
+    locales = tmp_path / "locales"
+    locales.mkdir()
+    (locales / "es-ES.po").write_text(
+        render_po("es-ES", "Español", {"Settings": "Configuración"}),
+        encoding="utf-8",
+    )
+
+    result = subprocess.run(
+        [
+            sys.executable,
+            "tools/translation_tool.py",
+            "coverage",
+            "--locales-dir",
+            str(locales),
+            "--min-percent",
+            "99",
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+
+    assert result.returncode == 1
+    assert "es-ES:" in result.stdout
