@@ -151,11 +151,11 @@ def _add_translation_assets(bundle):
         encoding="utf-8",
     )
     (web_locales / "pt-BR.json").write_text(
-        '{"language":"pt-BR","name":"Português (Brasil)","translations":{}}\\n',
+        '{"language":"pt-BR","name":"Português (Brasil)","translations":{}}\n',
         encoding="utf-8",
     )
     (web_locales / "index.json").write_text(
-        '{"languages":[{"code":"pt-BR","name":"Português (Brasil)"}]}\\n',
+        '{"languages":[{"code":"pt-BR","name":"Português (Brasil)"}]}\n',
         encoding="utf-8",
     )
 
