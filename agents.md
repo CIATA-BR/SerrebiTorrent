@@ -66,21 +66,3 @@
 - The current Authenticode certificate is self-signed, so `signtool verify /pa` reports an untrusted root on a stock machine even though the EXE is signed and timestamped. The updater accepts its manifest thumbprint; eliminating the initial Windows trust prompt requires a publicly trusted code-signing certificate.
 
 Keep edits lean, comment only when code is not self-explanatory, and leave user-facing docs in README.md. Everything technical goes here.
-
-<!-- claude-memory:begin (managed by sync-claude-memory.py; canonical files live in C:\Users\admin\.claude - edit there, not here) -->
-## Memories (shared from ~/.claude - project: c--Users-admin-git-SerrebiTorrent)
-Index of memory files - read one on demand when a task touches its
-topic (agents that expand @imports get every file via the @ lines below).
-New memories for this project go in C:\Users\admin\.claude\projects\c--Users-admin-git-SerrebiTorrent\memory - see the memory protocol in
-the global AGENTS.md for the required format, and re-run
-sync-claude-memory.py after writing one:
-- [Running Windows commands from Bash](C:\Users\admin\.claude\projects\c--Users-admin-git-SerrebiTorrent\memory\running-windows-commands-from-bash.md) — Git Bash quirks (path mangling, NoDefaultCurrentDirectory) and the system-wide fix
-- [Prefer root-cause fixes over PowerShell fallback](C:\Users\admin\.claude\projects\c--Users-admin-git-SerrebiTorrent\memory\prefer-root-cause-fixes-over-powershell-fallback.md) — user wants durable, broad fixes, not workarounds
-- [NVDA virtual-list focus](C:\Users\admin\.claude\projects\c--Users-admin-git-SerrebiTorrent\memory\nvda-virtual-list-focus.md) — blind user; every virtual wx.ListCtrl must re-assert LIST_STATE_FOCUSED after refresh (use AccessibleVirtualListMixin)
-- [libtorrent 2.1 compatibility](C:\Users\admin\.claude\projects\c--Users-admin-git-SerrebiTorrent\memory\libtorrent-21-compat.md) — issue #1 family: 2.1 removed torrent_status.paused/auto_managed (now status.flags bitmask), session.status(), queued_for_checking, handle.has_metadata/get_torrent_info/file_priorities; silent except-swallows made the list and Files/Peers/Trackers tabs empty; version-agnostic helpers in clients.py/session_manager.py; tools/repro_add_invisible.py reproduces; integration tests run on macOS CI
-@C:\Users\admin\.claude\projects\c--Users-admin-git-SerrebiTorrent\memory\MEMORY.md
-@C:\Users\admin\.claude\projects\c--Users-admin-git-SerrebiTorrent\memory\libtorrent-21-compat.md
-@C:\Users\admin\.claude\projects\c--Users-admin-git-SerrebiTorrent\memory\nvda-virtual-list-focus.md
-@C:\Users\admin\.claude\projects\c--Users-admin-git-SerrebiTorrent\memory\prefer-root-cause-fixes-over-powershell-fallback.md
-@C:\Users\admin\.claude\projects\c--Users-admin-git-SerrebiTorrent\memory\running-windows-commands-from-bash.md
-<!-- claude-memory:end -->
