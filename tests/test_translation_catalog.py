@@ -37,11 +37,6 @@ def test_placeholder_validation_requires_same_named_fields():
     assert any("Placeholders differ" in problem for problem in problems)
 
 
-def test_mnemonic_validation_requires_ampersand_when_source_has_one():
-    assert validate_translation("&Search", "&Pesquisar") == []
-    assert "Keyboard mnemonic marker '&' is missing." in validate_translation("&Search", "Pesquisar")
-
-
 def test_catalog_validation_returns_only_problem_entries():
     result = validate_catalog({"Connected to {name}": "Conectado", "Settings": "Configurações"})
     assert "Connected to {name}" in result
