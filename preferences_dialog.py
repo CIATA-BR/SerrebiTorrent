@@ -21,7 +21,13 @@ def _language_index(options, value):
     try:
         return values.index(value)
     except ValueError:
-        return 0
+        # A catalog can disappear or be renamed in a later release. Match the
+        # runtime's unsupported-language fallback instead of claiming that the
+        # saved preference was "system".
+        try:
+            return values.index("en")
+        except ValueError:
+            return 0
 
 
 def _language_value(options, index):

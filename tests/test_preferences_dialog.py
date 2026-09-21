@@ -11,13 +11,13 @@ def test_language_index_finds_saved_preference():
     assert _language_index(options, "en") == 1
 
 
-def test_language_index_falls_back_to_system_for_unknown_value():
+def test_language_index_falls_back_to_english_for_unknown_value():
     options = [
         ("system", "Sistema"),
         ("en", "English"),
         ("pt-BR", "Português (Brasil)"),
     ]
-    assert _language_index(options, "es") == 0
+    assert _language_index(options, "es") == 1
 
 
 def test_language_value_uses_stable_preference_value_not_display_label():
