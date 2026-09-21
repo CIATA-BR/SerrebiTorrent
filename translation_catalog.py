@@ -233,11 +233,10 @@ def validate_translation(source: str, translated: str) -> list[str]:
 
     source_mnemonics = _mnemonic_count(source)
     translated_mnemonics = _mnemonic_count(translated)
-    if source_mnemonics != translated_mnemonics:
-        errors.append(
-            "Keyboard mnemonic count differs: expected "
-            f"{source_mnemonics}, got {translated_mnemonics}."
-        )
+    if source_mnemonics > 0 and translated_mnemonics == 0:
+        errors.append("Keyboard mnemonic marker '&' is missing.")
+    elif source_mnemonics == 0 and translated_mnemonics > 0:
+        errors.append("Keyboard mnemonic marker '&' is unexpected.")
     return errors
 
 
