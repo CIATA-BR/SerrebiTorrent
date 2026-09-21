@@ -29,6 +29,10 @@ def source_messages() -> list[str]:
     return collect_source_messages(ROOT, include_web=True)
 
 
+def strict_validation(info) -> bool:
+    return str(info.metadata.get("X-Serrebi-Validation", "")).strip().lower() == "strict"
+
+
 def render_web_catalog(info) -> str:
     payload = {
         "language": info.code,
@@ -59,7 +63,7 @@ def cmd_template(args) -> int:
 
 def cmd_validate(args) -> int:
     info = load_po(Path(args.catalog))
-    problems = validate_catalog(info.translations)
+    problems = validate_catalog(info.translations, strict=strict_validation(info))
     if problems:
         for source, errors in problems.items():
             print(source)
@@ -83,7 +87,7 @@ def _write_web_index(directory: Path, catalogs) -> None:
 
 def cmd_compile_web(args) -> int:
     info = load_po(Path(args.catalog))
-    problems = validate_catalog(info.translations)
+    problems = validate_catalog(info.translations, strict=strict_validation(info))
     if problems and not args.allow_invalid:
         print("Catalog has validation errors; run 'validate' first.", file=sys.stderr)
         return 1
@@ -103,7 +107,7 @@ def cmd_compile_all_web(args) -> int:
     catalogs = discover_catalogs(Path(args.locales_dir or ROOT / "locales"))
     failures = 0
     for code, info in catalogs.items():
-        problems = validate_catalog(info.translations)
+        problems = validate_catalog(info.translations, strict=strict_validation(info))
         if problems and not args.allow_invalid:
             print(f"{code}: validation failed; skipping Web catalog.", file=sys.stderr)
             failures += 1
@@ -123,7 +127,7 @@ def cmd_sync(_args) -> int:
     catalogs = discover_catalogs(ROOT / "locales")
     failures = 0
     for code, info in catalogs.items():
-        problems = validate_catalog(info.translations)
+        problems = validate_catalog(info.translations, strict=strict_validation(info))
         if problems:
             print(f"{code}: {len(problems)} entries need review.", file=sys.stderr)
             failures += 1
@@ -158,7 +162,7 @@ def cmd_check(_args) -> int:
     output_dir = ROOT / "web_static" / "locales"
 
     for code, info in catalogs.items():
-        problems = validate_catalog(info.translations)
+        problems = validate_catalog(info.translations, strict=strict_validation(info))
         if problems:
             print(f"{code}: {len(problems)} invalid translation entries.", file=sys.stderr)
             failures += 1
