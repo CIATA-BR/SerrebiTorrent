@@ -162,3 +162,41 @@ def test_non_locale_static_assets_remain_protected_before_login(client):
     response = client.get('/app.js')
     assert response.status_code in (301, 302)
     assert response.headers['Location'].endswith('/login.html')
+
+
+def test_login_lockout_returns_retry_after(client):
+    original = dict(web_server._auth_failures)
+    original_limit = web_server._AUTH_FAIL_LIMIT
+    try:
+        web_server._auth_failures.clear()
+        web_server._AUTH_FAIL_LIMIT = 1
+        client.post('/api/v2/auth/login', data={'username': 'admin', 'password': 'wrong'})
+        response = client.post('/api/v2/auth/login', data={'username': 'admin', 'password': 'wrong'})
+        assert response.status_code == 429
+        assert response.headers['Retry-After'] == str(web_server._AUTH_LOCK_SECONDS)
+    finally:
+        web_server._AUTH_FAIL_LIMIT = original_limit
+        web_server._auth_failures.clear()
+        web_server._auth_failures.update(original)
+
+
+def test_auth_failure_cache_prunes_expired_and_is_bounded(monkeypatch):
+    original = dict(web_server._auth_failures)
+    original_max = web_server._AUTH_FAIL_CACHE_MAX
+    try:
+        web_server._auth_failures.clear()
+        web_server._AUTH_FAIL_CACHE_MAX = 2
+        monkeypatch.setattr(web_server.time, 'time', lambda: 1000.0)
+        web_server._auth_failures.update({
+            'expired': (1, 600.0),
+            'old': (1, 900.0),
+            'new': (1, 950.0),
+        })
+        web_server._record_auth_failure('current')
+        assert 'expired' not in web_server._auth_failures
+        assert len(web_server._auth_failures) <= 2
+        assert 'current' in web_server._auth_failures
+    finally:
+        web_server._AUTH_FAIL_CACHE_MAX = original_max
+        web_server._auth_failures.clear()
+        web_server._auth_failures.update(original)
