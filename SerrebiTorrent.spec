@@ -31,7 +31,7 @@ if os.path.exists('icon.ico'):
 binaries = [(os.path.abspath(libtorrent_spec.origin), '.')]
 
 a = Analysis(
-    ['main.py'],
+    ['app_entry.py'],
     pathex=[os.path.abspath('.')],
     binaries=binaries,
     datas=datas,
