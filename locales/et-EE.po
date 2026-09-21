@@ -1,0 +1,1781 @@
+# SerrebiTorrent translation catalog.
+# SPDX-License-Identifier: MIT
+msgid ""
+msgstr ""
+"Project-Id-Version: SerrebiTorrent\\nLanguage: et-EE\\nX-Language-Name: Eesti\\nMIME-Version: 1.0\\nContent-Type: text/plain; charset=UTF-8\\nContent-Transfer-Encoding: 8bit\\n"
+
+msgid "&About SerrebiTorrent"
+msgstr "ZZAMPZAbout SerrebiTorrent &"
+
+msgid "&Actions"
+msgstr "ZZAMPZActions &"
+
+msgid "&Add selected"
+msgstr "&Add valitud"
+
+msgid "&Add Torrent File...\tCtrl+O"
+msgstr "ZZAMPZAdd Torrent File...ZZTABZCtrl+O & \t"
+
+msgid "&Add..."
+msgstr "ZZAMPZAdd... &"
+
+msgid "&Close"
+msgstr "ZZAMPZClose &"
+
+msgid "&Connect"
+msgstr "&Connect"
+
+msgid "&Connect...\tCtrl+Shift+C"
+msgstr "&Connect...\tCtrl+Shift+C"
+
+msgid "&Edit..."
+msgstr "ZZAMPZEdit... &"
+
+msgid "&File"
+msgstr "&File"
+
+msgid "&Help"
+msgstr "&Help"
+
+msgid "&Indexers to search:"
+msgstr "&Kassid otsimiseks:"
+
+msgid "&Indexers:"
+msgstr "&Indexers :"
+
+msgid "&Name:"
+msgstr "&Nimi:"
+
+msgid "&Pause\tCtrl+P"
+msgstr "&PauseZTABZZCtrl+P \t"
+
+msgid "&Remove"
+msgstr "&Remove"
+
+msgid "&Remove\tDel"
+msgstr "ZZAMPZRemoveZZTABZDel & \t"
+
+msgid "&Resume\tCtrl+R"
+msgstr "ZZAMPZResumeZZTABZCtrl+R & \t"
+
+msgid "&Search for Torrents...\tCtrl+F"
+msgstr "&Torrenti otsing...Z\tCtrl+F"
+
+msgid "&Search for:"
+msgstr "&Ootsimine:"
+
+msgid "&Start\tCtrl+S"
+msgstr "ZZAMPZStart\tCtrl+S &"
+
+msgid "&Tools"
+msgstr "ZZAMPZTools &"
+
+msgid "&URL:"
+msgstr "&URL:"
+
+msgid "1 feed"
+msgstr "1 sÃ¶Ã¶t"
+
+msgid "A Torznab or Newznab search endpoint. Prowlarr: {prowlarr}. Jackett, all trackers at once: {jackett}"
+msgstr "Torznabi vÃµi Newznabi otsingu lÃµpp-punkt. Prowlarr: ZZTOKEN0Z. Jackett, kÃµik jÃ¤litusseadmed korraga: {jackett} {prowlarr}"
+
+msgid "A Windows desktop torrent manager designed for keyboard-first use and screen readers."
+msgstr "Windowsi tÃ¶Ã¶laua torrenthaldur, mis on mÃµeldud klaviatuuri esmakordseks kasutamiseks ja ekraanilugejatele."
+
+msgid "About this application"
+msgstr "Selle rakenduse kohta"
+
+msgid "Accept"
+msgstr "NÃµustun"
+
+msgid "Action menu opened. Use arrow keys to navigate."
+msgstr "Avati tegevuste menÃ¼Ã¼. Kasuta navigeerimiseks nooleklahve."
+
+msgid "Active"
+msgstr "Aktiivselt"
+
+msgid "Add"
+msgstr "Lisa"
+
+msgid "Add &URL/Magnet...\tCtrl+U"
+msgstr "Lisa &URL/ Magnet... \tCtrl+U"
+
+msgid "Add a torrent from a local file"
+msgstr "Torrenti lisamine kohalikust failist"
+
+msgid "Add a torrent from a URL or Magnet link"
+msgstr "Torrenti lisamine URL- i vÃµi Magneti lingilt"
+
+msgid "Add Connection Profile"
+msgstr "Ãœhenduse profiili lisamine"
+
+msgid "Add created torrent to the currently connected client"
+msgstr "Loodud torrenti lisamine parajasti Ã¼hendatud kliendile"
+
+msgid "Add Feed"
+msgstr "Lisa kanal"
+
+msgid "Add indexer"
+msgstr "Lisa indekseerija"
+
+msgid "Add Profile"
+msgstr "Profiili lisamine"
+
+msgid "Add RSS Rule"
+msgstr "Lisa RSS reegel"
+
+msgid "Add Rule"
+msgstr "Lisa reegel"
+
+msgid "Add Torrent"
+msgstr "Torrent"
+
+msgid "Add Torrent: {name}"
+msgstr "Lisa Torrent: {name}"
+
+msgid "Add Tracker"
+msgstr "Trackeri lisamine"
+
+msgid "Add/edit/delete profiles and connect"
+msgstr "Profiilide lisamine/ redigeerimine/ kustutamine ja Ã¼hendamine"
+
+msgid "Added from RSS: {title}"
+msgstr "Lisatud RSS-ist: {title}"
+
+msgid "Added your blindDL indexer: {names}."
+msgstr "Lisasin oma blindDL indekseerija: {names}."
+
+msgid "Added your blindDL indexers: {names}."
+msgstr "Lisasin oma blindDL indekseerijad: {names}."
+
+msgid "Added {title}"
+msgstr "Lisatud {title}"
+
+msgid "Adding created torrent..."
+msgstr "Loodud torrenti lisamine..."
+
+msgid "Adding magnet link from CLI..."
+msgstr "Magnetlingi lisamine CLI- st..."
+
+msgid "Adding magnet link..."
+msgstr "Magnetlingi lisamine..."
+
+msgid "Adding torrent file from CLI..."
+msgstr "Torrent- faili lisamine CLI- st..."
+
+msgid "Adding torrent..."
+msgstr "Torrenti lisamine..."
+
+msgid "Adding torrent: {title}..."
+msgstr "Torrenti lisamine: ZZTOKEN0Z... {title}"
+
+msgid "Adding {count} torrent..."
+msgstr "{count} torrenti lisamine..."
+
+msgid "Adding {count} torrents..."
+msgstr "{count} torrentide lisamine..."
+
+msgid "After Creation"
+msgstr "Loomisest"
+
+msgid "Age"
+msgstr "Age"
+
+msgid "All"
+msgstr "KÃµik"
+
+msgid "An indexer needs both a name and a URL."
+msgstr "Indekseerija vajab nii nime kui ka URL-i."
+
+msgid "An update check or install is already in progress."
+msgstr "Uuenduse kontroll vÃµi installimine on juba kÃ¤imas."
+
+msgid "An update is already in progress."
+msgstr "Uuendamine on juba kÃ¤imas."
+
+msgid "Announce IP (reported to trackers, blank = auto):"
+msgstr "Teata IP (teatatakse jÃ¤lgijatele, blank = auto):"
+
+msgid "Another indexer is already called {name}. Choose a different name."
+msgstr "Teine indekseerija kannab juba nime {name}. Vali teine nimi."
+
+msgid "Another instance of SerrebiTorrent is already running."
+msgstr "JÃ¤rjekordne serrebitorrent on juba tÃ¶Ã¶s."
+
+msgid "Anti-leech"
+msgstr "LehetÃµrje"
+
+msgid "API &key:"
+msgstr "API &key:"
+
+msgid "API key"
+msgstr "API vÃµti"
+
+msgid "Application"
+msgstr "Rakendus"
+
+msgid "Apply to Feeds (Uncheck all for Global):"
+msgstr "Rakendage sÃ¶Ã¶dale (Uncheck all for Global):"
+
+msgid "Applying update..."
+msgstr "Uuenduse rakendamine..."
+
+msgid "Are you sure you want to clear ALL RSS feeds and rules?"
+msgstr "Kas olete kindel, et soovite kustutada kÃµik RSS-kanalid ja reeglid?"
+
+msgid "Associate .torrent and magnet links with this app"
+msgstr "Associate .torrent ja magnet lingid selle rakendusega"
+
+msgid "Association is only supported on Windows for now."
+msgstr "Assotsieerumist toetatakse praegu ainult Windowsis."
+
+msgid "Associations registered successfully!"
+msgstr "Ãœhingud on edukalt registreeritud!"
+
+msgid "Authentication (if required):"
+msgstr "Autentimine (vajaduse korral):"
+
+msgid "Auto"
+msgstr "Auto"
+
+msgid "Auto-added from RSS: {title}"
+msgstr "Automaatne lisamine RSS-ist: {title}"
+
+msgid "Auto-start failed: {error}"
+msgstr "AutomaatkÃ¤ivitus nurjus: {error}"
+
+msgid "Auto-started new torrent(s)"
+msgstr "Automaatselt kÃ¤ivitatud uus torrent(id)"
+
+msgid "Auto-update is not available for this build."
+msgstr "Automaatne uuendamine ei ole selle ehitamise jaoks saadaval."
+
+msgid "Automatically add trackers from URL"
+msgstr "JÃ¤lgijate automaatne lisamine URL- i"
+
+msgid "Automatically start torrents"
+msgstr "Torrentide automaatne kÃ¤ivitamine"
+
+msgid "Availability"
+msgstr "KÃ¤ttesaadavus"
+
+msgid "Best match"
+msgstr "Parim mÃ¤ng"
+
+msgid "Bind Host:"
+msgstr "Sidemasin:"
+
+msgid "BitTorrent"
+msgstr "BitTorrent"
+
+msgid "Browse..."
+msgstr "Sirvige..."
+
+msgid "Cancel"
+msgstr "TÃ¼histage"
+
+msgid "Categories"
+msgstr "Kategooriad"
+
+msgid "Category"
+msgstr "Kategooria"
+
+msgid "Check"
+msgstr "Kontrolli"
+
+msgid "Check All"
+msgstr "Kontrollige"
+
+msgid "Check for &Updates...\tF5"
+msgstr "Kontrolli &Updates ... \tF5"
+
+msgid "Check for Updates"
+msgstr "Uuenduste kontrollimine"
+
+msgid "Check for updates"
+msgstr "Uuenduste kontrollimine"
+
+msgid "Check for updates automatically on startup"
+msgstr "Uuenduste automaatne kontrollimine kÃ¤ivitamisel"
+
+msgid "Checking"
+msgstr "Kontrollin"
+
+msgid "Checking for updates..."
+msgstr "Uuenduste kontrollimine..."
+
+msgid "Choose a profile, then connect or manage it with the buttons below."
+msgstr "Valige profiil, seejÃ¤rel Ã¼hendage vÃµi haldage seda allolevate nuppudega."
+
+msgid "Choose Download Directory"
+msgstr "Allalaadimiskataloogi valimine"
+
+msgid "Choose Download Folder"
+msgstr "Allalaadimiskataloogi valimine"
+
+msgid "Client"
+msgstr "Klient"
+
+msgid "Client Type"
+msgstr "KlienditÃ¼Ã¼p"
+
+msgid "Client Type:"
+msgstr "Kliendi tÃ¼Ã¼p:"
+
+msgid "Close"
+msgstr "Sulge"
+
+msgid "Close to System Tray"
+msgstr "SÃ¼steemisalve lÃ¤hedus"
+
+msgid "Comment:"
+msgstr "Kommentaar:"
+
+msgid "Configure local session and application settings"
+msgstr "Kohaliku seansi ja rakenduse seadistuste seadistamine"
+
+msgid "Confirm"
+msgstr "Kinnita"
+
+msgid "Confirm Reset"
+msgstr "LÃ¤htestamise kinnitamine"
+
+msgid "Connect"
+msgstr "Ãœhenda"
+
+msgid "Connect or switch profile"
+msgstr "Ãœhenda vÃµi lÃ¼lita profiil"
+
+msgid "Connect to a client before adding torrents."
+msgstr "Ãœhendage kliendiga enne torrentite lisamist."
+
+msgid "Connect to this profile"
+msgstr "Ãœhenda selle profiiliga"
+
+msgid "Connected to {name}"
+msgstr "Ãœhendatud {name}-ga"
+
+msgid "Connecting..."
+msgstr "Ãœhendades..."
+
+msgid "Connection"
+msgstr "Ãœhendus"
+
+msgid "Connection Failed"
+msgstr "Ãœhendus nurjus"
+
+msgid "Connection Manager"
+msgstr "Ãœhenduse haldur"
+
+msgid "Connection Manager..."
+msgstr "Ãœhenduse haldur..."
+
+msgid "Connection Manager...\tCtrl+Shift+C"
+msgstr "Ãœhenduse haldur...ZZTABZCtrl+Shift+C \t"
+
+msgid "Connection profiles"
+msgstr "Ãœhenduse profiilid"
+
+msgid "Context / validation:"
+msgstr "Kontekst / valideerimine:"
+
+msgid "Copied to clipboard"
+msgstr "Koopia lÃµikepuhvrisse"
+
+msgid "Copied {count} magnet link."
+msgstr "Kopeeritud ZZTOKEN0Z magnetlink. {count}"
+
+msgid "Copied {count} magnet links."
+msgstr "Koopia {count} magnetlinkidest."
+
+msgid "Copy &Info Hash\tCtrl+I"
+msgstr "Copy &Info HashZTABZCtrl+I \t"
+
+msgid "Copy &Magnet Link\tCtrl+M"
+msgstr "Kopeeri ZZAMPZMagnet LinkZZTABZCtrl+M & \t"
+
+msgid "Copy a magnet link for selected torrents"
+msgstr "Kopeeri valitud torrentitele magnetlink"
+
+msgid "Copy Info Hash"
+msgstr "Kopeeri info rÃ¤si"
+
+msgid "Copy it from Prowlarr or Jackett's own settings. Leave it empty if the endpoint needs no key."
+msgstr "Kopeeri see Prowlarri vÃµi Jacketti enda seadetest. JÃ¤ta see tÃ¼hjaks, kui lÃµpp-punkt ei vaja vÃµtit."
+
+msgid "Copy Magnet Link"
+msgstr "Kopeeri Magnetlink"
+
+msgid "Copy magnet link to clipboard"
+msgstr "Kopeeri magnetlink lÃµikepuhvrisse"
+
+msgid "Copy the info hash for selected torrents"
+msgstr "Kopeeri valitud torrentide info rÃ¤si"
+
+msgid "Create &Torrent...\tCtrl+N"
+msgstr "Loo ZZAMPZTorrent... \tCtrl+N &"
+
+msgid "Create a .torrent file from a file or folder"
+msgstr ".torrent- faili loomine failist vÃµi kataloogist"
+
+msgid "Create Profile"
+msgstr "Profiili loomine"
+
+msgid "Create Torrent"
+msgstr "Torrent"
+
+msgid "Created by:"
+msgstr "Loodud:"
+
+msgid "Created torrent added"
+msgstr "Lisatud on loodud torrent"
+
+msgid "Created torrent, but failed to add to client: {error}"
+msgstr "Loonud torrenti, kuid ei suutnud kliendile lisada: {error}"
+
+msgid "Current"
+msgstr "Praegune"
+
+msgid "Dark (Night)"
+msgstr "Tume (Ã–Ã¶)"
+
+msgid "Default"
+msgstr "Vaikimisi"
+
+msgid "Default Download Path:"
+msgstr "Vaikimisi allalaadimise asukoht:"
+
+msgid "Delete"
+msgstr "Kustuta"
+
+msgid "Delete this profile?"
+msgstr "Kustuta see profiil?"
+
+msgid "Deselect All"
+msgstr "Kustuta kÃµigi valik"
+
+msgid "Disconnected"
+msgstr "LahtiÃ¼hendatud"
+
+msgid "Down Speed"
+msgstr "AllakÃ¤ik"
+
+msgid "Download folder not available."
+msgstr "Kataloogi allalaadimine pole saadaval."
+
+msgid "Download Path"
+msgstr "Laadi alla"
+
+msgid "Download Path:"
+msgstr "Laadi rada alla:"
+
+msgid "Download Rate (bytes/s):"
+msgstr "Allalaadimiskiirus (baitides/s):"
+
+msgid "Downloaded update failed SHA-256 verification."
+msgstr "Allalaaditud vÃ¤rskendus ebaÃµnnestus SHA-256 kontrollimisel."
+
+msgid "Downloaded: {percent:.1f}%"
+msgstr "Allalaaditud: ZZTOKEN0Z% {percent:.1f}"
+
+msgid "Downloading"
+msgstr "Allalaadimine"
+
+msgid "Downloading torrent file..."
+msgstr "Torrent- faili allalaadimine..."
+
+msgid "Downloading update..."
+msgstr "Uuenduse allalaadimine..."
+
+msgid "Downloads"
+msgstr "Allalaadimised"
+
+msgid "E&xit"
+msgstr "E&xit"
+
+msgid "Edit"
+msgstr "Edit"
+
+msgid "Edit connected qBittorrent settings"
+msgstr "Ãœhendatud qBittorrenti seadistuste muutmine"
+
+msgid "Edit connected rTorrent settings"
+msgstr "Ãœhendatud rTorrenti seadistuste muutmine"
+
+msgid "Edit connected Transmission settings"
+msgstr "Ãœhendatud edastusseadistuste muutmine"
+
+msgid "Edit indexer"
+msgstr "Muuda indekseerijat"
+
+msgid "Edit Profile"
+msgstr "Profiili muutmine"
+
+msgid "Edit RSS Rule"
+msgstr "Muuda RSS reeglit"
+
+msgid "Edit Rule"
+msgstr "Redigeeri reeglit"
+
+msgid "Enable DHT"
+msgstr "DHT lubamine"
+
+msgid "Enable Local Service Discovery (LSD)"
+msgstr "Kohaliku teenuse avastamise (LSD) lubamine"
+
+msgid "Enable NAT-PMP Port Mapping"
+msgstr "NAT- PMP portide kaardistamise lubamine"
+
+msgid "Enable UPnP Port Mapping"
+msgstr "UPnP portide kaardistamise lubamine"
+
+msgid "Enable Web UI"
+msgstr "Veebi UI lubamine"
+
+msgid "Enabled"
+msgstr "Lubatud"
+
+msgid "English"
+msgstr "inglise"
+
+msgid "Enter a JSON object (e.g. {\"/watched\": \"/home/user\"})."
+msgstr "Sisestage JSON- objekt (nt {\"/watched\": \"/home/user\"})."
+
+msgid "Enter adds the selected torrents. Control C copies the magnet link."
+msgstr "Enter lisab valitud torrentid. Kontroll C kopeerib magnetlingi."
+
+msgid "Enter edits the selected indexer. Delete removes it."
+msgstr "Sisesta valitud indekseerija. Kustuta eemaldab selle."
+
+msgid "Enter Magnet Link or URL:"
+msgstr "Sisesta Magnet Link vÃµi URL:"
+
+msgid "Enter RSS Feed URL:"
+msgstr "Sisesta RSS- kanali URL:"
+
+msgid "Error"
+msgstr "Viga"
+
+msgid "Error adding file: {error}"
+msgstr "Viga faili lisamisel: {error}"
+
+msgid "Error adding URL: {error}"
+msgstr "Viga URL- i lisamisel: {error}"
+
+msgid "Error fetching preferences"
+msgstr "Viga eelistuste tÃµmbamisel"
+
+msgid "Error saving remote settings."
+msgstr "Viga kaugseadistuste salvestamisel."
+
+msgid "Error saving settings."
+msgstr "Viga seadistuste salvestamisel."
+
+msgid "Every day"
+msgstr "Iga pÃ¤ev"
+
+msgid "Every Friday"
+msgstr "Reedel"
+
+msgid "Every Monday"
+msgstr "EsmaspÃ¤eval"
+
+msgid "Every Saturday"
+msgstr "LaupÃ¤eval"
+
+msgid "Every Sunday"
+msgstr "Igal pÃ¼hapÃ¤eval"
+
+msgid "Every Thursday"
+msgstr "Igal neljapÃ¤eval"
+
+msgid "Every Tuesday"
+msgstr "Igal teisipÃ¤eval"
+
+msgid "Every Wednesday"
+msgstr "KolmapÃ¤eval"
+
+msgid "Every weekday"
+msgstr "Iga argipÃ¤ev"
+
+msgid "Every weekend"
+msgstr "Igal nÃ¤dalavahetusel"
+
+msgid "Exit"
+msgstr "VÃ¤lju"
+
+msgid "Exit application"
+msgstr "VÃ¤ljumistaotlus"
+
+msgid "Export PO..."
+msgstr "Eksport PO..."
+
+msgid "Extracted update does not contain application files."
+msgstr "VÃ¤ljatÃµmmatud vÃ¤rskendus ei sisalda rakendusfaile."
+
+msgid "Extracting update..."
+msgstr "Uuenduse eraldamine..."
+
+msgid "Failed"
+msgstr "EbaÃµnnestunud"
+
+msgid "Failed to access clipboard."
+msgstr "LÃµikepuhvri kasutamine nurjus."
+
+msgid "Failed to add from RSS: {error}"
+msgstr "RSS- i lisamine nurjus: {error}"
+
+msgid "Failed to add magnet: {error}"
+msgstr "Magneti lisamine nurjus: {error}"
+
+msgid "Failed to add torrent: {error}"
+msgstr "Torrenti lisamine nurjus: {error}"
+
+msgid "Failed to add torrents."
+msgstr "Torrentide lisamine nurjus."
+
+msgid "Failed to apply settings: {error}"
+msgstr "Seadistuste rakendamine nurjus: {error}"
+
+msgid "Failed to download torrent from URL: {error}"
+msgstr "Torrenti allalaadimine URL- is nurjus: {error}"
+
+msgid "Failed to fetch preferences"
+msgstr "Eelistuste tÃµmbamine nurjus"
+
+msgid "Failed to fetch remote preferences: {error}"
+msgstr "VÃµrguseadistuste hankimine nurjus: {error}"
+
+msgid "Failed to fetch {title}: {error}"
+msgstr "{title} hankimine nurjus: ZZTOKEN1Z {error}"
+
+msgid "Failed to load settings."
+msgstr "Seadistuste laadimine nurjus."
+
+msgid "Failed to read torrent file: {error}"
+msgstr "Torrentfaili lugemine nurjus: {error}"
+
+msgid "Failed to register associations: {error}"
+msgstr "Ãœhingute registreerimine nurjus: {error}"
+
+msgid "Failed to retrieve preferences from remote client."
+msgstr "Kaugkliendi eelistuste hankimine nurjus."
+
+msgid "Failed to retrieve preferences from remote client. The client might not support this feature or there is a connection issue."
+msgstr "Kaugkliendi eelistuste hankimine nurjus. Klient ei pruugi seda funktsiooni toetada vÃµi on Ã¼henduse probleem."
+
+msgid "Failed to update remote preferences: {error}"
+msgstr "VÃµrguseadistuste uuendamine nurjus: {error}"
+
+msgid "Failed to {action} torrent: {error}"
+msgstr "{action} torrent nurjus: {error}"
+
+msgid "Failed to {action}: {error}"
+msgstr "{action} nurjus: {error}"
+
+msgid "Fastest upload"
+msgstr "Kiireim Ã¼leslaadimine"
+
+msgid "Fetching {name} preferences..."
+msgstr "{name} eelistuste tÃµmbamine..."
+
+msgid "File list not available (Magnet link)."
+msgstr "Failide nimekiri pole saadaval (Magneti link)."
+
+msgid "File..."
+msgstr "Fail..."
+
+msgid "Files"
+msgstr "Failid"
+
+msgid "Files:"
+msgstr "Failid:"
+
+msgid "Filter:"
+msgstr "Filter:"
+
+msgid "Finished"
+msgstr "LÃµpetasin"
+
+msgid "Fixed slots"
+msgstr "Fikseeritud teenindusajad"
+
+msgid "Folder..."
+msgstr "Kaust..."
+
+msgid "Force a recheck/verification (if supported)"
+msgstr "Korduskontrolli/kontrolli sundimine (kui see on toetatud)"
+
+msgid "Force an immediate tracker announce (if supported)"
+msgstr "Sundeeri kohene jÃ¤litusseade (kui see on toetatud)"
+
+msgid "Force encryption off"
+msgstr "KrÃ¼pteerimine sunnitakse vÃ¤lja lÃ¼litama"
+
+msgid "Force encryption on"
+msgstr "KrÃ¼pteerimine jÃµuga"
+
+msgid "Force Re&check"
+msgstr "JÃµud ReZAMPZZcheck &"
+
+msgid "Force Reannoun&ce"
+msgstr "JÃµud ReannounZAMPZZZcece &"
+
+msgid "Force Reannounce"
+msgstr "JÃµud taganeb"
+
+msgid "Force Recheck"
+msgstr "JÃµukontroll"
+
+msgid "General"
+msgstr "Kindral"
+
+msgid "Global"
+msgstr "Global"
+
+msgid "Global DL Limit (B/s)"
+msgstr "Ãœldine DL piirmÃ¤Ã¤r (B/s)"
+
+msgid "Global Limits (0 or -1 for unlimited):"
+msgstr "Globaalsed piirnormid (0 vÃµi -1 piiramatu):"
+
+msgid "Global UL Limit (B/s)"
+msgstr "Ãœldine UL piirnorm (B/s)"
+
+msgid "Hash"
+msgstr "Hash"
+
+msgid "Hashing pieces and generating torrent metadata..."
+msgstr "HÃ¤vitustÃ¼kid ja torrenti metaandmete genereerimine..."
+
+msgid "High"
+msgstr "KÃµrge"
+
+msgid "Host:"
+msgstr "VÃµÃµrustaja:"
+
+msgid "HTTP (no auth)"
+msgstr "HTTP (auth)"
+
+msgid "HTTP (with auth)"
+msgstr "HTTP (authiga)"
+
+msgid "Import Complete"
+msgstr "Import"
+
+msgid "Import Failed: {error}"
+msgstr "Import nurjus: {error}"
+
+msgid "Import FlexGet"
+msgstr "FlexGeti import"
+
+msgid "Import FlexGet Config"
+msgstr "FlexGeti seadistuse import"
+
+msgid "Imported {feeds} feeds and {rules} rules."
+msgstr "Imporditud {feeds} sÃ¶Ã¶dad ja ZZTOKEN1Z reeglid. {rules}"
+
+msgid "Included trackers (one per line):"
+msgstr "Kaasa arvatud jÃ¤lgimisseadmed (Ã¼ks rea kohta):"
+
+msgid "Indexer"
+msgstr "Indexer"
+
+msgid "Indexer name"
+msgstr "Indekseerija nimi"
+
+msgid "Indexer URL"
+msgstr "Indexeri URL"
+
+msgid "Indexers to search"
+msgstr "Otsitavad indekseerijad"
+
+msgid "Info"
+msgstr "Info"
+
+msgid "Info hash copied to clipboard."
+msgstr "Info rÃ¤si kopeeriti lÃµikepuhvrisse."
+
+msgid "Info Hash: {hash}"
+msgstr "Info rÃ¤si: {hash}"
+
+msgid "Install directory not found."
+msgstr "Kataloogi paigaldamist ei leitud."
+
+msgid "Invalid argument: {arg}"
+msgstr "Vigane argument: {arg}"
+
+msgid "Invalid credentials."
+msgstr "Vigased volitused."
+
+msgid "Invalid integer for {label}: {error}"
+msgstr "{label} vigane tÃ¤isarv: {error}"
+
+msgid "Invalid JSON for {label}: {error}"
+msgstr "Vigane JSON {label} jaoks: {error}"
+
+msgid "Invalid number for {label}: {error}"
+msgstr "{label} vigane number: {error}"
+
+msgid "Invalid torrent URL."
+msgstr "Vigane torrenti URL."
+
+msgid "Language"
+msgstr "Keel"
+
+msgid "Language changes reload this page after saving."
+msgstr "Keelemuudatused laadivad selle lehekÃ¼lje pÃ¤rast salvestamist uuesti."
+
+msgid "Language code:"
+msgstr "Keelekood:"
+
+msgid "Language name:"
+msgstr "Keele nimi:"
+
+msgid "Language:"
+msgstr "Keel:"
+
+msgid "Largest"
+msgstr "Suurimad"
+
+msgid "Leave blank to retain the current password."
+msgstr "JÃ¤ta tÃ¼hjaks, et sÃ¤ilitada praegune parool."
+
+msgid "Leechers"
+msgstr "Leechers"
+
+msgid "libtorrent is not available. Torrent creation requires python-libtorrent."
+msgstr "libtorrent pole saadaval. Torrenti loomine nÃµuab python-libtorrenti."
+
+msgid "Light (Classic)"
+msgstr "Valgus (klassikaline)"
+
+msgid "Limits"
+msgstr "Piirangud"
+
+msgid "Link"
+msgstr "Link"
+
+msgid "Listening Port:"
+msgstr "Kuulamisport:"
+
+msgid "Loading remote settings..."
+msgstr "VÃµrguseadistuste laadimine..."
+
+msgid "Loading..."
+msgstr "Laadimine..."
+
+msgid "Local libtorrent"
+msgstr "Kohalik libtorrent"
+
+msgid "Local Session &Settings...\tCtrl+,"
+msgstr "Kohalik istung ZZAMPZSettings...\tCtrl+, &"
+
+msgid "Local session active"
+msgstr "Kohalik seanss aktiivne"
+
+msgid "Local Session Settings"
+msgstr "Kohaliku seansi seadistused"
+
+msgid "Local Session Settings..."
+msgstr "Kohaliku seansi seadistused..."
+
+msgid "Login"
+msgstr "Sisselogimine"
+
+msgid "Login - SerrebiTorrent"
+msgstr "Sisselogimine - SerrebiTorrent"
+
+msgid "Logout"
+msgstr "Logi vÃ¤lja"
+
+msgid "Magnet copied to clipboard."
+msgstr "Magnet kopeeris lÃµikepuhvrisse."
+
+msgid "Magnet Link"
+msgstr "Magnetlink"
+
+msgid "Magnet link added"
+msgstr "Lisatud magnetlink"
+
+msgid "Magnet link added from CLI"
+msgstr "CLI- st lisatud magnetlink"
+
+msgid "Magnet link(s) copied to clipboard."
+msgstr "Magnetilink(id) kopeeriti lÃµikepuhvrisse."
+
+msgid "Magnet: {magnet}"
+msgstr "Magnet: {magnet}"
+
+msgid "Manage Profiles & Connect"
+msgstr "Profiilide haldamine & Connect"
+
+msgid "Max Connections:"
+msgstr "MaksimumÃ¼hendused:"
+
+msgid "Max Upload Slots:"
+msgstr "Maksimaalne Ã¼leslaadimispesad:"
+
+msgid "Menu closed"
+msgstr "MenÃ¼Ã¼ suletud"
+
+msgid "Menu opened"
+msgstr "MenÃ¼Ã¼ avatud"
+
+msgid "Message"
+msgstr "SÃµnum"
+
+msgid "Metadata (optional)"
+msgstr "Metaandmed (valikuline)"
+
+msgid "Minimize to System Tray"
+msgstr "Minimeerimine sÃ¼steemsesse salve"
+
+msgid "Minimize to Tray"
+msgstr "Minimeeri salve"
+
+msgid "Most seeders"
+msgstr "Enamik kÃ¼lvikuid"
+
+msgid "My &indexers..."
+msgstr "Minu &indexers..."
+
+msgid "My indexers..."
+msgstr "Mu indekseerijad..."
+
+msgid "My Remote Server"
+msgstr "Minu kaugserver"
+
+msgid "My torrent indexers"
+msgstr "Mu torrenti indekseerijad"
+
+msgid "N/A"
+msgstr "Ei/A"
+
+msgid "Name"
+msgstr "Nimi"
+
+msgid "Navigation"
+msgstr "Navigatsioon"
+
+msgid "Navigation Sidebar"
+msgstr "Navigatsiooni kÃ¼lgriba"
+
+msgid "Needs review"
+msgstr "Vajaduste lÃ¤bivaatamine"
+
+msgid "Network"
+msgstr "Network"
+
+msgid "Newest"
+msgstr "Uusim"
+
+msgid "Next"
+msgstr "JÃ¤rgmine"
+
+msgid "No"
+msgstr "Ei"
+
+msgid "No client connected."
+msgstr "Ãœkski klient pole Ã¼henduses."
+
+msgid "No indexers are switched on. Use Search sites."
+msgstr "Indeksaatoreid ei ole sisse lÃ¼litatud. Otsingusaitide kasutamine."
+
+msgid "No regular files found to include in torrent."
+msgstr "Torrentis ei leitud tavalisi faile."
+
+msgid "No remote settings available (or Local client active)."
+msgstr "Puuduvad kaugseaded (vÃµi kohalik klient aktiivne)."
+
+msgid "No torrent selected."
+msgstr "Torrenti pole valitud."
+
+msgid "No torrents selected to {action}."
+msgstr "{action} jaoks ei ole valitud torrenteid."
+
+msgid "No torrents selected."
+msgstr "Torrente pole valitud."
+
+msgid "No torrents to start."
+msgstr "Ei mingeid torrenteid."
+
+msgid "No torrents to stop."
+msgstr "Torrendid ei peatu."
+
+msgid "No updates available."
+msgstr "Uuendused puuduvad."
+
+msgid "None"
+msgstr "Mitte Ã¼kski"
+
+msgid "None (No feeds)"
+msgstr "Puuduvad (sÃ¶Ã¶te ei ole)"
+
+msgid "Normal"
+msgstr "Normaalne"
+
+msgid "Not connected to any client."
+msgstr "Ei ole seotud Ã¼hegi kliendiga."
+
+msgid "Nothing found. Try fewer words, or switch on more indexers in Search sites."
+msgstr "Midagi ei leitud. Proovige vÃ¤hem sÃµnu vÃµi lÃ¼litage otsingusaitidel rohkem indekseerijaid."
+
+msgid "Notifications"
+msgstr "Teatised"
+
+msgid "Off"
+msgstr "VÃ¤lja"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "On"
+msgstr "On"
+
+msgid "One URL per line (HTTP/HTTPS)."
+msgstr "Ãœks URL rea kohta (HTTP/HTTPS)."
+
+msgid "Open Download &Folder"
+msgstr "&Folderi avamine"
+
+msgid "Open Download Folder"
+msgstr "Ava allalaadimiskataloog"
+
+msgid "Open online translation"
+msgstr "Avatud on-line tÃµlge"
+
+msgid "Open the download folder (if available)"
+msgstr "Avage allalaadimiskataloog (kui see on saadaval)"
+
+msgid "Open Torrent File"
+msgstr "Torrenti faili avamine"
+
+msgid "Open {name}"
+msgstr "Ava {name}Z"
+
+msgid "Opened download folder."
+msgstr "Avas allalaadimiskataloogi."
+
+msgid "Other"
+msgstr "Teised"
+
+msgid "Output .torrent file:"
+msgstr "VÃ¤ljund .torrent- fail:"
+
+msgid "Output .torrent path is required."
+msgstr "NÃµutav on vÃ¤ljund .torrenti tee."
+
+msgid "Password"
+msgstr "Parool"
+
+msgid "Password:"
+msgstr "Parool:"
+
+msgid "Path"
+msgstr "Path"
+
+msgid "Pattern"
+msgstr "Muster"
+
+msgid "Pause"
+msgstr "Paus"
+
+msgid "Pause selected torrents"
+msgstr "Paus valitud torrentitele"
+
+msgid "Pause torrent"
+msgstr "Pausi torrent"
+
+msgid "Paused"
+msgstr "Pausitud"
+
+msgid "Pausing torrents..."
+msgstr "Torrentide peatamine..."
+
+msgid "Peer proportional"
+msgstr "Vastaspoole proportsionaalne vÃ¤Ã¤rtus"
+
+msgid "Peers"
+msgstr "Peers"
+
+msgid "Piece size:"
+msgstr "TÃ¼ki suurus:"
+
+msgid "Please select a profile to connect."
+msgstr "Palun vali profiil, millega Ã¼henduda."
+
+msgid "Please select at least one torrent first."
+msgstr "Palun valige kÃµigepealt vÃ¤hemalt Ã¼ks torrent."
+
+msgid "Port:"
+msgstr "Sadam:"
+
+msgid "Portuguese (Brazil)"
+msgstr "Portugali (Brasiilia)"
+
+msgid "Prefer encryption"
+msgstr "Eelista krÃ¼ptimist"
+
+msgid "Prefer TCP"
+msgstr "Eelista TCP-d"
+
+msgid "Preferences"
+msgstr "Eelistused"
+
+msgid "Preparing restart..."
+msgstr "TaaskÃ¤ivituse ettevalmistamine..."
+
+msgid "Previous"
+msgstr "Eelmine"
+
+msgid "Priority"
+msgstr "Prioriteet"
+
+msgid "Private torrent (disables DHT/PEX/LSD in most clients)"
+msgstr "Privaatne torrent (keelab enamikul klientidel DHT/PEX/LSD)"
+
+msgid "Private trackers work through Prowlarr or Jackett, which\nkeep your tracker logins. SerrebiTorrent stores only this\nURL and key."
+msgstr "Privaatne jÃ¤lgija tÃ¶Ã¶tab Prowlarri vÃµi Jacketti kaudu, mis\nHoidke jÃ¤lgija sisselogimine alles. SerrebiTorrent salvestab ainult selle\nURL ja vÃµti."
+
+msgid "Profile"
+msgstr "Profiili"
+
+msgid "Profile Name"
+msgstr "Profiili nimi"
+
+msgid "Profile Name:"
+msgstr "Profiili nimi:"
+
+msgid "PROFILES"
+msgstr "PROFIILID"
+
+msgid "Profiles"
+msgstr "Profiilid"
+
+msgid "Progress"
+msgstr "Progress"
+
+msgid "Proxy"
+msgstr "Proxy"
+
+msgid "Proxy disabled"
+msgstr "Puhver keelatud"
+
+msgid "Proxy Type:"
+msgstr "Proksi tÃ¼Ã¼p:"
+
+msgid "Public tracker list (press Enter to add to Included trackers)."
+msgstr "Avalik tracker list (vajuta Enter, et lisada kaasatud trackerid)."
+
+msgid "qBittorrent Remote &Settings..."
+msgstr "qBittorrent Remote &Settings..."
+
+msgid "qBittorrent Remote Settings..."
+msgstr "qBittorrenti kaugseadistused..."
+
+msgid "Queue"
+msgstr "JÃ¤rjekord"
+
+msgid "Ratio"
+msgstr "Suhe"
+
+msgid "Reannounce not supported by this client."
+msgstr "NÃµustuge, et see klient ei toeta."
+
+msgid "Reannouncing torrents..."
+msgstr "Torrentidest teatamine..."
+
+msgid "Recheck not supported by this client."
+msgstr "See klient ei toeta uuesti kontrollimist."
+
+msgid "Rechecking torrents..."
+msgstr "Torrentide uuesti kontrollimine..."
+
+msgid "Refresh"
+msgstr "VÃ¤rskenda"
+
+msgid "Refresh All"
+msgstr "VÃ¤rskendage"
+
+msgid "Regex Pattern:"
+msgstr "Regex Muster:"
+
+msgid "Register &Associations"
+msgstr "Register ZZAMPZAssociations &"
+
+msgid "Reject"
+msgstr "Tagasi lÃ¼kata"
+
+msgid "Remote Client"
+msgstr "Kaugklient"
+
+msgid "Remote client did not return any recognized preferences."
+msgstr "Kaugklient ei tagastanud Ã¼htegi tunnustatud eelistust."
+
+msgid "Remote settings saved."
+msgstr "Kaugseadistused salvestatud."
+
+msgid "Remove"
+msgstr "Eemalda"
+
+msgid "Remove Feed"
+msgstr "Eemalda kanal"
+
+msgid "Remove feed {url}?"
+msgstr "Eemalda sÃ¶Ã¶t ZZTOKEN0Z? {url}"
+
+msgid "Remove Selected"
+msgstr "Eemalda valitud"
+
+msgid "Remove selected torrents"
+msgstr "Eemalda valitud torrendid"
+
+msgid "Remove selected torrents and data"
+msgstr "Eemalda valitud torrorid ja andmed"
+
+msgid "Remove torrent"
+msgstr "Torrenti eemaldamine"
+
+msgid "Remove with &Data\tShift+Del"
+msgstr "Eemaldage ZZAMPZData\tShift+ Del &"
+
+msgid "Remove with Data"
+msgstr "Eemalda andmete abil"
+
+msgid "Removed {name}."
+msgstr "Eemaldatud {name}."
+
+msgid "Reset failed: {error}"
+msgstr "LÃ¤htestamine nurjus: {error}"
+
+msgid "Reset RSS (Clear all feeds and rules)"
+msgstr "Reset RSS (Clear all feeds and rules)"
+
+msgid "Results"
+msgstr "Tulemused"
+
+msgid "Results, {count} result"
+msgstr "Tulemused, {count} tulemus"
+
+msgid "Results, {count} results"
+msgstr "Tulemused, {count} tulemused"
+
+msgid "Resume"
+msgstr "JÃ¤tka"
+
+msgid "Resume selected torrents"
+msgstr "Valitud torrentide jÃ¤tkamine"
+
+msgid "Resuming torrents..."
+msgstr "Torrentide jÃ¤tkamine..."
+
+msgid "Round-robin"
+msgstr "Round-robin"
+
+msgid "RSS Articles"
+msgstr "RSS artiklid"
+
+msgid "RSS data reset successfully."
+msgstr "RSS-andmete lÃ¤htestamine edukalt."
+
+msgid "RSS Downloader"
+msgstr "RSS allalaadija"
+
+msgid "RSS Feeds"
+msgstr "RSS-kanalid"
+
+msgid "RSS Rules Manager"
+msgstr "RSS reeglite haldur"
+
+msgid "RSS Update Interval (s)"
+msgstr "RSS- i uuendamise intervall (s)"
+
+msgid "RSS Update Interval (seconds):"
+msgstr "RSS- i uuendamise intervall (sekundites):"
+
+msgid "rTorrent Remote &Settings..."
+msgstr "rTorrent Remote ZZAMPZSettings... &"
+
+msgid "rTorrent Remote Settings..."
+msgstr "rTorrenti kaugseadistused..."
+
+msgid "Rule Type:"
+msgstr "ReeglitÃ¼Ã¼p:"
+
+msgid "Rules"
+msgstr "Reeglid"
+
+msgid "Save App Settings"
+msgstr "Salvesta rakenduse seadistused"
+
+msgid "Save As..."
+msgstr "PÃ¤Ã¤sta nagu..."
+
+msgid "Save entry"
+msgstr "Salvesta kirje"
+
+msgid "Save Path"
+msgstr "Salvesta tee"
+
+msgid "Save Path (Optional)"
+msgstr "Salvesta asukoht (valikuline)"
+
+msgid "Save Path:"
+msgstr "Salvesta tee:"
+
+msgid "Save Remote Settings"
+msgstr "Salvesta kaugseadistused"
+
+msgid "Save Torrent As"
+msgstr "Salvesta Torrent kui"
+
+msgid "Scheduler"
+msgstr "Ajakava"
+
+msgid "Scheduling"
+msgstr "Ajastamine"
+
+msgid "Scope"
+msgstr "Ulatus"
+
+msgid "Scripts"
+msgstr "Skripte"
+
+msgid "Sea&rch"
+msgstr "SeaZAMPZZrch &"
+
+msgid "Search"
+msgstr "Otsi"
+
+msgid "Search failed: {error}"
+msgstr "Otsing nurjus: {error}"
+
+msgid "Search for"
+msgstr "Otsi"
+
+msgid "Search for Torrents"
+msgstr "Torrentsi otsing"
+
+msgid "Search si&tes..."
+msgstr "Otsi siZAMPZZtes... &"
+
+msgid "Search sites"
+msgstr "Otsingukohad"
+
+msgid "Search sites..."
+msgstr "Otsimiskohad..."
+
+msgid "Search torrent indexers and add what you find"
+msgstr "Otsige torrenti indekseerijaid ja lisage, mida leiate"
+
+msgid "Searching {count} indexer..."
+msgstr "{count} indekseerija otsimine..."
+
+msgid "Searching {count} indexers..."
+msgstr "{count} indekseerijate otsimine..."
+
+msgid "Seeding"
+msgstr "Seemned"
+
+msgid "Seeds"
+msgstr "Seemned"
+
+msgid "Select"
+msgstr "Vali"
+
+msgid "Select &all"
+msgstr "Vali &all"
+
+msgid "Select &All\tCtrl+A"
+msgstr "Vali ZZAMPZAll\tCtrl+A &"
+
+msgid "Select &none"
+msgstr "&none valimine"
+
+msgid "Select a result first."
+msgstr "Vali kÃµigepealt tulemus."
+
+msgid "Select a torrent."
+msgstr "Vali torrent."
+
+msgid "Select All"
+msgstr "Vali kÃµik"
+
+msgid "Select all torrents"
+msgstr "KÃµigi torrentide valimine"
+
+msgid "Select File"
+msgstr "Faili valimine"
+
+msgid "Select Folder"
+msgstr "Kataloogi valimine"
+
+msgid "Select {name}"
+msgstr "Vali {name}"
+
+msgid "Selection cleared"
+msgstr "Valik kustutatud"
+
+msgid "Set"
+msgstr "Valmis"
+
+msgid "Set Default"
+msgstr "Vaikimisi"
+
+msgid "Settings"
+msgstr "Seadistused"
+
+msgid "Settings saved."
+msgstr "Seadistused salvestatud."
+
+msgid "Size"
+msgstr "Suurus"
+
+msgid "Skip"
+msgstr "Skip"
+
+msgid "Skip to torrent list"
+msgstr "Liigu torrenti nimekirja"
+
+msgid "SOCKS4 (no auth)"
+msgstr "SOCKS4 (auth puudub)"
+
+msgid "SOCKS5 (no auth)"
+msgstr "SOCKS5 (auth puudub)"
+
+msgid "SOCKS5 (with auth)"
+msgstr "SOCKS5 (auth'iga)"
+
+msgid "Sort &by:"
+msgstr "Sort &by:"
+
+msgid "Sort by"
+msgstr "Sorteeri"
+
+msgid "Sorted by {label}."
+msgstr "Sorteeritud {label} poolt."
+
+msgid "Source (file or folder):"
+msgstr "Allikas (fail vÃµi kaust):"
+
+msgid "Source (written into info dict as 'source'):"
+msgstr "Allikas (kirjutatud infodikti \"allikas\"):"
+
+msgid "Source path is required."
+msgstr "NÃµutav on lÃ¤htekoht."
+
+msgid "Source path must not be a symlink or Windows reparse point."
+msgstr "LÃ¤htekoht ei tohi olla sÃ¼mlink vÃµi Windowsi reparse punkt."
+
+msgid "Source text"
+msgstr "LÃ¤hteteksti"
+
+msgid "Source text:"
+msgstr "LÃ¤htetekst:"
+
+msgid "Speed"
+msgstr "Kiirus"
+
+msgid "Start"
+msgstr "Alusta"
+
+msgid "Start All"
+msgstr "Alustage"
+
+msgid "Start selected torrents"
+msgstr "Valitud torrentide kÃ¤ivitamine"
+
+msgid "Starting all torrents..."
+msgstr "KÃµigi torrentide kÃ¤ivitamine..."
+
+msgid "Starting torrents..."
+msgstr "Torrentide kÃ¤ivitamine..."
+
+msgid "Status"
+msgstr "Staatus"
+
+msgid "Status Filters"
+msgstr "Olekufiltrid"
+
+msgid "Stop All"
+msgstr "Peatage kÃµik"
+
+msgid "Stopped"
+msgstr "Peatus"
+
+msgid "Stopping all torrents..."
+msgstr "Peatage kÃµik torrentid..."
+
+msgid "Stopping torrents..."
+msgstr "Torrentide peatamine..."
+
+msgid "Success"
+msgstr "Edu"
+
+msgid "Switch Profile"
+msgstr "Profiili vahetamine"
+
+msgid "Switching client profile..."
+msgstr "Kliendiprofiili vahetamine..."
+
+msgid "System"
+msgstr "SÃ¼steemi"
+
+msgid "System default"
+msgstr "SÃ¼steemi vaikevÃ¤Ã¤rtus"
+
+msgid "TCP and uTP"
+msgstr "TCP ja uTP"
+
+msgid "Theme"
+msgstr "Teema"
+
+msgid "Those results carry a tracker file rather than a magnet link."
+msgstr "Need tulemused kannavad pigem tracker-faili kui magnetlinki."
+
+msgid "Time Left"
+msgstr "Aeg vasakule"
+
+msgid "Title"
+msgstr "Pealkiri"
+
+msgid "Toggle"
+msgstr "LÃ¼lita"
+
+msgid "Torrent Actions"
+msgstr "Torrent Actions"
+
+msgid "Torrent actions"
+msgstr "Torrent"
+
+msgid "Torrent added"
+msgstr "Torrent"
+
+msgid "Torrent created:\n{path}"
+msgstr "Torrent lÃµi:\n{path}Z"
+
+msgid "Torrent Details"
+msgstr "Torrenti Ã¼ksikasjad"
+
+msgid "Torrent download finished after the active profile changed."
+msgstr "Torrenti allalaadimine lÃµpetati pÃ¤rast aktiivse profiili muutmist."
+
+msgid "Torrent File"
+msgstr "Torrenti fail"
+
+msgid "Torrent file added from CLI"
+msgstr "CLI- s lisatakse torrentifail"
+
+msgid "Torrent Files"
+msgstr "Torrenti failid"
+
+msgid "Torrent files (*.torrent)|*.torrent"
+msgstr "Torrentfailid (*.torrent)|*.torrent"
+
+msgid "Torrent List"
+msgstr "Torrentide nimekiri"
+
+msgid "Torrent Options"
+msgstr "Torrenti valikud"
+
+msgid "Torrents"
+msgstr "Torrents"
+
+msgid "torrents"
+msgstr "torrendid"
+
+msgid "Tracker List URL:"
+msgstr "Tracker List URL:"
+
+msgid "Trackers"
+msgstr "JÃ¤litajad"
+
+msgid "Translated"
+msgstr "TÃµlkinud"
+
+msgid "Translation"
+msgstr "TÃµlkimine"
+
+msgid "Translation Center"
+msgstr "TÃµlkekeskus"
+
+msgid "Translation:"
+msgstr "TÃµlge:"
+
+msgid "Transmission Remote &Settings..."
+msgstr "Edastamine Kaug- ZZAMPZS seadistused... &"
+
+msgid "Transmission Remote Settings..."
+msgstr "Edastuse kaugseadistused..."
+
+msgid "Type"
+msgstr "TÃ¼Ã¼p"
+
+msgid "Type what to look for first."
+msgstr "Kirjuta, mida esimesena otsida."
+
+msgid "Type what to look for."
+msgstr "Kirjuta, mida otsida."
+
+msgid "UI Refresh Rate (ms)"
+msgstr "UI vÃ¤rskendussagedus (ms)"
+
+msgid "Uncheck"
+msgstr "Eemalda"
+
+msgid "Uncheck All"
+msgstr "Eemalda kÃµik"
+
+msgid "Unknown"
+msgstr "Tundmatu"
+
+msgid "Untranslated"
+msgstr "TÃµlkimata"
+
+msgid "Up Speed"
+msgstr "Kiirus Ã¼les"
+
+msgid "Update Available"
+msgstr "Uuendamine saadaval"
+
+msgid "Update canceled."
+msgstr "Uuendamine katkestati."
+
+msgid "Update Check Failed"
+msgstr "Uuendamise kontroll nurjus"
+
+msgid "Update check failed."
+msgstr "Uuendamise kontroll nurjus."
+
+msgid "Update Failed"
+msgstr "Uuendamine nurjus"
+
+msgid "Update failed."
+msgstr "Uuendamine nurjus."
+
+msgid "Update helper script not found."
+msgstr "Abiskripti uuendamine ei leitud."
+
+msgid "Update postponed."
+msgstr "Uuendamine lÃ¼kati edasi."
+
+msgid "Update prepared. Closing to install..."
+msgstr "Ajakohastamine valmis. Sulgemine paigaldamiseks..."
+
+msgid "Update prepared. The app will restart after it exits."
+msgstr "Ajakohastamine valmis. Rakendus kÃ¤ivitub uuesti pÃ¤rast selle vÃ¤ljumist."
+
+msgid "Updated executable not found."
+msgstr "Uuendatud kÃ¤ivitatavat faili ei leitud."
+
+msgid "Updates"
+msgstr "Uuendused"
+
+msgid "Updates are only available in the packaged app."
+msgstr "Uuendused on saadaval ainult pakitud rakenduses."
+
+msgid "Updating SerrebiTorrent"
+msgstr "SerrebiTorrenti uuendamine"
+
+msgid "Updating..."
+msgstr "Uuenda..."
+
+msgid "Upload Rate (bytes/s):"
+msgstr "Ãœleslaadimiskiirus (baitides/s):"
+
+msgid "Upload-rate based"
+msgstr "Ãœleslaadimiskiirusel pÃµhinev"
+
+msgid "URL (e.g. scgi://... or http://...):"
+msgstr "URL (nt scgi://... vÃµi http://...):"
+
+msgid "URL / Path"
+msgstr "URL/ Path"
+
+msgid "URL or download path"
+msgstr "URL vÃµi allalaadimise asukoht"
+
+msgid "URL:Magnet Link"
+msgstr "URL:Magnet Link"
+
+msgid "URLs / Magnets (one per line)"
+msgstr "URL-id / magnetid (Ã¼ks rea kohta)"
+
+msgid "Use DyDNS"
+msgstr "DyDNSi kasutamine"
+
+msgid "Use NOIP"
+msgstr "NOIP"
+
+msgid "Username"
+msgstr "Kasutajanimi"
+
+msgid "Username:"
+msgstr "Kasutajanimi:"
+
+msgid "Verifying download..."
+msgstr "Allalaadimise kontrollimine..."
+
+msgid "Verifying signature..."
+msgstr "Allkirja kontrollimine..."
+
+msgid "Warning"
+msgstr "Hoiatus"
+
+msgid "Web Seeds (optional)"
+msgstr "Veebiseemned (valikuline)"
+
+msgid "Web UI"
+msgstr "veebikasutaja"
+
+msgid "YAML files (*.yml;*.yaml)|*.yml;*.yaml"
+msgstr "YAML- failid (*.yml;*.yaml)|*.yml;*.yaml"
+
+msgid "Yes"
+msgstr "Jah."
+
+msgid "You're already on the latest version."
+msgstr "Sa oled juba viimases versioonis."
+
+msgid "{action} complete"
+msgstr "{action} tÃ¤ielik"
+
+msgid "{action} complete ({failed} failed). Last error: {error}"
+msgstr "{action} lÃµpetatud (ZZTOKEN1Z nurjus). Viimane viga: {error} {failed}"
+
+msgid "{client} Remote Settings"
+msgstr "{client} kaugseadistused"
+
+msgid "{count} feeds"
+msgstr "{count} sÃ¶Ã¶dad"
+
+msgid "{count} indexer switched on."
+msgstr "{count} indekseerija lÃ¼litus sisse."
+
+msgid "{count} indexers switched on."
+msgstr "{count} indekseerijad lÃ¼litati sisse."
+
+msgid "{count} of your own indexer configured."
+msgstr "{count} sinu enda indekseerija seadistatud."
+
+msgid "{count} of your own indexers configured."
+msgstr "{count} sinu enda indekseerijatest seadistatud."
+
+msgid "{count} result"
+msgstr "{count} tulemus"
+
+msgid "{count} result so far, {pending} still searching. Last: {source}."
+msgstr "{count} tulemus seni, {pending} veel otsib. Viimane: {source}."
+
+msgid "{count} results"
+msgstr "{count} tulemused"
+
+msgid "{count} results so far, {pending} still searching. Last: {source}."
+msgstr "{count} tulemused seni, {pending} veel otsib. Viimane: {source}."
+
+msgid "{count} torrents"
+msgstr "{count} torrendid"
+
+msgid "{name} preferences saved"
+msgstr "{name} eelistused salvestati"
