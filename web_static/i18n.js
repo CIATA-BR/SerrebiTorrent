@@ -390,8 +390,14 @@
 
         await loadLanguageIndex();
         configuredLanguage = configured || 'system';
-        if (configuredLanguage === 'system') currentLanguage = systemLanguage();
-        else currentLanguage = resolveAvailableLanguage(configuredLanguage);
+        if (configuredLanguage === 'system') {
+            currentLanguage = systemLanguage();
+        } else {
+            currentLanguage = resolveAvailableLanguage(configuredLanguage);
+            // If a configured catalog was removed or renamed, keep the control
+            // synchronized with the language that is actually being rendered.
+            configuredLanguage = currentLanguage;
+        }
         await loadExternalCatalog(currentLanguage);
 
         try { localStorage.setItem('serrebitorrent-language', currentLanguage); } catch (_error) {}
