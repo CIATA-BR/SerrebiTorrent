@@ -7,93 +7,71 @@ msgstr ""
 msgid "&About SerrebiTorrent"
 msgstr "&AaplinkName"
 
-#, fuzzy
 msgid "&Actions"
-msgstr "ZZMPZActions &"
+msgstr "&Veiksmai"
 
-#, fuzzy
 msgid "&Add selected"
-msgstr "ZZAMPZADE &"
+msgstr "&Pridėti pasirinktus"
 
-#, fuzzy
 msgid "&Add Torrent File...\tCtrl+O"
-msgstr "ZZMPZZAdd Torrent Filter... ZZTBZZCtrl + O & \t"
+msgstr "&Pridėti torrent failą...\tCtrl+O"
 
-#, fuzzy
 msgid "&Add..."
-msgstr "ZZMPZAdd... &"
+msgstr "&Pridėti..."
 
-#, fuzzy
 msgid "&Close"
-msgstr "ZZMPZZClose &"
+msgstr "&Užverti"
 
-#, fuzzy
 msgid "&Connect"
-msgstr "ZZMPZConnect &"
+msgstr "&Prisijungti"
 
-#, fuzzy
 msgid "&Connect...\tCtrl+Shift+C"
-msgstr "ZZMPZZConnect & \t"
+msgstr "&Prisijungti...\tCtrl+Shift+C"
 
-#, fuzzy
 msgid "&Edit..."
-msgstr "ZZMPZEdit... &"
+msgstr "&Redaguoti..."
 
-#, fuzzy
 msgid "&File"
-msgstr "ZZMPZFile &"
+msgstr "&Failas"
 
-#, fuzzy
 msgid "&Help"
-msgstr "ZZAMPZHelp &"
+msgstr "&Žinynas"
 
-#, fuzzy
 msgid "&Indexers to search:"
-msgstr "Ieškoti ZZMPZZIndexers: &"
+msgstr "&Indeksuotojai, kuriuose ieškoti:"
 
-#, fuzzy
 msgid "&Indexers:"
-msgstr "ZZMPZZIndexers: &"
+msgstr "&Indeksuotojai:"
 
-#, fuzzy
 msgid "&Name:"
-msgstr "ZZMPZName: &"
+msgstr "&Pavadinimas:"
 
-#, fuzzy
 msgid "&Pause\tCtrl+P"
-msgstr "ZZAMPZPausEZZBZZZCtrl + P & \t"
+msgstr "&Pristabdyti\tCtrl+P"
 
-#, fuzzy
 msgid "&Remove"
-msgstr "ZZAMPZOUNE &"
+msgstr "&Pašalinti"
 
-#, fuzzy
 msgid "&Remove\tDel"
-msgstr "ZZMPZZRemoveZZTBZZDel & \t"
+msgstr "&Pašalinti\tDel"
 
-#, fuzzy
 msgid "&Resume\tCtrl+R"
-msgstr "&REsumeZZTBZZZCtrl + R \t"
+msgstr "&Tęsti\tCtrl+R"
 
-#, fuzzy
 msgid "&Search for Torrents...\tCtrl+F"
-msgstr "ZZMPZZTorrents paieška... ZZTBZZCtrl + F & \t"
+msgstr "&Ieškoti torrentų...\tCtrl+F"
 
-#, fuzzy
 msgid "&Search for:"
-msgstr "ZZMPZIeškoti: &"
+msgstr "&Ieškoti:"
 
-#, fuzzy
 msgid "&Start\tCtrl+S"
-msgstr "ZZMPZZStarTZZZZCtrl + S & \t"
+msgstr "&Pradėti\tCtrl+S"
 
-#, fuzzy
 msgid "&Tools"
-msgstr "ZZMPZZTools &"
+msgstr "&Įrankiai"
 
-#, fuzzy
 msgid "&URL:"
-msgstr "ZZMPZURL: &"
+msgstr "&URL:"
 
 msgid "1 feed"
 msgstr "1 pašaras"
@@ -104,9 +82,8 @@ msgstr "Torznab arba Newznab paieškos vertinamoji baigtis. Prowlarr: {prowlarr}
 msgid "A Windows desktop torrent manager designed for keyboard-first use and screen readers."
 msgstr "Name"
 
-#, fuzzy
 msgid "About this application"
-msgstr "@ info: whatsthis"
+msgstr "Apie šią programą"
 
 msgid "Accept"
 msgstr "Priėmimas"
@@ -120,9 +97,8 @@ msgstr "Aktyvus"
 msgid "Add"
 msgstr "Pridėti"
 
-#, fuzzy
 msgid "Add &URL/Magnet...\tCtrl+U"
-msgstr "Pridėti ZZMPZZURL / Magnet... ZZTBZZZCtrl + U & \t"
+msgstr "Pridėti &URL/magnetą...\tCtrl+U"
 
 msgid "Add a torrent from a local file"
 msgstr "Pridėti torrentą iš vietinio failo"
@@ -229,9 +205,8 @@ msgstr "Jau veikia kitas SerreBiTorrent atvejis."
 msgid "Anti-leech"
 msgstr "Antilechas"
 
-#, fuzzy
 msgid "API &key:"
-msgstr "API ZZMPZkey: &"
+msgstr "API &raktas:"
 
 msgid "API key"
 msgstr "API raktas"
@@ -239,13 +214,11 @@ msgstr "API raktas"
 msgid "Application"
 msgstr "taikymas"
 
-#, fuzzy
 msgid "Apply to Feeds (Uncheck all for Global):"
-msgstr "@ info: whatsthis"
+msgstr "Taikyti kanalams (atžymėkite viską, kad būtų bendra):"
 
-#, fuzzy
 msgid "Applying update..."
-msgstr "@ info: whatsthis"
+msgstr "Taikomas naujinimas..."
 
 msgid "Are you sure you want to clear ALL RSS feeds and rules?"
 msgstr "Jūs tikrai norite išvalyti visus RSS ir taisykles?"
@@ -313,9 +286,8 @@ msgstr "Patikrinti"
 msgid "Check All"
 msgstr "Patikrinti visus"
 
-#, fuzzy
 msgid "Check for &Updates...\tF5"
-msgstr "Ieškoti ZZMPZZUpdates... ZZTBZZF5 & \t"
+msgstr "Tikrinti &naujinimus...\tF5"
 
 msgid "Check for Updates"
 msgstr "Ieškoti atnaujinimų"
@@ -323,9 +295,8 @@ msgstr "Ieškoti atnaujinimų"
 msgid "Check for updates"
 msgstr "Ieškoti naujinimų"
 
-#, fuzzy
 msgid "Check for updates automatically on startup"
-msgstr "@ info: status"
+msgstr "Tikrinti naujinimus automatiškai paleidžiant"
 
 msgid "Checking"
 msgstr "Patikra"
@@ -399,9 +370,8 @@ msgstr "Comment"
 msgid "Connection Manager..."
 msgstr "Comment"
 
-#, fuzzy
 msgid "Connection Manager...\tCtrl+Shift+C"
-msgstr "ZZBAZZCtrl + Shift + C \t"
+msgstr "Ryšių tvarkyklė...\tCtrl+Shift+C"
 
 msgid "Connection profiles"
 msgstr "Jungčių profiliai"
@@ -418,13 +388,11 @@ msgstr "Kopijuota {count} magnetas nuoroda."
 msgid "Copied {count} magnet links."
 msgstr "Kopijuotos {count} magneto nuorodos."
 
-#, fuzzy
 msgid "Copy &Info Hash\tCtrl+I"
-msgstr "Kopijuoti &Info HashZBAZZZCtrl + I \t"
+msgstr "Kopijuoti &info maišą\tCtrl+I"
 
-#, fuzzy
 msgid "Copy &Magnet Link\tCtrl+M"
-msgstr "Kopijuoti &Magnet LinkZBAZZZCtrl + M \t"
+msgstr "Kopijuoti &magnet nuorodą\tCtrl+M"
 
 msgid "Copy a magnet link for selected torrents"
 msgstr "Kopijuoti magnetinę nuorodą pasirinktiems torrentams"
@@ -444,9 +412,8 @@ msgstr "Kopijuoti magneto nuorodą į iškarpinę"
 msgid "Copy the info hash for selected torrents"
 msgstr "Kopijuoti pasirinktų torrentų informacijos maišą"
 
-#, fuzzy
 msgid "Create &Torrent...\tCtrl+N"
-msgstr "Sukurti ZZMPZTorrent... ZZTBZZCtrl + N & \t"
+msgstr "Kurti &torrentą...\tCtrl+N"
 
 msgid "Create a .torrent file from a file or folder"
 msgstr "Sukurti .torrent failą iš failo ar aplanko"
@@ -475,9 +442,8 @@ msgstr "Tamsus (naktis)"
 msgid "Default"
 msgstr "NAME OF TRANSLATORS"
 
-#, fuzzy
 msgid "Default Download Path:"
-msgstr "@ info: whatsthis"
+msgstr "Numatytasis atsisiuntimo kelias:"
 
 msgid "Delete"
 msgstr "Trinti"
@@ -506,9 +472,8 @@ msgstr "Parsisiųsti kelią:"
 msgid "Download Rate (bytes/s):"
 msgstr "Atsisiuntimo dažnis (baitai / s):"
 
-#, fuzzy
 msgid "Downloaded update failed SHA-256 verification."
-msgstr "@ info: status"
+msgstr "Atsisiųstas naujinimas nepraėjo SHA-256 patikros."
 
 msgid "Downloaded: {percent:.1f}%"
 msgstr "Atsisiųsta: {percent:.1f}%"
@@ -525,9 +490,8 @@ msgstr "Atsiunčiama atnaujinta..."
 msgid "Downloads"
 msgstr "Atsiuntimai"
 
-#, fuzzy
 msgid "E&xit"
-msgstr "EZZMPZXIT &"
+msgstr "I&šeiti"
 
 msgid "Edit"
 msgstr "Keisti"
@@ -577,17 +541,14 @@ msgstr "Anglų"
 msgid "Enter a JSON object (e.g. {\"/watched\": \"/home/user\"})."
 msgstr "Įveskite JSON objektą (pvz. {\"/watched\": \"/home/user\"})."
 
-#, fuzzy
 msgid "Enter adds the selected torrents. Control C copies the magnet link."
-msgstr "@ info: whatsthis Kontrolė C kopijuoja magnetinę sąsają."
+msgstr "Enter prideda pasirinktus torrentus. Control C nukopijuoja magnet nuorodą."
 
-#, fuzzy
 msgid "Enter edits the selected indexer. Delete removes it."
-msgstr "@ info: whatsthis Pašalinti jį pašalinti."
+msgstr "Enter redaguoja pasirinktą indeksuotoją. Delete jį pašalina."
 
-#, fuzzy
 msgid "Enter Magnet Link or URL:"
-msgstr "@ info: whatsthis"
+msgstr "Įveskite magnet nuorodą arba URL:"
 
 msgid "Enter RSS Feed URL:"
 msgstr "Įveskite RSS kanalų URL:"
@@ -754,21 +715,17 @@ msgstr "Priverstinis šifravimas išjungtas"
 msgid "Force encryption on"
 msgstr "Priverstinis šifravimas įjungtas"
 
-#, fuzzy
 msgid "Force Re&check"
-msgstr "@ info: tooltip &"
+msgstr "Priverstinai &patikrinti iš naujo"
 
-#, fuzzy
 msgid "Force Reannoun&ce"
-msgstr "Karinių pajėgų pranešimasZMPZce &"
+msgstr "Priverstinai paskelbti &iš naujo"
 
-#, fuzzy
 msgid "Force Reannounce"
-msgstr "@ info: whatsthis"
+msgstr "Priverstinai paskelbti iš naujo"
 
-#, fuzzy
 msgid "Force Recheck"
-msgstr "@ info: tooltip"
+msgstr "Priverstinai patikrinti iš naujo"
 
 msgid "General"
 msgstr "Bendrosios nuostatos"
@@ -815,6 +772,9 @@ msgstr "Importuoti FlexGet"
 msgid "Import FlexGet Config"
 msgstr "Importuoti FlexGet konfigūraciją"
 
+msgid "Import PO..."
+msgstr "Importuoti PO..."
+
 msgid "Imported {feeds} feeds and {rules} rules."
 msgstr "Importuotas {feeds} pašarai ir {rules} taisyklės."
 
@@ -842,9 +802,8 @@ msgstr "Info brūkšnelis nukopijuotas į iškarpinę."
 msgid "Info Hash: {hash}"
 msgstr "Info Hash: {hash}"
 
-#, fuzzy
 msgid "Install directory not found."
-msgstr "@ info: whatsthis"
+msgstr "Įdiegimo katalogas nerastas."
 
 msgid "Invalid argument: {arg}"
 msgstr "Klaidingas argumentas: {arg}"
@@ -882,9 +841,8 @@ msgstr "Kalba:"
 msgid "Largest"
 msgstr "Didžiausias"
 
-#, fuzzy
 msgid "Leave blank to retain the current password."
-msgstr "@ info: whatsthis"
+msgstr "Palikite tuščią, kad dabartinis slaptažodis būtų išsaugotas."
 
 msgid "Leechers"
 msgstr "Lynai"
@@ -913,9 +871,8 @@ msgstr "Įkeliama..."
 msgid "Local libtorrent"
 msgstr "Lokalus libtorrent"
 
-#, fuzzy
 msgid "Local Session &Settings...\tCtrl+,"
-msgstr "vietinis ZZMPZZSettings... ZZTBZZCtrl +, & \t"
+msgstr "Vietinės sesijos &nustatymai...\tCtrl+,"
 
 msgid "Local session active"
 msgstr "Lokali sesija aktyvi"
@@ -953,9 +910,8 @@ msgstr "Name"
 msgid "Magnet: {magnet}"
 msgstr "Magnetas: {magnet}"
 
-#, fuzzy
 msgid "Manage Profiles & Connect"
-msgstr "Valdyti profilius ZZMPZZ Connect &"
+msgstr "Tvarkyti profilius & prisijungti"
 
 msgid "Max Connections:"
 msgstr "Maks. jungtys:"
@@ -984,9 +940,8 @@ msgstr "Sumažinti iki dėklo"
 msgid "Most seeders"
 msgstr "Kurių didžiausia pakrautos transporto priemonės masė ne didesnė kaip 5 tonos"
 
-#, fuzzy
 msgid "My &indexers..."
-msgstr "Mano ZMPZZindeksai... &"
+msgstr "Mano &indeksuotojai..."
 
 msgid "My indexers..."
 msgstr "Mano indeksai..."
@@ -1006,9 +961,8 @@ msgstr "Pavadinimas"
 msgid "Navigation"
 msgstr "Navigacija"
 
-#, fuzzy
 msgid "Navigation Sidebar"
-msgstr "@ info: tooltip"
+msgstr "Naršymo šoninė juosta"
 
 msgid "Needs review"
 msgstr "Poreikių peržiūra"
@@ -1037,16 +991,14 @@ msgstr "Nėra įprastų failų, kurie būtų įtraukti į torrent."
 msgid "No remote settings available (or Local client active)."
 msgstr "Nuotolinių nustatymų nėra (arba veikia vietinis klientas)."
 
-#, fuzzy
 msgid "No torrent selected."
-msgstr "@ info: status"
+msgstr "Nepasirinktas nė vienas torrentas."
 
 msgid "No torrents selected to {action}."
 msgstr "{action} torrentų nepasirinkta."
 
-#, fuzzy
 msgid "No torrents selected."
-msgstr "@ info: status"
+msgstr "Nepasirinkta nė viena torrentų."
 
 msgid "No torrents to start."
 msgstr "Nėra torrentų pradėti."
@@ -1081,28 +1033,23 @@ msgstr "NAME OF TRANSLATORS"
 msgid "OK"
 msgstr "Gerai"
 
-#, fuzzy
 msgid "On"
-msgstr "@ info: tooltip"
+msgstr "Įjungta"
 
-#, fuzzy
 msgid "One URL per line (HTTP/HTTPS)."
-msgstr "@ info: whatsthis"
+msgstr "Po vieną URL eilutėje (HTTP/HTTPS)."
 
-#, fuzzy
 msgid "Open Download &Folder"
-msgstr "Open Download ZZMPZZAdcapter &"
+msgstr "Atidaryti atsisiuntimo &aplanką"
 
-#, fuzzy
 msgid "Open Download Folder"
-msgstr "@ info: whatsthis"
+msgstr "Atidaryti atsisiuntimo aplanką"
 
 msgid "Open online translation"
 msgstr "Open online translation"
 
-#, fuzzy
 msgid "Open the download folder (if available)"
-msgstr "@ info: whatsthis"
+msgstr "Atidaryti atsisiuntimo aplanką (jei galima)"
 
 msgid "Open Torrent File"
 msgstr "Open Torrent failas"
@@ -1146,9 +1093,8 @@ msgstr "Name"
 msgid "Paused"
 msgstr "Pristabdytas"
 
-#, fuzzy
 msgid "Pausing torrents..."
-msgstr "@ info: status"
+msgstr "Torrentai pristabdomi..."
 
 msgid "Peer proportional"
 msgstr "Proporcingas"
@@ -1159,9 +1105,8 @@ msgstr "Kamuoliai"
 msgid "Piece size:"
 msgstr "Gabalų dydis:"
 
-#, fuzzy
 msgid "Please select a profile to connect."
-msgstr "@ info: whatsthis"
+msgstr "Pasirinkite profilį, kad prisijungtumėte."
 
 msgid "Please select at least one torrent first."
 msgstr "Prašome iš pradžių pasirinkti bent vieną torrentą."
@@ -1226,9 +1171,8 @@ msgstr "Proxy tipas:"
 msgid "Public tracker list (press Enter to add to Included trackers)."
 msgstr "Viešas sekimo sąrašas (spauskite Enter, norėdami pridėti prie įtrauktų sekimo įrenginių)."
 
-#, fuzzy
 msgid "qBittorrent Remote &Settings..."
-msgstr "Name &"
+msgstr "qBittorrent nuotoliniai &nustatymai..."
 
 msgid "qBittorrent Remote Settings..."
 msgstr "Name"
@@ -1239,9 +1183,8 @@ msgstr "Eilutė"
 msgid "Ratio"
 msgstr "Santykis"
 
-#, fuzzy
 msgid "Reannounce not supported by this client."
-msgstr "@ info: whatsthis"
+msgstr "Šis klientas nepalaiko pakartotinio paskelbimo."
 
 msgid "Reannouncing torrents..."
 msgstr "Atsiunčiamas torrentas..."
@@ -1249,9 +1192,8 @@ msgstr "Atsiunčiamas torrentas..."
 msgid "Recheck not supported by this client."
 msgstr "Name"
 
-#, fuzzy
 msgid "Rechecking torrents..."
-msgstr "@ info: whatsthis"
+msgstr "Torrentai tikrinami iš naujo..."
 
 msgid "Refresh"
 msgstr "Atnaujinti"
@@ -1262,9 +1204,8 @@ msgstr "Atnaujinti visus"
 msgid "Regex Pattern:"
 msgstr "Name"
 
-#, fuzzy
 msgid "Register &Associations"
-msgstr "Registruotis ZZMPZAsociacijos &"
+msgstr "Registruoti &susiejimus"
 
 msgid "Reject"
 msgstr "Pašalinti"
@@ -1299,9 +1240,8 @@ msgstr "Pašalinti pasirinktus torrentus ir duomenis"
 msgid "Remove torrent"
 msgstr "Pašalinti torrentą"
 
-#, fuzzy
 msgid "Remove with &Data\tShift+Del"
-msgstr "Pašalinti su &DataZZBZZZShift + Del \t"
+msgstr "Pašalinti su &duomenimis\tShift+Del"
 
 msgid "Remove with Data"
 msgstr "Pašalinti su duomenimis"
@@ -1330,9 +1270,8 @@ msgstr "Tęsti"
 msgid "Resume selected torrents"
 msgstr "Tęsti pasirinktą torrentą"
 
-#, fuzzy
 msgid "Resuming torrents..."
-msgstr "@ info: whatsthis"
+msgstr "Torrentai tęsiami..."
 
 msgid "Round-robin"
 msgstr "Rubinas"
@@ -1406,9 +1345,8 @@ msgstr "Taikymo sritis"
 msgid "Scripts"
 msgstr "Scenarijai"
 
-#, fuzzy
 msgid "Sea&rch"
-msgstr "SeaZAMPZZRch &"
+msgstr "Iešk&oti"
 
 msgid "Search"
 msgstr "Ieškoti"
@@ -1422,9 +1360,8 @@ msgstr "Ieškoti"
 msgid "Search for Torrents"
 msgstr "Torrentų paieška"
 
-#, fuzzy
 msgid "Search si&tes..."
-msgstr "Paieška siZZMPZZtes... &"
+msgstr "Ieškoti &svetainėse..."
 
 msgid "Search sites"
 msgstr "Paieškos vietos"
@@ -1450,17 +1387,14 @@ msgstr "Sėklos"
 msgid "Select"
 msgstr "Žymėti"
 
-#, fuzzy
 msgid "Select &all"
-msgstr "Pasirinkite ZZMPZZall &"
+msgstr "Pažymėti &viską"
 
-#, fuzzy
 msgid "Select &All\tCtrl+A"
-msgstr "Pasirinkite &ZAlLZZBZZZZCtrl + A \t"
+msgstr "Pažymėti &viską\tCtrl+A"
 
-#, fuzzy
 msgid "Select &none"
-msgstr "Pasirinkite ZZMPZNONE &"
+msgstr "Nepažymėti &nieko"
 
 msgid "Select a result first."
 msgstr "Parinkite rezultatą."
@@ -1486,20 +1420,17 @@ msgstr "Pasirinkite {name}"
 msgid "Selection cleared"
 msgstr "Žymėjimas patvirtintas"
 
-#, fuzzy
 msgid "Set"
-msgstr "@ info: tooltip"
+msgstr "Nustatyti"
 
-#, fuzzy
 msgid "Set Default"
-msgstr "@ info: whatsthis"
+msgstr "Nustatyti numatytąjį"
 
 msgid "Settings"
 msgstr "Nustatymai"
 
-#, fuzzy
 msgid "Settings saved."
-msgstr "@ info: whatsthis"
+msgstr "Nustatymai išsaugoti."
 
 msgid "Size"
 msgstr "Dydis"
@@ -1519,9 +1450,8 @@ msgstr "SOCKS5 (nėra auth)"
 msgid "SOCKS5 (with auth)"
 msgstr "SOCKS5 (su auth)"
 
-#, fuzzy
 msgid "Sort &by:"
-msgstr "Rikiuoti ZZMPZBI: &"
+msgstr "Rikiuoti &pagal:"
 
 msgid "Sort by"
 msgstr "Rikiuoti pagal"
@@ -1559,13 +1489,11 @@ msgstr "Paleisti visus"
 msgid "Start selected torrents"
 msgstr "Paleisti pasirinktus torrentus"
 
-#, fuzzy
 msgid "Starting all torrents..."
-msgstr "@ info: whatsthis"
+msgstr "Pradedami visi torrentai..."
 
-#, fuzzy
 msgid "Starting torrents..."
-msgstr "@ info: status"
+msgstr "Torrentai pradedami..."
 
 msgid "Status"
 msgstr "Statusas"
@@ -1597,9 +1525,8 @@ msgstr "Krentančio kliento profilio keitimas..."
 msgid "System"
 msgstr "Sistema"
 
-#, fuzzy
 msgid "System default"
-msgstr "@ info: whatsthis"
+msgstr "Sistemos numatytasis"
 
 msgid "TCP and uTP"
 msgstr "TCP ir UTP"
@@ -1682,9 +1609,8 @@ msgstr "Vertimo centras"
 msgid "Translation:"
 msgstr "Vertimas:"
 
-#, fuzzy
 msgid "Transmission Remote &Settings..."
-msgstr "Comment &"
+msgstr "Transmission nuotoliniai &nustatymai..."
 
 msgid "Transmission Remote Settings..."
 msgstr "Comment"
@@ -1716,9 +1642,8 @@ msgstr "Neliesta"
 msgid "Up Speed"
 msgstr "Aukštyn"
 
-#, fuzzy
 msgid "Update Available"
-msgstr "@ info: tooltip"
+msgstr "Yra naujinimas"
 
 msgid "Update canceled."
 msgstr "Noun, name of the user action"
@@ -1726,20 +1651,17 @@ msgstr "Noun, name of the user action"
 msgid "Update Check Failed"
 msgstr "Noun, name of the user action"
 
-#, fuzzy
 msgid "Update check failed."
-msgstr "@ info: status"
+msgstr "Naujinimo patikra nepavyko."
 
 msgid "Update Failed"
 msgstr "Atnaujinti nepavyko"
 
-#, fuzzy
 msgid "Update failed."
-msgstr "@ info: status"
+msgstr "Naujinimas nepavyko."
 
-#, fuzzy
 msgid "Update helper script not found."
-msgstr "@ info: whatsthis"
+msgstr "Naujinimo pagalbinis scenarijus nerastas."
 
 msgid "Update postponed."
 msgstr "Atnaujinimas atidėtas."
@@ -1765,9 +1687,8 @@ msgstr "SerreBiTorrent atnaujinimas"
 msgid "Updating..."
 msgstr "Atnaujinama..."
 
-#, fuzzy
 msgid "Upload Rate (bytes/s):"
-msgstr "@ info: whatsthis"
+msgstr "Siuntimo sparta (baitai/s):"
 
 msgid "Upload-rate based"
 msgstr "Gaunamas kiekis"

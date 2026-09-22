@@ -13,23 +13,20 @@ msgstr "&Actions"
 msgid "&Add selected"
 msgstr "&Add вибрано"
 
-#, fuzzy
 msgid "&Add Torrent File...\tCtrl+O"
-msgstr "\tCtrl+O &"
+msgstr "&Додати торент-файл...\tCtrl+O"
 
 msgid "&Add..."
 msgstr "&Додати ..."
 
-#, fuzzy
 msgid "&Close"
-msgstr "&"
+msgstr "&Закрити"
 
 msgid "&Connect"
 msgstr "&Connect"
 
-#, fuzzy
 msgid "&Connect...\tCtrl+Shift+C"
-msgstr "\tCtrl+Shift+C &"
+msgstr "&Підключитися...\tCtrl+Shift+C"
 
 msgid "&Edit..."
 msgstr "&Edit ..."
@@ -37,9 +34,8 @@ msgstr "&Edit ..."
 msgid "&File"
 msgstr "&File"
 
-#, fuzzy
 msgid "&Help"
-msgstr "&"
+msgstr "&Довідка"
 
 msgid "&Indexers to search:"
 msgstr "&Indexers для пошуку:"
@@ -56,17 +52,14 @@ msgstr "&Pause\tCtrl+P"
 msgid "&Remove"
 msgstr "&Робота"
 
-#, fuzzy
 msgid "&Remove\tDel"
-msgstr "ЗПАМПЦЗРЗДАТЕЛЬ & \t"
+msgstr "&Видалити\tDel"
 
-#, fuzzy
 msgid "&Resume\tCtrl+R"
-msgstr "ЗАМПЦЗЗЗЗТАБЗЦТРЛ+Р & \t"
+msgstr "&Продовжити\tCtrl+R"
 
-#, fuzzy
 msgid "&Search for Torrents...\tCtrl+F"
-msgstr "\tCtrl+F &"
+msgstr "&Пошук торентів...\tCtrl+F"
 
 msgid "&Search for:"
 msgstr "&Пошук:"
@@ -83,9 +76,8 @@ msgstr "&URL:"
 msgid "1 feed"
 msgstr "1 корм"
 
-#, fuzzy
 msgid "A Torznab or Newznab search endpoint. Prowlarr: {prowlarr}. Jackett, all trackers at once: {jackett}"
-msgstr "A Torznab або Newznab точка пошуку. Совар: ЗЗТОКЕН0ZZ. Куртка, всі трекери одночасно: {jackett} {prowlarr}"
+msgstr "Кінцева точка пошуку Torznab або Newznab. Prowlarr: {prowlarr}. Jackett, усі трекери одразу: {jackett}"
 
 msgid "A Windows desktop torrent manager designed for keyboard-first use and screen readers."
 msgstr "Менеджер для настільних торрент-файлів Windows призначений для зчитувачів клавіатури та екранів."
@@ -105,9 +97,8 @@ msgstr "Активний"
 msgid "Add"
 msgstr "Додати"
 
-#, fuzzy
 msgid "Add &URL/Magnet...\tCtrl+U"
-msgstr "\tCtrl+U &"
+msgstr "&Додати URL/магнет...\tCtrl+U"
 
 msgid "Add a torrent from a local file"
 msgstr "Додати торрент-файл з локального файлу"
@@ -157,9 +148,8 @@ msgstr "Додано індексатор сліпихДЛ: {names}."
 msgid "Added your blindDL indexers: {names}."
 msgstr "Додано індексатори сліпихДЛ: {names}."
 
-#, fuzzy
 msgid "Added {title}"
-msgstr "Додано ЗЗТОКЕН0ZZ {title}"
+msgstr "Додано {title}"
 
 msgid "Adding created torrent..."
 msgstr "Додавання створеного торрент..."
@@ -362,9 +352,8 @@ msgstr "Підключення до клієнта перед додавання
 msgid "Connect to this profile"
 msgstr "Підключення до цього профілю"
 
-#, fuzzy
 msgid "Connected to {name}"
-msgstr "З'єднання до ЗЗТОКЕН0ZZ {name}"
+msgstr "Підключено до {name}"
 
 msgid "Connecting..."
 msgstr "З'єднання"
@@ -399,13 +388,11 @@ msgstr "Запечена магнітна посилання {count}."
 msgid "Copied {count} magnet links."
 msgstr "Скопійовані магнітні посилання {count}."
 
-#, fuzzy
 msgid "Copy &Info Hash\tCtrl+I"
-msgstr "Статус на сервери & \t"
+msgstr "Копіювати &info hash\tCtrl+I"
 
-#, fuzzy
 msgid "Copy &Magnet Link\tCtrl+M"
-msgstr "Статус на сервери & \t"
+msgstr "Копіювати &магнет-посилання\tCtrl+M"
 
 msgid "Copy a magnet link for selected torrents"
 msgstr "Скопіюйте магнітне посилання для вибраних торрентів"
@@ -425,9 +412,8 @@ msgstr "Скопіювати магнітне посилання на буфер
 msgid "Copy the info hash for selected torrents"
 msgstr "Статус на сервери"
 
-#, fuzzy
 msgid "Create &Torrent...\tCtrl+N"
-msgstr "\tCtrl+N &"
+msgstr "Створити &торент...\tCtrl+N"
 
 msgid "Create a .torrent file from a file or folder"
 msgstr "Створіть файл .torrent з файлу або папки"
@@ -504,9 +490,8 @@ msgstr "Завантаження оновлення..."
 msgid "Downloads"
 msgstr "Завантаження"
 
-#, fuzzy
 msgid "E&xit"
-msgstr "ЕЗПЕМПЦИТ &"
+msgstr "Ви&хід"
 
 msgid "Edit"
 msgstr "Редагування"
@@ -661,9 +646,8 @@ msgstr "Вимкнено до налаштувань fetch"
 msgid "Failed to fetch remote preferences: {error}"
 msgstr "В'язаний до лютих дистанційних уподобань: {error}"
 
-#, fuzzy
 msgid "Failed to fetch {title}: {error}"
-msgstr "ЗПТОКЕН0ZZ {title} {error}"
+msgstr "Не вдалося отримати {title}: {error}"
 
 msgid "Failed to load settings."
 msgstr "Ввімкнути налаштування навантаження."
@@ -686,9 +670,8 @@ msgstr "Заборонено оновити віддалені налаштув�
 msgid "Failed to {action} torrent: {error}"
 msgstr "В'язаний до {action} торрент: {error}"
 
-#, fuzzy
 msgid "Failed to {action}: {error}"
-msgstr "ЗПТОКЕН0ZZ: ЗЗТОКЕН1ZZ {action} {error}"
+msgstr "Не вдалося {action}: {error}"
 
 msgid "Fastest upload"
 msgstr "Швидке завантаження"
@@ -735,9 +718,8 @@ msgstr "Захист сил на"
 msgid "Force Re&check"
 msgstr "Примус Re&check"
 
-#, fuzzy
 msgid "Force Reannoun&ce"
-msgstr "Примус ReannounZZZZce &"
+msgstr "Примусово оголо&сити"
 
 msgid "Force Reannounce"
 msgstr "Примус Reannounce"
@@ -790,6 +772,9 @@ msgstr "Імпорт FlexGet"
 msgid "Import FlexGet Config"
 msgstr "Імпорт FlexGet Configig"
 
+msgid "Import PO..."
+msgstr "Імпорт PO..."
+
 msgid "Imported {feeds} feeds and {rules} rules."
 msgstr "Імпортовані корми {feeds} і правила {rules}."
 
@@ -832,9 +817,8 @@ msgstr "Інвалідне ціле для {label}: {error}"
 msgid "Invalid JSON for {label}: {error}"
 msgstr "Інвалідний JSON для {label}: {error}"
 
-#, fuzzy
 msgid "Invalid number for {label}: {error}"
-msgstr "Неточний номер для ЗЗТОКЕН0ZZ: ЗЗТОКЕН1ZZ {label} {error}"
+msgstr "Невірне число для {label}: {error}"
 
 msgid "Invalid torrent URL."
 msgstr "Недійсний URL-адреса торрента."
@@ -956,9 +940,8 @@ msgstr "Мінімізувати лоток"
 msgid "Most seeders"
 msgstr "Більшість сівалок"
 
-#, fuzzy
 msgid "My &indexers..."
-msgstr "Моя ЗПАМПЦІНДексери ... &"
+msgstr "Мої &індексатори..."
 
 msgid "My indexers..."
 msgstr "Мій індекс"
@@ -1257,16 +1240,14 @@ msgstr "Видалити вибрані торрент-файли та дані"
 msgid "Remove torrent"
 msgstr "Видалення торрентів"
 
-#, fuzzy
 msgid "Remove with &Data\tShift+Del"
-msgstr "Видалити з &TABZZShift+ Про компанію \t"
+msgstr "Видалити з &даними\tShift+Del"
 
 msgid "Remove with Data"
 msgstr "Видалення даних"
 
-#, fuzzy
 msgid "Removed {name}."
-msgstr "Вилучено ЗЗТОКЕН0ZZ. {name}"
+msgstr "Видалено {name}."
 
 msgid "Reset failed: {error}"
 msgstr "Не вдалося: {error}"
@@ -1364,9 +1345,8 @@ msgstr "Навігація"
 msgid "Scripts"
 msgstr "Списки"
 
-#, fuzzy
 msgid "Sea&rch"
-msgstr "ЗАЗОКЗПАРК &"
+msgstr "По&шук"
 
 msgid "Search"
 msgstr "Пошук"
@@ -1476,9 +1456,8 @@ msgstr "Сорт &by:"
 msgid "Sort by"
 msgstr "Сортувати за"
 
-#, fuzzy
 msgid "Sorted by {label}."
-msgstr "Сортований ЗЗТОКЕН0ZZ. {label}"
+msgstr "Сортування за {label}."
 
 msgid "Source (file or folder):"
 msgstr "Джерело (файл або папка):"
@@ -1768,9 +1747,8 @@ msgstr "Ви вже на останню версію."
 msgid "{action} complete"
 msgstr "{action} завершено"
 
-#, fuzzy
 msgid "{action} complete ({failed} failed). Last error: {error}"
-msgstr "{action} завершений (ЗЗТКЕН1ZZ не вдалося). Останнє повідомлення: {error} {failed}"
+msgstr "{action} завершено ({failed} з помилкою). Остання помилка: {error}"
 
 msgid "{client} Remote Settings"
 msgstr "Віддалені налаштування {client}"

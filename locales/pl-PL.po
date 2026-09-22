@@ -4,42 +4,35 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SerrebiTorrent\\nLanguage: pl-PL\\nX-Language-Name: Polski\\nMIME-Version: 1.0\\nContent-Type: text/plain; charset=UTF-8\\nContent-Transfer-Encoding: 8bit\\n"
 
-#, fuzzy
 msgid "&About SerrebiTorrent"
-msgstr "ZZAMPZO About SerrebiTorrent &"
+msgstr "&O programie SerrebiTorrent"
 
-#, fuzzy
 msgid "&Actions"
-msgstr "ZZAMPZActions &"
+msgstr "&Akcje"
 
-#, fuzzy
 msgid "&Add selected"
-msgstr "ZZAMPZAdd wybrany &"
+msgstr "&Dodaj zaznaczone"
 
-#, fuzzy
 msgid "&Add Torrent File...\tCtrl+O"
-msgstr "ZZAMPZAdd plik torrenta... ZZTABZCtrl + O & \t"
+msgstr "&Dodaj plik torrent...\tCtrl+O"
 
 msgid "&Add..."
 msgstr "&Add..."
 
-#, fuzzy
 msgid "&Close"
-msgstr "ZZAMPZClose &"
+msgstr "&Zamknij"
 
 msgid "&Connect"
 msgstr "&Connect"
 
-#, fuzzy
 msgid "&Connect...\tCtrl+Shift+C"
-msgstr "ZZAMPZConnect... ZZTABZCtrl + Shift + C & \t"
+msgstr "&Połącz...\tCtrl+Shift+C"
 
 msgid "&Edit..."
 msgstr "&Edit..."
 
-#, fuzzy
 msgid "&File"
-msgstr "ZZAMPZFile &"
+msgstr "&Plik"
 
 msgid "&Help"
 msgstr "&Help"
@@ -50,35 +43,29 @@ msgstr "&Indexers do wyszukiwania:"
 msgid "&Indexers:"
 msgstr "&Indexers:"
 
-#, fuzzy
 msgid "&Name:"
-msgstr "ZZAMPZName: &"
+msgstr "&Nazwa:"
 
-#, fuzzy
 msgid "&Pause\tCtrl+P"
-msgstr "ZZAMPZPauseZZTABZCtrl + P & \t"
+msgstr "&Wstrzymaj\tCtrl+P"
 
 msgid "&Remove"
 msgstr "&Usuń"
 
-#, fuzzy
 msgid "&Remove\tDel"
-msgstr "ZZAMPZRemove\tDel &"
+msgstr "&Usuń\tDel"
 
-#, fuzzy
 msgid "&Resume\tCtrl+R"
-msgstr "ZZAMPZResumeZZTABZCtrl + R & \t"
+msgstr "&Wznów\tCtrl+R"
 
-#, fuzzy
 msgid "&Search for Torrents...\tCtrl+F"
-msgstr "ZZAMZZSearch for Torrents... ZZTABZCtrl + F & \t"
+msgstr "&Szukaj torrentów...\tCtrl+F"
 
 msgid "&Search for:"
 msgstr "&Search dla:"
 
-#, fuzzy
 msgid "&Start\tCtrl+S"
-msgstr "ZZAMPZStartZZTABZCtrl + S & \t"
+msgstr "&Start\tCtrl+S"
 
 msgid "&Tools"
 msgstr "&Tools"
@@ -110,9 +97,8 @@ msgstr "Aktywne"
 msgid "Add"
 msgstr "Dodaj"
 
-#, fuzzy
 msgid "Add &URL/Magnet...\tCtrl+U"
-msgstr "Dodaj ZZAMZZURL / Magnet... ZZTABZCtrl + U & \t"
+msgstr "&Dodaj URL/magnes...\tCtrl+U"
 
 msgid "Add a torrent from a local file"
 msgstr "Dodaj torrent z pliku lokalnego"
@@ -219,9 +205,8 @@ msgstr "Kolejny przykład SerrebiTorrent już działa."
 msgid "Anti-leech"
 msgstr "Anti-leech"
 
-#, fuzzy
 msgid "API &key:"
-msgstr "API ZZAMPZKY: &"
+msgstr "&Klucz API:"
 
 msgid "API key"
 msgstr "Klucz API"
@@ -385,9 +370,8 @@ msgstr "Menedżer połączeń"
 msgid "Connection Manager..."
 msgstr "Kierownik połączeń..."
 
-#, fuzzy
 msgid "Connection Manager...\tCtrl+Shift+C"
-msgstr "Kierownik połączeń... ZZTABZCtrl + Shift + C \t"
+msgstr "Menedżer połączeń...\tCtrl+Shift+C"
 
 msgid "Connection profiles"
 msgstr "Profile połączeń"
@@ -404,13 +388,11 @@ msgstr "Kopiowane {count} magnes link."
 msgid "Copied {count} magnet links."
 msgstr "Kopiowane ogniwa magnetyczne {count}."
 
-#, fuzzy
 msgid "Copy &Info Hash\tCtrl+I"
-msgstr "Kopiuj ZZAMPZInfo HashZTABZCtrl + I & \t"
+msgstr "Kopiuj &info hash\tCtrl+I"
 
-#, fuzzy
 msgid "Copy &Magnet Link\tCtrl+M"
-msgstr "Kopiuj ZZAMZMagnet LinkZTABZCtrl + M & \t"
+msgstr "Kopiuj link &magnesu\tCtrl+M"
 
 msgid "Copy a magnet link for selected torrents"
 msgstr "Kopiowanie łącza magnetycznego dla wybranych torrentów"
@@ -430,9 +412,8 @@ msgstr "Kopiuj link magnesu do schowka"
 msgid "Copy the info hash for selected torrents"
 msgstr "Kopiuj hash informacji dla wybranych torrentów"
 
-#, fuzzy
 msgid "Create &Torrent...\tCtrl+N"
-msgstr "Utwórz ZZAMZTorrent... ZZTABZCtrl + N & \t"
+msgstr "&Utwórz torrent...\tCtrl+N"
 
 msgid "Create a .torrent file from a file or folder"
 msgstr "Utwórz plik .torrent z pliku lub folderu"
@@ -509,9 +490,8 @@ msgstr "Pobieranie aktualizacji..."
 msgid "Downloads"
 msgstr "Pliki do pobrania"
 
-#, fuzzy
 msgid "E&xit"
-msgstr "EZZAMPZXIT &"
+msgstr "Za&kończ"
 
 msgid "Edit"
 msgstr "Edycja"
@@ -735,13 +715,11 @@ msgstr "Wyłączcie szyfrowanie"
 msgid "Force encryption on"
 msgstr "Wymuś szyfrowanie"
 
-#, fuzzy
 msgid "Force Re&check"
-msgstr "Siła ReZZAMPZcheck &"
+msgstr "Wymuś ponowne &sprawdzenie"
 
-#, fuzzy
 msgid "Force Reannoun&ce"
-msgstr "Force ReconvenienZZAMZZCE &"
+msgstr "Wymuś ponowne ogło&szenie"
 
 msgid "Force Reannounce"
 msgstr "Force Reinnocent"
@@ -793,6 +771,9 @@ msgstr "Importuj FlexGet"
 
 msgid "Import FlexGet Config"
 msgstr "Importuj konfigurację FlexGet"
+
+msgid "Import PO..."
+msgstr "Importuj PO..."
 
 msgid "Imported {feeds} feeds and {rules} rules."
 msgstr "Przywożone pasze {feeds} i zasady {rules}."
@@ -890,9 +871,8 @@ msgstr "Ładowanie..."
 msgid "Local libtorrent"
 msgstr "Lokalny libtorrent"
 
-#, fuzzy
 msgid "Local Session &Settings...\tCtrl+,"
-msgstr "Lokalna sesja &Settings... ZZTABZCtrl +, \t"
+msgstr "Ustawienia sesji &lokalnej...\tCtrl+,"
 
 msgid "Local session active"
 msgstr "Sesja lokalna aktywna"
@@ -1059,9 +1039,8 @@ msgstr "On"
 msgid "One URL per line (HTTP/HTTPS)."
 msgstr "Jeden URL na linię (HTTP / HTTPS)."
 
-#, fuzzy
 msgid "Open Download &Folder"
-msgstr "Open Download ZZAMPZFolder &"
+msgstr "Otwórz folder &pobierania"
 
 msgid "Open Download Folder"
 msgstr "Otwórz folder pobierania"
@@ -1261,9 +1240,8 @@ msgstr "Usuń wybrane torrenty i dane"
 msgid "Remove torrent"
 msgstr "Usuń torrent"
 
-#, fuzzy
 msgid "Remove with &Data\tShift+Del"
-msgstr "Usuń ZZAMPZDataZZTABZShift + Del & \t"
+msgstr "Usuń z &danymi\tShift+Del"
 
 msgid "Remove with Data"
 msgstr "Usuń z danymi"
@@ -1367,9 +1345,8 @@ msgstr "Zakres"
 msgid "Scripts"
 msgstr "Skrypt"
 
-#, fuzzy
 msgid "Sea&rch"
-msgstr "SeaZZAMZZrch &"
+msgstr "Szuk&aj"
 
 msgid "Search"
 msgstr "Szukaj"
@@ -1383,9 +1360,8 @@ msgstr "Szukaj"
 msgid "Search for Torrents"
 msgstr "Szukaj Torrentów"
 
-#, fuzzy
 msgid "Search si&tes..."
-msgstr "Szukaj siZZAMPZTES... &"
+msgstr "Szukaj na &stronach..."
 
 msgid "Search sites"
 msgstr "Wyszukiwanie stron"
@@ -1411,17 +1387,14 @@ msgstr "Nasiona"
 msgid "Select"
 msgstr "Wybierz"
 
-#, fuzzy
 msgid "Select &all"
-msgstr "Wybierz ZZAMPZall &"
+msgstr "&Zaznacz wszystko"
 
-#, fuzzy
 msgid "Select &All\tCtrl+A"
-msgstr "Wybierz ZZAMPZALZZTABZCtrl + A & \t"
+msgstr "&Zaznacz wszystko\tCtrl+A"
 
-#, fuzzy
 msgid "Select &none"
-msgstr "Wybierz ZZAMPZNone &"
+msgstr "Odznacz &wszystko"
 
 msgid "Select a result first."
 msgstr "Najpierw wybierz wynik."

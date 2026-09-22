@@ -4,28 +4,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SerrebiTorrent\\nLanguage: et-EE\\nX-Language-Name: Eesti\\nMIME-Version: 1.0\\nContent-Type: text/plain; charset=UTF-8\\nContent-Transfer-Encoding: 8bit\\n"
 
-#, fuzzy
 msgid "&About SerrebiTorrent"
-msgstr "ZZAMPZAbout SerrebiTorrent &"
+msgstr "&Teave SerrebiTorrenti kohta"
 
-#, fuzzy
 msgid "&Actions"
-msgstr "ZZAMPZActions &"
+msgstr "&Tegevused"
 
 msgid "&Add selected"
 msgstr "&Add valitud"
 
-#, fuzzy
 msgid "&Add Torrent File...\tCtrl+O"
-msgstr "ZZAMPZAdd Torrent File...ZZTABZCtrl+O & \t"
+msgstr "&Lisa torrentifail...\tCtrl+O"
 
-#, fuzzy
 msgid "&Add..."
-msgstr "ZZAMPZAdd... &"
+msgstr "&Lisa..."
 
-#, fuzzy
 msgid "&Close"
-msgstr "ZZAMPZClose &"
+msgstr "&Sulge"
 
 msgid "&Connect"
 msgstr "&Connect"
@@ -33,9 +28,8 @@ msgstr "&Connect"
 msgid "&Connect...\tCtrl+Shift+C"
 msgstr "&Connect...\tCtrl+Shift+C"
 
-#, fuzzy
 msgid "&Edit..."
-msgstr "ZZAMPZEdit... &"
+msgstr "&Muuda..."
 
 msgid "&File"
 msgstr "&File"
@@ -52,20 +46,17 @@ msgstr "&Indexers :"
 msgid "&Name:"
 msgstr "&Nimi:"
 
-#, fuzzy
 msgid "&Pause\tCtrl+P"
-msgstr "&PauseZTABZZCtrl+P \t"
+msgstr "&Paus\tCtrl+P"
 
 msgid "&Remove"
 msgstr "&Remove"
 
-#, fuzzy
 msgid "&Remove\tDel"
-msgstr "ZZAMPZRemoveZZTABZDel & \t"
+msgstr "&Eemalda\tDel"
 
-#, fuzzy
 msgid "&Resume\tCtrl+R"
-msgstr "ZZAMPZResumeZZTABZCtrl+R & \t"
+msgstr "&Jätka\tCtrl+R"
 
 msgid "&Search for Torrents...\tCtrl+F"
 msgstr "&Torrenti otsing...Z\tCtrl+F"
@@ -73,13 +64,11 @@ msgstr "&Torrenti otsing...Z\tCtrl+F"
 msgid "&Search for:"
 msgstr "&Ootsimine:"
 
-#, fuzzy
 msgid "&Start\tCtrl+S"
-msgstr "ZZAMPZStart\tCtrl+S &"
+msgstr "&Alusta\tCtrl+S"
 
-#, fuzzy
 msgid "&Tools"
-msgstr "ZZAMPZTools &"
+msgstr "&Tööriistad"
 
 msgid "&URL:"
 msgstr "&URL:"
@@ -87,9 +76,8 @@ msgstr "&URL:"
 msgid "1 feed"
 msgstr "1 sööt"
 
-#, fuzzy
 msgid "A Torznab or Newznab search endpoint. Prowlarr: {prowlarr}. Jackett, all trackers at once: {jackett}"
-msgstr "Torznabi vÃµi Newznabi otsingu lÃµpp-punkt. Prowlarr: ZZTOKEN0Z. Jackett, kÃµik jÃ¤litusseadmed korraga: {jackett} {prowlarr}"
+msgstr "Torznab- või Newznabi otsingupunkt. Prowlarr: {prowlarr}. Jackett, kõik trackerid korraga: {jackett}"
 
 msgid "A Windows desktop torrent manager designed for keyboard-first use and screen readers."
 msgstr "Windowsi töölaua torrenthaldur, mis on mõeldud klaviatuuri esmakordseks kasutamiseks ja ekraanilugejatele."
@@ -178,9 +166,8 @@ msgstr "Torrent- faili lisamine CLI- st..."
 msgid "Adding torrent..."
 msgstr "Torrenti lisamine..."
 
-#, fuzzy
 msgid "Adding torrent: {title}..."
-msgstr "Torrenti lisamine: ZZTOKEN0Z... {title}"
+msgstr "Torrenti lisamine: {title}..."
 
 msgid "Adding {count} torrent..."
 msgstr "{count} torrenti lisamine..."
@@ -395,9 +382,8 @@ msgstr "Kontekst / valideerimine:"
 msgid "Copied to clipboard"
 msgstr "Koopia lõikepuhvrisse"
 
-#, fuzzy
 msgid "Copied {count} magnet link."
-msgstr "Kopeeritud ZZTOKEN0Z magnetlink. {count}"
+msgstr "Kopeeriti {count} magnetlink."
 
 msgid "Copied {count} magnet links."
 msgstr "Koopia {count} magnetlinkidest."
@@ -405,9 +391,8 @@ msgstr "Koopia {count} magnetlinkidest."
 msgid "Copy &Info Hash\tCtrl+I"
 msgstr "Copy &Info Hash\tCtrl+I"
 
-#, fuzzy
 msgid "Copy &Magnet Link\tCtrl+M"
-msgstr "Kopeeri ZZAMPZMagnet LinkZZTABZCtrl+M & \t"
+msgstr "Kopeeri &magnetlink\tCtrl+M"
 
 msgid "Copy a magnet link for selected torrents"
 msgstr "Kopeeri valitud torrentitele magnetlink"
@@ -427,9 +412,8 @@ msgstr "Kopeeri magnetlink lõikepuhvrisse"
 msgid "Copy the info hash for selected torrents"
 msgstr "Kopeeri valitud torrentide info räsi"
 
-#, fuzzy
 msgid "Create &Torrent...\tCtrl+N"
-msgstr "Loo ZZAMPZTorrent... \tCtrl+N &"
+msgstr "Loo &torrent...\tCtrl+N"
 
 msgid "Create a .torrent file from a file or folder"
 msgstr ".torrent- faili loomine failist või kataloogist"
@@ -491,9 +475,8 @@ msgstr "Allalaadimiskiirus (baitides/s):"
 msgid "Downloaded update failed SHA-256 verification."
 msgstr "Allalaaditud värskendus ebaõnnestus SHA-256 kontrollimisel."
 
-#, fuzzy
 msgid "Downloaded: {percent:.1f}%"
-msgstr "Allalaaditud: ZZTOKEN0Z% {percent:.1f}"
+msgstr "Allalaaditud: {percent:.1f}%"
 
 msgid "Downloading"
 msgstr "Allalaadimine"
@@ -663,9 +646,8 @@ msgstr "Eelistuste tõmbamine nurjus"
 msgid "Failed to fetch remote preferences: {error}"
 msgstr "Võrguseadistuste hankimine nurjus: {error}"
 
-#, fuzzy
 msgid "Failed to fetch {title}: {error}"
-msgstr "{title} hankimine nurjus: ZZTOKEN1Z {error}"
+msgstr "Ei õnnestunud hankida {title}: {error}"
 
 msgid "Failed to load settings."
 msgstr "Seadistuste laadimine nurjus."
@@ -733,13 +715,11 @@ msgstr "Krüpteerimine sunnitakse välja lülitama"
 msgid "Force encryption on"
 msgstr "Krüpteerimine jõuga"
 
-#, fuzzy
 msgid "Force Re&check"
-msgstr "JÃµud ReZAMPZZcheck &"
+msgstr "Sunni uuesti &kontrollima"
 
-#, fuzzy
 msgid "Force Reannoun&ce"
-msgstr "JÃµud ReannounZAMPZZZcece &"
+msgstr "Sunni uuesti tea&vitama"
 
 msgid "Force Reannounce"
 msgstr "Jõud taganeb"
@@ -792,9 +772,11 @@ msgstr "FlexGeti import"
 msgid "Import FlexGet Config"
 msgstr "FlexGeti seadistuse import"
 
-#, fuzzy
+msgid "Import PO..."
+msgstr "Impordi PO..."
+
 msgid "Imported {feeds} feeds and {rules} rules."
-msgstr "Imporditud {feeds} sÃ¶Ã¶dad ja ZZTOKEN1Z reeglid. {rules}"
+msgstr "Imporditi {feeds} voogu ja {rules} reeglit."
 
 msgid "Included trackers (one per line):"
 msgstr "Kaasa arvatud jälgimisseadmed (üks rea kohta):"
@@ -889,9 +871,8 @@ msgstr "Laadimine..."
 msgid "Local libtorrent"
 msgstr "Kohalik libtorrent"
 
-#, fuzzy
 msgid "Local Session &Settings...\tCtrl+,"
-msgstr "Kohalik istung ZZAMPZSettings...\tCtrl+, &"
+msgstr "Kohaliku seansi &seaded...\tCtrl+,"
 
 msgid "Local session active"
 msgstr "Kohalik seanss aktiivne"
@@ -1223,9 +1204,8 @@ msgstr "Värskendage"
 msgid "Regex Pattern:"
 msgstr "Regex Muster:"
 
-#, fuzzy
 msgid "Register &Associations"
-msgstr "Register ZZAMPZAssociations &"
+msgstr "Registreeri &seosed"
 
 msgid "Reject"
 msgstr "Tagasi lükata"
@@ -1245,9 +1225,8 @@ msgstr "Eemalda"
 msgid "Remove Feed"
 msgstr "Eemalda kanal"
 
-#, fuzzy
 msgid "Remove feed {url}?"
-msgstr "Eemalda sÃ¶Ã¶t ZZTOKEN0Z? {url}"
+msgstr "Eemaldada voog {url}?"
 
 msgid "Remove Selected"
 msgstr "Eemalda valitud"
@@ -1261,9 +1240,8 @@ msgstr "Eemalda valitud torrorid ja andmed"
 msgid "Remove torrent"
 msgstr "Torrenti eemaldamine"
 
-#, fuzzy
 msgid "Remove with &Data\tShift+Del"
-msgstr "Eemaldage ZZAMPZData\tShift+ Del &"
+msgstr "Eemalda &andmetega\tShift+Del"
 
 msgid "Remove with Data"
 msgstr "Eemalda andmete abil"
@@ -1319,9 +1297,8 @@ msgstr "RSS- i uuendamise intervall (s)"
 msgid "RSS Update Interval (seconds):"
 msgstr "RSS- i uuendamise intervall (sekundites):"
 
-#, fuzzy
 msgid "rTorrent Remote &Settings..."
-msgstr "rTorrent Remote ZZAMPZSettings... &"
+msgstr "rTorrenti kaug&seaded..."
 
 msgid "rTorrent Remote Settings..."
 msgstr "rTorrenti kaugseadistused..."
@@ -1368,9 +1345,8 @@ msgstr "Ulatus"
 msgid "Scripts"
 msgstr "Skripte"
 
-#, fuzzy
 msgid "Sea&rch"
-msgstr "SeaZAMPZZrch &"
+msgstr "O&tsi"
 
 msgid "Search"
 msgstr "Otsi"
@@ -1384,9 +1360,8 @@ msgstr "Otsi"
 msgid "Search for Torrents"
 msgstr "Torrentsi otsing"
 
-#, fuzzy
 msgid "Search si&tes..."
-msgstr "Otsi siZAMPZZtes... &"
+msgstr "Otsi &saite..."
 
 msgid "Search sites"
 msgstr "Otsingukohad"
@@ -1415,9 +1390,8 @@ msgstr "Vali"
 msgid "Select &all"
 msgstr "Vali &all"
 
-#, fuzzy
 msgid "Select &All\tCtrl+A"
-msgstr "Vali ZZAMPZAll\tCtrl+A &"
+msgstr "Vali &kõik\tCtrl+A"
 
 msgid "Select &none"
 msgstr "&none valimine"
@@ -1635,9 +1609,8 @@ msgstr "Tõlkekeskus"
 msgid "Translation:"
 msgstr "Tõlge:"
 
-#, fuzzy
 msgid "Transmission Remote &Settings..."
-msgstr "Edastamine Kaug- ZZAMPZS seadistused... &"
+msgstr "Transmissioni kaug&seaded..."
 
 msgid "Transmission Remote Settings..."
 msgstr "Edastuse kaugseadistused..."
@@ -1774,9 +1747,8 @@ msgstr "Sa oled juba viimases versioonis."
 msgid "{action} complete"
 msgstr "{action} täielik"
 
-#, fuzzy
 msgid "{action} complete ({failed} failed). Last error: {error}"
-msgstr "{action} lÃµpetatud (ZZTOKEN1Z nurjus). Viimane viga: {error} {failed}"
+msgstr "{action} lõpetatud ({failed} ebaõnnestus). Viimane viga: {error}"
 
 msgid "{client} Remote Settings"
 msgstr "{client} kaugseadistused"

@@ -718,9 +718,8 @@ msgstr "Force encryption on"
 msgid "Force Re&check"
 msgstr "Force Re&Check"
 
-#, fuzzy
 msgid "Force Reannoun&ce"
-msgstr "Kraft Reannoun&"
+msgstr "Erneut ankündi&gen"
 
 msgid "Force Reannounce"
 msgstr "Force Reannounce"
@@ -772,6 +771,9 @@ msgstr "Import FlexGet"
 
 msgid "Import FlexGet Config"
 msgstr "Import FlexGet Config"
+
+msgid "Import PO..."
+msgstr "PO importieren..."
 
 msgid "Imported {feeds} feeds and {rules} rules."
 msgstr "Importierte {feeds} Feeds und {rules} Regeln."
@@ -1238,9 +1240,8 @@ msgstr "Entfernen Sie ausgewählte Torrents und Daten"
 msgid "Remove torrent"
 msgstr "Torrent entfernen"
 
-#, fuzzy
 msgid "Remove with &Data\tShift+Del"
-msgstr "Entfernen mit &Data\tShift+ Del"
+msgstr "Mit &Daten entfernen\tShift+Del"
 
 msgid "Remove with Data"
 msgstr "Entfernen mit Daten"
@@ -1557,9 +1558,8 @@ msgstr "Torrent-Aktionen"
 msgid "Torrent added"
 msgstr "Torrent hinzugefügt"
 
-#, fuzzy
 msgid "Torrent created:\n{path}"
-msgstr "Torrent erstellt:\nZZTOKEN {path}"
+msgstr "Torrent erstellt:\n{path}"
 
 msgid "Torrent Details"
 msgstr "Details zu Torrent"

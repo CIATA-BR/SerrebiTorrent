@@ -97,9 +97,8 @@ msgstr "Actief"
 msgid "Add"
 msgstr "Voeg toe"
 
-#, fuzzy
 msgid "Add &URL/Magnet...\tCtrl+U"
-msgstr "&URL/Magnet...\tCtrl+U toevoegen"
+msgstr "&URL/magnet toevoegen...\tCtrl+U"
 
 msgid "Add a torrent from a local file"
 msgstr "Een torrent toevoegen uit een lokaal bestand"
@@ -389,13 +388,11 @@ msgstr "Gekopiëerde {count} magneetkoppeling."
 msgid "Copied {count} magnet links."
 msgstr "Gekopieerde {count} magneetkoppelingen."
 
-#, fuzzy
 msgid "Copy &Info Hash\tCtrl+I"
-msgstr "&Info Hash\tCtrl+I kopiëren"
+msgstr "&Info-hash kopiëren\tCtrl+I"
 
-#, fuzzy
 msgid "Copy &Magnet Link\tCtrl+M"
-msgstr "&Magnet Link\tCtrl+M kopiëren"
+msgstr "&Magnet-link kopiëren\tCtrl+M"
 
 msgid "Copy a magnet link for selected torrents"
 msgstr "Kopieer een magneetkoppeling voor geselecteerde torrents"
@@ -774,6 +771,9 @@ msgstr "FlexGet importeren"
 
 msgid "Import FlexGet Config"
 msgstr "FlexGet-configuratie importeren"
+
+msgid "Import PO..."
+msgstr "PO importeren..."
 
 msgid "Imported {feeds} feeds and {rules} rules."
 msgstr "Geïmporteerde {feeds} feeds en {rules} regels."
@@ -1240,9 +1240,8 @@ msgstr "Verwijder geselecteerde torrents en gegevens"
 msgid "Remove torrent"
 msgstr "Torrent verwijderen"
 
-#, fuzzy
 msgid "Remove with &Data\tShift+Del"
-msgstr "Verwijderen met &Data\tShift+ Del"
+msgstr "Verwijderen met &gegevens\tShift+Del"
 
 msgid "Remove with Data"
 msgstr "Verwijderen met gegevens"

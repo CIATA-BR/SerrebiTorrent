@@ -49,17 +49,14 @@ msgstr "&Name:"
 msgid "&Pause\tCtrl+P"
 msgstr "&Pause\tCtrl+P"
 
-#, fuzzy
 msgid "&Remove"
-msgstr "ZZAMPZRemove &"
+msgstr "&Eliminar"
 
-#, fuzzy
 msgid "&Remove\tDel"
-msgstr "ZZAMPZRemoveZTABZDel & \t"
+msgstr "&Eliminar\tDel"
 
-#, fuzzy
 msgid "&Resume\tCtrl+R"
-msgstr "ZZAMPZResumeZZTABZCtrl+R & \t"
+msgstr "&Reanudar\tCtrl+R"
 
 msgid "&Search for Torrents...\tCtrl+F"
 msgstr "&Search for Torrents...\tCtrl+F"
@@ -79,9 +76,8 @@ msgstr "&URL:"
 msgid "1 feed"
 msgstr "1 alimento"
 
-#, fuzzy
 msgid "A Torznab or Newznab search endpoint. Prowlarr: {prowlarr}. Jackett, all trackers at once: {jackett}"
-msgstr "Un punto final de búsqueda de Torznab o Newznab. {prowlarr}. Jackett, todos los rastreadores a la vez: ZZTOKEN1Z {jackett}"
+msgstr "Un punto de acceso de búsqueda Torznab o Newznab. Prowlarr: {prowlarr}. Jackett, todos los trackers a la vez: {jackett}"
 
 msgid "A Windows desktop torrent manager designed for keyboard-first use and screen readers."
 msgstr "Un gestor de torrent de escritorio de Windows diseñado para los lectores de teclado-primer uso y pantalla."
@@ -134,9 +130,8 @@ msgstr "Add Rule"
 msgid "Add Torrent"
 msgstr "Añadir Torrent"
 
-#, fuzzy
 msgid "Add Torrent: {name}"
-msgstr "Añadir Torrent: ZZTOKEN0Z {name}"
+msgstr "Añadir torrent: {name}"
 
 msgid "Add Tracker"
 msgstr "Añadir Tracker"
@@ -144,17 +139,14 @@ msgstr "Añadir Tracker"
 msgid "Add/edit/delete profiles and connect"
 msgstr "Agregar/edit/delete perfiles y conectar"
 
-#, fuzzy
 msgid "Added from RSS: {title}"
-msgstr "Añadido del RSS: ZZTOKEN0Z {title}"
+msgstr "Añadido desde RSS: {title}"
 
-#, fuzzy
 msgid "Added your blindDL indexer: {names}."
-msgstr "Agregó su índice de DL ciego: ZZTOKEN0Z. {names}"
+msgstr "Se añadió tu indexador blindDL: {names}."
 
-#, fuzzy
 msgid "Added your blindDL indexers: {names}."
-msgstr "Agregó sus índices de DL ciego: ZZTOKEN0Z. {names}"
+msgstr "Se añadieron tus indexadores blindDL: {names}."
 
 msgid "Added {title}"
 msgstr "{title}"
@@ -174,13 +166,11 @@ msgstr "Añadiendo el archivo torrent de CLI..."
 msgid "Adding torrent..."
 msgstr "Añadiendo torrent..."
 
-#, fuzzy
 msgid "Adding torrent: {title}..."
-msgstr "Añadiendo torrente: ZZTOKEN0Z... {title}"
+msgstr "Añadiendo torrent: {title}..."
 
-#, fuzzy
 msgid "Adding {count} torrent..."
-msgstr "Añadiendo ZZTOKEN0Z torrent... {count}"
+msgstr "Añadiendo {count} torrent..."
 
 msgid "Adding {count} torrents..."
 msgstr "Añadiendo torrentes {count}..."
@@ -215,9 +205,8 @@ msgstr "Otro caso de SerrebiTorrent ya está funcionando."
 msgid "Anti-leech"
 msgstr "Anti-leech"
 
-#, fuzzy
 msgid "API &key:"
-msgstr "API ZZAMPZkey: &"
+msgstr "Clave de la &API:"
 
 msgid "API key"
 msgstr "Clave de API"
@@ -249,13 +238,11 @@ msgstr "Autenticación (si es necesario):"
 msgid "Auto"
 msgstr "Auto"
 
-#, fuzzy
 msgid "Auto-added from RSS: {title}"
-msgstr "Auto-added from RSS: ZZTOKEN0Z {title}"
+msgstr "Añadido automáticamente desde RSS: {title}"
 
-#, fuzzy
 msgid "Auto-start failed: {error}"
-msgstr "Autostart falló: ZZTOKEN0Z {error}"
+msgstr "Falló el inicio automático: {error}"
 
 msgid "Auto-started new torrent(s)"
 msgstr "Nuevo torrente de arranque automático"
@@ -299,9 +286,8 @@ msgstr "Check"
 msgid "Check All"
 msgstr "Ver todo"
 
-#, fuzzy
 msgid "Check for &Updates...\tF5"
-msgstr "Chequeo para ZZAMPZUpdates...ZTABZF5 & \t"
+msgstr "Buscar &actualizaciones...\tF5"
 
 msgid "Check for Updates"
 msgstr "Check for Updates"
@@ -366,9 +352,8 @@ msgstr "Conectarse con un cliente antes de añadir torrents."
 msgid "Connect to this profile"
 msgstr "Conectar a este perfil"
 
-#, fuzzy
 msgid "Connected to {name}"
-msgstr "Conectado a ZZTOKEN0Z {name}"
+msgstr "Conectado a {name}"
 
 msgid "Connecting..."
 msgstr "Conectando..."
@@ -397,21 +382,17 @@ msgstr "Contexto / validación:"
 msgid "Copied to clipboard"
 msgstr "Copiado para el portapapeles"
 
-#, fuzzy
 msgid "Copied {count} magnet link."
-msgstr "Copiado ZZTOKEN0Z enlace imán. {count}"
+msgstr "Se copió {count} enlace magnet."
 
-#, fuzzy
 msgid "Copied {count} magnet links."
-msgstr "Enlaces de imán ZZTOKEN0Z. {count}"
+msgstr "Se copiaron {count} enlaces magnet."
 
-#, fuzzy
 msgid "Copy &Info Hash\tCtrl+I"
-msgstr "Copiado ZZAMPZInfo HashZTABZCtrl+I & \t"
+msgstr "Copiar &info hash\tCtrl+I"
 
-#, fuzzy
 msgid "Copy &Magnet Link\tCtrl+M"
-msgstr "Copiado ZZAMPZMagnet LinkZTABZCtrl+M & \t"
+msgstr "Copiar enlace &magnet\tCtrl+M"
 
 msgid "Copy a magnet link for selected torrents"
 msgstr "Copiar un enlace imán para torrentes seleccionados"
@@ -431,9 +412,8 @@ msgstr "Copie el enlace del imán al portapapeles"
 msgid "Copy the info hash for selected torrents"
 msgstr "Copiar el hash de información para torrentes seleccionados"
 
-#, fuzzy
 msgid "Create &Torrent...\tCtrl+N"
-msgstr "Crear ZZAMPZTorrent...ZTABZCtrl+N & \t"
+msgstr "Crear &torrent...\tCtrl+N"
 
 msgid "Create a .torrent file from a file or folder"
 msgstr "Crear un archivo .torrent de un archivo o carpeta"
@@ -450,9 +430,8 @@ msgstr "Creado por:"
 msgid "Created torrent added"
 msgstr "Creado torrente añadido"
 
-#, fuzzy
 msgid "Created torrent, but failed to add to client: {error}"
-msgstr "Creado torrente, pero no pudo añadir al cliente: ZZTOKEN0Z {error}"
+msgstr "Torrent creado, pero no se pudo añadir al cliente: {error}"
 
 msgid "Current"
 msgstr "Corriente"
@@ -496,9 +475,8 @@ msgstr "Tasa de descarga (bytes/s):"
 msgid "Downloaded update failed SHA-256 verification."
 msgstr "Actualización descargada falló la verificación SHA-256."
 
-#, fuzzy
 msgid "Downloaded: {percent:.1f}%"
-msgstr "Descargado: ZZTOKEN0Z% {percent:.1f}"
+msgstr "Descargado: {percent:.1f}%"
 
 msgid "Downloading"
 msgstr "Descarga"
@@ -644,50 +622,41 @@ msgstr "Failed"
 msgid "Failed to access clipboard."
 msgstr "Failed to access clipboard."
 
-#, fuzzy
 msgid "Failed to add from RSS: {error}"
-msgstr "Failed to add from RSS: ZZTOKEN0Z {error}"
+msgstr "No se pudo añadir desde RSS: {error}"
 
-#, fuzzy
 msgid "Failed to add magnet: {error}"
-msgstr "Failed to add magnet: ZZTOKEN0Z {error}"
+msgstr "No se pudo añadir el magnet: {error}"
 
-#, fuzzy
 msgid "Failed to add torrent: {error}"
-msgstr "Failed to add torrent: ZZTOKEN0Z {error}"
+msgstr "No se pudo añadir el torrent: {error}"
 
 msgid "Failed to add torrents."
 msgstr "Failed to add torrents."
 
-#, fuzzy
 msgid "Failed to apply settings: {error}"
-msgstr "Failed to apply settings: ZZTOKEN0Z {error}"
+msgstr "No se pudo aplicar la configuración: {error}"
 
-#, fuzzy
 msgid "Failed to download torrent from URL: {error}"
-msgstr "Failed to download torrent from URL: ZZTOKEN0Z {error}"
+msgstr "No se pudo descargar el torrent desde la URL: {error}"
 
 msgid "Failed to fetch preferences"
 msgstr "Failed totch preferences"
 
-#, fuzzy
 msgid "Failed to fetch remote preferences: {error}"
-msgstr "Failed to fetch remote preferences: ZZTOKEN0Z {error}"
+msgstr "No se pudieron obtener las preferencias remotas: {error}"
 
-#, fuzzy
 msgid "Failed to fetch {title}: {error}"
-msgstr "Failed totch ZZTOKEN0Z: ZZTOKEN1Z {title} {error}"
+msgstr "No se pudo obtener {title}: {error}"
 
 msgid "Failed to load settings."
 msgstr "Failed to load settings."
 
-#, fuzzy
 msgid "Failed to read torrent file: {error}"
-msgstr "Failed to read torrent file: ZZTOKEN0Z {error}"
+msgstr "No se pudo leer el archivo torrent: {error}"
 
-#, fuzzy
 msgid "Failed to register associations: {error}"
-msgstr "Failed to register associations: ZZTOKEN0Z {error}"
+msgstr "No se pudieron registrar las asociaciones: {error}"
 
 msgid "Failed to retrieve preferences from remote client."
 msgstr "Failed to retrieve preferences from remote client."
@@ -695,17 +664,14 @@ msgstr "Failed to retrieve preferences from remote client."
 msgid "Failed to retrieve preferences from remote client. The client might not support this feature or there is a connection issue."
 msgstr "Failed to retrieve preferences from remote client. El cliente puede no apoyar esta característica o hay un problema de conexión."
 
-#, fuzzy
 msgid "Failed to update remote preferences: {error}"
-msgstr "Failed to update remote preferences: ZZTOKEN0Z {error}"
+msgstr "No se pudieron actualizar las preferencias remotas: {error}"
 
-#, fuzzy
 msgid "Failed to {action} torrent: {error}"
-msgstr "Failed to ZZTOKEN0Z torrent: ZZTOKEN1Z {action} {error}"
+msgstr "No se pudo {action} el torrent: {error}"
 
-#, fuzzy
 msgid "Failed to {action}: {error}"
-msgstr "Failed to ZZTOKEN0Z: ZZTOKEN1Z {action} {error}"
+msgstr "No se pudo {action}: {error}"
 
 msgid "Fastest upload"
 msgstr "Subida más rápida"
@@ -749,13 +715,11 @@ msgstr "Encriptación de la fuerza"
 msgid "Force encryption on"
 msgstr "Encriptación de la fuerza"
 
-#, fuzzy
 msgid "Force Re&check"
-msgstr "Force ReZZAMPZcheck &"
+msgstr "Forzar verifica&ción"
 
-#, fuzzy
 msgid "Force Reannoun&ce"
-msgstr "Force ReannounZZAMPZce &"
+msgstr "Forzar reanu&ncio"
 
 msgid "Force Reannounce"
 msgstr "Renuncia de la fuerza"
@@ -799,15 +763,17 @@ msgstr "HTTP (con auth)"
 msgid "Import Complete"
 msgstr "Importación completa"
 
-#, fuzzy
 msgid "Import Failed: {error}"
-msgstr "Importación fallida: ZZTOKEN0Z {error}"
+msgstr "Falló la importación: {error}"
 
 msgid "Import FlexGet"
 msgstr "Importar FlexGet"
 
 msgid "Import FlexGet Config"
 msgstr "Importación FlexGet Config"
+
+msgid "Import PO..."
+msgstr "Importar PO..."
 
 msgid "Imported {feeds} feeds and {rules} rules."
 msgstr "Importado {feeds} alimenta y reglas {rules}."
@@ -833,31 +799,26 @@ msgstr "Info"
 msgid "Info hash copied to clipboard."
 msgstr "Info hah copiado a portapapeles."
 
-#, fuzzy
 msgid "Info Hash: {hash}"
-msgstr "Info Hash: ZZTOKEN0Z {hash}"
+msgstr "Info hash: {hash}"
 
 msgid "Install directory not found."
 msgstr "Instalar directorio no encontrado."
 
-#, fuzzy
 msgid "Invalid argument: {arg}"
-msgstr "Invalid argument: ZZTOKEN0Z {arg}"
+msgstr "Argumento no válido: {arg}"
 
 msgid "Invalid credentials."
 msgstr "credenciales inválidas."
 
-#, fuzzy
 msgid "Invalid integer for {label}: {error}"
-msgstr "entero inválido para ZZTOKEN0Z: ZZTOKEN1Z {label} {error}"
+msgstr "Número entero no válido para {label}: {error}"
 
-#, fuzzy
 msgid "Invalid JSON for {label}: {error}"
-msgstr "Invalid JSON for ZZTOKEN0Z: ZZTOKEN1Z {label} {error}"
+msgstr "JSON no válido para {label}: {error}"
 
-#, fuzzy
 msgid "Invalid number for {label}: {error}"
-msgstr "Número de inválidos para ZZTOKEN0Z: ZZTOKEN1Z {label} {error}"
+msgstr "Número no válido para {label}: {error}"
 
 msgid "Invalid torrent URL."
 msgstr "URL de torrente inválido."
@@ -946,13 +907,11 @@ msgstr "Enlace magnético añadido desde CLI"
 msgid "Magnet link(s) copied to clipboard."
 msgstr "Enlace magnético copiado a portapapeles."
 
-#, fuzzy
 msgid "Magnet: {magnet}"
-msgstr "Magnet: ZZTOKEN0Z {magnet}"
+msgstr "Magnet: {magnet}"
 
-#, fuzzy
 msgid "Manage Profiles & Connect"
-msgstr "Manage Profiles ZZAMPZ Connect &"
+msgstr "Administrar perfiles & conectar"
 
 msgid "Max Connections:"
 msgstr "Max Connections:"
@@ -981,9 +940,8 @@ msgstr "Minimizar a Tray"
 msgid "Most seeders"
 msgstr "La mayoría de las semillas"
 
-#, fuzzy
 msgid "My &indexers..."
-msgstr "Mis ZZAMPZindexers... &"
+msgstr "Mis &indexadores..."
 
 msgid "My indexers..."
 msgstr "Mis indexadores..."
@@ -1036,9 +994,8 @@ msgstr "No hay configuración remota disponible (o cliente local activo)."
 msgid "No torrent selected."
 msgstr "No hay torrente seleccionado."
 
-#, fuzzy
 msgid "No torrents selected to {action}."
-msgstr "No hay torrentes seleccionados para ZZTOKEN0Z. {action}"
+msgstr "Ningún torrent seleccionado para {action}."
 
 msgid "No torrents selected."
 msgstr "No hay torrentes seleccionados."
@@ -1082,9 +1039,8 @@ msgstr "On"
 msgid "One URL per line (HTTP/HTTPS)."
 msgstr "Una URL por línea (HTTP/HTTPS)."
 
-#, fuzzy
 msgid "Open Download &Folder"
-msgstr "Descargar ZZAMPZFolder &"
+msgstr "Abrir carpeta de &descargas"
 
 msgid "Open Download Folder"
 msgstr "Descargar Carpeta"
@@ -1215,9 +1171,8 @@ msgstr "Tipo Proxy:"
 msgid "Public tracker list (press Enter to add to Included trackers)."
 msgstr "Lista de rastreadores públicos (presione Enter para añadir a los rastreadores incluidos)."
 
-#, fuzzy
 msgid "qBittorrent Remote &Settings..."
-msgstr "qBittorrent Remote ZZAMPZSettings... &"
+msgstr "Configuración remota de &qBittorrent..."
 
 msgid "qBittorrent Remote Settings..."
 msgstr "Ajustes remotos qBittorrent..."
@@ -1285,9 +1240,8 @@ msgstr "Eliminar torrentes seleccionados y datos"
 msgid "Remove torrent"
 msgstr "Quitar torrente"
 
-#, fuzzy
 msgid "Remove with &Data\tShift+Del"
-msgstr "Quitar con ZZAMPZDataZTABZShift+ Del & \t"
+msgstr "Eliminar con los &datos\tShift+Del"
 
 msgid "Remove with Data"
 msgstr "Retirar con datos"
@@ -1295,9 +1249,8 @@ msgstr "Retirar con datos"
 msgid "Removed {name}."
 msgstr "{name}."
 
-#, fuzzy
 msgid "Reset failed: {error}"
-msgstr "Reiniciar falló: ZZTOKEN0Z {error}"
+msgstr "Falló el restablecimiento: {error}"
 
 msgid "Reset RSS (Clear all feeds and rules)"
 msgstr "Reset RSS (Clear todos los feeds y reglas)"
@@ -1344,9 +1297,8 @@ msgstr "Intervalo de actualización RSS (s)"
 msgid "RSS Update Interval (seconds):"
 msgstr "Intervalo de actualización RSS (segundos):"
 
-#, fuzzy
 msgid "rTorrent Remote &Settings..."
-msgstr "rTorrent Remote ZZAMPZSettings... &"
+msgstr "Configuración remota de &rTorrent..."
 
 msgid "rTorrent Remote Settings..."
 msgstr "Ajustes remotos rTorrent..."
@@ -1393,9 +1345,8 @@ msgstr "Ámbito"
 msgid "Scripts"
 msgstr "Scripts"
 
-#, fuzzy
 msgid "Sea&rch"
-msgstr "SeaZZAMPZrch &"
+msgstr "Bus&car"
 
 msgid "Search"
 msgstr "Búsqueda"
@@ -1409,9 +1360,8 @@ msgstr "Buscar"
 msgid "Search for Torrents"
 msgstr "Buscar Torrents"
 
-#, fuzzy
 msgid "Search si&tes..."
-msgstr "Buscar siZZAMPZtes... &"
+msgstr "Buscar si&tios..."
 
 msgid "Search sites"
 msgstr "Sitios de búsqueda"
@@ -1443,9 +1393,8 @@ msgstr "Seleccione &all"
 msgid "Select &All\tCtrl+A"
 msgstr "Seleccione &All\tCtrl+A"
 
-#, fuzzy
 msgid "Select &none"
-msgstr "Seleccione ZZAMPZnone &"
+msgstr "Seleccionar &ninguno"
 
 msgid "Select a result first."
 msgstr "Seleccione un resultado primero."
@@ -1465,9 +1414,8 @@ msgstr "Seleccionar archivo"
 msgid "Select Folder"
 msgstr "Seleccione carpeta"
 
-#, fuzzy
 msgid "Select {name}"
-msgstr "Seleccione ZZTOKEN0Z {name}"
+msgstr "Seleccionar {name}"
 
 msgid "Selection cleared"
 msgstr "Selección despejada"
@@ -1610,9 +1558,8 @@ msgstr "Acciones torrent"
 msgid "Torrent added"
 msgstr "Torrent añadido"
 
-#, fuzzy
 msgid "Torrent created:\n{path}"
-msgstr "Torrent creado:\nZZTOKEN0Z {path}"
+msgstr "Torrent creado:\n{path}"
 
 msgid "Torrent Details"
 msgstr "Torrent Details"
@@ -1662,9 +1609,8 @@ msgstr "Centro de Traducción"
 msgid "Translation:"
 msgstr "Traducción:"
 
-#, fuzzy
 msgid "Transmission Remote &Settings..."
-msgstr "Transmission Remote ZZAMPZSettings... &"
+msgstr "Configuración remota de &Transmission..."
 
 msgid "Transmission Remote Settings..."
 msgstr "Ajustes remotos de transmisión..."
@@ -1798,13 +1744,11 @@ msgstr "Sí."
 msgid "You're already on the latest version."
 msgstr "Ya estás en la última versión."
 
-#, fuzzy
 msgid "{action} complete"
-msgstr "ZZTOKEN0Z completa {action}"
+msgstr "{action} completado"
 
-#, fuzzy
 msgid "{action} complete ({failed} failed). Last error: {error}"
-msgstr "{action} complete (ZTOKEN1Z falló). Último error: ZZTOKEN2Z {failed} {error}"
+msgstr "{action} completado ({failed} fallidos). Último error: {error}"
 
 msgid "{client} Remote Settings"
 msgstr "Ajustes remotos {client}"
@@ -1812,28 +1756,23 @@ msgstr "Ajustes remotos {client}"
 msgid "{count} feeds"
 msgstr "{count} alimenta"
 
-#, fuzzy
 msgid "{count} indexer switched on."
-msgstr "El indexador ZZTOKEN0Z se encendió. {count}"
+msgstr "{count} indexador activado."
 
-#, fuzzy
 msgid "{count} indexers switched on."
-msgstr "Los índices ZZTOKEN0Z encendieron. {count}"
+msgstr "{count} indexadores activados."
 
-#, fuzzy
 msgid "{count} of your own indexer configured."
-msgstr "ZZTOKEN0Z de su propio indexador configurado. {count}"
+msgstr "{count} de tus propios indexadores configurado."
 
-#, fuzzy
 msgid "{count} of your own indexers configured."
-msgstr "ZZTOKEN0Z de tus propios indexadores configurados. {count}"
+msgstr "{count} de tus propios indexadores configurados."
 
 msgid "{count} result"
 msgstr "Resultado {count}"
 
-#, fuzzy
 msgid "{count} result so far, {pending} still searching. Last: {source}."
-msgstr "ZZTOKEN0Z result so far, {pending} still search. Último: {source}. {count}"
+msgstr "{count} resultado hasta ahora, {pending} aún buscando. Último: {source}."
 
 msgid "{count} results"
 msgstr "Resultados de {count}"

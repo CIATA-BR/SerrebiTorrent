@@ -309,10 +309,26 @@ def test_coverage_threshold_only_fails_when_requested():
     assert "below the required" in result.stderr
 
 
-def test_coverage_counts_fuzzy_entries_as_needs_review():
+def test_coverage_counts_fuzzy_entries_as_needs_review(tmp_path):
+    from tools.translation_tool import _needs_review_count
+
+    locales = tmp_path / "locales"
+    locales.mkdir()
+    (locales / "es-ES.po").write_text(
+        render_po("es-ES", "Español", {"Settings": "Configuración"})
+        + '\n#, fuzzy\nmsgid "Search"\nmsgstr "Buscar"\n',
+        encoding="utf-8",
+    )
+
+    info = load_po(locales / "es-ES.po")
+    assert _needs_review_count(info) == 1
+    # A fuzzy entry is excluded from the runtime translations.
+    assert "Search" not in info.translations
+
+
+def test_coverage_needs_review_matches_each_catalog():
     payload = json.loads(_coverage("--json").stdout)
 
-    assert any(row["needs_review"] for row in payload["locales"])
     for row in payload["locales"]:
         po_text = (Path("locales") / f"{row['code']}.po").read_text(encoding="utf-8")
         expected = len(re.findall(r"^#,\s*.*\bfuzzy\b", po_text, re.MULTILINE))

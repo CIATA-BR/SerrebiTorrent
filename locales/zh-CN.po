@@ -7,9 +7,8 @@ msgstr ""
 msgid "&About SerrebiTorrent"
 msgstr "&关于塞雷比托伦特"
 
-#, fuzzy
 msgid "&Actions"
-msgstr "& 行动"
+msgstr "&操作"
 
 msgid "&Add selected"
 msgstr "选定 &Z Add"
@@ -17,88 +16,68 @@ msgstr "选定 &Z Add"
 msgid "&Add Torrent File...\tCtrl+O"
 msgstr "&ZAdd 种子文件... \tCtrl+O"
 
-#, fuzzy
 msgid "&Add..."
-msgstr "&ZAD(英语:&AZ Add."
+msgstr "&添加..."
 
-#, fuzzy
 msgid "&Close"
-msgstr "ZZAMPZ 关闭 &"
+msgstr "&关闭"
 
-#, fuzzy
 msgid "&Connect"
-msgstr "& 连接"
+msgstr "&连接"
 
-#, fuzzy
 msgid "&Connect...\tCtrl+Shift+C"
-msgstr "&Connect... ZZTAB ZZCtrl+Shift+C 齐克·克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克. \t"
+msgstr "&连接...\tCtrl+Shift+C"
 
-#, fuzzy
 msgid "&Edit..."
-msgstr "ZZAMPZ 编辑... &"
+msgstr "&编辑..."
 
-#, fuzzy
 msgid "&File"
-msgstr "ZZAMP ZZFILE 软件 &"
+msgstr "&文件"
 
-#, fuzzy
 msgid "&Help"
-msgstr "& 帮助"
+msgstr "&帮助"
 
-#, fuzzy
 msgid "&Indexers to search:"
-msgstr "要搜索的 ZZAMPZ Indexers : &"
+msgstr "要搜索的&索引器："
 
-#, fuzzy
 msgid "&Indexers:"
-msgstr "ZZAMPZ 插图: &"
+msgstr "&索引器："
 
-#, fuzzy
 msgid "&Name:"
-msgstr "& 名称 :"
+msgstr "&名称："
 
-#, fuzzy
 msgid "&Pause\tCtrl+P"
-msgstr "ZZAMP ZZZPAUSE ZZTAB ZZCtrl+P ZZ克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克克. & \t"
+msgstr "&暂停\tCtrl+P"
 
-#, fuzzy
 msgid "&Remove"
-msgstr "& 移动"
+msgstr "&删除"
 
-#, fuzzy
 msgid "&Remove\tDel"
-msgstr "& 移动 ZZTAB ZZDel 移动 \t"
+msgstr "&删除\tDel"
 
-#, fuzzy
 msgid "&Resume\tCtrl+R"
-msgstr "ZZAMPZ 续作ZZZTAB ZZCtrl+R & \t"
+msgstr "&继续\tCtrl+R"
 
-#, fuzzy
 msgid "&Search for Torrents...\tCtrl+F"
-msgstr "用于种子的 ZZAMP ZZSearch... ZZTAB ZZCtrl + F & \t"
+msgstr "&搜索种子...\tCtrl+F"
 
-#, fuzzy
 msgid "&Search for:"
-msgstr "ZZAMP ZZSearch 用于: &"
+msgstr "&搜索："
 
-#, fuzzy
 msgid "&Start\tCtrl+S"
-msgstr "& 开始ZZZTAB ZZCtrl+S 维基语录链接:名人名言 - 文学作品 - 谚语 - 谚语 \t"
+msgstr "&开始\tCtrl+S"
 
-#, fuzzy
 msgid "&Tools"
-msgstr "ZZAMP ZZZ 工具软件 &"
+msgstr "&工具"
 
-#, fuzzy
 msgid "&URL:"
-msgstr "赞普苏尔: &"
+msgstr "&URL："
 
 msgid "1 feed"
 msgstr "1支饲料"
 
-#, fuzzy
 msgid "A Torznab or Newznab search endpoint. Prowlarr: {prowlarr}. Jackett, all trackers at once: {jackett}"
-msgstr "一个Torznab或Newznab搜索端点. (原始内容存档于2018-09-10). ZZTOKEN0Z. Jackett, 所有追踪器一次: {jackett} {prowlarr}"
+msgstr "Torznab 或 Newznab 搜索端点。Prowlarr：{prowlarr}。Jackett 一次搜索所有站点：{jackett}"
 
 msgid "A Windows desktop torrent manager designed for keyboard-first use and screen readers."
 msgstr "一个Windows桌面种子管理器,为键盘的先用和屏幕阅读器设计."
@@ -118,9 +97,8 @@ msgstr "活动"
 msgid "Add"
 msgstr "添加"
 
-#, fuzzy
 msgid "Add &URL/Magnet...\tCtrl+U"
-msgstr "添加 &URL / Magnet... ZZTAB ZZCtrl+U 数据 \t"
+msgstr "添加 &URL/磁力链接...\tCtrl+U"
 
 msgid "Add a torrent from a local file"
 msgstr "从本地文件添加种子"
@@ -152,9 +130,8 @@ msgstr "添加规则"
 msgid "Add Torrent"
 msgstr "添加种子"
 
-#, fuzzy
 msgid "Add Torrent: {name}"
-msgstr "添加种子: ZZTOKEN0ZH {name}"
+msgstr "添加种子：{name}"
 
 msgid "Add Tracker"
 msgstr "添加跟踪器"
@@ -168,13 +145,11 @@ msgstr "从RSS添加:{title}"
 msgid "Added your blindDL indexer: {names}."
 msgstr "加入了你的盲DL索引器:{names}."
 
-#, fuzzy
 msgid "Added your blindDL indexers: {names}."
-msgstr "加入了你的盲DL索引器:ZZTOKEN0Z. {names}"
+msgstr "已添加你的 blindDL 索引器：{names}。"
 
-#, fuzzy
 msgid "Added {title}"
-msgstr "添加了 ZZTOKEN0ZH {title}"
+msgstr "已添加 {title}"
 
 msgid "Adding created torrent..."
 msgstr "正在添加创建的种子..."
@@ -194,13 +169,11 @@ msgstr "正在添加种子..."
 msgid "Adding torrent: {title}..."
 msgstr "正在添加种子: {title}..."
 
-#, fuzzy
 msgid "Adding {count} torrent..."
-msgstr "正在添加 ZZTOKEN0 种子... {count}"
+msgstr "正在添加 {count} 个种子..."
 
-#, fuzzy
 msgid "Adding {count} torrents..."
-msgstr "正在添加 ZZTOKEN0 种子... {count}"
+msgstr "正在添加 {count} 个种子..."
 
 msgid "After Creation"
 msgstr "创建后"
@@ -313,9 +286,8 @@ msgstr "检查"
 msgid "Check All"
 msgstr "全部检查"
 
-#, fuzzy
 msgid "Check for &Updates...\tF5"
-msgstr "请检查date=中的日期值 (帮助) ZZAMP ZZZF5 & \t"
+msgstr "检查&更新...\tF5"
 
 msgid "Check for Updates"
 msgstr "检查更新"
@@ -398,9 +370,8 @@ msgstr "连接管理器"
 msgid "Connection Manager..."
 msgstr "连接管理器..."
 
-#, fuzzy
 msgid "Connection Manager...\tCtrl+Shift+C"
-msgstr "连接管理器... ZZTAB ZZCtrl+Shift+C \t"
+msgstr "连接管理器...\tCtrl+Shift+C"
 
 msgid "Connection profiles"
 msgstr "连接配置文件"
@@ -417,13 +388,11 @@ msgstr "复制了{count}磁铁链路."
 msgid "Copied {count} magnet links."
 msgstr "复制了{count}磁铁链路."
 
-#, fuzzy
 msgid "Copy &Info Hash\tCtrl+I"
-msgstr "复制 & 信息 HashZZZTAB ZZCtrl+I \t"
+msgstr "复制 &Info Hash\tCtrl+I"
 
-#, fuzzy
 msgid "Copy &Magnet Link\tCtrl+M"
-msgstr "复制 &MGnet 链接 ZZZTABZCtrl+M \t"
+msgstr "复制&磁力链接\tCtrl+M"
 
 msgid "Copy a magnet link for selected torrents"
 msgstr "复制选中种子的磁铁链接"
@@ -443,9 +412,8 @@ msgstr "复制磁铁链接到剪贴板"
 msgid "Copy the info hash for selected torrents"
 msgstr "复制选中种子的信息散列"
 
-#, fuzzy
 msgid "Create &Torrent...\tCtrl+N"
-msgstr "创建 ZZAMP ZZTorrent... ZZTAB ZZCtrl+N & \t"
+msgstr "创建&种子...\tCtrl+N"
 
 msgid "Create a .torrent file from a file or folder"
 msgstr "从文件或文件夹创建.torrent文件"
@@ -522,9 +490,8 @@ msgstr "正在下载更新..."
 msgid "Downloads"
 msgstr "下载"
 
-#, fuzzy
 msgid "E&xit"
-msgstr "电磁脉冲轴 &"
+msgstr "退&出"
 
 msgid "Edit"
 msgstr "编辑"
@@ -700,13 +667,11 @@ msgstr "从远程客户端获取首选项失败 。 客户端可能不支持此�
 msgid "Failed to update remote preferences: {error}"
 msgstr "更新远程首选项失败: {error}"
 
-#, fuzzy
 msgid "Failed to {action} torrent: {error}"
-msgstr "ZZTOKEN0 ZZ 种子失败: ZZTOKEN1 ZZ {action} {error}"
+msgstr "{action}种子失败：{error}"
 
-#, fuzzy
 msgid "Failed to {action}: {error}"
-msgstr "ZZToken0ZZ失败: ZZToken1ZZ {action} {error}"
+msgstr "{action} 失败：{error}"
 
 msgid "Fastest upload"
 msgstr "最快的上传"
@@ -807,9 +772,11 @@ msgstr "导入 FlexGet"
 msgid "Import FlexGet Config"
 msgstr "导入 FlexGet 配置"
 
-#, fuzzy
+msgid "Import PO..."
+msgstr "导入 PO..."
+
 msgid "Imported {feeds} feeds and {rules} rules."
-msgstr "进口了{feeds}饲料和ZZTOKEN1Z规则. {rules}"
+msgstr "已导入 {feeds} 个源和 {rules} 条规则。"
 
 msgid "Included trackers (one per line):"
 msgstr "包含跟踪器( 每行1个):"
@@ -850,9 +817,8 @@ msgstr "{label}的无效整数: {error}"
 msgid "Invalid JSON for {label}: {error}"
 msgstr "无效的 JSON 对 {label}: {error}"
 
-#, fuzzy
 msgid "Invalid number for {label}: {error}"
-msgstr "无效的 ZZToken0ZZ: ZZToken1ZZ {label} {error}"
+msgstr "{label} 的数字无效：{error}"
 
 msgid "Invalid torrent URL."
 msgstr "无效的种子 URL 。"
@@ -905,9 +871,8 @@ msgstr "正在装入..."
 msgid "Local libtorrent"
 msgstr "地方政府"
 
-#, fuzzy
 msgid "Local Session &Settings...\tCtrl+,"
-msgstr "本地会话 & 设置... \tCtrl+,"
+msgstr "本地会话&设置...\tCtrl+,"
 
 msgid "Local session active"
 msgstr "本地会话活动"
@@ -1074,9 +1039,8 @@ msgstr "打开"
 msgid "One URL per line (HTTP/HTTPS)."
 msgstr "每行1个URL(HTTP/HTTPS)."
 
-#, fuzzy
 msgid "Open Download &Folder"
-msgstr "打开下载 & Folder"
+msgstr "打开下载&文件夹"
 
 msgid "Open Download Folder"
 msgstr "打开下载文件夹"
@@ -1207,9 +1171,8 @@ msgstr "代理类型 :"
 msgid "Public tracker list (press Enter to add to Included trackers)."
 msgstr "公共跟踪器列表(press Enter要添加到包含的跟踪器中)."
 
-#, fuzzy
 msgid "qBittorrent Remote &Settings..."
-msgstr "qBittorrent 远程 & 设置..."
+msgstr "qBittorrent 远程&设置..."
 
 msgid "qBittorrent Remote Settings..."
 msgstr "qBitorrent 远程设置..."
@@ -1277,9 +1240,8 @@ msgstr "删除选中的种子和数据"
 msgid "Remove torrent"
 msgstr "删除种子"
 
-#, fuzzy
 msgid "Remove with &Data\tShift+Del"
-msgstr "以 ZZAMP ZZZData ZZTAB ZZSShift + 删除 德尔 & \t"
+msgstr "连同&数据删除\tShift+Del"
 
 msgid "Remove with Data"
 msgstr "以数据删除"
@@ -1335,9 +1297,8 @@ msgstr "RSS 更新间隔( s)"
 msgid "RSS Update Interval (seconds):"
 msgstr "RSS 更新间隔( 秒) :"
 
-#, fuzzy
 msgid "rTorrent Remote &Settings..."
-msgstr "Torrent 远程 & 设置..."
+msgstr "rTorrent 远程&设置..."
 
 msgid "rTorrent Remote Settings..."
 msgstr "rTorrent 远程设置..."
@@ -1384,9 +1345,8 @@ msgstr "范围"
 msgid "Scripts"
 msgstr "脚本"
 
-#, fuzzy
 msgid "Sea&rch"
-msgstr "ZZ: &"
+msgstr "搜&索"
 
 msgid "Search"
 msgstr "搜索"
@@ -1400,9 +1360,8 @@ msgstr "搜索"
 msgid "Search for Torrents"
 msgstr "寻找种子"
 
-#, fuzzy
 msgid "Search si&tes..."
-msgstr "搜索 siZZAMP 启动... &"
+msgstr "搜索&站点..."
 
 msgid "Search sites"
 msgstr "搜索地点"
@@ -1431,13 +1390,11 @@ msgstr "选择"
 msgid "Select &all"
 msgstr "选择 &AL"
 
-#, fuzzy
 msgid "Select &All\tCtrl+A"
-msgstr "选择 ZZAMPZ 全部 ZZZTAB ZZCtrl+A & \t"
+msgstr "全&选\tCtrl+A"
 
-#, fuzzy
 msgid "Select &none"
-msgstr "选择 ZZAMP ZZNone &"
+msgstr "全不&选"
 
 msgid "Select a result first."
 msgstr "先选择结果 。"
@@ -1457,9 +1414,8 @@ msgstr "选择文件"
 msgid "Select Folder"
 msgstr "选择文件夹"
 
-#, fuzzy
 msgid "Select {name}"
-msgstr "选择 ZZTOKEN0 ZHZ {name}"
+msgstr "选择 {name}"
 
 msgid "Selection cleared"
 msgstr "选择已清除"
@@ -1500,9 +1456,8 @@ msgstr "排序 &by :"
 msgid "Sort by"
 msgstr "排序为"
 
-#, fuzzy
 msgid "Sorted by {label}."
-msgstr "排序为ZZTOKEN0ZH. {label}"
+msgstr "按 {label} 排序。"
 
 msgid "Source (file or folder):"
 msgstr "来源( 文件或文件夹) :"
@@ -1603,9 +1558,8 @@ msgstr "种子动作"
 msgid "Torrent added"
 msgstr "种子已添加"
 
-#, fuzzy
 msgid "Torrent created:\n{path}"
-msgstr "创建种子 :\n(ZZTOKEN0ZH) (英语). {path}"
+msgstr "种子已创建：\n{path}"
 
 msgid "Torrent Details"
 msgstr "种子细节"
@@ -1655,9 +1609,8 @@ msgstr "翻译中心"
 msgid "Translation:"
 msgstr "翻译 :"
 
-#, fuzzy
 msgid "Transmission Remote &Settings..."
-msgstr "传输远程 & 设置..."
+msgstr "Transmission 远程&设置..."
 
 msgid "Transmission Remote Settings..."
 msgstr "传输远程设置..."
@@ -1818,20 +1771,17 @@ msgstr "自己编索引的{count}"
 msgid "{count} result"
 msgstr "{count}结果"
 
-#, fuzzy
 msgid "{count} result so far, {pending} still searching. Last: {source}."
-msgstr "目前为止,{count}的结果,{pending}仍在搜索中. 最后一个,ZZTOKEN2Z。 {source}"
+msgstr "目前 {count} 个结果，{pending} 个仍在搜索。最后：{source}。"
 
 msgid "{count} results"
 msgstr "{count} 结果"
 
-#, fuzzy
 msgid "{count} results so far, {pending} still searching. Last: {source}."
-msgstr "目前为止,{count}的结果,{pending}仍在搜索中. 最后一个,ZZTOKEN2Z。 {source}"
+msgstr "目前 {count} 个结果，{pending} 个仍在搜索。最后：{source}。"
 
-#, fuzzy
 msgid "{count} torrents"
-msgstr "ZZTOKEN0 种子 {count}"
+msgstr "{count} 个种子"
 
 msgid "{name} preferences saved"
 msgstr "保存的 {name} 首选项"

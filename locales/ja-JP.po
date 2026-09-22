@@ -7,16 +7,14 @@ msgstr ""
 msgid "&About SerrebiTorrent"
 msgstr "&について"
 
-#, fuzzy
 msgid "&Actions"
-msgstr "ジャズアクティビティ &"
+msgstr "&操作"
 
 msgid "&Add selected"
 msgstr "&追加選択"
 
-#, fuzzy
 msgid "&Add Torrent File...\tCtrl+O"
-msgstr "&追加トレントファイル...\t+O"
+msgstr "&トレントファイルを追加...\tCtrl+O"
 
 msgid "&Add..."
 msgstr "&追加..."
@@ -27,9 +25,8 @@ msgstr "&閉じる"
 msgid "&Connect"
 msgstr "&コネクト"
 
-#, fuzzy
 msgid "&Connect...\tCtrl+Shift+C"
-msgstr "&Connect...\tCtrl+シフト+C"
+msgstr "&接続...\tCtrl+Shift+C"
 
 msgid "&Edit..."
 msgstr "&編集..."
@@ -49,24 +46,20 @@ msgstr "&Inデキサ:"
 msgid "&Name:"
 msgstr "&Name:"
 
-#, fuzzy
 msgid "&Pause\tCtrl+P"
-msgstr "&Pause\tCtrl+Pの特長"
+msgstr "&一時停止\tCtrl+P"
 
 msgid "&Remove"
 msgstr "&Removeの特長"
 
-#, fuzzy
 msgid "&Remove\tDel"
-msgstr "&Remove\tDELの特長"
+msgstr "&削除\tDel"
 
-#, fuzzy
 msgid "&Resume\tCtrl+R"
-msgstr "&Resume\tCtrl+Rの特長"
+msgstr "&再開\tCtrl+R"
 
-#, fuzzy
 msgid "&Search for Torrents...\tCtrl+F"
-msgstr "&Tの検索...\t+F"
+msgstr "&トレントを検索...\tCtrl+F"
 
 msgid "&Search for:"
 msgstr "&Search について:"
@@ -83,9 +76,8 @@ msgstr "&URL:"
 msgid "1 feed"
 msgstr "1 フィード"
 
-#, fuzzy
 msgid "A Torznab or Newznab search endpoint. Prowlarr: {prowlarr}. Jackett, all trackers at once: {jackett}"
-msgstr "TorznabまたはNewznab検索エンドポイント。 プロワラー: ZZTOKENZZ0. ジャケット、一度にすべてのトラッカー:{jackett} {prowlarr}"
+msgstr "Torznab または Newznab の検索エンドポイント。Prowlarr: {prowlarr}。Jackett はすべてのトラッカーを一度に: {jackett}"
 
 msgid "A Windows desktop torrent manager designed for keyboard-first use and screen readers."
 msgstr "キーボード・ファーストの使用およびスクリーンの読者のために設計されているWindowsデスクトップのトレントのマネージャー。"
@@ -105,9 +97,8 @@ msgstr "アクティブ"
 msgid "Add"
 msgstr "追加する"
 
-#, fuzzy
 msgid "Add &URL/Magnet...\tCtrl+U"
-msgstr "&URL/Magnet...\t+Uを追加"
+msgstr "&URL/マグネットを追加...\tCtrl+U"
 
 msgid "Add a torrent from a local file"
 msgstr "ローカルファイルからトレントを追加"
@@ -250,9 +241,8 @@ msgstr "オートマチック"
 msgid "Auto-added from RSS: {title}"
 msgstr "RSSから自動追加: {title}"
 
-#, fuzzy
 msgid "Auto-start failed: {error}"
-msgstr "自動起動失敗: ZZTOKENZZ {error}"
+msgstr "自動開始に失敗しました: {error}"
 
 msgid "Auto-started new torrent(s)"
 msgstr "自動開始された新しいトレント(s)"
@@ -422,9 +412,8 @@ msgstr "マグネットリンクをクリップボードにコピーする"
 msgid "Copy the info hash for selected torrents"
 msgstr "選択したトレントの情報をコピーする"
 
-#, fuzzy
 msgid "Create &Torrent...\tCtrl+N"
-msgstr "&Torrentを作成します。...\t+N"
+msgstr "&トレントを作成...\tCtrl+N"
 
 msgid "Create a .torrent file from a file or folder"
 msgstr "ファイルまたはフォルダーから .torrent ファイルを作成する"
@@ -774,15 +763,17 @@ msgstr "HTTP (auth で)"
 msgid "Import Complete"
 msgstr "インポート完了"
 
-#, fuzzy
 msgid "Import Failed: {error}"
-msgstr "インポート失敗:ZZTOKENZZ {error}"
+msgstr "インポートに失敗しました: {error}"
 
 msgid "Import FlexGet"
 msgstr "インポート FlexGet"
 
 msgid "Import FlexGet Config"
 msgstr "インポート FlexGet Config"
+
+msgid "Import PO..."
+msgstr "PO をインポート..."
 
 msgid "Imported {feeds} feeds and {rules} rules."
 msgstr "{feeds}フィードと{rules}ルールをインポートしました。"
@@ -814,9 +805,8 @@ msgstr "情報ハッシュ:{hash}"
 msgid "Install directory not found."
 msgstr "ディレクトリが見つかりません。"
 
-#, fuzzy
 msgid "Invalid argument: {arg}"
-msgstr "無効な引数: ZZTOKENZZ {arg}"
+msgstr "引数が無効です: {arg}"
 
 msgid "Invalid credentials."
 msgstr "無効な資格情報。"
@@ -827,9 +817,8 @@ msgstr "{label}のための無効な整数:{error}"
 msgid "Invalid JSON for {label}: {error}"
 msgstr "{label}のための無効なJSON:{error}"
 
-#, fuzzy
 msgid "Invalid number for {label}: {error}"
-msgstr "ZZTOKENZZのための無効な番号:{error} {label}"
+msgstr "{label} の数値が無効です: {error}"
 
 msgid "Invalid torrent URL."
 msgstr "無効なトレントURL。"
@@ -882,9 +871,8 @@ msgstr "ローディング..."
 msgid "Local libtorrent"
 msgstr "ローカル libtorrent"
 
-#, fuzzy
 msgid "Local Session &Settings...\tCtrl+,"
-msgstr "ローカルセッション&Settings...\t+,"
+msgstr "ローカルセッションの&設定...\tCtrl+,"
 
 msgid "Local session active"
 msgstr "ローカルセッションのアクティブ"
@@ -1006,9 +994,8 @@ msgstr "リモート設定なし(またはローカルクライアントアク�
 msgid "No torrent selected."
 msgstr "選択したトレントはありません。"
 
-#, fuzzy
 msgid "No torrents selected to {action}."
-msgstr "ZZTOKENZZ0に選ばれたトレントはありません。 {action}"
+msgstr "{action} するトレントが選択されていません。"
 
 msgid "No torrents selected."
 msgstr "選択したトレントはありません。"
@@ -1253,9 +1240,8 @@ msgstr "選択したトレントとデータを削除する"
 msgid "Remove torrent"
 msgstr "トレントを削除"
 
-#, fuzzy
 msgid "Remove with &Data\tShift+Del"
-msgstr "&Data\tShift+で取除いて下さい ログイン"
+msgstr "&データごと削除\tShift+Del"
 
 msgid "Remove with Data"
 msgstr "データの削除"
@@ -1359,9 +1345,8 @@ msgstr "スコープ"
 msgid "Scripts"
 msgstr "スクリプト"
 
-#, fuzzy
 msgid "Sea&rch"
-msgstr "シーズキャンプ &"
+msgstr "検&索"
 
 msgid "Search"
 msgstr "インフォメーション"
@@ -1405,9 +1390,8 @@ msgstr "選択する"
 msgid "Select &all"
 msgstr "&allを選ぶ"
 
-#, fuzzy
 msgid "Select &All\tCtrl+A"
-msgstr "&ALL\tCtrl+Aを選ぶ"
+msgstr "&すべて選択\tCtrl+A"
 
 msgid "Select &none"
 msgstr "&noneを選ぶ"

@@ -4,9 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SerrebiTorrent\\nLanguage: ru-RU\\nX-Language-Name: Русский\\nMIME-Version: 1.0\\nContent-Type: text/plain; charset=UTF-8\\nContent-Transfer-Encoding: 8bit\\n"
 
-#, fuzzy
 msgid "&About SerrebiTorrent"
-msgstr "& О компании SerrebiTorrent"
+msgstr "&О SerrebiTorrent"
 
 msgid "&Actions"
 msgstr "&Actions"
@@ -53,9 +52,8 @@ msgstr "&Pause\tCtrl+P"
 msgid "&Remove"
 msgstr "&Удалить"
 
-#, fuzzy
 msgid "&Remove\tDel"
-msgstr "&RemoveZTABZZDel \t"
+msgstr "&Удалить\tDel"
 
 msgid "&Resume\tCtrl+R"
 msgstr "&Resume\tCtrl+R"
@@ -492,9 +490,8 @@ msgstr "Скачать обновление..."
 msgid "Downloads"
 msgstr "Скачать"
 
-#, fuzzy
 msgid "E&xit"
-msgstr "ЭЗЗАМПЗЗСИТ &"
+msgstr "В&ыход"
 
 msgid "Edit"
 msgstr "Редактировать"
@@ -774,6 +771,9 @@ msgstr "Импорт FlexGet"
 
 msgid "Import FlexGet Config"
 msgstr "Конфигурация FlexGet Config"
+
+msgid "Import PO..."
+msgstr "Импорт PO..."
 
 msgid "Imported {feeds} feeds and {rules} rules."
 msgstr "Импортные корма {feeds} и правила {rules}."
@@ -1240,9 +1240,8 @@ msgstr "Удалить выбранные торренты и данные"
 msgid "Remove torrent"
 msgstr "Удалить торрент"
 
-#, fuzzy
 msgid "Remove with &Data\tShift+Del"
-msgstr "Удалить &Data\tShift+ Дель"
+msgstr "Удалить с &данными\tShift+Del"
 
 msgid "Remove with Data"
 msgstr "Удалить с данными"

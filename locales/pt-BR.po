@@ -1,11 +1,8 @@
+# SerrebiTorrent translation catalog.
+# SPDX-License-Identifier: MIT
 msgid ""
 msgstr ""
-"Project-Id-Version: SerrebiTorrent\n"
-"Language: pt-BR\n"
-"X-Language-Name: Português — Brasil\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Project-Id-Version: SerrebiTorrent\\nLanguage: pt-BR\\nX-Language-Name: Português — Brasil\\nMIME-Version: 1.0\\nContent-Type: text/plain; charset=UTF-8\\nContent-Transfer-Encoding: 8bit\\n"
 
 msgid "&About SerrebiTorrent"
 msgstr "&Sobre o SerrebiTorrent"
@@ -16,8 +13,8 @@ msgstr "&Ações"
 msgid "&Add selected"
 msgstr "&Adicionar selecionados"
 
-msgid "&Add Torrent File...	Ctrl+O"
-msgstr "&Adicionar arquivo torrent...	Ctrl+O"
+msgid "&Add Torrent File...\tCtrl+O"
+msgstr "&Adicionar arquivo torrent...\tCtrl+O"
 
 msgid "&Add..."
 msgstr "&Adicionar..."
@@ -28,8 +25,8 @@ msgstr "&Fechar"
 msgid "&Connect"
 msgstr "&Conectar"
 
-msgid "&Connect...	Ctrl+Shift+C"
-msgstr "&Conectar...	Ctrl+Shift+C"
+msgid "&Connect...\tCtrl+Shift+C"
+msgstr "&Conectar...\tCtrl+Shift+C"
 
 msgid "&Edit..."
 msgstr "&Editar..."
@@ -49,26 +46,26 @@ msgstr "&Indexadores:"
 msgid "&Name:"
 msgstr "&Nome:"
 
-msgid "&Pause	Ctrl+P"
-msgstr "&Pausar	Ctrl+P"
+msgid "&Pause\tCtrl+P"
+msgstr "&Pausar\tCtrl+P"
 
 msgid "&Remove"
 msgstr "&Remover"
 
-msgid "&Remove	Del"
-msgstr "&Remover	Del"
+msgid "&Remove\tDel"
+msgstr "&Remover\tDel"
 
-msgid "&Resume	Ctrl+R"
-msgstr "&Retomar	Ctrl+R"
+msgid "&Resume\tCtrl+R"
+msgstr "&Retomar\tCtrl+R"
 
-msgid "&Search for Torrents...	Ctrl+F"
-msgstr "&Pesquisar torrents...	Ctrl+F"
+msgid "&Search for Torrents...\tCtrl+F"
+msgstr "&Pesquisar torrents...\tCtrl+F"
 
 msgid "&Search for:"
 msgstr "&Pesquisar por:"
 
-msgid "&Start	Ctrl+S"
-msgstr "&Iniciar	Ctrl+S"
+msgid "&Start\tCtrl+S"
+msgstr "&Iniciar\tCtrl+S"
 
 msgid "&Tools"
 msgstr "&Ferramentas"
@@ -100,8 +97,8 @@ msgstr "Ativos"
 msgid "Add"
 msgstr "Adicionar"
 
-msgid "Add &URL/Magnet...	Ctrl+U"
-msgstr "Adicionar &URL/Magnet...	Ctrl+U"
+msgid "Add &URL/Magnet...\tCtrl+U"
+msgstr "Adicionar &URL/Magnet...\tCtrl+U"
 
 msgid "Add a torrent from a local file"
 msgstr "Adicionar um torrent de um arquivo local"
@@ -289,13 +286,13 @@ msgstr "Marcar"
 msgid "Check All"
 msgstr "Marcar todos"
 
-msgid "Check for &Updates...	F5"
-msgstr "Verificar &atualizações...	F5"
-
-msgid "Check for updates"
-msgstr "Verificar atualizações"
+msgid "Check for &Updates...\tF5"
+msgstr "Verificar &atualizações...\tF5"
 
 msgid "Check for Updates"
+msgstr "Verificar atualizações"
+
+msgid "Check for updates"
 msgstr "Verificar atualizações"
 
 msgid "Check for updates automatically on startup"
@@ -373,8 +370,8 @@ msgstr "Gerenciador de conexões"
 msgid "Connection Manager..."
 msgstr "Gerenciador de conexões..."
 
-msgid "Connection Manager...	Ctrl+Shift+C"
-msgstr "Gerenciador de conexões...	Ctrl+Shift+C"
+msgid "Connection Manager...\tCtrl+Shift+C"
+msgstr "Gerenciador de conexões...\tCtrl+Shift+C"
 
 msgid "Connection profiles"
 msgstr "Perfis de conexão"
@@ -391,11 +388,11 @@ msgstr "Copiado {count} link magnet."
 msgid "Copied {count} magnet links."
 msgstr "Copiados {count} links magnet."
 
-msgid "Copy &Info Hash	Ctrl+I"
-msgstr "Copiar &info hash	Ctrl+I"
+msgid "Copy &Info Hash\tCtrl+I"
+msgstr "Copiar &info hash\tCtrl+I"
 
-msgid "Copy &Magnet Link	Ctrl+M"
-msgstr "Copiar link &magnet	Ctrl+M"
+msgid "Copy &Magnet Link\tCtrl+M"
+msgstr "Copiar link &magnet\tCtrl+M"
 
 msgid "Copy a magnet link for selected torrents"
 msgstr "Copiar o link magnet dos torrents selecionados"
@@ -415,8 +412,8 @@ msgstr "Copiar link magnet para a área de transferência"
 msgid "Copy the info hash for selected torrents"
 msgstr "Copiar o info hash dos torrents selecionados"
 
-msgid "Create &Torrent...	Ctrl+N"
-msgstr "Criar &torrent...	Ctrl+N"
+msgid "Create &Torrent...\tCtrl+N"
+msgstr "Criar &torrent...\tCtrl+N"
 
 msgid "Create a .torrent file from a file or folder"
 msgstr "Criar um arquivo .torrent a partir de um arquivo ou pasta"
@@ -775,6 +772,9 @@ msgstr "Importar FlexGet"
 msgid "Import FlexGet Config"
 msgstr "Importar configuração do FlexGet"
 
+msgid "Import PO..."
+msgstr "Importar PO..."
+
 msgid "Imported {feeds} feeds and {rules} rules."
 msgstr "Importados {feeds} feeds e {rules} regras."
 
@@ -871,8 +871,8 @@ msgstr "Carregando..."
 msgid "Local libtorrent"
 msgstr "libtorrent Local"
 
-msgid "Local Session &Settings...	Ctrl+,"
-msgstr "&Configurações da sessão local...	Ctrl+,"
+msgid "Local Session &Settings...\tCtrl+,"
+msgstr "&Configurações da sessão local...\tCtrl+,"
 
 msgid "Local session active"
 msgstr "Sessão local ativa"
@@ -1138,8 +1138,8 @@ msgstr "Prioridade"
 msgid "Private torrent (disables DHT/PEX/LSD in most clients)"
 msgstr "Torrent privado (desativa DHT/PEX/LSD na maioria dos clientes)"
 
-msgid "Private trackers work through Prowlarr or Jackett, which\\nkeep your tracker logins. SerrebiTorrent stores only this\\nURL and key."
-msgstr "Trackers privados funcionam pelo Prowlarr ou Jackett, que\\nmantêm seus logins dos trackers. O SerrebiTorrent armazena apenas\\nesta URL e a chave."
+msgid "Private trackers work through Prowlarr or Jackett, which\nkeep your tracker logins. SerrebiTorrent stores only this\nURL and key."
+msgstr "Trackers privados funcionam via Prowlarr ou Jackett, que\nmantêm seus logins de tracker. O SerrebiTorrent armazena apenas esta\nURL e chave."
 
 msgid "Profile"
 msgstr "Perfil"
@@ -1150,10 +1150,10 @@ msgstr "Nome do perfil"
 msgid "Profile Name:"
 msgstr "Nome do perfil:"
 
-msgid "Profiles"
+msgid "PROFILES"
 msgstr "Perfis"
 
-msgid "PROFILES"
+msgid "Profiles"
 msgstr "Perfis"
 
 msgid "Progress"
@@ -1240,8 +1240,8 @@ msgstr "Remover os torrents selecionados e seus dados"
 msgid "Remove torrent"
 msgstr "Remover torrent"
 
-msgid "Remove with &Data	Shift+Del"
-msgstr "Remover com &dados	Shift+Del"
+msgid "Remove with &Data\tShift+Del"
+msgstr "Remover com &dados\tShift+Del"
 
 msgid "Remove with Data"
 msgstr "Remover com dados"
@@ -1390,8 +1390,8 @@ msgstr "Selecione"
 msgid "Select &all"
 msgstr "Selecionar &todos"
 
-msgid "Select &All	Ctrl+A"
-msgstr "Selecionar &todos	Ctrl+A"
+msgid "Select &All\tCtrl+A"
+msgstr "Selecionar &todos\tCtrl+A"
 
 msgid "Select &none"
 msgstr "Desmarcar t&odos"
@@ -1558,8 +1558,8 @@ msgstr "Ações do Torrent"
 msgid "Torrent added"
 msgstr "Torrent adicionado"
 
-msgid "Torrent created:\\n{path}"
-msgstr "Torrent criado:\\n{path}"
+msgid "Torrent created:\n{path}"
+msgstr "Torrent criado:\n{path}"
 
 msgid "Torrent Details"
 msgstr "Detalhes do Torrent"
@@ -1585,10 +1585,10 @@ msgstr "Lista de torrents"
 msgid "Torrent Options"
 msgstr "Opções do torrent"
 
-msgid "torrents"
+msgid "Torrents"
 msgstr "Torrents"
 
-msgid "Torrents"
+msgid "torrents"
 msgstr "Torrents"
 
 msgid "Tracker List URL:"
@@ -1785,4 +1785,3 @@ msgstr "{count} torrents"
 
 msgid "{name} preferences saved"
 msgstr "Preferências do {name} salvas"
-

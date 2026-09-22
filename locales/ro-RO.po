@@ -4,9 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SerrebiTorrent\\nLanguage: ro-RO\\nX-Language-Name: Română\\nMIME-Version: 1.0\\nContent-Type: text/plain; charset=UTF-8\\nContent-Transfer-Encoding: 8bit\\n"
 
-#, fuzzy
 msgid "&About SerrebiTorrent"
-msgstr "& Despre SerrebiTorrent"
+msgstr "&Despre SerrebiTorrent"
 
 msgid "&Actions"
 msgstr "&Actions"
@@ -53,9 +52,8 @@ msgstr "&Pause\tCtrl+P"
 msgid "&Remove"
 msgstr "&REMOVE"
 
-#, fuzzy
 msgid "&Remove\tDel"
-msgstr "&Remove\tDEL"
+msgstr "&Elimină\tDel"
 
 msgid "&Resume\tCtrl+R"
 msgstr "&Resume\tCtrl+R"
@@ -390,9 +388,8 @@ msgstr "Copiat link-ul magnet {count}."
 msgid "Copied {count} magnet links."
 msgstr "Copiat link-uri magnet {count}."
 
-#, fuzzy
 msgid "Copy &Info Hash\tCtrl+I"
-msgstr "Copie &Info HashzzTABZZCtrl+I \t"
+msgstr "Copiază &info hash\tCtrl+I"
 
 msgid "Copy &Magnet Link\tCtrl+M"
 msgstr "Copie &Magnet Link\tCtrl+M"
@@ -774,6 +771,9 @@ msgstr "Importă FlexGet"
 
 msgid "Import FlexGet Config"
 msgstr "Importă configurare FlexGet"
+
+msgid "Import PO..."
+msgstr "Import PO..."
 
 msgid "Imported {feeds} feeds and {rules} rules."
 msgstr "{feeds} importate feed-uri și {rules} reguli."
@@ -1240,9 +1240,8 @@ msgstr "Elimină torentele și datele selectate"
 msgid "Remove torrent"
 msgstr "Elimină torentul"
 
-#, fuzzy
 msgid "Remove with &Data\tShift+Del"
-msgstr "Elimină cu &DATA\tShift. Del"
+msgstr "Elimină cu &date\tShift+Del"
 
 msgid "Remove with Data"
 msgstr "Elimină cu date"
@@ -1361,9 +1360,8 @@ msgstr "Caută"
 msgid "Search for Torrents"
 msgstr "Caută torente"
 
-#, fuzzy
 msgid "Search si&tes..."
-msgstr "Caută sizzampzztes... &"
+msgstr "Caută si&turi..."
 
 msgid "Search sites"
 msgstr "Locuri de căutare"

@@ -13,9 +13,8 @@ msgstr "&Actions"
 msgid "&Add selected"
 msgstr "&Add kijelölve"
 
-#, fuzzy
 msgid "&Add Torrent File...\tCtrl+O"
-msgstr "&Add Torrent File... ZZTABZCtrl + O \t"
+msgstr "&Torrentfájl hozzáadása...\tCtrl+O"
 
 msgid "&Add..."
 msgstr "&Add..."
@@ -26,9 +25,8 @@ msgstr "&Close"
 msgid "&Connect"
 msgstr "&Connect"
 
-#, fuzzy
 msgid "&Connect...\tCtrl+Shift+C"
-msgstr "&ZConnect... ZZTABZCtrl + Shift + C \t"
+msgstr "&Kapcsolódás...\tCtrl+Shift+C"
 
 msgid "&Edit..."
 msgstr "&ZEdit..."
@@ -48,9 +46,8 @@ msgstr "&Indexers:"
 msgid "&Name:"
 msgstr "&Name:"
 
-#, fuzzy
 msgid "&Pause\tCtrl+P"
-msgstr "&PausezZTABZZCtrl + P \t"
+msgstr "&Szünet\tCtrl+P"
 
 msgid "&Remove"
 msgstr "&Távolítás"
@@ -58,20 +55,17 @@ msgstr "&Távolítás"
 msgid "&Remove\tDel"
 msgstr "&Remove\tDel"
 
-#, fuzzy
 msgid "&Resume\tCtrl+R"
-msgstr "&ResumezZTABZZCtrl + R \t"
+msgstr "&Folytatás\tCtrl+R"
 
-#, fuzzy
 msgid "&Search for Torrents...\tCtrl+F"
-msgstr "&Search for Torrents... ZZTABZCtrl + F \t"
+msgstr "&Keresés torrentekre...\tCtrl+F"
 
 msgid "&Search for:"
 msgstr "&Search for:"
 
-#, fuzzy
 msgid "&Start\tCtrl+S"
-msgstr "&StartZTABZZCtrl + S \t"
+msgstr "&Indítás\tCtrl+S"
 
 msgid "&Tools"
 msgstr "&Tools"
@@ -103,9 +97,8 @@ msgstr "Aktív"
 msgid "Add"
 msgstr "Hozzáadás"
 
-#, fuzzy
 msgid "Add &URL/Magnet...\tCtrl+U"
-msgstr "&URL / Magnet hozzáadása... ZZTABZCtrl + U \t"
+msgstr "&URL/magnet hozzáadása...\tCtrl+U"
 
 msgid "Add a torrent from a local file"
 msgstr "Torrent hozzáadása helyi fájlból"
@@ -377,9 +370,8 @@ msgstr "Kapcsolatkezelő"
 msgid "Connection Manager..."
 msgstr "Kapcsolatkezelő..."
 
-#, fuzzy
 msgid "Connection Manager...\tCtrl+Shift+C"
-msgstr "Kapcsolatkezelő... ZZTABZCtrl + Shift + C \t"
+msgstr "Kapcsolatkezelő...\tCtrl+Shift+C"
 
 msgid "Connection profiles"
 msgstr "Csatlakozási profilok"
@@ -396,13 +388,11 @@ msgstr "Másolt {count} mágnes link."
 msgid "Copied {count} magnet links."
 msgstr "Másolt {count} mágnes linkek."
 
-#, fuzzy
 msgid "Copy &Info Hash\tCtrl+I"
-msgstr "Másolás &Info HashZZTABZCtrl + I \t"
+msgstr "&Info hash másolása\tCtrl+I"
 
-#, fuzzy
 msgid "Copy &Magnet Link\tCtrl+M"
-msgstr "Másolás &Magnet LinkZZTABZCtrl + M \t"
+msgstr "&Magnet link másolása\tCtrl+M"
 
 msgid "Copy a magnet link for selected torrents"
 msgstr "Mágneses kapcsolat másolása kiválasztott torrentekhez"
@@ -422,9 +412,8 @@ msgstr "Mágneses kapcsolat másolása a vágólapra"
 msgid "Copy the info hash for selected torrents"
 msgstr "Másolja le az info hash a kiválasztott torrent"
 
-#, fuzzy
 msgid "Create &Torrent...\tCtrl+N"
-msgstr "&Torrent... ZZTABZCtrl + N \t"
+msgstr "&Torrent létrehozása...\tCtrl+N"
 
 msgid "Create a .torrent file from a file or folder"
 msgstr "Egy .torrent fájl létrehozása fájlból vagy mappából"
@@ -729,9 +718,8 @@ msgstr "Titkosítás bekapcsolása"
 msgid "Force Re&check"
 msgstr "Erő RE&check"
 
-#, fuzzy
 msgid "Force Reannoun&ce"
-msgstr "Force Újranyilatkoztatás ZAMPZZce &"
+msgstr "Újrabejelentés &kényszerítése"
 
 msgid "Force Reannounce"
 msgstr "Force Repointing"
@@ -783,6 +771,9 @@ msgstr "FlexGet importálása"
 
 msgid "Import FlexGet Config"
 msgstr "FlexGet Config importálása"
+
+msgid "Import PO..."
+msgstr "PO importálása..."
 
 msgid "Imported {feeds} feeds and {rules} rules."
 msgstr "Importált {feeds} takarmányok és {rules} szabályok."
@@ -880,9 +871,8 @@ msgstr "Betöltés..."
 msgid "Local libtorrent"
 msgstr "Helyi libtorrent"
 
-#, fuzzy
 msgid "Local Session &Settings...\tCtrl+,"
-msgstr "Helyi munkamenet &Settings... ZZTABZCtrl +, \t"
+msgstr "Helyi munkamenet &beállításai...\tCtrl+,"
 
 msgid "Local session active"
 msgstr "Helyi ülés aktív"
@@ -1250,9 +1240,8 @@ msgstr "A kijelölt torrentek és adatok eltávolítása"
 msgid "Remove torrent"
 msgstr "Torrent eltávolítása"
 
-#, fuzzy
 msgid "Remove with &Data\tShift+Del"
-msgstr "Távolítás &Data\tShift + Del"
+msgstr "Eltávolítás &adatokkal\tShift+Del"
 
 msgid "Remove with Data"
 msgstr "Az adatok eltávolítása"
@@ -1356,9 +1345,8 @@ msgstr "Hatály"
 msgid "Scripts"
 msgstr "Szkriptek"
 
-#, fuzzy
 msgid "Sea&rch"
-msgstr "SeazZAMPZZrch &"
+msgstr "Kere&sés"
 
 msgid "Search"
 msgstr "Keresés"
@@ -1372,9 +1360,8 @@ msgstr "Keresés"
 msgid "Search for Torrents"
 msgstr "Torrents keresése"
 
-#, fuzzy
 msgid "Search si&tes..."
-msgstr "Keresse meg a SiZZAMPZTES... &"
+msgstr "Keresés az &oldalakon..."
 
 msgid "Search sites"
 msgstr "Keresés"
@@ -1403,9 +1390,8 @@ msgstr "Kijelölés"
 msgid "Select &all"
 msgstr "Válassza ki a &allt"
 
-#, fuzzy
 msgid "Select &All\tCtrl+A"
-msgstr "Válassza ki a &AlZZTABZCtrl + A \t"
+msgstr "Összes &kijelölése\tCtrl+A"
 
 msgid "Select &none"
 msgstr "A &None kiválasztása"
@@ -1788,9 +1774,8 @@ msgstr "{count} eredmény"
 msgid "{count} result so far, {pending} still searching. Last: {source}."
 msgstr "{count} eredmény eddig, {pending} még mindig keresi. Utolsó: {source}."
 
-#, fuzzy
 msgid "{count} results"
-msgstr "ZTOKEN0ZZ eredmények {count}"
+msgstr "{count} találat"
 
 msgid "{count} results so far, {pending} still searching. Last: {source}."
 msgstr "{count} eredmények eddig, {pending} még mindig keresik. Utolsó: {source}."

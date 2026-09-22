@@ -19,9 +19,8 @@ msgstr "&Ajouter le fichier Torrent...\tCtrl+O"
 msgid "&Add..."
 msgstr "&Ajouter..."
 
-#, fuzzy
 msgid "&Close"
-msgstr "& Fermer"
+msgstr "&Fermer"
 
 msgid "&Connect"
 msgstr "&Connect"
@@ -53,9 +52,8 @@ msgstr "&Pause\tCtrl+P"
 msgid "&Remove"
 msgstr "&Supprimer"
 
-#, fuzzy
 msgid "&Remove\tDel"
-msgstr "&RemoveZTABZZDel \t"
+msgstr "&Supprimer\tDel"
 
 msgid "&Resume\tCtrl+R"
 msgstr "&Resume\tCtrl+R"
@@ -72,9 +70,8 @@ msgstr "&Start\tCtrl+S"
 msgid "&Tools"
 msgstr "&Outils"
 
-#, fuzzy
 msgid "&URL:"
-msgstr "- Oui. &"
+msgstr "&URL :"
 
 msgid "1 feed"
 msgstr "1 aliment pour animaux"
@@ -721,9 +718,8 @@ msgstr "Forcer le chiffrement"
 msgid "Force Re&check"
 msgstr "Force Re&check"
 
-#, fuzzy
 msgid "Force Reannoun&ce"
-msgstr "Force RenounZAMPZZce &"
+msgstr "Forcer l'an&nonce"
 
 msgid "Force Reannounce"
 msgstr "Renouveler la force"
@@ -775,6 +771,9 @@ msgstr "Importer FlexGet"
 
 msgid "Import FlexGet Config"
 msgstr "Importer FlexGet Config"
+
+msgid "Import PO..."
+msgstr "Importer PO..."
 
 msgid "Imported {feeds} feeds and {rules} rules."
 msgstr "Les aliments pour animaux {feeds} importés et les règles {rules}."
@@ -1241,9 +1240,8 @@ msgstr "Supprimer les torrents et les données sélectionnés"
 msgid "Remove torrent"
 msgstr "Supprimer le torrent"
 
-#, fuzzy
 msgid "Remove with &Data\tShift+Del"
-msgstr "Supprimer avec &DataZTABZZShift+ Del \t"
+msgstr "Supprimer avec les &données\tShift+Del"
 
 msgid "Remove with Data"
 msgstr "Supprimer avec les données"
@@ -1347,9 +1345,8 @@ msgstr "Portée"
 msgid "Scripts"
 msgstr "Scripts"
 
-#, fuzzy
 msgid "Sea&rch"
-msgstr "- Oui. &"
+msgstr "Rech&ercher"
 
 msgid "Search"
 msgstr "Rechercher"

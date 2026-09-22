@@ -10,9 +10,8 @@ msgstr "&ABout SerrebiTorrent"
 msgid "&Actions"
 msgstr "&Actions"
 
-#, fuzzy
 msgid "&Add selected"
-msgstr "selezionato &"
+msgstr "&Aggiungi selezionati"
 
 msgid "&Add Torrent File...\tCtrl+O"
 msgstr "&Add Torrent File...\tCtrl+O"
@@ -38,24 +37,20 @@ msgstr "&AZIONE"
 msgid "&Help"
 msgstr "&A"
 
-#, fuzzy
 msgid "&Indexers to search:"
-msgstr "Per saperne di più: &"
+msgstr "&Indexer in cui cercare:"
 
 msgid "&Indexers:"
 msgstr "&Indexers:"
 
-#, fuzzy
 msgid "&Name:"
-msgstr "Nome: &"
+msgstr "&Nome:"
 
-#, fuzzy
 msgid "&Pause\tCtrl+P"
-msgstr "&OPause\tCTTrl+P"
+msgstr "&Pausa\tCtrl+P"
 
-#, fuzzy
 msgid "&Remove"
-msgstr "Condividi su Twitter &"
+msgstr "&Rimuovi"
 
 msgid "&Remove\tDel"
 msgstr "&Remove\tDel"
@@ -66,17 +61,14 @@ msgstr "&Resume\tCtrl+R"
 msgid "&Search for Torrents...\tCtrl+F"
 msgstr "&Search per Torrents...\tCtrl+F"
 
-#, fuzzy
 msgid "&Search for:"
-msgstr "Ricerca per: &"
+msgstr "&Cerca:"
 
-#, fuzzy
 msgid "&Start\tCtrl+S"
-msgstr "&OStellareBZZCtrl+S \t"
+msgstr "&Avvia\tCtrl+S"
 
-#, fuzzy
 msgid "&Tools"
-msgstr "Strumentazione &"
+msgstr "&Strumenti"
 
 msgid "&URL:"
 msgstr "&URL:"
@@ -780,6 +772,9 @@ msgstr "Importazione FlexGet"
 msgid "Import FlexGet Config"
 msgstr "Importazione FlexGet Config"
 
+msgid "Import PO..."
+msgstr "Importa PO..."
+
 msgid "Imported {feeds} feeds and {rules} rules."
 msgstr "Importato {feeds} feed e regole {rules}."
 
@@ -822,9 +817,8 @@ msgstr "Integer non valido per {label}: {error}"
 msgid "Invalid JSON for {label}: {error}"
 msgstr "Invalid JSON per {label}: {error}"
 
-#, fuzzy
 msgid "Invalid number for {label}: {error}"
-msgstr "NZTOKEN0ZZ: {error} {label}"
+msgstr "Numero non valido per {label}: {error}"
 
 msgid "Invalid torrent URL."
 msgstr "URL del torrente non valido."
@@ -1246,9 +1240,8 @@ msgstr "Rimuovere torrent e dati selezionati"
 msgid "Remove torrent"
 msgstr "Rimuovi torrent"
 
-#, fuzzy
 msgid "Remove with &Data\tShift+Del"
-msgstr "Rimuovi con &Data\tShift+ Delitto"
+msgstr "Rimuovi con i &dati\tShift+Del"
 
 msgid "Remove with Data"
 msgstr "Rimuovi con i dati"
