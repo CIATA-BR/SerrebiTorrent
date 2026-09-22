@@ -772,6 +772,9 @@ msgstr ""
 msgid "Import FlexGet Config"
 msgstr ""
 
+msgid "Import PO..."
+msgstr ""
+
 msgid "Imported {feeds} feeds and {rules} rules."
 msgstr ""
 

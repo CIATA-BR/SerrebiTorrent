@@ -15,6 +15,11 @@ def test_inventory_collects_web_catalog_source_strings():
     assert "Language" in messages
 
 
+def test_inventory_collects_translation_center_import_label():
+    # The new import action is contributor-facing UI, so translators must see it.
+    assert "Import PO..." in python_source_messages()
+
+
 def test_combined_inventory_is_unique_sorted_and_broad():
     messages = collect_source_messages()
     assert messages == sorted(set(messages), key=str.casefold)

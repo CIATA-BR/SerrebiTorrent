@@ -15,7 +15,8 @@ The Translation Center is designed for keyboard and screen-reader use. It provid
 - placeholder and keyboard-mnemonic validation;
 - progress feedback;
 - local draft persistence under `SerrebiTorrent_Data/translations/`;
-- export to a standard `.po` file.
+- export to a standard `.po` file;
+- import of any `.po` file, so a catalog produced elsewhere can be completed without a portal account.
 
 The application does not request or store GitHub credentials.
 

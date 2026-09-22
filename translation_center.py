@@ -13,7 +13,7 @@ import webbrowser
 import wx
 
 import i18n
-from translation_catalog import render_po, validate_translation
+from translation_catalog import catalog_for, load_po, render_po, validate_translation
 
 
 DRAFT_DIR_NAME = "translations"
@@ -46,6 +46,7 @@ def source_messages() -> list[str]:
             "Save entry",
             "Next",
             "Export PO...",
+            "Import PO...",
             "Open online translation",
             "Close",
         }
@@ -94,6 +95,19 @@ def save_draft(code: str, name: str, translations: dict[str, str]) -> Path:
     }
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return path
+
+
+def load_shipped_catalog(code: str) -> dict[str, str]:
+    """Return the translations already reviewed and shipped for a language.
+
+    Without this the editor only knew about local drafts, so opening any
+    language other than pt-BR started from an empty catalog and completing a
+    near-finished one meant retyping every entry that was already translated.
+    """
+    info = catalog_for(code)
+    if not info:
+        return {}
+    return {str(source): str(value) for source, value in info.translations.items()}
 
 
 def progress(messages: list[str], translations: dict[str, str]) -> tuple[int, int, int]:
@@ -169,10 +183,12 @@ class TranslationCenterDialog(wx.Dialog):
         self.save_button = wx.Button(self, label="&Save entry")
         self.next_button = wx.Button(self, label="&Next")
         self.export_button = wx.Button(self, label="&Export PO...")
+        self.import_button = wx.Button(self, label="&Import PO...")
         self.online_button = wx.Button(self, label="Open &online translation")
         self.online_button.Enable(bool(ONLINE_TRANSLATION_URL))
         close_button = wx.Button(self, wx.ID_CLOSE, label="&Close")
-        for button in (self.prev_button, self.save_button, self.next_button, self.export_button, self.online_button):
+        for button in (self.prev_button, self.save_button, self.next_button, self.export_button,
+                       self.import_button, self.online_button):
             nav.Add(button, 0, wx.RIGHT, 6)
         nav.AddStretchSpacer()
         nav.Add(close_button, 0)
@@ -186,6 +202,7 @@ class TranslationCenterDialog(wx.Dialog):
         self.prev_button.Bind(wx.EVT_BUTTON, lambda _event: self._move(-1))
         self.next_button.Bind(wx.EVT_BUTTON, lambda _event: self._move(1))
         self.export_button.Bind(wx.EVT_BUTTON, self._on_export)
+        self.import_button.Bind(wx.EVT_BUTTON, self._on_import)
         self.online_button.Bind(wx.EVT_BUTTON, self._on_online)
         close_button.Bind(wx.EVT_BUTTON, lambda _event: self.EndModal(wx.ID_CLOSE))
         self._load_language(default_language)
@@ -195,8 +212,45 @@ class TranslationCenterDialog(wx.Dialog):
         if code == "pt-BR":
             self.translations = dict(i18n.CATALOGS.get("pt-BR", {}))
         else:
-            self.translations = load_draft(code)
+            self.translations = load_shipped_catalog(code)
+        # An in-progress draft is this contributor's own work and wins over the
+        # shipped catalog, so reopening the editor resumes instead of resetting.
+        self.translations.update(load_draft(code))
         self._refresh_list()
+
+    def _on_import(self, _event) -> None:
+        """Load a catalog produced anywhere, so no portal account is needed."""
+        with wx.FileDialog(
+            self,
+            "Import translation catalog",
+            wildcard="GNU gettext PO (*.po)|*.po",
+            style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST,
+        ) as dialog:
+            if dialog.ShowModal() != wx.ID_OK:
+                return
+            path = Path(dialog.GetPath())
+        try:
+            info = load_po(path)
+        except (OSError, ValueError) as exc:
+            wx.MessageBox(
+                f"Could not read {path.name}: {exc}",
+                "Translation Center",
+                wx.OK | wx.ICON_ERROR,
+            )
+            return
+        self._save_current_to_memory()
+        self.translations.update(info.translations)
+        self.language_code.SetValue(info.code)
+        if info.name:
+            self.language_name.SetValue(info.name)
+        save_draft(info.code, info.name, self.translations)
+        self._refresh_list()
+        translated, total, review = progress(self.messages, self.translations)
+        wx.MessageBox(
+            f"Imported {len(info.translations)} entries from {path.name}.\n"
+            f"{translated} of {total} translated — {review} need review.",
+            "Translation Center",
+        )
 
     def _on_language_change(self, event) -> None:
         self._save_current_to_memory()

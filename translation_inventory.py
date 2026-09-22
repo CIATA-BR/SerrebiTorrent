@@ -44,6 +44,7 @@ _EXTRA_MESSAGES = {
     "Save entry",
     "Next",
     "Export PO...",
+    "Import PO...",
     "Open online translation",
     "Close",
     "Status",
