@@ -46,3 +46,12 @@ def test_web_modal_controls_have_explicit_accessible_labels():
 
     for token in expected:
         assert token in markup
+
+
+def test_web_status_filters_use_single_delegated_activation_path():
+    markup = (ROOT / "web_static" / "index.html").read_text(encoding="utf-8")
+    script = (ROOT / "web_static" / "app.js").read_text(encoding="utf-8")
+
+    assert 'onclick="setFilter(' not in markup
+    assert "const link = e.target.closest('.sidebar-link');" in script
+    assert "activateSidebarLink(link, e);" in script
