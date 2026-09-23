@@ -78,6 +78,13 @@ window.addEventListener('DOMContentLoaded', () => {
             }
             modal.removeAttribute('inert');
         });
+        modal.addEventListener('shown.bs.modal', () => {
+            const selector = modal.dataset.initialFocus;
+            const target = selector ? modal.querySelector(selector) : null;
+            if (target instanceof HTMLElement) {
+                target.focus();
+            }
+        });
         modal.addEventListener('hidden.bs.modal', () => {
             modal.setAttribute('inert', '');
             const origin = modalReturnFocus.get(modal);
