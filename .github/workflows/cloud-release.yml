@@ -70,6 +70,201 @@ jobs:
           "sha=$(git rev-parse HEAD)" >> $env:GITHUB_OUTPUT
           "Version $v at $(git rev-parse HEAD)"
 
+  quality-gate:
+    needs: plan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.plan.outputs.sha }}
+
+      - name: Install accessibility/runtime test dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            python3-venv \
+            python3-wxgtk4.0 \
+            python3-libtorrent \
+            xvfb \
+            libgtk-3-dev \
+            libtiff-dev \
+            libwebp-dev
+
+      - name: Create isolated test environment
+        run: |
+          python3 -m venv --system-site-packages .venv
+          grep -v -E '^(wxPython)    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ needs.plan.outputs.sha }}
+
+      - uses: astral-sh/setup-uv@v6
+
+      # wxPython is built from source like on the VPS; cache uv's wheel cache.
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/uv
+          key: uv-linux-${{ hashFiles('requirements*.txt') }}
+          restore-keys: uv-linux-
+
+      - name: Install build packages
+        run: |
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y libgtk-3-dev libtiff-dev libwebp-dev
+
+      - name: Download the maintained libtorrent wheel
+        run: gh release download libtorrent-wheels --repo "$GITHUB_REPOSITORY" --pattern '*manylinux*x86_64.whl' --dir "$RUNNER_TEMP/wheels"
+
+      - name: Build
+        env:
+          LIBTORRENT_WHEEL_DIR: ${{ runner.temp }}/wheels
+          SERREBITORRENT_BUILD_VERSION: ${{ needs.plan.outputs.version }}
+        run: UV="$(command -v uv)" bash tools/build_linux.sh
+
+      - uses: actions/upload-artifact@v6
+        with:
+          name: SerrebiTorrent-linux
+          path: dist/SerrebiTorrent-v*-linux-x86_64.tar.gz
+          if-no-files-found: error
+
+  windows:
+    needs: [plan, linux, quality-gate]
+    runs-on: windows-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Require the planned commit
+        run: |
+          if ((git rev-parse HEAD) -ne "${{ needs.plan.outputs.sha }}") { throw "main moved since the plan job; re-run the workflow" }
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.14"
+
+      - uses: actions/download-artifact@v5
+        with:
+          name: SerrebiTorrent-linux
+          path: ${{ runner.temp }}/linux
+
+      - name: Prepare wheel, Linux package, certificate and signtool
+        env:
+          PFX_BASE64: ${{ secrets.WINDOWS_CODESIGN_PFX }}
+          PFX_PASSWORD: ${{ secrets.WINDOWS_CODESIGN_PASSWORD }}
+        run: |
+          $wheels = Join-Path $env:RUNNER_TEMP "wheels"
+          gh release download libtorrent-wheels --repo $env:GITHUB_REPOSITORY --pattern '*win_amd64.whl' --dir $wheels
+          if ($LASTEXITCODE -ne 0) { throw "wheel download failed" }
+          "LIBTORRENT_WHEEL_DIR=$wheels" >> $env:GITHUB_ENV
+          $tar = Get-ChildItem (Join-Path $env:RUNNER_TEMP "linux") -Filter *.tar.gz | Select-Object -First 1
+          "SERREBITORRENT_LINUX_TARBALL=$($tar.FullName)" >> $env:GITHUB_ENV
+          if (-not $env:PFX_BASE64) { throw "WINDOWS_CODESIGN_PFX secret is missing" }
+          $pfx = Join-Path $env:RUNNER_TEMP "codesign.pfx"
+          [IO.File]::WriteAllBytes($pfx, [Convert]::FromBase64String($env:PFX_BASE64))
+          $cert = Import-PfxCertificate -FilePath $pfx -CertStoreLocation Cert:\CurrentUser\My -Password (ConvertTo-SecureString $env:PFX_PASSWORD -AsPlainText -Force)
+          Remove-Item $pfx -Force
+          "SIGN_CERT_THUMBPRINT=$($cert.Thumbprint)" >> $env:GITHUB_ENV
+          $tool = Get-ChildItem "${env:ProgramFiles(x86)}\Windows Kits\10\bin" -Recurse -Filter signtool.exe |
+            Where-Object { $_.FullName -match '\\x64\\signtool\.exe$' } | Sort-Object FullName -Descending | Select-Object -First 1
+          if (-not $tool) { throw "signtool.exe not found" }
+          "SIGNTOOL_PATH=$($tool.FullName)" >> $env:GITHUB_ENV
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Dry run
+        if: ${{ inputs.dry_run }}
+        shell: cmd
+        run: |
+          call build_exe.bat dry-run || exit /b 1
+          call build_exe.bat build
+
+      - name: Release
+        if: ${{ !inputs.dry_run }}
+        shell: cmd
+        run: call build_exe.bat release
+
+      # The updater trusts this certificate's thumbprint; never ship another.
+      - name: Verify Authenticode signature
+        run: |
+          $sig = Get-AuthenticodeSignature dist\SerrebiTorrent\SerrebiTorrent.exe
+          if ($sig.SignerCertificate.Thumbprint -ne $env:SIGN_CERT_THUMBPRINT) { throw "SerrebiTorrent.exe is not signed by the release certificate ($($sig.Status))" }
+          if ("$($sig.Status)" -notin @("Valid", "UnknownError", "NotTrusted")) { throw "Signature is $($sig.Status)" }
+          if ("${{ inputs.dry_run }}" -ne "true") {
+            $tag = git describe --tags --exact-match HEAD
+            if ($tag -ne "v${{ needs.plan.outputs.version }}") { throw "Released $tag, planned v${{ needs.plan.outputs.version }}" }
+          }
+          "Signed: $($sig.Status)"
+
+      - uses: actions/upload-artifact@v6
+        with:
+          name: SerrebiTorrent-windows
+          path: |
+            dist/SerrebiTorrent-v*.zip
+            dist/SerrebiTorrent-update.json
+          if-no-files-found: error
+
+  macos:
+    needs: [plan, windows]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run ci.yml (macOS build) and wait
+        run: |
+          set -euo pipefail
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ref=main; else ref="v${{ needs.plan.outputs.version }}"; fi
+          gh workflow run ci.yml --repo "$GITHUB_REPOSITORY" --ref "$ref"
+          sleep 15
+          id="$(gh run list --repo "$GITHUB_REPOSITORY" --workflow ci.yml --event workflow_dispatch --limit 1 --json databaseId --jq '.[0].databaseId')"
+          echo "ci.yml on $ref -> https://github.com/$GITHUB_REPOSITORY/actions/runs/$id"
+          gh run watch "$id" --repo "$GITHUB_REPOSITORY" --exit-status --interval 30
+
+      - name: Verify every platform is on the release
+        if: ${{ !inputs.dry_run }}
+        run: |
+          v="${{ needs.plan.outputs.version }}"
+          have="$(gh release view "v$v" --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[].name')"
+          missing=0
+          for want in "SerrebiTorrent-v$v.zip" SerrebiTorrent-update.json "SerrebiTorrent-v$v-linux-x86_64.tar.gz" "SerrebiTorrent-v$v-macos-ARM64.zip"; do
+            grep -qxF "$want" <<<"$have" || { echo "::error::Missing asset $want"; missing=1; }
+          done
+          [ "$missing" = 0 ]
+          latest="$(gh api "repos/$GITHUB_REPOSITORY/releases/latest" --jq .tag_name)"
+          [ "$latest" = "v$v" ] || { echo "::error::/releases/latest is $latest"; exit 1; }
+ requirements.txt > /tmp/requirements-linux.txt
+          .venv/bin/python -m pip install --disable-pip-version-check \
+            -r /tmp/requirements-linux.txt pytest hypothesis
+
+      - name: Validate Web and translation assets
+        run: |
+          node --check web_static/i18n.js
+          node --check web_static/app.js
+          .venv/bin/python tools/translation_tool.py check
+
+      - name: Run accessibility and localized runtime regression suite
+        run: |
+          xvfb-run -a .venv/bin/python -m pytest -q \
+            tests/test_accessible_virtual_list.py \
+            tests/test_connection_dialog.py \
+            tests/test_localized_entrypoint.py \
+            tests/test_preferences_dialog.py \
+            tests/test_add_torrent_dialog.py \
+            tests/test_torrent_list.py \
+            tests/test_list_accessibility.py \
+            tests/test_web_i18n.py \
+            tests/test_web_ui_a11y.py \
+            tests/test_runtime_actions_i18n.py \
+            tests/test_runtime_components_i18n.py \
+            tests/test_runtime_messages_i18n.py \
+            tests/test_runtime_update_i18n.py \
+            tests/test_translation_center.py
+
   linux:
     needs: plan
     runs-on: ubuntu-24.04
