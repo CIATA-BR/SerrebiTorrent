@@ -116,6 +116,13 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const peersTab = document.getElementById('peers-tab');
+    if (peersTab) {
+        peersTab.addEventListener('shown.bs.tab', () => {
+            void updatePeersDetails();
+        });
+    }
+
     // Initial fetch
     refreshData(true);
     if (window.fetchProfiles) window.fetchProfiles(); 
@@ -995,6 +1002,105 @@ async function updateFilesDetails() {
     }
 }
 
+
+async function updatePeersDetails() {
+    const pane = document.getElementById('details-peers');
+    if (!pane) return;
+
+    const translate = window.SerrebiI18n?.t || ((value) => value);
+    pane.replaceChildren();
+
+    if (selectedHashes.size === 0) {
+        const message = document.createElement('p');
+        message.textContent = translate('Select a torrent.');
+        pane.appendChild(message);
+        return;
+    }
+    if (selectedHashes.size > 1) {
+        const message = document.createElement('p');
+        message.textContent = translate('Select one torrent to view peers.');
+        pane.appendChild(message);
+        return;
+    }
+
+    const hash = Array.from(selectedHashes)[0];
+    const selectionIsCurrent = () =>
+        selectedHashes.size === 1 && selectedHashes.has(hash);
+
+    const loading = document.createElement('p');
+    loading.className = 'text-muted';
+    loading.setAttribute('role', 'status');
+    loading.textContent = translate('Loading peers...');
+    pane.appendChild(loading);
+
+    try {
+        const res = await fetch(`/api/v2/torrents/peers?hash=${encodeURIComponent(hash)}`);
+        if (!selectionIsCurrent()) return;
+        if (await redirectIfSessionExpired(res)) return;
+        if (!selectionIsCurrent()) return;
+        if (!res.ok) {
+            throw new Error(await res.text() || 'Failed to load peers.');
+        }
+        const peers = await res.json();
+        if (!selectionIsCurrent()) return;
+
+        pane.replaceChildren();
+        if (!Array.isArray(peers) || peers.length === 0) {
+            const message = document.createElement('p');
+            message.textContent = translate('No peers available.');
+            pane.appendChild(message);
+            return;
+        }
+
+        const table = document.createElement('table');
+        table.className = 'table table-sm';
+        table.setAttribute('aria-label', translate('Torrent Peers'));
+
+        const thead = document.createElement('thead');
+        const headerRow = document.createElement('tr');
+        for (const label of ['Address', 'Client', 'Progress', 'Down Speed', 'Up Speed']) {
+            const th = document.createElement('th');
+            th.scope = 'col';
+            th.textContent = translate(label);
+            headerRow.appendChild(th);
+        }
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        const tbody = document.createElement('tbody');
+        for (const peer of peers) {
+            const row = document.createElement('tr');
+            const progress = Math.round(
+                Math.max(0, Math.min(1, Number(peer?.progress) || 0)) * 100
+            );
+            const values = [
+                peer?.address || '',
+                peer?.client || '',
+                `${progress}%`,
+                `${fmtSize(Number(peer?.down_rate) || 0)}/s`,
+                `${fmtSize(Number(peer?.up_rate) || 0)}/s`,
+            ];
+            for (const value of values) {
+                const td = document.createElement('td');
+                td.textContent = value;
+                row.appendChild(td);
+            }
+            tbody.appendChild(row);
+        }
+        table.appendChild(tbody);
+        pane.appendChild(table);
+    } catch (error) {
+        if (!selectionIsCurrent()) return;
+        pane.replaceChildren();
+        const message = document.createElement('p');
+        message.className = 'alert alert-danger';
+        message.setAttribute('role', 'alert');
+        message.textContent = translate('Failed to load torrent peers.');
+        pane.appendChild(message);
+        console.error('Load torrent peers failed:', error);
+    }
+}
+
 async function updateDetails() {
     const detailPane = document.getElementById('details-general');
     if (selectedHashes.size === 0) {
@@ -1013,6 +1119,11 @@ async function updateDetails() {
     const filesTab = document.getElementById('files-tab');
     if (filesTab?.classList.contains('active')) {
         await updateFilesDetails();
+    }
+
+    const peersTab = document.getElementById('peers-tab');
+    if (peersTab?.classList.contains('active')) {
+        await updatePeersDetails();
     }
 }
 
