@@ -865,7 +865,7 @@ async function updateDetails() {
     detailPane.innerHTML = `<h3 class="fs-5">${escapeHtml(t.name)}</h3><p>Size: ${fmtSize(t.size)}<br>Hash: ${escapeHtml(t.hash)}<br>Path: ${escapeHtml(t.save_path || 'N/A')}</p>`;
 }
 
-async function doAction(action, deleteFiles = false) {
+async function doAction(action, deleteFiles = false, actionLabel = null) {
     if (selectedHashes.size === 0) return;
     if (action === 'delete' && !confirmDeleteAction(deleteFiles)) return;
     const formData = new FormData();
@@ -874,6 +874,11 @@ async function doAction(action, deleteFiles = false) {
     try {
         const res = await apiFetch(`/api/v2/torrents/${action}`, { method: 'POST', body: formData });
         if (res.ok) {
+            const sourceLabel = actionLabel || action;
+            const translate = window.SerrebiI18n?.t || ((value) => value);
+            const message = translate('{action} complete')
+                .replace('{action}', translate(sourceLabel));
+            announceToSR(message);
             hideContextMenu();
             setTimeout(() => refreshData(true), 100);
             return;
