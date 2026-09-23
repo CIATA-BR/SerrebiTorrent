@@ -552,22 +552,21 @@ def torrents_openfolder():
 @app.route('/api/v2/torrents/delete', methods=['POST'])
 @login_required
 def torrents_delete():
-    hashes = request.form.get('hashes')
+    client, hashes, error = _torrent_action_context()
+    if error:
+        return error
     delete_files = request.form.get('deleteFiles') == 'true'
-    client = WEB_CONFIG['client']
-    if client and hashes:
-        torrent_hashes = [h for h in hashes.split('|') if h]
-        try:
-            if hasattr(client, 'remove_torrents'):
-                client.remove_torrents(torrent_hashes, delete_files)
-            else:
-                for h in torrent_hashes:
-                    if delete_files:
-                        client.remove_torrent_with_data(h)
-                    else:
-                        client.remove_torrent(h)
-        except Exception as e:
-            return f"Remove failed: {e}", 500
+    try:
+        if hasattr(client, 'remove_torrents'):
+            client.remove_torrents(hashes, delete_files)
+        else:
+            for h in hashes:
+                if delete_files:
+                    client.remove_torrent_with_data(h)
+                else:
+                    client.remove_torrent(h)
+    except Exception:
+        return "Failed to remove torrent(s).", 500
     return "Ok."
 
 @app.route('/api/v2/torrents/add', methods=['POST'])
