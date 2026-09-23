@@ -1609,8 +1609,6 @@ msgstr "失败次数过多，请稍后重试。"
 msgid "Torrent Actions"
 msgstr "种子操作"
 
-msgid "Torrent actions"
-msgstr "种子操作"
 
 msgid "Torrent added"
 msgstr "已添加种子"
