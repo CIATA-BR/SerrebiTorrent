@@ -145,6 +145,9 @@ msgstr ""
 msgid "Added from RSS: {name}"
 msgstr ""
 
+msgid "Address"
+msgstr ""
+
 msgid "Added from RSS: {title}"
 msgstr ""
 
@@ -688,6 +691,9 @@ msgstr ""
 msgid "Failed to load torrent files."
 msgstr ""
 
+msgid "Failed to load torrent peers."
+msgstr ""
+
 msgid "Failed to open download folder."
 msgstr ""
 
@@ -922,6 +928,9 @@ msgstr ""
 msgid "Loading files..."
 msgstr ""
 
+msgid "Loading peers..."
+msgstr ""
+
 msgid "Loading remote settings..."
 msgstr ""
 
@@ -1043,6 +1052,9 @@ msgid "No client connected."
 msgstr ""
 
 msgid "No files available."
+msgstr ""
+
+msgid "No peers available."
 msgstr ""
 
 msgid "No indexers are switched on. Use Search sites."
@@ -1501,6 +1513,9 @@ msgstr ""
 msgid "Select one torrent to view files."
 msgstr ""
 
+msgid "Select one torrent to view peers."
+msgstr ""
+
 msgid "Select {name}"
 msgstr ""
 
@@ -1679,6 +1694,9 @@ msgid "Torrent files (*.torrent)|*.torrent"
 msgstr ""
 
 msgid "Torrent List"
+msgstr ""
+
+msgid "Torrent Peers"
 msgstr ""
 
 msgid "Torrent Options"
