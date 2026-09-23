@@ -6,6 +6,8 @@ let currentProfileId = null;
 let lastFocusedHash = null;
 let lastUserActivity = 0;
 let refreshIntervalId = null;
+let refreshInFlight = false;
+let forcedRefreshPending = false;
 
 // Virtual Scrolling Config
 const ROW_HEIGHT = 40;
@@ -457,11 +459,17 @@ function handleSidebarNavigation(e) {
 }
 
 async function refreshData(force = false) {
+    if (refreshInFlight) {
+        if (force) forcedRefreshPending = true;
+        return;
+    }
+
     // Keep background refresh from mutating list/selection while a dialog is active.
     if (!force && document.querySelector('.modal.show')) return;
     // If user is actively typing or interacting, skip background refresh unless forced
     if (!force && Date.now() - lastUserActivity < 1000) return;
-    
+
+    refreshInFlight = true;
     try {
         const isFirstLoad = torrentsMap.size === 0;
         const activeRow = document.activeElement?.closest?.('tr[data-hash]') || null;
@@ -528,7 +536,15 @@ async function refreshData(force = false) {
             if (addedCount > 0) announceToSR(`${addedCount} torrent${addedCount === 1 ? '' : 's'} added.`);
             if (removedCount > 0) announceToSR(`${removedCount} torrent${removedCount === 1 ? '' : 's'} removed.`);
         }
-    } catch (e) { console.error("Refresh error", e); }
+    } catch (e) {
+        console.error("Refresh error", e);
+    } finally {
+        refreshInFlight = false;
+        if (forcedRefreshPending) {
+            forcedRefreshPending = false;
+            void refreshData(true);
+        }
+    }
 }
 
 function syncTorrentsMap(newData) {

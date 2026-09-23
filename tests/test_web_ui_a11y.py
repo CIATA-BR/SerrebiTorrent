@@ -750,3 +750,41 @@ def test_web_ui_every_sidebar_listbox_keeps_a_tab_stop(page, web_ui_server):
 
     page.evaluate("setFilter('Seeding')")
     assert tab_stops() == [1, 1, 1]
+
+
+def test_web_ui_serializes_overlapping_refreshes(page, web_ui_server):
+    _login(page, web_ui_server)
+
+    page.evaluate(
+        """() => {
+            clearInterval(refreshIntervalId);
+            window.__refreshCalls = 0;
+            window.__releaseFirstRefresh = null;
+            const originalFetch = window.fetch.bind(window);
+            window.fetch = (...args) => {
+                const url = String(args[0]);
+                if (url === '/api/v2/torrents/all') {
+                    window.__refreshCalls += 1;
+                    if (window.__refreshCalls === 1) {
+                        return new Promise((resolve, reject) => {
+                            window.__releaseFirstRefresh = () => {
+                                originalFetch(...args).then(resolve, reject);
+                            };
+                        });
+                    }
+                }
+                return originalFetch(...args);
+            };
+        }"""
+    )
+
+    page.evaluate("void refreshData(true)")
+    page.wait_for_function("() => window.__refreshCalls === 1")
+
+    page.evaluate("void refreshData()")
+    page.evaluate("void refreshData(true)")
+    assert page.evaluate("window.__refreshCalls") == 1
+
+    page.evaluate("window.__releaseFirstRefresh()")
+    page.wait_for_function("() => window.__refreshCalls === 2")
+    page.wait_for_function("() => !refreshInFlight && !forcedRefreshPending")
