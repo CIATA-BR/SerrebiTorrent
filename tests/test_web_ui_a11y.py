@@ -478,3 +478,51 @@ def test_web_ui_initial_load_does_not_announce_list_population(page, web_ui_serv
     page.wait_for_function("document.querySelectorAll('tr[data-hash]').length >= 2")
 
     assert page.locator("#aria-announcer").inner_text() == ""
+
+
+def test_web_ui_expired_session_redirects_with_accessible_login_feedback(page, web_ui_server):
+    _login(page, web_ui_server)
+
+    page.route(
+        "**/api/v2/app/prefs",
+        lambda route: route.fulfill(
+            status=403,
+            content_type="text/plain",
+            body="Unauthorized",
+        ),
+    )
+
+    page.evaluate("apiFetch('/api/v2/app/prefs')")
+    page.wait_for_url(f"{web_ui_server}/login.html")
+    page.wait_for_function(
+        "() => document.getElementById('errorMsg').textContent === 'Session expired. Please sign in again.'"
+    )
+
+    assert page.locator("#errorMsg").is_visible()
+    assert page.evaluate("document.activeElement && document.activeElement.id === 'errorMsg'")
+
+
+def test_web_ui_non_auth_403_does_not_fake_session_expiry(page, web_ui_server):
+    _login(page, web_ui_server)
+
+    page.route(
+        "**/api/v2/app/prefs",
+        lambda route: route.fulfill(
+            status=403,
+            content_type="text/plain",
+            body="CSRF token missing or invalid.",
+        ),
+    )
+
+    status = page.evaluate(
+        """async () => {
+            const response = await apiFetch('/api/v2/app/prefs');
+            return response.status;
+        }"""
+    )
+
+    assert status == 403
+    assert page.url == f"{web_ui_server}/"
+    assert page.evaluate(
+        "sessionStorage.getItem('serrebitorrent-session-expired')"
+    ) is None
