@@ -409,8 +409,24 @@ function startRefreshLoop() {
     refreshIntervalId = setInterval(() => refreshData(), rate);
 }
 
+// Arrows stay inside one listbox, so each listbox needs its own Tab stop:
+// the selected option, else the first one.
+function ensureSidebarTabStops() {
+    ['profileList', 'filterList', 'trackerList'].forEach(id => {
+        const listbox = document.getElementById(id);
+        if (!listbox) return;
+        const links = Array.from(listbox.querySelectorAll('.sidebar-link'));
+        if (links.length === 0 || links.some(l => l.tabIndex === 0)) return;
+        const target = links.find(l => l.getAttribute('aria-selected') === 'true') || links[0];
+        target.tabIndex = 0;
+    });
+}
+
 function handleSidebarNavigation(e) {
-    const links = Array.from(document.querySelectorAll('.sidebar-link'));
+    const listbox = document.activeElement.closest('[role="listbox"]');
+    if (!listbox) return;
+
+    const links = Array.from(listbox.querySelectorAll('.sidebar-link'));
     if (links.length === 0) return;
 
     let currentIndex = links.indexOf(document.activeElement);
@@ -424,16 +440,16 @@ function handleSidebarNavigation(e) {
     else if (e.key === 'ArrowUp') nextIndex = (currentIndex - 1 + links.length) % links.length;
     else if (e.key === 'Home') nextIndex = 0;
     else if (e.key === 'End') nextIndex = links.length - 1;
-    else if (e.key === 'Enter' || e.key === ' ') { 
-        e.preventDefault(); 
-        activateSidebarLink(links[currentIndex], e); 
-        return; 
+    else if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        activateSidebarLink(links[currentIndex], e);
+        return;
     }
 
     if (nextIndex !== -1) {
         e.preventDefault();
         const target = links[nextIndex];
-        // Roving tabindex moves focus without changing the active filter/profile.
+        // Roving tabindex is scoped to the current listbox.
         links.forEach(l => l.setAttribute('tabindex', '-1'));
         target.setAttribute('tabindex', '0');
         target.focus();
@@ -744,6 +760,7 @@ function updateSidebarStats(stats, trackers) {
                 target.focus();
             }
         }
+        ensureSidebarTabStops();
     }
 }
 
@@ -767,6 +784,7 @@ function setFilter(f, event) {
         l.setAttribute('aria-selected', isActive);
         l.tabIndex = isActive ? 0 : -1;
     });
+    ensureSidebarTabStops();
 
     updateFilteredList();
     const container = els.container();
@@ -812,6 +830,7 @@ window.fetchProfiles = async function() {
                 target.focus();
             }
         }
+        ensureSidebarTabStops();
     } catch (e) {
         console.error("fetchProfiles failed:", e);
     }
@@ -952,7 +971,8 @@ function showContextMenu(e, anchorRow = null) {
 
 function hideContextMenu() { 
     const btn = els.actionsBtn();
-    if (btn) {
+    // Bootstrap comes from a CDN; without it (offline LAN) a successful action must not throw.
+    if (btn && typeof bootstrap !== 'undefined') {
         const dd = bootstrap.Dropdown.getInstance(btn);
         if (dd) dd.hide();
     }
