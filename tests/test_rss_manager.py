@@ -117,3 +117,48 @@ def test_fetch_feed(mock_get, rss_manager):
 
 def test_fetch_feed_rejects_non_http_scheme(rss_manager):
     assert rss_manager.fetch_feed("file:///C:/secret.xml") == []
+
+
+def test_add_feed_rolls_back_when_save_fails(rss_manager):
+    rss_manager.save.return_value = False
+
+    assert rss_manager.add_feed("https://example.com/feed.xml", "Example") is False
+    assert "https://example.com/feed.xml" not in rss_manager.feeds
+
+
+def test_remove_feed_rolls_back_when_save_fails(rss_manager):
+    url = "https://example.com/feed.xml"
+    rss_manager.feeds = {
+        url: {"alias": "Example", "last_update": 0, "articles": []}
+    }
+    rss_manager.save.return_value = False
+
+    assert rss_manager.remove_feed(url) is False
+    assert url in rss_manager.feeds
+
+
+def test_add_rule_rolls_back_when_save_fails(rss_manager):
+    rss_manager.rules = []
+    rss_manager.save.return_value = False
+
+    assert rss_manager.add_rule("ubuntu", "accept") is False
+    assert rss_manager.rules == []
+
+
+def test_update_rule_rolls_back_when_save_fails(rss_manager):
+    rss_manager.rules = [
+        {"pattern": "old", "enabled": True, "type": "accept", "scope": None}
+    ]
+    rss_manager.save.return_value = False
+
+    assert rss_manager.update_rule(0, {"pattern": "new"}) is False
+    assert rss_manager.rules[0]["pattern"] == "old"
+
+
+def test_remove_rule_rolls_back_when_save_fails(rss_manager):
+    rule = {"pattern": "ubuntu", "enabled": True, "type": "accept", "scope": None}
+    rss_manager.rules = [rule.copy()]
+    rss_manager.save.return_value = False
+
+    assert rss_manager.remove_rule(0) is False
+    assert rss_manager.rules == [rule]

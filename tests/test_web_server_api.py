@@ -722,3 +722,77 @@ def test_profile_switch_reports_async_start(auth_client, monkeypatch):
     assert rv.status_code == 202
     assert b"Profile switch started." in rv.data
     call_after.assert_called_once_with(mock_app.connect_profile, 'remote')
+
+def test_rss_add_feed_reports_persistence_failure(auth_client):
+    manager = MagicMock()
+    manager.feeds = {}
+    manager.add_feed.return_value = False
+    mock_app = MagicMock()
+    mock_app.rss_panel.manager = manager
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/rss/add_feed',
+        data={'url': 'https://example.com/feed.xml', 'alias': 'Example'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 500
+    assert b"Failed to save RSS feed." in rv.data
+    manager.add_feed.assert_called_once_with('https://example.com/feed.xml', 'Example')
+
+
+def test_rss_add_feed_rejects_duplicate(auth_client):
+    url = 'https://example.com/feed.xml'
+    manager = MagicMock()
+    manager.feeds = {url: {'alias': 'Example'}}
+    manager.add_feed.return_value = False
+    mock_app = MagicMock()
+    mock_app.rss_panel.manager = manager
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/rss/add_feed',
+        data={'url': url},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 409
+    assert b"RSS feed already exists." in rv.data
+
+
+def test_rss_remove_feed_reports_persistence_failure(auth_client):
+    url = 'https://example.com/feed.xml'
+    manager = MagicMock()
+    manager.feeds = {url: {'alias': 'Example'}}
+    manager.remove_feed.return_value = False
+    mock_app = MagicMock()
+    mock_app.rss_panel.manager = manager
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/rss/remove_feed',
+        data={'url': url},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 500
+    assert b"Failed to remove RSS feed." in rv.data
+
+
+def test_rss_remove_feed_reports_missing_feed(auth_client):
+    manager = MagicMock()
+    manager.feeds = {}
+    mock_app = MagicMock()
+    mock_app.rss_panel.manager = manager
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/rss/remove_feed',
+        data={'url': 'https://example.com/missing.xml'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 404
+    assert b"RSS feed not found." in rv.data
+    manager.remove_feed.assert_not_called()
