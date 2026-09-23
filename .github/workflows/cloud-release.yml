@@ -25,8 +25,7 @@ on:
         type: boolean
 
 permissions:
-  contents: write
-  actions: write
+  contents: read
 
 concurrency:
   group: release
@@ -34,6 +33,7 @@ concurrency:
 
 env:
   GH_TOKEN: ${{ github.token }}
+  LIBTORRENT_WHEEL_SUMS_SHA256: 9ab335519a22bfcdf23d2b193b14e12bffb4b7c77dbce7d08870c717c862cfa6
 
 jobs:
   plan:
@@ -93,8 +93,22 @@ jobs:
           sudo apt-get update
           sudo DEBIAN_FRONTEND=noninteractive apt-get install -y libgtk-3-dev libtiff-dev libwebp-dev
 
-      - name: Download the maintained libtorrent wheel
-        run: gh release download libtorrent-wheels --repo "$GITHUB_REPOSITORY" --pattern '*manylinux*x86_64.whl' --dir "$RUNNER_TEMP/wheels"
+      - name: Download and verify the maintained libtorrent wheel
+        run: |
+          gh release download libtorrent-wheels --repo "$GITHUB_REPOSITORY" --pattern '*manylinux*x86_64.whl' --dir "$RUNNER_TEMP/wheels"
+          gh release download libtorrent-wheels --repo "$GITHUB_REPOSITORY" --pattern 'SHA256SUMS.txt' --dir "$RUNNER_TEMP/wheels"
+          cd "$RUNNER_TEMP/wheels"
+          actual_sums_sha="$(sha256sum SHA256SUMS.txt | awk '{print $1}')"
+          [ "$actual_sums_sha" = "$LIBTORRENT_WHEEL_SUMS_SHA256" ] || {
+            echo "::error::libtorrent SHA256SUMS.txt changed; review and update the pinned digest before releasing."
+            exit 1
+          }
+          wheel_count="$(find . -maxdepth 1 -type f -name '*manylinux*x86_64.whl' | wc -l)"
+          [ "$wheel_count" -eq 1 ] || {
+            echo "::error::Expected exactly one Linux libtorrent wheel, found $wheel_count"
+            exit 1
+          }
+          sha256sum --check --ignore-missing SHA256SUMS.txt
 
       - name: Build
         env:
@@ -111,6 +125,8 @@ jobs:
   windows:
     needs: [plan, linux]
     runs-on: windows-latest
+    permissions:
+      contents: write
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v5
@@ -139,6 +155,22 @@ jobs:
           $wheels = Join-Path $env:RUNNER_TEMP "wheels"
           gh release download libtorrent-wheels --repo $env:GITHUB_REPOSITORY --pattern '*win_amd64.whl' --dir $wheels
           if ($LASTEXITCODE -ne 0) { throw "wheel download failed" }
+          gh release download libtorrent-wheels --repo $env:GITHUB_REPOSITORY --pattern 'SHA256SUMS.txt' --dir $wheels
+          if ($LASTEXITCODE -ne 0) { throw "checksum download failed" }
+          $sumFile = Join-Path $wheels "SHA256SUMS.txt"
+          $sumDigest = (Get-FileHash $sumFile -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($sumDigest -ne $env:LIBTORRENT_WHEEL_SUMS_SHA256) {
+            throw "libtorrent SHA256SUMS.txt changed; review and update the pinned digest before releasing"
+          }
+          $wheelFiles = @(Get-ChildItem $wheels -Filter '*win_amd64.whl')
+          if ($wheelFiles.Count -ne 1) { throw "Expected exactly one Windows libtorrent wheel, found $($wheelFiles.Count)" }
+          $sumLine = Get-Content $sumFile | Where-Object { $_ -match [regex]::Escape($wheelFiles[0].Name) } | Select-Object -First 1
+          if (-not $sumLine) { throw "No SHA-256 entry for $($wheelFiles[0].Name)" }
+          $parts = $sumLine -split '\s+', 2
+          if ($parts.Count -ne 2 -or $parts[0] -notmatch '^[0-9a-fA-F]{64}$') { throw "Invalid SHA-256 entry for $($wheelFiles[0].Name)" }
+          $expected = $parts[0].ToLowerInvariant()
+          $actual = (Get-FileHash $wheelFiles[0].FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($actual -ne $expected) { throw "libtorrent wheel SHA-256 mismatch" }
           "LIBTORRENT_WHEEL_DIR=$wheels" >> $env:GITHUB_ENV
           $tar = Get-ChildItem (Join-Path $env:RUNNER_TEMP "linux") -Filter *.tar.gz | Select-Object -First 1
           "SERREBITORRENT_LINUX_TARBALL=$($tar.FullName)" >> $env:GITHUB_ENV
@@ -190,6 +222,9 @@ jobs:
   macos:
     needs: [plan, windows]
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
     steps:
       - name: Run ci.yml (macOS build) and wait
         run: |
