@@ -1857,3 +1857,18 @@ msgstr "{count} torrents geselecteerd."
 
 msgid "{name} preferences saved"
 msgstr "Voorkeuren van {name} opgeslagen"
+
+msgid "No torrent client is connected."
+msgstr "Er is geen torrentclient verbonden."
+
+msgid "Failed to recheck one or more torrents."
+msgstr "Een of meer torrents konden niet opnieuw worden gecontroleerd."
+
+msgid "Failed to reannounce one or more torrents."
+msgstr "Een of meer torrents konden niet opnieuw worden aangekondigd."
+
+msgid "Failed to open download folder."
+msgstr "Kan de downloadmap niet openen."
+
+msgid "Download folder is unavailable."
+msgstr "De downloadmap is niet beschikbaar."

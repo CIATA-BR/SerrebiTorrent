@@ -1857,3 +1857,18 @@ msgstr "已选择 {count} 个种子。"
 
 msgid "{name} preferences saved"
 msgstr "已保存 {name} 首选项"
+
+msgid "No torrent client is connected."
+msgstr "未连接任何种子客户端。"
+
+msgid "Failed to recheck one or more torrents."
+msgstr "无法重新校验一个或多个种子。"
+
+msgid "Failed to reannounce one or more torrents."
+msgstr "无法重新汇报一个或多个种子。"
+
+msgid "Failed to open download folder."
+msgstr "无法打开下载文件夹。"
+
+msgid "Download folder is unavailable."
+msgstr "下载文件夹不可用。"

@@ -1857,3 +1857,18 @@ msgstr "Pažymėta torrentų: {count}."
 
 msgid "{name} preferences saved"
 msgstr "{name} nuostatos įrašytos"
+
+msgid "No torrent client is connected."
+msgstr "Neprijungtas joks torrentų klientas."
+
+msgid "Failed to recheck one or more torrents."
+msgstr "Nepavyko pakartotinai patikrinti vieno ar daugiau torrentų."
+
+msgid "Failed to reannounce one or more torrents."
+msgstr "Nepavyko pakartotinai paskelbti vieno ar daugiau torrentų."
+
+msgid "Failed to open download folder."
+msgstr "Nepavyko atidaryti atsisiuntimų aplanko."
+
+msgid "Download folder is unavailable."
+msgstr "Atsisiuntimų aplankas nepasiekiamas."

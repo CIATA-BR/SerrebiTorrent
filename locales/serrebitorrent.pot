@@ -472,6 +472,9 @@ msgstr ""
 msgid "Down Speed"
 msgstr ""
 
+msgid "Download folder is unavailable."
+msgstr ""
+
 msgid "Download folder not available."
 msgstr ""
 
@@ -667,7 +670,16 @@ msgstr ""
 msgid "Failed to load settings."
 msgstr ""
 
+msgid "Failed to open download folder."
+msgstr ""
+
 msgid "Failed to read torrent file: {error}"
+msgstr ""
+
+msgid "Failed to reannounce one or more torrents."
+msgstr ""
+
+msgid "Failed to recheck one or more torrents."
 msgstr ""
 
 msgid "Failed to register associations: {error}"
@@ -1016,6 +1028,9 @@ msgid "No regular files found to include in torrent."
 msgstr ""
 
 msgid "No remote settings available (or Local client active)."
+msgstr ""
+
+msgid "No torrent client is connected."
 msgstr ""
 
 msgid "No torrent selected."

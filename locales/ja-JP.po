@@ -1857,3 +1857,18 @@ msgstr "{count} 件のトレントを選択しました。"
 
 msgid "{name} preferences saved"
 msgstr "{name} の設定を保存しました"
+
+msgid "No torrent client is connected."
+msgstr "トレントクライアントが接続されていません。"
+
+msgid "Failed to recheck one or more torrents."
+msgstr "1 つ以上のトレントを再チェックできませんでした。"
+
+msgid "Failed to reannounce one or more torrents."
+msgstr "1 つ以上のトレントを再アナウンスできませんでした。"
+
+msgid "Failed to open download folder."
+msgstr "ダウンロードフォルダーを開けませんでした。"
+
+msgid "Download folder is unavailable."
+msgstr "ダウンロードフォルダーを利用できません。"

@@ -1857,3 +1857,18 @@ msgstr "Valitud torrenteid: {count}."
 
 msgid "{name} preferences saved"
 msgstr "{name} eelistused salvestati"
+
+msgid "No torrent client is connected."
+msgstr "Ühtegi torrentiklienti pole ühendatud."
+
+msgid "Failed to recheck one or more torrents."
+msgstr "Ühe või mitme torrenti uuesti kontrollimine ebaõnnestus."
+
+msgid "Failed to reannounce one or more torrents."
+msgstr "Ühe või mitme torrenti uuesti teatamine ebaõnnestus."
+
+msgid "Failed to open download folder."
+msgstr "Allalaadimiskausta avamine ebaõnnestus."
+
+msgid "Download folder is unavailable."
+msgstr "Allalaadimiskaust pole saadaval."

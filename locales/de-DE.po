@@ -1857,3 +1857,18 @@ msgstr "{count} Torrents ausgewählt."
 
 msgid "{name} preferences saved"
 msgstr "Einstellungen von {name} gespeichert"
+
+msgid "No torrent client is connected."
+msgstr "Kein Torrent-Client verbunden."
+
+msgid "Failed to recheck one or more torrents."
+msgstr "Ein oder mehrere Torrents konnten nicht erneut geprüft werden."
+
+msgid "Failed to reannounce one or more torrents."
+msgstr "Ein oder mehrere Torrents konnten nicht erneut angekündigt werden."
+
+msgid "Failed to open download folder."
+msgstr "Download-Ordner konnte nicht geöffnet werden."
+
+msgid "Download folder is unavailable."
+msgstr "Download-Ordner ist nicht verfügbar."

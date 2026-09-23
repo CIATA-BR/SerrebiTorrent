@@ -1857,3 +1857,18 @@ msgstr "{count} torrent kijelölve."
 
 msgid "{name} preferences saved"
 msgstr "{name} beállításai mentve"
+
+msgid "No torrent client is connected."
+msgstr "Nincs csatlakoztatott torrentkliens."
+
+msgid "Failed to recheck one or more torrents."
+msgstr "Egy vagy több torrent újraellenőrzése nem sikerült."
+
+msgid "Failed to reannounce one or more torrents."
+msgstr "Egy vagy több torrent újrabejelentése nem sikerült."
+
+msgid "Failed to open download folder."
+msgstr "Nem sikerült megnyitni a letöltési mappát."
+
+msgid "Download folder is unavailable."
+msgstr "A letöltési mappa nem érhető el."

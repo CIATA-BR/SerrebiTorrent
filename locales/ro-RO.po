@@ -1857,3 +1857,18 @@ msgstr "Torrente selectate: {count}."
 
 msgid "{name} preferences saved"
 msgstr "Preferințe {name} salvate"
+
+msgid "No torrent client is connected."
+msgstr "Niciun client torrent nu este conectat."
+
+msgid "Failed to recheck one or more torrents."
+msgstr "Nu s-au putut reverifica unul sau mai multe torrente."
+
+msgid "Failed to reannounce one or more torrents."
+msgstr "Nu s-au putut reanunța unul sau mai multe torrente."
+
+msgid "Failed to open download folder."
+msgstr "Nu s-a putut deschide dosarul de descărcare."
+
+msgid "Download folder is unavailable."
+msgstr "Dosarul de descărcare nu este disponibil."

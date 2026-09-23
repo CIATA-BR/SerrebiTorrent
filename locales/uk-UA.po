@@ -1857,3 +1857,18 @@ msgstr "Вибрано торентів: {count}."
 
 msgid "{name} preferences saved"
 msgstr "Налаштування {name} збережено"
+
+msgid "No torrent client is connected."
+msgstr "Торент-клієнт не під’єднано."
+
+msgid "Failed to recheck one or more torrents."
+msgstr "Не вдалося повторно перевірити один або кілька торентів."
+
+msgid "Failed to reannounce one or more torrents."
+msgstr "Не вдалося повторно анонсувати один або кілька торентів."
+
+msgid "Failed to open download folder."
+msgstr "Не вдалося відкрити теку завантаження."
+
+msgid "Download folder is unavailable."
+msgstr "Тека завантаження недоступна."
