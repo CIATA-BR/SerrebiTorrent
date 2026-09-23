@@ -1230,3 +1230,24 @@ def test_web_ui_refresh_error_preserves_current_torrent_list(page, web_ui_server
     assert after_hashes == before_hashes
     assert page.evaluate("document.activeElement.dataset.hash") == before_hashes[0]
     assert "torrent removido" not in page.locator("#aria-announcer").inner_text()
+
+
+def test_web_ui_app_settings_load_error_preserves_form_state(page, web_ui_server):
+    _login(page, web_ui_server)
+
+    refresh_input = page.locator('#settingsForm input[name="refresh_rate"]')
+    refresh_input.fill("4321")
+
+    page.route(
+        "**/api/v2/app/prefs",
+        lambda route: route.fulfill(
+            status=503,
+            content_type="text/plain",
+            body="Application context is unavailable.",
+        ),
+    )
+
+    page.evaluate("loadAppSettings()")
+    page.wait_for_timeout(150)
+
+    assert refresh_input.input_value() == "4321"
