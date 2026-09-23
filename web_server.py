@@ -9,9 +9,8 @@ import time
 import tempfile
 from flask import Flask, request, jsonify, send_from_directory, session, redirect
 from werkzeug.utils import secure_filename
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urlparse
 
-import requests
 from clients import download_torrent_url
 
 def get_bundle_dir():
@@ -60,9 +59,6 @@ _AUTH_LOCK_SECONDS = 300
 _AUTH_MAX_TRACKED_IPS = 1024
 _auth_lock = threading.Lock()
 _auth_failures = {}  # ip -> (fail_count, window_start_ts)
-_ADD_URL_MAX_REDIRECTS = 5
-_ADD_URL_TIMEOUT = (3, 5)
-_REDIRECT_STATUSES = {301, 302, 303, 307, 308}
 
 
 def _client_ip():
