@@ -249,9 +249,30 @@ jobs:
         run: |
           set -euo pipefail
           if [ "${{ inputs.dry_run }}" = "true" ]; then ref=main; else ref="v${{ needs.plan.outputs.version }}"; fi
+          dispatched_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           gh workflow run ci.yml --repo "$GITHUB_REPOSITORY" --ref "$ref"
-          sleep 15
-          id="$(gh run list --repo "$GITHUB_REPOSITORY" --workflow ci.yml --event workflow_dispatch --limit 1 --json databaseId --jq '.[0].databaseId')"
+
+          id=""
+          for attempt in {1..12}; do
+            mapfile -t ids < <(
+              gh api "repos/$GITHUB_REPOSITORY/actions/workflows/ci.yml/runs?event=workflow_dispatch&per_page=20" |
+                jq -r --arg ref "$ref" --arg started "$dispatched_at" '
+                  .workflow_runs[]
+                  | select(.head_branch == $ref and .created_at >= $started)
+                  | .id
+                '
+            )
+            if [ "${#ids[@]}" -gt 1 ]; then
+              echo "::error::Multiple ci.yml workflow_dispatch runs matched $ref after $dispatched_at; refusing to watch an ambiguous run."
+              exit 1
+            fi
+            if [ "${#ids[@]}" -eq 1 ]; then
+              id="${ids[0]}"
+              break
+            fi
+            sleep 5
+          done
+          [ -n "$id" ] || { echo "::error::Could not identify the ci.yml run dispatched for $ref."; exit 1; }
           echo "ci.yml on $ref -> https://github.com/$GITHUB_REPOSITORY/actions/runs/$id"
           gh run watch "$id" --repo "$GITHUB_REPOSITORY" --exit-status --interval 30
 
