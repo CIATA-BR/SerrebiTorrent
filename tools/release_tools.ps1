@@ -1,6 +1,7 @@
 param(
     [Parameter(Mandatory = $true)]
-    [string]$NotesPath
+    [string]$NotesPath,
+    [string]$Range
 )
 
 $ErrorActionPreference = "Stop"
@@ -28,7 +29,10 @@ if ($validTags) {
 }
 
 $base = if ($latest) { [version]$latest.TrimStart("v") } else { $minVersion }
-$range = if ($latest) { "$latest..HEAD" } else { "HEAD" }
+if (-not $Range) {
+    $Range = if ($latest) { "$latest..HEAD" } else { "HEAD" }
+}
+$range = $Range
 
 # -split applies per element, so the log has to be joined back into one string
 # first; otherwise every line becomes its own "commit" and each line of a commit
@@ -74,6 +78,11 @@ foreach ($msg in $commits) {
     if (-not $subject) {
         continue
     }
+    # A merge subject names the branch, not the change; the commits it brought in
+    # are already in the range.
+    if ($subject -match "^Merge (pull request|branch) ") {
+        continue
+    }
     if ($msg -match "BREAKING CHANGE" -or $msg -match "!:") {
         $breakingItems += $subject
         continue
@@ -88,6 +97,13 @@ foreach ($msg in $commits) {
     }
     $otherItems += $subject
 }
+
+# A branch that syncs one file per commit repeats the same subject many times;
+# list each distinct subject once, in first-seen order.
+$breakingItems = @($breakingItems | Select-Object -Unique)
+$featureItems = @($featureItems | Select-Object -Unique)
+$fixItems = @($fixItems | Select-Object -Unique)
+$otherItems = @($otherItems | Select-Object -Unique)
 
 $lines = @()
 $lines += "Breaking"
