@@ -526,3 +526,35 @@ def test_web_ui_non_auth_403_does_not_fake_session_expiry(page, web_ui_server):
     assert page.evaluate(
         "sessionStorage.getItem('serrebitorrent-session-expired')"
     ) is None
+
+
+def test_web_ui_grid_shortcuts_do_not_capture_toolbar_keys(page, web_ui_server):
+    _login(page, web_ui_server)
+
+    settings = page.locator('[data-bs-target="#settingsModal"]')
+    settings.focus()
+    assert page.evaluate(
+        "document.activeElement === document.querySelector('[data-bs-target=\"#settingsModal\"]')"
+    )
+
+    page.keyboard.press("ArrowDown")
+    assert page.evaluate(
+        "document.activeElement === document.querySelector('[data-bs-target=\"#settingsModal\"]')"
+    )
+
+    page.keyboard.press("Control+A")
+    assert page.locator('tr[data-hash][aria-selected="true"]').count() == 0
+
+
+def test_web_ui_grid_shortcuts_do_not_capture_actions_button_keys(page, web_ui_server):
+    _login(page, web_ui_server)
+
+    actions = page.locator("#torrentActionsBtn")
+    actions.focus()
+    assert page.evaluate("document.activeElement && document.activeElement.id === 'torrentActionsBtn'")
+
+    page.keyboard.press("ArrowDown")
+    assert page.evaluate("document.activeElement && document.activeElement.id === 'torrentActionsBtn'")
+
+    page.keyboard.press("Control+A")
+    assert page.locator('tr[data-hash][aria-selected="true"]').count() == 0
