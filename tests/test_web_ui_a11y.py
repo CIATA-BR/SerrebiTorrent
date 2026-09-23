@@ -245,3 +245,33 @@ def test_web_ui_refresh_keeps_focus_in_grid_when_last_torrent_disappears(page, w
     assert page.locator("#aria-announcer").inner_text() == (
         "Focused torrent is no longer available. The torrent list is empty."
     )
+
+
+def test_web_ui_space_toggles_focused_torrent_selection(page, web_ui_server):
+    _login(page, web_ui_server)
+    page.wait_for_function("document.activeElement && document.activeElement.matches('tr[data-hash]')")
+
+    focused_hash = page.evaluate("document.activeElement.dataset.hash")
+    focused_name = page.locator(f'tr[data-hash="{focused_hash}"] .col-name').inner_text()
+
+    page.keyboard.press("Space")
+    page.wait_for_function(
+        "(hash) => document.querySelector(`tr[data-hash='${hash}']`)?.getAttribute('aria-selected') === 'true'",
+        arg=focused_hash,
+    )
+    assert page.evaluate("document.activeElement.dataset.hash") == focused_hash
+    page.wait_for_function(
+        "(message) => document.getElementById('aria-announcer').textContent === message",
+        arg=f"Selected {focused_name}",
+    )
+
+    page.keyboard.press("Space")
+    page.wait_for_function(
+        "(hash) => document.querySelector(`tr[data-hash='${hash}']`)?.getAttribute('aria-selected') === 'false'",
+        arg=focused_hash,
+    )
+    assert page.evaluate("document.activeElement.dataset.hash") == focused_hash
+    page.wait_for_function(
+        "(message) => document.getElementById('aria-announcer').textContent === message",
+        arg=f"Deselected {focused_name}",
+    )
