@@ -160,6 +160,9 @@ window.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 announceToSR("Please select at least one torrent first.", true);
             } else {
+                if (!actionMenuReturnFocus) {
+                    actionMenuReturnFocus = document.activeElement || actionsBtn;
+                }
                 lastUserActivity = Date.now();
                 announceToSR("Menu opened", true);
             }
