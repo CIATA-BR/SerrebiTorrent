@@ -150,7 +150,8 @@ def test_torrents_delete_endpoint_reports_remove_errors(auth_client):
     )
 
     assert rv.status_code == 500
-    assert b"Remove failed: still present" in rv.data
+    assert b"Failed to remove torrent(s)." in rv.data
+    assert b"still present" not in rv.data
 
 def test_rss_feeds_endpoint(auth_client):
     mock_app = MagicMock()
@@ -304,3 +305,33 @@ def test_openfolder_reports_missing_download_path(auth_client):
 
     assert rv.status_code == 404
     assert b"Download folder is unavailable." in rv.data
+
+
+def test_torrents_delete_requires_connected_client(auth_client):
+    original = web_server.WEB_CONFIG.copy()
+    try:
+        web_server.WEB_CONFIG['client'] = None
+
+        rv = auth_client.post(
+            '/api/v2/torrents/delete',
+            data={'hashes': 'h1', 'deleteFiles': 'false'},
+            headers=csrf_headers(auth_client),
+        )
+
+        assert rv.status_code == 503
+        assert b"No torrent client is connected." in rv.data
+    finally:
+        web_server.WEB_CONFIG.update(original)
+
+
+def test_torrents_delete_requires_selection(auth_client):
+    web_server.WEB_CONFIG['client'] = MagicMock()
+
+    rv = auth_client.post(
+        '/api/v2/torrents/delete',
+        data={'hashes': '', 'deleteFiles': 'false'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 400
+    assert b"No torrents selected." in rv.data
