@@ -458,7 +458,7 @@ async function refreshData(force = false) {
         const infoRes = await fetch('/api/v2/torrents/info');
         const infoData = await infoRes.json();
         
-        syncTorrentsMap(Array.isArray(torrentsList) ? torrentsList : []);
+        const listChanges = syncTorrentsMap(Array.isArray(torrentsList) ? torrentsList : []);
         updateFilteredList();
         renderVirtualRows();
         updateSidebarStats(infoData.stats, infoData.trackers);
@@ -495,13 +495,31 @@ async function refreshData(force = false) {
         } else if (lastFocusedHash) {
             lastFocusedHash = null;
         }
+
+        if (!isFirstLoad) {
+            const focusedRemovalWasAnnounced =
+                focusedHashBeforeRefresh && listChanges.removed.some(t => t.hash === focusedHashBeforeRefresh);
+            const addedCount = listChanges.added.length;
+            const removedCount = focusedRemovalWasAnnounced
+                ? listChanges.removed.length - 1
+                : listChanges.removed.length;
+            const parts = [];
+            if (addedCount > 0) parts.push(`${addedCount} torrent${addedCount === 1 ? '' : 's'} added`);
+            if (removedCount > 0) parts.push(`${removedCount} torrent${removedCount === 1 ? '' : 's'} removed`);
+            if (parts.length > 0) announceToSR(parts.join('. ') + '.');
+        }
     } catch (e) { console.error("Refresh error", e); }
 }
 
 function syncTorrentsMap(newData) {
     const newHashes = new Set(newData.map(t => t.hash));
+    const added = newData.filter(t => !torrentsMap.has(t.hash));
+    const removed = [];
+
     for (const h of torrentsMap.keys()) {
         if (!newHashes.has(h)) {
+            const previous = torrentsMap.get(h);
+            if (previous) removed.push(previous);
             torrentsMap.delete(h);
             const tr = domRows.get(h);
             if (tr) { tr.remove(); domRows.delete(h); }
@@ -509,6 +527,7 @@ function syncTorrentsMap(newData) {
         }
     }
     newData.forEach(t => torrentsMap.set(t.hash, t));
+    return { added, removed };
 }
 
 function updateFilteredList() {
