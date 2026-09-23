@@ -736,3 +736,40 @@ def test_download_and_apply_update_reports_progress(monkeypatch, tmp_path):
     assert ("Downloading update...", 0.35) in progress
     assert ("Downloading update...", 0.7) in progress
     assert ("Preparing restart...", 0.98) in progress
+
+
+def test_update_helper_verifies_new_app_before_cleanup_and_retention():
+    helper = Path("update_helper.bat").read_text(encoding="utf-8")
+
+    launch = helper.index("Launching updated app and verifying startup")
+    verify = helper.index("call :launch_and_verify_app", launch)
+    cleanup = helper.index("Cleaning up staging folder", verify)
+    retention = helper.index("Backup retention policy", cleanup)
+
+    assert launch < verify < cleanup < retention
+
+
+def test_update_helper_rolls_back_from_a_clean_runtime_surface():
+    helper = Path("update_helper.bat").read_text(encoding="utf-8")
+
+    rollback = helper.index("\n:rollback\n")
+    clear_runtime = helper.index("call :clear_install_runtime", rollback)
+    restore = helper.index('robocopy "%BACKUP_DIR%" "%INSTALL_DIR%"', clear_runtime)
+
+    assert rollback < clear_runtime < restore
+    assert "@('SerrebiTorrent_Data','config.json','.git','.venv','__pycache__')" in helper
+    assert "Rollback did not restore" in helper
+
+
+def test_update_helper_health_checks_the_restarted_executable():
+    helper = Path("update_helper.bat").read_text(encoding="utf-8")
+
+    section_start = helper.index("\n:launch_and_verify_app\n")
+    section_end = helper.index("\n:launch_app_once\n", section_start)
+    section = helper[section_start:section_end]
+
+    assert "Start-Process" in section
+    assert "-PassThru" in section
+    assert "Start-Sleep -Seconds 3" in section
+    assert "$p.HasExited" in section
+    assert "exit 1" in section
