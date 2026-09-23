@@ -678,3 +678,27 @@ def test_web_ui_unchanged_refresh_keeps_the_same_focused_tracker_node(page, web_
 
     assert page.evaluate("document.activeElement === window.__focusedTrackerNode")
     assert page.evaluate("window.__focusedTrackerNode.isConnected")
+
+
+def test_web_ui_successful_torrent_action_announces_completion(page, web_ui_server):
+    _login(page, web_ui_server)
+
+    page.wait_for_function(
+        "() => document.activeElement && document.activeElement.matches('tr[data-hash]')"
+    )
+    page.keyboard.press("Space")
+
+    page.route(
+        "**/api/v2/torrents/pause",
+        lambda route: route.fulfill(
+            status=200,
+            content_type="text/plain",
+            body="Ok.",
+        ),
+    )
+
+    page.locator('button[title="Pause"]').click()
+
+    page.wait_for_function(
+        "() => document.getElementById('aria-announcer').textContent === 'Pausar concluído'"
+    )
