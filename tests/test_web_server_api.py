@@ -821,3 +821,110 @@ def test_torrents_all_hides_backend_errors(auth_client):
     assert rv.status_code == 500
     assert b"Failed to fetch torrents." in rv.data
     assert b"secret backend detail" not in rv.data
+
+def test_rss_set_rule_creates_disabled_rule(auth_client):
+    manager = MagicMock()
+    manager.rules = []
+    manager.add_rule.return_value = True
+    mock_app = MagicMock()
+    mock_app.rss_panel.manager = manager
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/rss/set_rule',
+        data={'pattern': 'ubuntu', 'type': 'accept', 'enabled': 'false'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 200
+    manager.add_rule.assert_called_once_with('ubuntu', 'accept', enabled=False)
+
+
+def test_rss_set_rule_reports_persistence_failure(auth_client):
+    manager = MagicMock()
+    manager.rules = []
+    manager.add_rule.return_value = False
+    mock_app = MagicMock()
+    mock_app.rss_panel.manager = manager
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/rss/set_rule',
+        data={'pattern': 'ubuntu', 'type': 'accept', 'enabled': 'true'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 500
+    assert b"Failed to save RSS rule." in rv.data
+
+
+def test_rss_set_rule_rejects_unknown_type(auth_client):
+    manager = MagicMock()
+    manager.rules = []
+    mock_app = MagicMock()
+    mock_app.rss_panel.manager = manager
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/rss/set_rule',
+        data={'pattern': 'ubuntu', 'type': 'maybe', 'enabled': 'true'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 400
+    assert b"Unsupported rule type." in rv.data
+    manager.add_rule.assert_not_called()
+
+
+def test_rss_set_rule_reports_missing_index(auth_client):
+    manager = MagicMock()
+    manager.rules = []
+    mock_app = MagicMock()
+    mock_app.rss_panel.manager = manager
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/rss/set_rule',
+        data={'index': '4', 'pattern': 'ubuntu', 'type': 'accept', 'enabled': 'true'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 404
+    assert b"RSS rule not found." in rv.data
+    manager.update_rule.assert_not_called()
+
+
+def test_rss_remove_rule_reports_persistence_failure(auth_client):
+    manager = MagicMock()
+    manager.rules = [{'pattern': 'ubuntu'}]
+    manager.remove_rule.return_value = False
+    mock_app = MagicMock()
+    mock_app.rss_panel.manager = manager
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/rss/remove_rule',
+        data={'index': '0'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 500
+    assert b"Failed to remove RSS rule." in rv.data
+
+
+def test_rss_remove_rule_reports_missing_rule(auth_client):
+    manager = MagicMock()
+    manager.rules = []
+    mock_app = MagicMock()
+    mock_app.rss_panel.manager = manager
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/rss/remove_rule',
+        data={'index': '0'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 404
+    assert b"RSS rule not found." in rv.data
+    manager.remove_rule.assert_not_called()

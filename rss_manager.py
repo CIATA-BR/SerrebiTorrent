@@ -71,13 +71,13 @@ class RSSManager:
             self.feeds[url] = previous
             return False
 
-    def add_rule(self, pattern, rule_type="accept", scope=None):
+    def add_rule(self, pattern, rule_type="accept", scope=None, enabled=True):
         """
         Add a rule.
         scope: None for global, or a list of feed URLs this rule applies to.
         """
         with self.lock:
-            self.rules.append({'pattern': pattern, 'enabled': True, 'type': rule_type, 'scope': scope})
+            self.rules.append({'pattern': pattern, 'enabled': bool(enabled), 'type': rule_type, 'scope': scope})
             if self.save():
                 return True
             self.rules.pop()
