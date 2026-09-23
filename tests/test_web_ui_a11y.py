@@ -347,3 +347,61 @@ def test_web_ui_action_menu_returns_focus_to_actions_button(page, web_ui_server)
     )
 
     page.wait_for_function("document.activeElement && document.activeElement.id === 'torrentActionsBtn'")
+
+
+def test_web_ui_modals_focus_useful_entry_controls(page, web_ui_server):
+    _login(page, web_ui_server)
+
+    cases = [
+        ("#addProfileModal", "#profName"),
+        ("#addTorrentModal", "#torrentUrls"),
+        ("#settingsModal", "#app-settings-tab"),
+    ]
+
+    for modal_selector, target_selector in cases:
+        page.evaluate(
+            """({modalSelector}) => {
+                const modal = document.querySelector(modalSelector);
+                modal.dispatchEvent(new Event('shown.bs.modal'));
+            }""",
+            {"modalSelector": modal_selector},
+        )
+        page.wait_for_function(
+            "(selector) => document.activeElement === document.querySelector(selector)",
+            arg=target_selector,
+        )
+
+
+def test_web_ui_modal_escape_path_returns_focus_to_trigger(page, web_ui_server):
+    _login(page, web_ui_server)
+
+    trigger_selector = '[data-bs-target="#addTorrentModal"]'
+    page.locator(trigger_selector).focus()
+
+    page.evaluate(
+        """({triggerSelector}) => {
+            const trigger = document.querySelector(triggerSelector);
+            const modal = document.getElementById('addTorrentModal');
+
+            const showEvent = new Event('show.bs.modal');
+            Object.defineProperty(showEvent, 'relatedTarget', { value: trigger });
+            modal.dispatchEvent(showEvent);
+            modal.dispatchEvent(new Event('shown.bs.modal'));
+
+            const escapeEvent = new KeyboardEvent('keydown', {
+                key: 'Escape',
+                bubbles: true,
+            });
+            modal.dispatchEvent(escapeEvent);
+
+            // Bootstrap owns Escape -> hide; hidden.bs.modal is the lifecycle
+            // event our focus restoration intentionally depends on.
+            modal.dispatchEvent(new Event('hidden.bs.modal'));
+        }""",
+        {"triggerSelector": trigger_selector},
+    )
+
+    page.wait_for_function(
+        "(selector) => document.activeElement === document.querySelector(selector)",
+        arg=trigger_selector,
+    )
