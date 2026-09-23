@@ -8,112 +8,112 @@ msgid "&About SerrebiTorrent"
 msgstr "&Про SerrebiTorrent"
 
 msgid "&Actions"
-msgstr "&Actions"
+msgstr "&Дії"
 
 msgid "&Add selected"
-msgstr "&Add вибрано"
+msgstr "&Додати вибрані"
 
 msgid "&Add Torrent File...\tCtrl+O"
 msgstr "&Додати торент-файл...\tCtrl+O"
 
 msgid "&Add..."
-msgstr "&Додати ..."
+msgstr "&Додати..."
 
 msgid "&Close"
 msgstr "&Закрити"
 
 msgid "&Connect"
-msgstr "&Connect"
+msgstr "&Підключитися"
 
 msgid "&Connect...\tCtrl+Shift+C"
 msgstr "&Підключитися...\tCtrl+Shift+C"
 
 msgid "&Edit..."
-msgstr "&Edit ..."
+msgstr "&Змінити..."
 
 msgid "&File"
-msgstr "&File"
+msgstr "&Файл"
 
 msgid "&Help"
 msgstr "&Довідка"
 
 msgid "&Indexers to search:"
-msgstr "&Indexers для пошуку:"
+msgstr "&Індексатори для пошуку:"
 
 msgid "&Indexers:"
-msgstr "&Indexers:"
+msgstr "&Індексатори:"
 
 msgid "&Name:"
-msgstr "&Name:"
+msgstr "&Назва:"
 
 msgid "&Pause\tCtrl+P"
-msgstr "&Pause\tCtrl+P"
+msgstr "&Пауза\tCtrl+P"
 
 msgid "&Remove"
-msgstr "&Робота"
+msgstr "&Видалити"
 
 msgid "&Remove\tDel"
 msgstr "&Видалити\tDel"
 
 msgid "&Resume\tCtrl+R"
-msgstr "&Продовжити\tCtrl+R"
+msgstr "&Відновити\tCtrl+R"
 
 msgid "&Search for Torrents...\tCtrl+F"
 msgstr "&Пошук торентів...\tCtrl+F"
 
 msgid "&Search for:"
-msgstr "&Пошук:"
+msgstr "&Шукати:"
 
 msgid "&Start\tCtrl+S"
-msgstr "&Start\tCtrl+S"
+msgstr "&Запустити\tCtrl+S"
 
 msgid "&Tools"
-msgstr "&Tools"
+msgstr "&Інструменти"
 
 msgid "&URL:"
 msgstr "&URL:"
 
 msgid "1 feed"
-msgstr "1 корм"
+msgstr "Стрічок: 1"
 
 msgid "A Torznab or Newznab search endpoint. Prowlarr: {prowlarr}. Jackett, all trackers at once: {jackett}"
-msgstr "Кінцева точка пошуку Torznab або Newznab. Prowlarr: {prowlarr}. Jackett, усі трекери одразу: {jackett}"
+msgstr "Пошукова точка доступу Torznab або Newznab. Prowlarr: {prowlarr}. Jackett, усі трекери одразу: {jackett}"
 
 msgid "A Windows desktop torrent manager designed for keyboard-first use and screen readers."
-msgstr "Менеджер для настільних торрент-файлів Windows призначений для зчитувачів клавіатури та екранів."
+msgstr "Торент-клієнт для робочого столу Windows, розрахований на керування з клавіатури та роботу з екранними читачами."
 
 msgid "About this application"
-msgstr "Про це додаток"
+msgstr "Про застосунок"
 
 msgid "Accept"
 msgstr "Прийняти"
 
 msgid "Action menu opened. Use arrow keys to navigate."
-msgstr "Відкрито меню дій. Використовуйте клавіші стріли для навігації."
+msgstr "Меню дій відкрито. Для переміщення використовуйте стрілки."
 
 msgid "Active"
-msgstr "Активний"
+msgstr "Активні"
 
 msgid "Add"
 msgstr "Додати"
 
 msgid "Add &URL/Magnet...\tCtrl+U"
-msgstr "&Додати URL/магнет...\tCtrl+U"
+msgstr "Додати &URL/magnet...\tCtrl+U"
 
 msgid "Add a torrent from a local file"
-msgstr "Додати торрент-файл з локального файлу"
+msgstr "Додати торент із локального файлу"
 
 msgid "Add a torrent from a URL or Magnet link"
-msgstr "Додати торрент-файл з посилання на URL або Magnet"
+msgstr "Додати торент за URL або magnet-посиланням"
 
 msgid "Add Connection Profile"
-msgstr "Додавання профілю підключення"
+msgstr "Додати профіль підключення"
 
 msgid "Add created torrent to the currently connected client"
-msgstr "Додати створений торрент-файл в даний час підключений клієнт"
+msgstr "Додати створений торент до підключеного клієнта"
 
 msgid "Add Feed"
-msgstr "Додати корм"
+msgstr "Додати стрічку"
 
 msgid "Add indexer"
 msgstr "Додати індексатор"
@@ -122,58 +122,64 @@ msgid "Add Profile"
 msgstr "Додати профіль"
 
 msgid "Add RSS Rule"
-msgstr "Додати RSS Увійти"
+msgstr "Додати правило RSS"
 
 msgid "Add Rule"
-msgstr "Додати Рулі"
+msgstr "Додати правило"
 
 msgid "Add Torrent"
-msgstr "Додати Торент"
+msgstr "Додати торент"
 
 msgid "Add Torrent: {name}"
-msgstr "Додати Торент: {name}"
+msgstr "Додати торент: {name}"
 
 msgid "Add Tracker"
 msgstr "Додати трекер"
 
 msgid "Add/edit/delete profiles and connect"
-msgstr "Додавання/edit/delete профілі та підключення"
+msgstr "Додавання, зміна та видалення профілів, підключення"
+
+msgid "Added from RSS: {name}"
+msgstr "Додано з RSS: {name}"
 
 msgid "Added from RSS: {title}"
 msgstr "Додано з RSS: {title}"
 
 msgid "Added your blindDL indexer: {names}."
-msgstr "Додано індексатор сліпихДЛ: {names}."
+msgstr "Додано ваш індексатор із blindDL: {names}."
 
 msgid "Added your blindDL indexers: {names}."
-msgstr "Додано індексатори сліпихДЛ: {names}."
+msgstr "Додано ваші індексатори з blindDL: {names}."
 
 msgid "Added {title}"
-msgstr "Додано {title}"
+msgstr "Додано: {title}"
 
 msgid "Adding created torrent..."
-msgstr "Додавання створеного торрент..."
+msgstr "Додавання створеного торента..."
 
 msgid "Adding magnet link from CLI..."
-msgstr "Додавання магнітного посилання з CLI ..."
+msgstr "Додавання magnet-посилання з командного рядка..."
 
 msgid "Adding magnet link..."
-msgstr "Додавання магнітного посилання ..."
+msgstr "Додавання magnet-посилання..."
 
 msgid "Adding torrent file from CLI..."
-msgstr "Додавання торрент-файлу з CLI ..."
+msgstr "Додавання торент-файлу з командного рядка..."
 
 msgid "Adding torrent..."
-msgstr "Додавання торрент..."
+msgstr "Додавання торента..."
+
+msgid "Adding torrent: {name}..."
+msgstr "Додавання торента: {name}..."
 
 msgid "Adding torrent: {title}..."
-msgstr "Додавання торрентів: {title} ..."
+msgstr "Додавання торента: {title}..."
 
 msgid "Adding {count} torrent..."
-msgstr "Додавання {count} торрент ..."
+msgstr "Додавання торентів: {count}..."
 
 msgid "Adding {count} torrents..."
-msgstr "Додавання {count} торрентів ..."
+msgstr "Додавання торентів: {count}..."
 
 msgid "After Creation"
 msgstr "Після створення"
@@ -182,112 +188,115 @@ msgid "Age"
 msgstr "Вік"
 
 msgid "All"
-msgstr "Всі"
+msgstr "Усі"
 
 msgid "An indexer needs both a name and a URL."
-msgstr "Ім'я та URL-адреса індексатора потрібні як вказівник."
+msgstr "Індексатору потрібні назва та URL."
 
 msgid "An update check or install is already in progress."
-msgstr "Зареєструватися або встановити оновлення вже зараз."
+msgstr "Перевірка або встановлення оновлення вже виконується."
 
 msgid "An update is already in progress."
-msgstr "Оновлення вже триває."
+msgstr "Оновлення вже виконується."
 
 msgid "Announce IP (reported to trackers, blank = auto):"
-msgstr "Оголошено IP (відправлено до трекерів, порожній = авто):"
+msgstr "IP для анонсу (повідомляється трекерам, порожньо = автоматично):"
 
 msgid "Another indexer is already called {name}. Choose a different name."
-msgstr "Ще один індексатор вже називається {name}. Виберіть іншу назву."
+msgstr "Індексатор з назвою {name} уже існує. Виберіть іншу назву."
 
 msgid "Another instance of SerrebiTorrent is already running."
-msgstr "Ще один екземпляр SerrebiTorrent вже працює."
+msgstr "SerrebiTorrent уже запущено."
 
 msgid "Anti-leech"
-msgstr "Анти-лех"
+msgstr "Антиліч"
 
 msgid "API &key:"
-msgstr "API &key:"
+msgstr "&Ключ API:"
 
 msgid "API key"
-msgstr "API ключ"
+msgstr "Ключ API"
 
 msgid "Application"
-msgstr "Додаток"
+msgstr "Застосунок"
 
 msgid "Apply to Feeds (Uncheck all for Global):"
-msgstr "Застосувати до комбікормів"
+msgstr "Застосувати до стрічок (нічого не позначено = до всіх):"
 
 msgid "Applying update..."
 msgstr "Застосування оновлення..."
 
 msgid "Are you sure you want to clear ALL RSS feeds and rules?"
-msgstr "Ви впевнені, що ви хочете очистити всі RSS канали та правила?"
+msgstr "Справді видалити ВСІ стрічки та правила RSS?"
 
 msgid "Associate .torrent and magnet links with this app"
-msgstr "Асоційовані .torrent і магнітні посилання з цим додатком"
+msgstr "Пов'язати файли .torrent і magnet-посилання з цим застосунком"
 
 msgid "Association is only supported on Windows for now."
-msgstr "Асоціація підтримується тільки на Windows."
+msgstr "Асоціації файлів поки підтримуються лише у Windows."
 
 msgid "Associations registered successfully!"
-msgstr "Асоціація зареєстрована успішно!"
+msgstr "Асоціації успішно зареєстровано."
 
 msgid "Authentication (if required):"
-msgstr "Аутентифікація (за потреби):"
+msgstr "Автентифікація (якщо потрібна):"
 
 msgid "Auto"
-msgstr "Автоматика"
+msgstr "Автоматично"
+
+msgid "Auto-added from RSS: {name}"
+msgstr "Автоматично додано з RSS: {name}"
 
 msgid "Auto-added from RSS: {title}"
-msgstr "Автопрокат з RSS: {title}"
+msgstr "Автоматично додано з RSS: {title}"
 
 msgid "Auto-start failed: {error}"
-msgstr "Авто-старт не вдалося: {error}"
+msgstr "Помилка автозапуску: {error}"
 
 msgid "Auto-started new torrent(s)"
-msgstr "Auto-started новий торрент (s)"
+msgstr "Нові торенти запущено автоматично"
 
 msgid "Auto-update is not available for this build."
-msgstr "Auto-update не доступний для цього будівництва."
+msgstr "Автооновлення недоступне для цієї збірки."
 
 msgid "Automatically add trackers from URL"
-msgstr "Автоматично додавати трекери з URL"
+msgstr "Автоматично додавати трекери за URL"
 
 msgid "Automatically start torrents"
-msgstr "Автоматично запуск торрентів"
+msgstr "Автоматично запускати торенти"
 
 msgid "Availability"
-msgstr "Наявність"
+msgstr "Доступність"
 
 msgid "Best match"
-msgstr "Кращий матч"
+msgstr "Найкращий збіг"
 
 msgid "Bind Host:"
-msgstr "Бінд Хост:"
+msgstr "Адреса прив'язки:"
 
 msgid "BitTorrent"
-msgstr "БітТорент"
+msgstr "BitTorrent"
 
 msgid "Browse..."
-msgstr "Поза «69»"
+msgstr "Огляд..."
 
 msgid "Cancel"
-msgstr "Зареєструватися"
+msgstr "Скасувати"
 
 msgid "Categories"
 msgstr "Категорії"
 
 msgid "Category"
-msgstr "Категорії"
+msgstr "Категорія"
 
 msgid "Check"
-msgstr "Зареєструватися"
+msgstr "Позначити"
 
 msgid "Check All"
-msgstr "Показати всі"
+msgstr "Позначити всі"
 
 msgid "Check for &Updates...\tF5"
-msgstr "Перевірити &Updates...\tF5"
+msgstr "Перевірити &оновлення...\tF5"
 
 msgid "Check for Updates"
 msgstr "Перевірити оновлення"
@@ -296,22 +305,22 @@ msgid "Check for updates"
 msgstr "Перевірити оновлення"
 
 msgid "Check for updates automatically on startup"
-msgstr "Перевірити оновлення автоматично на запуску"
+msgstr "Перевіряти оновлення під час запуску"
 
 msgid "Checking"
-msgstr "Перевірити"
+msgstr "Перевірка"
 
 msgid "Checking for updates..."
 msgstr "Перевірка оновлень..."
 
 msgid "Choose a profile, then connect or manage it with the buttons below."
-msgstr "Виберіть профіль, потім з'єднайте його з кнопками нижче."
+msgstr "Виберіть профіль, потім підключіться або керуйте ним кнопками нижче."
 
 msgid "Choose Download Directory"
-msgstr "Виберіть каталог"
+msgstr "Вибір теки для завантажень"
 
 msgid "Choose Download Folder"
-msgstr "Виберіть розмір"
+msgstr "Вибір теки для завантажень"
 
 msgid "Client"
 msgstr "Клієнт"
@@ -326,163 +335,166 @@ msgid "Close"
 msgstr "Закрити"
 
 msgid "Close to System Tray"
-msgstr "Закрити до системного лотка"
+msgstr "Закривати в область сповіщень"
 
 msgid "Comment:"
 msgstr "Коментар:"
 
 msgid "Configure local session and application settings"
-msgstr "Налаштування параметрів локальної сесії та програми"
+msgstr "Налаштування локального сеансу та застосунку"
 
 msgid "Confirm"
-msgstr "Підтвердження"
+msgstr "Підтвердити"
 
 msgid "Confirm Reset"
-msgstr "Підтвердження"
+msgstr "Підтвердити скидання"
 
 msgid "Connect"
-msgstr "Роз'єм"
+msgstr "Підключитися"
 
 msgid "Connect or switch profile"
-msgstr "Профіль підключення або вимикача"
+msgstr "Підключитися або змінити профіль"
 
 msgid "Connect to a client before adding torrents."
-msgstr "Підключення до клієнта перед додаванням торрентів."
+msgstr "Підключіться до клієнта, перш ніж додавати торенти."
 
 msgid "Connect to this profile"
-msgstr "Підключення до цього профілю"
+msgstr "Підключитися до цього профілю"
 
 msgid "Connected to {name}"
 msgstr "Підключено до {name}"
 
 msgid "Connecting..."
-msgstr "З'єднання"
+msgstr "Підключення..."
 
 msgid "Connection"
 msgstr "Підключення"
 
 msgid "Connection Failed"
-msgstr "З'єднувач"
+msgstr "Помилка підключення"
 
 msgid "Connection Manager"
-msgstr "Менеджер з підключення"
+msgstr "Диспетчер підключень"
 
 msgid "Connection Manager..."
-msgstr "Менеджер з підключення..."
+msgstr "Диспетчер підключень..."
 
 msgid "Connection Manager...\tCtrl+Shift+C"
-msgstr "Менеджер з підключення...\tCtrl+Shift+C"
+msgstr "Диспетчер підключень...\tCtrl+Shift+C"
 
 msgid "Connection profiles"
-msgstr "Профіль підключення"
+msgstr "Профілі підключень"
 
 msgid "Context / validation:"
 msgstr "Контекст / перевірка:"
 
 msgid "Copied to clipboard"
-msgstr "Скопіювати до буфера обміну"
+msgstr "Скопійовано в буфер обміну"
 
 msgid "Copied {count} magnet link."
-msgstr "Запечена магнітна посилання {count}."
+msgstr "Скопійовано magnet-посилань: {count}."
 
 msgid "Copied {count} magnet links."
-msgstr "Скопійовані магнітні посилання {count}."
+msgstr "Скопійовано magnet-посилань: {count}."
 
 msgid "Copy &Info Hash\tCtrl+I"
-msgstr "Копіювати &info hash\tCtrl+I"
+msgstr "Копіювати &хеш\tCtrl+I"
 
 msgid "Copy &Magnet Link\tCtrl+M"
-msgstr "Копіювати &магнет-посилання\tCtrl+M"
+msgstr "Копіювати &magnet-посилання\tCtrl+M"
 
 msgid "Copy a magnet link for selected torrents"
-msgstr "Скопіюйте магнітне посилання для вибраних торрентів"
+msgstr "Копіювати magnet-посилання вибраних торентів"
 
 msgid "Copy Info Hash"
-msgstr "Статус на сервери"
+msgstr "Копіювати хеш"
 
 msgid "Copy it from Prowlarr or Jackett's own settings. Leave it empty if the endpoint needs no key."
-msgstr "Скопіюйте його з власних налаштувань Prowlarr або Jackett. Залиште його порожнім, якщо кінцева точка не потребує ключа."
+msgstr "Скопіюйте його з налаштувань Prowlarr або Jackett. Залиште порожнім, якщо точці доступу не потрібен ключ."
 
 msgid "Copy Magnet Link"
-msgstr "Статус на сервери"
+msgstr "Копіювати magnet-посилання"
 
 msgid "Copy magnet link to clipboard"
-msgstr "Скопіювати магнітне посилання на буфер"
+msgstr "Копіювати magnet-посилання в буфер обміну"
 
 msgid "Copy the info hash for selected torrents"
-msgstr "Статус на сервери"
+msgstr "Копіювати хеш вибраних торентів"
 
 msgid "Create &Torrent...\tCtrl+N"
 msgstr "Створити &торент...\tCtrl+N"
 
 msgid "Create a .torrent file from a file or folder"
-msgstr "Створіть файл .torrent з файлу або папки"
+msgstr "Створити файл .torrent із файлу або теки"
 
 msgid "Create Profile"
 msgstr "Створити профіль"
 
 msgid "Create Torrent"
-msgstr "Створити Torrent"
+msgstr "Створити торент"
 
 msgid "Created by:"
-msgstr "Створено:"
+msgstr "Автор:"
 
 msgid "Created torrent added"
-msgstr "Створено торрент"
+msgstr "Створений торент додано"
 
 msgid "Created torrent, but failed to add to client: {error}"
-msgstr "Створено торрент-файл, але не вдалося додати до клієнта: {error}"
+msgstr "Торент створено, але додати його до клієнта не вдалося: {error}"
 
 msgid "Current"
-msgstr "Головна"
+msgstr "Поточна"
 
 msgid "Dark (Night)"
-msgstr "Темно (Ніч)"
+msgstr "Темна (нічна)"
 
 msgid "Default"
-msgstr "Зареєструватися"
+msgstr "Типово"
 
 msgid "Default Download Path:"
-msgstr "Завантажити шлях за замовчуванням:"
+msgstr "Типовий шлях завантаження:"
 
 msgid "Delete"
-msgstr "Делет"
+msgstr "Видалити"
 
 msgid "Delete this profile?"
 msgstr "Видалити цей профіль?"
 
 msgid "Deselect All"
-msgstr "Відчайити все"
+msgstr "Зняти виділення"
+
+msgid "Deselected {name}"
+msgstr "Виділення знято: {name}"
 
 msgid "Disconnected"
-msgstr "Відключені"
+msgstr "Відключено"
 
 msgid "Down Speed"
-msgstr "Швидкість вниз"
+msgstr "Швидкість завантаження"
 
 msgid "Download folder not available."
-msgstr "Завантажити папку не доступна."
+msgstr "Тека завантажень недоступна."
 
 msgid "Download Path"
-msgstr "Завантажити шлях"
+msgstr "Шлях завантаження"
 
 msgid "Download Path:"
-msgstr "Завантажити шлях:"
+msgstr "Шлях завантаження:"
 
 msgid "Download Rate (bytes/s):"
-msgstr "Завантажити курс (байти/с):"
+msgstr "Швидкість завантаження (байт/с):"
 
 msgid "Downloaded update failed SHA-256 verification."
-msgstr "Завантажено оновлення не вдалося перевірити SHA-256."
+msgstr "Завантажене оновлення не пройшло перевірку SHA-256."
 
 msgid "Downloaded: {percent:.1f}%"
-msgstr "Скачати: {percent:.1f}%"
+msgstr "Завантажено: {percent:.1f}%"
 
 msgid "Downloading"
-msgstr "Завантаження"
+msgstr "Завантажується"
 
 msgid "Downloading torrent file..."
-msgstr "Завантаження торрент-файлу ..."
+msgstr "Завантаження торент-файлу..."
 
 msgid "Downloading update..."
 msgstr "Завантаження оновлення..."
@@ -494,64 +506,64 @@ msgid "E&xit"
 msgstr "Ви&хід"
 
 msgid "Edit"
-msgstr "Редагування"
+msgstr "Змінити"
 
 msgid "Edit connected qBittorrent settings"
-msgstr "Редагування підключених параметрів qBittorrent"
+msgstr "Змінити налаштування підключеного qBittorrent"
 
 msgid "Edit connected rTorrent settings"
-msgstr "Редагування підключених параметрів RTorrent"
+msgstr "Змінити налаштування підключеного rTorrent"
 
 msgid "Edit connected Transmission settings"
-msgstr "Редагування підключених параметрів передачі"
+msgstr "Змінити налаштування підключеного Transmission"
 
 msgid "Edit indexer"
-msgstr "Індикатор редагування"
+msgstr "Змінити індексатор"
 
 msgid "Edit Profile"
-msgstr "Редагувати профіль"
+msgstr "Змінити профіль"
 
 msgid "Edit RSS Rule"
-msgstr "Редагування RSS"
+msgstr "Змінити правило RSS"
 
 msgid "Edit Rule"
-msgstr "Редагувати Рулі"
+msgstr "Змінити правило"
 
 msgid "Enable DHT"
 msgstr "Увімкнути DHT"
 
 msgid "Enable Local Service Discovery (LSD)"
-msgstr "Увімкнути локальну службу Discovery (LSD)"
+msgstr "Увімкнути пошук локальних пірів (LSD)"
 
 msgid "Enable NAT-PMP Port Mapping"
-msgstr "Увімкнути NAT-PMP Порт Mapping"
+msgstr "Увімкнути переадресацію портів NAT-PMP"
 
 msgid "Enable UPnP Port Mapping"
 msgstr "Увімкнути переадресацію портів UPnP"
 
 msgid "Enable Web UI"
-msgstr "Увімкнути Web UI"
+msgstr "Увімкнути веб-інтерфейс"
 
 msgid "Enabled"
-msgstr "Увімкнути"
+msgstr "Увімкнено"
 
 msgid "English"
-msgstr "Українська"
+msgstr "Англійська"
 
 msgid "Enter a JSON object (e.g. {\"/watched\": \"/home/user\"})."
 msgstr "Введіть об'єкт JSON (наприклад, {\"/watched\": \"/home/user\"})."
 
 msgid "Enter adds the selected torrents. Control C copies the magnet link."
-msgstr "Введіть додано вибрані торрент-файли. Контроль C копіює магнітне посилання."
+msgstr "Enter додає вибрані торенти. Control+C копіює magnet-посилання."
 
 msgid "Enter edits the selected indexer. Delete removes it."
-msgstr "Введіть редагування вибраного індексатора. Видалити його."
+msgstr "Enter змінює вибраний індексатор. Delete видаляє його."
 
 msgid "Enter Magnet Link or URL:"
-msgstr "Введіть посилання на Magnet або URL:"
+msgstr "Введіть magnet-посилання або URL:"
 
 msgid "Enter RSS Feed URL:"
-msgstr "Введіть URL-адресу RSS:"
+msgstr "Введіть URL стрічки RSS:"
 
 msgid "Error"
 msgstr "Помилка"
@@ -563,127 +575,136 @@ msgid "Error adding URL: {error}"
 msgstr "Помилка додавання URL: {error}"
 
 msgid "Error fetching preferences"
-msgstr "Вподобання конфіденційності помилок"
+msgstr "Помилка отримання налаштувань"
 
 msgid "Error saving remote settings."
-msgstr "Збереження помилок віддалених налаштувань."
+msgstr "Помилка збереження віддалених налаштувань."
+
+msgid "Error saving remote settings: {error}"
+msgstr "Помилка збереження віддалених налаштувань: {error}"
 
 msgid "Error saving settings."
-msgstr "Параметри збереження помилок."
+msgstr "Помилка збереження налаштувань."
 
 msgid "Every day"
 msgstr "Щодня"
 
 msgid "Every Friday"
-msgstr "П'ятниця"
+msgstr "Щоп'ятниці"
 
 msgid "Every Monday"
-msgstr "Кожен понеділок"
+msgstr "Щопонеділка"
 
 msgid "Every Saturday"
-msgstr "Кожна субота"
+msgstr "Щосуботи"
 
 msgid "Every Sunday"
-msgstr "Кожна неділя"
+msgstr "Щонеділі"
 
 msgid "Every Thursday"
-msgstr "Щочетвер"
+msgstr "Щочетверга"
 
 msgid "Every Tuesday"
-msgstr "Кожен вівторок"
+msgstr "Щовівторка"
 
 msgid "Every Wednesday"
-msgstr "Щодо"
+msgstr "Щосереди"
 
 msgid "Every weekday"
-msgstr "Щодня"
+msgstr "У будні"
 
 msgid "Every weekend"
-msgstr "Кожен день"
+msgstr "У вихідні"
 
 msgid "Exit"
-msgstr "Випадковий"
+msgstr "Вихід"
 
 msgid "Exit application"
-msgstr "Додаток"
+msgstr "Вийти із застосунку"
 
 msgid "Export PO..."
-msgstr "Експорт PO ..."
+msgstr "Експорт PO..."
 
 msgid "Extracted update does not contain application files."
-msgstr "Витягувати оновлення не містить файлів додатків."
+msgstr "Розпаковане оновлення не містить файлів застосунку."
 
 msgid "Extracting update..."
-msgstr "Вилучення оновлення..."
+msgstr "Розпакування оновлення..."
 
 msgid "Failed"
-msgstr "Змішані"
+msgstr "Помилка"
 
 msgid "Failed to access clipboard."
-msgstr "Ввімкнено до буфера доступу."
+msgstr "Немає доступу до буфера обміну."
 
 msgid "Failed to add from RSS: {error}"
-msgstr "Заборонено додавати з RSS: {error}"
+msgstr "Не вдалося додати з RSS: {error}"
 
 msgid "Failed to add magnet: {error}"
-msgstr "В'язаний для додавання магніту: {error}"
+msgstr "Не вдалося додати magnet-посилання: {error}"
 
 msgid "Failed to add torrent: {error}"
-msgstr "Заборонено додавати торрент: {error}"
+msgstr "Не вдалося додати торент: {error}"
 
 msgid "Failed to add torrents."
-msgstr "Не вдалося додати торрент-файли."
+msgstr "Не вдалося додати торенти."
 
 msgid "Failed to apply settings: {error}"
-msgstr "Заборонено застосувати параметри: {error}"
+msgstr "Не вдалося застосувати налаштування: {error}"
 
 msgid "Failed to download torrent from URL: {error}"
-msgstr "Заборонено завантажити торрент-файл з URL: {error}"
+msgstr "Не вдалося завантажити торент за URL: {error}"
 
 msgid "Failed to fetch preferences"
-msgstr "Вимкнено до налаштувань fetch"
+msgstr "Не вдалося отримати налаштування"
 
 msgid "Failed to fetch remote preferences: {error}"
-msgstr "В'язаний до лютих дистанційних уподобань: {error}"
+msgstr "Не вдалося отримати віддалені налаштування: {error}"
 
 msgid "Failed to fetch {title}: {error}"
 msgstr "Не вдалося отримати {title}: {error}"
 
 msgid "Failed to load settings."
-msgstr "Ввімкнути налаштування навантаження."
+msgstr "Не вдалося завантажити налаштування."
 
 msgid "Failed to read torrent file: {error}"
-msgstr "Не вдалося прочитати файл торрент-файлу: {error}"
+msgstr "Не вдалося прочитати торент-файл: {error}"
 
 msgid "Failed to register associations: {error}"
-msgstr "Заборонено реєструвати асоціації: {error}"
+msgstr "Не вдалося зареєструвати асоціації: {error}"
 
 msgid "Failed to retrieve preferences from remote client."
-msgstr "Заборонено отримувати переваги від віддаленого клієнта."
+msgstr "Не вдалося отримати налаштування віддаленого клієнта."
 
 msgid "Failed to retrieve preferences from remote client. The client might not support this feature or there is a connection issue."
-msgstr "Заборонено отримувати переваги від віддаленого клієнта. Клієнт може не підтримувати цю функцію або є питання підключення."
+msgstr "Не вдалося отримати налаштування віддаленого клієнта. Можливо, клієнт не підтримує цю функцію або є проблема з підключенням."
 
 msgid "Failed to update remote preferences: {error}"
-msgstr "Заборонено оновити віддалені налаштування: {error}"
+msgstr "Не вдалося оновити віддалені налаштування: {error}"
+
+msgid "Failed to {action} torrent(s)."
+msgstr "Дію «{action}» для торентів не виконано."
+
+msgid "Failed to {action} torrent(s): {error}"
+msgstr "Дію «{action}» для торентів не виконано: {error}"
 
 msgid "Failed to {action} torrent: {error}"
-msgstr "В'язаний до {action} торрент: {error}"
+msgstr "Дію «{action}» для торента не виконано: {error}"
 
 msgid "Failed to {action}: {error}"
-msgstr "Не вдалося {action}: {error}"
+msgstr "Дію «{action}» не виконано: {error}"
 
 msgid "Fastest upload"
-msgstr "Швидке завантаження"
+msgstr "Найшвидша віддача"
 
 msgid "Fetching {name} preferences..."
-msgstr "Fetching {name} вподобання..."
+msgstr "Отримання налаштувань {name}..."
 
 msgid "File list not available (Magnet link)."
-msgstr "Файловий список не доступний (посилання на знак)."
+msgstr "Список файлів недоступний (magnet-посилання)."
 
 msgid "File..."
-msgstr "Головна"
+msgstr "Файл..."
 
 msgid "Files"
 msgstr "Файли"
@@ -695,139 +716,145 @@ msgid "Filter:"
 msgstr "Фільтр:"
 
 msgid "Finished"
-msgstr "Оздоблений"
+msgstr "Завершені"
 
 msgid "Fixed slots"
 msgstr "Фіксовані слоти"
 
+msgid "Focused torrent is no longer available. Focus moved to {name}."
+msgstr "Вибраний торент більше недоступний. Фокус переміщено на {name}."
+
+msgid "Focused torrent is no longer available. The torrent list is empty."
+msgstr "Вибраний торент більше недоступний. Список торентів порожній."
+
 msgid "Folder..."
-msgstr "Склад"
+msgstr "Тека..."
 
 msgid "Force a recheck/verification (if supported)"
-msgstr "Примусити перемикач / виверизацію (за підтримки)"
+msgstr "Примусово перевірити (якщо підтримується)"
 
 msgid "Force an immediate tracker announce (if supported)"
-msgstr "Примусити негайного трекера (за підтримки)"
+msgstr "Примусово анонсувати трекеру (якщо підтримується)"
 
 msgid "Force encryption off"
-msgstr "Захист сил від"
+msgstr "Примусово вимкнути шифрування"
 
 msgid "Force encryption on"
-msgstr "Захист сил на"
+msgstr "Примусово ввімкнути шифрування"
 
 msgid "Force Re&check"
-msgstr "Примус Re&check"
+msgstr "Примусова &перевірка"
 
 msgid "Force Reannoun&ce"
-msgstr "Примусово оголо&сити"
+msgstr "Примусовий &анонс"
 
 msgid "Force Reannounce"
-msgstr "Примус Reannounce"
+msgstr "Примусовий анонс"
 
 msgid "Force Recheck"
-msgstr "Примус Речбек"
+msgstr "Примусова перевірка"
 
 msgid "General"
-msgstr "Головна"
+msgstr "Загальні"
 
 msgid "Global"
-msgstr "Головна"
+msgstr "Глобально"
 
 msgid "Global DL Limit (B/s)"
-msgstr "Global DL Ліміт (B/s)"
+msgstr "Загальний ліміт завантаження (Б/с)"
 
 msgid "Global Limits (0 or -1 for unlimited):"
-msgstr "Глобальні ліміти (0 або -1 для необмеженого):"
+msgstr "Загальні ліміти (0 або -1 = без обмежень):"
 
 msgid "Global UL Limit (B/s)"
-msgstr "Глобальні UL Limit (B/s)"
+msgstr "Загальний ліміт віддачі (Б/с)"
 
 msgid "Hash"
-msgstr "Гаш"
+msgstr "Хеш"
 
 msgid "Hashing pieces and generating torrent metadata..."
-msgstr "Переміщення фрагментів та створення метаданих торрент-файлів ..."
+msgstr "Гешування частин і створення метаданих торента..."
 
 msgid "High"
-msgstr "Висока якість"
+msgstr "Високий"
 
 msgid "Host:"
-msgstr "Місце проведення:"
+msgstr "Хост:"
 
 msgid "HTTP (no auth)"
-msgstr "HTTP (без аути)"
+msgstr "HTTP (без автентифікації)"
 
 msgid "HTTP (with auth)"
-msgstr "HTTP (з auth)"
+msgstr "HTTP (з автентифікацією)"
 
 msgid "Import Complete"
-msgstr "Імпорт Повний"
+msgstr "Імпорт завершено"
 
 msgid "Import Failed: {error}"
-msgstr "Імпорт: {error}"
+msgstr "Помилка імпорту: {error}"
 
 msgid "Import FlexGet"
 msgstr "Імпорт FlexGet"
 
 msgid "Import FlexGet Config"
-msgstr "Імпорт FlexGet Configig"
+msgstr "Імпорт конфігурації FlexGet"
 
 msgid "Import PO..."
 msgstr "Імпорт PO..."
 
 msgid "Imported {feeds} feeds and {rules} rules."
-msgstr "Імпортовані корми {feeds} і правила {rules}."
+msgstr "Імпортовано стрічок: {feeds}, правил: {rules}."
 
 msgid "Included trackers (one per line):"
-msgstr "Включені трекери (на одну лінію):"
+msgstr "Включені трекери (по одному в рядку):"
 
 msgid "Indexer"
-msgstr "Індекс"
+msgstr "Індексатор"
 
 msgid "Indexer name"
-msgstr "Ім'я користувача"
+msgstr "Назва індексатора"
 
 msgid "Indexer URL"
-msgstr "Ім'я користувача"
+msgstr "URL індексатора"
 
 msgid "Indexers to search"
-msgstr "Індекси пошуку"
+msgstr "Індексатори для пошуку"
 
 msgid "Info"
-msgstr "Новини"
+msgstr "Відомості"
 
 msgid "Info hash copied to clipboard."
-msgstr "Info hash copied в буфер обміну."
+msgstr "Хеш скопійовано в буфер обміну."
 
 msgid "Info Hash: {hash}"
-msgstr "Інфо Хаш: {hash}"
+msgstr "Хеш: {hash}"
 
 msgid "Install directory not found."
-msgstr "Встановити каталог не знайдено."
+msgstr "Теку встановлення не знайдено."
 
 msgid "Invalid argument: {arg}"
-msgstr "Інвалідний аргумент: {arg}"
+msgstr "Неприпустимий аргумент: {arg}"
 
 msgid "Invalid credentials."
-msgstr "Неточні показники."
+msgstr "Неправильні облікові дані."
 
 msgid "Invalid integer for {label}: {error}"
-msgstr "Інвалідне ціле для {label}: {error}"
+msgstr "Неприпустиме ціле число в полі «{label}»: {error}"
 
 msgid "Invalid JSON for {label}: {error}"
-msgstr "Інвалідний JSON для {label}: {error}"
+msgstr "Неприпустимий JSON у полі «{label}»: {error}"
 
 msgid "Invalid number for {label}: {error}"
-msgstr "Невірне число для {label}: {error}"
+msgstr "Неприпустиме число в полі «{label}»: {error}"
 
 msgid "Invalid torrent URL."
-msgstr "Недійсний URL-адреса торрента."
+msgstr "Неприпустимий URL торента."
 
 msgid "Language"
-msgstr "Українська"
+msgstr "Мова"
 
 msgid "Language changes reload this page after saving."
-msgstr "Перезавантажити цю сторінку після збереження."
+msgstr "Після збереження зміна мови перезавантажить цю сторінку."
 
 msgid "Language code:"
 msgstr "Код мови:"
@@ -839,19 +866,19 @@ msgid "Language:"
 msgstr "Мова:"
 
 msgid "Largest"
-msgstr "Найпопулярніші"
+msgstr "Найбільші"
 
 msgid "Leave blank to retain the current password."
-msgstr "Залиште заготовку, щоб зберегти поточний пароль."
+msgstr "Залиште порожнім, щоб зберегти поточний пароль."
 
 msgid "Leechers"
-msgstr "Ліхта"
+msgstr "Лічери"
 
 msgid "libtorrent is not available. Torrent creation requires python-libtorrent."
-msgstr "libtorrent не доступний. Створення торрентів вимагає піртон-лібертента."
+msgstr "libtorrent недоступна. Для створення торентів потрібен python-libtorrent."
 
 msgid "Light (Classic)"
-msgstr "Світло (Класика)"
+msgstr "Світла (класична)"
 
 msgid "Limits"
 msgstr "Ліміти"
@@ -860,256 +887,259 @@ msgid "Link"
 msgstr "Посилання"
 
 msgid "Listening Port:"
-msgstr "Слухати Порт:"
+msgstr "Порт для вхідних підключень:"
 
 msgid "Loading remote settings..."
-msgstr "Завантаження віддалених налаштувань ..."
+msgstr "Завантаження віддалених налаштувань..."
 
 msgid "Loading..."
-msgstr "Завантаження"
+msgstr "Завантаження..."
 
 msgid "Local libtorrent"
-msgstr "Місцевий лібертент"
+msgstr "Локальний libtorrent"
 
 msgid "Local Session &Settings...\tCtrl+,"
-msgstr "Місцева сесія &Settings...\tCtrl+,"
+msgstr "&Налаштування локального сеансу...\tCtrl+,"
 
 msgid "Local session active"
-msgstr "Активний сеанс"
+msgstr "Локальний сеанс активний"
 
 msgid "Local Session Settings"
-msgstr "Налаштування локальної сесії"
+msgstr "Налаштування локального сеансу"
 
 msgid "Local Session Settings..."
-msgstr "Налаштування локальних сесія..."
+msgstr "Налаштування локального сеансу..."
 
 msgid "Login"
-msgstr "Логін"
+msgstr "Увійти"
 
 msgid "Login - SerrebiTorrent"
 msgstr "Вхід - SerrebiTorrent"
 
 msgid "Logout"
-msgstr "Зареєструватися"
+msgstr "Вийти"
 
 msgid "Magnet copied to clipboard."
-msgstr "Magnet копіюється на буфер."
+msgstr "Magnet-посилання скопійовано в буфер обміну."
 
 msgid "Magnet Link"
-msgstr "Магніт посилання"
+msgstr "Magnet-посилання"
 
 msgid "Magnet link added"
-msgstr "Магнетне посилання додано"
+msgstr "Magnet-посилання додано"
 
 msgid "Magnet link added from CLI"
-msgstr "Магнетне посилання додано з CLI"
+msgstr "Magnet-посилання додано з командного рядка"
 
 msgid "Magnet link(s) copied to clipboard."
-msgstr "Магнітне посилання (s) копіюється на буфер."
+msgstr "Magnet-посилання скопійовано в буфер обміну."
 
 msgid "Magnet: {magnet}"
-msgstr "Магніт: {magnet}"
+msgstr "Magnet: {magnet}"
 
 msgid "Manage Profiles & Connect"
-msgstr "Керування Профільами & Connect"
+msgstr "Керування профілями та підключення"
 
 msgid "Max Connections:"
-msgstr "Максимальні підключення:"
+msgstr "Макс. підключень:"
 
 msgid "Max Upload Slots:"
-msgstr "Max Завантаження слотів:"
+msgstr "Макс. слотів віддачі:"
 
 msgid "Menu closed"
-msgstr "Меню закритого"
+msgstr "Меню закрито"
 
 msgid "Menu opened"
-msgstr "Відкриття меню"
+msgstr "Меню відкрито"
 
 msgid "Message"
-msgstr "Новини"
+msgstr "Повідомлення"
 
 msgid "Metadata (optional)"
-msgstr "Метадані (за бажанням)"
+msgstr "Метадані (необов'язково)"
 
 msgid "Minimize to System Tray"
-msgstr "Мінімізація системного лотка"
+msgstr "Згортати в область сповіщень"
 
 msgid "Minimize to Tray"
-msgstr "Мінімізувати лоток"
+msgstr "Згортати в трей"
 
 msgid "Most seeders"
-msgstr "Більшість сівалок"
+msgstr "Найбільше сидів"
 
 msgid "My &indexers..."
 msgstr "Мої &індексатори..."
 
 msgid "My indexers..."
-msgstr "Мій індекс"
+msgstr "Мої індексатори..."
 
 msgid "My Remote Server"
-msgstr "Статус на сервери"
+msgstr "Мій віддалений сервер"
 
 msgid "My torrent indexers"
-msgstr "Мій індексатор торрентів"
+msgstr "Мої торент-індексатори"
 
 msgid "N/A"
-msgstr "Н/А"
+msgstr "Н/Д"
 
 msgid "Name"
-msgstr "Ім'я"
+msgstr "Назва"
 
 msgid "Navigation"
 msgstr "Навігація"
 
 msgid "Navigation Sidebar"
-msgstr "Навігація Sidebar"
+msgstr "Бічна панель навігації"
 
 msgid "Needs review"
-msgstr "Потрібні відгуки"
+msgstr "Потребує перевірки"
 
 msgid "Network"
 msgstr "Мережа"
 
 msgid "Newest"
-msgstr "Нові"
+msgstr "Найновіші"
 
 msgid "Next"
-msgstr "Про нас"
+msgstr "Далі"
 
 msgid "No"
 msgstr "Ні"
 
 msgid "No client connected."
-msgstr "Немає підключених клієнтів."
+msgstr "Клієнт не підключено."
 
 msgid "No indexers are switched on. Use Search sites."
-msgstr "Відключені індексатори. Використовуйте сайти пошуку."
+msgstr "Немає увімкнених індексаторів. Відкрийте «Пошукові сайти»."
 
 msgid "No regular files found to include in torrent."
-msgstr "Не знайдено регулярних файлів, які містяться в торренті."
+msgstr "Не знайдено звичайних файлів для включення в торент."
 
 msgid "No remote settings available (or Local client active)."
-msgstr "Немає доступних налаштувань (або локальних клієнтів)."
+msgstr "Віддалені налаштування недоступні (або активний локальний клієнт)."
 
 msgid "No torrent selected."
-msgstr "Немає вибраних торрентів."
+msgstr "Торент не вибрано."
 
 msgid "No torrents selected to {action}."
-msgstr "Немає торрентів, обраних до {action}."
+msgstr "Не вибрано торентів для дії «{action}»."
 
 msgid "No torrents selected."
-msgstr "Немає вибраних торрентів."
+msgstr "Торенти не вибрано."
 
 msgid "No torrents to start."
-msgstr "Немає торрентів для запуску."
+msgstr "Немає торентів для запуску."
 
 msgid "No torrents to stop."
-msgstr "Немає торрентів для зупинки."
+msgstr "Немає торентів для зупинки."
 
 msgid "No updates available."
-msgstr "Немає доступних оновлень."
+msgstr "Оновлень немає."
 
 msgid "None"
-msgstr "Ні"
+msgstr "Немає"
 
 msgid "None (No feeds)"
-msgstr "Ні (не годівлі)"
+msgstr "Немає (без стрічок)"
 
 msgid "Normal"
-msgstr "Нормативно"
+msgstr "Звичайний"
 
 msgid "Not connected to any client."
-msgstr "Не підключено до будь-якого клієнта."
+msgstr "Немає підключення до клієнта."
 
 msgid "Nothing found. Try fewer words, or switch on more indexers in Search sites."
-msgstr "Не знайдено Спробуйте менше слів, або переключіть більше індексаторів на сайтах пошуку."
+msgstr "Нічого не знайдено. Спробуйте менше слів або увімкніть більше індексаторів у «Пошукових сайтах»."
 
 msgid "Notifications"
-msgstr "Повідомлення"
+msgstr "Сповіщення"
 
 msgid "Off"
-msgstr "Відправити"
+msgstr "Вимк."
 
 msgid "OK"
-msgstr "Зареєструватися"
+msgstr "OK"
 
 msgid "On"
-msgstr "Про нас"
+msgstr "Увімк."
 
 msgid "One URL per line (HTTP/HTTPS)."
-msgstr "Один URL за рядок (HTTP/HTTPS)."
+msgstr "Один URL у рядку (HTTP/HTTPS)."
 
 msgid "Open Download &Folder"
-msgstr "Завантажити &Folder"
+msgstr "Відкрити &теку завантажень"
 
 msgid "Open Download Folder"
-msgstr "Завантажити плагін"
+msgstr "Відкрити теку завантажень"
 
 msgid "Open online translation"
-msgstr "Відкрити онлайн переклад"
+msgstr "Відкрити онлайн-переклад"
 
 msgid "Open the download folder (if available)"
-msgstr "Відкрийте папку завантаження (за наявності)"
+msgstr "Відкрити теку завантажень (якщо доступна)"
 
 msgid "Open Torrent File"
-msgstr "Open Torrent Файл"
+msgstr "Відкрити торент-файл"
 
 msgid "Open {name}"
-msgstr "{name}"
+msgstr "Відкрити {name}"
 
 msgid "Opened download folder."
-msgstr "Відкрийте папку завантаження."
+msgstr "Теку завантажень відкрито."
 
 msgid "Other"
 msgstr "Інше"
 
 msgid "Output .torrent file:"
-msgstr "Вихід .torrent файл:"
+msgstr "Вихідний файл .torrent:"
 
 msgid "Output .torrent path is required."
-msgstr "Вивід .torrent шлях необхідний."
+msgstr "Потрібно вказати шлях до вихідного файлу .torrent."
 
 msgid "Password"
-msgstr "Логін"
+msgstr "Пароль"
 
 msgid "Password:"
 msgstr "Пароль:"
 
 msgid "Path"
-msgstr "Мистецтво"
+msgstr "Шлях"
+
+msgid "Path: {path}"
+msgstr "Шлях: {path}"
 
 msgid "Pattern"
-msgstr "Візерунок"
+msgstr "Шаблон"
 
 msgid "Pause"
 msgstr "Пауза"
 
 msgid "Pause selected torrents"
-msgstr "За допомогою вибраних торрентів"
+msgstr "Призупинити вибрані торенти"
 
 msgid "Pause torrent"
-msgstr "Пауза торрент"
+msgstr "Призупинити торент"
 
 msgid "Paused"
-msgstr "Запобігання"
+msgstr "Призупинено"
 
 msgid "Pausing torrents..."
-msgstr "Pausing торрентів ..."
+msgstr "Призупинення торентів..."
 
 msgid "Peer proportional"
-msgstr "Пірс пропорційний"
+msgstr "Пропорційно пірам"
 
 msgid "Peers"
-msgstr "Пірс"
+msgstr "Піри"
 
 msgid "Piece size:"
-msgstr "Розмір:"
+msgstr "Розмір частини:"
 
 msgid "Please select a profile to connect."
 msgstr "Виберіть профіль для підключення."
 
 msgid "Please select at least one torrent first."
-msgstr "Будь ласка, виберіть принаймні один торрент першим."
+msgstr "Спочатку виберіть хоча б один торент."
 
 msgid "Port:"
 msgstr "Порт:"
@@ -1118,28 +1148,28 @@ msgid "Portuguese (Brazil)"
 msgstr "Португальська (Бразилія)"
 
 msgid "Prefer encryption"
-msgstr "Передове шифрування"
+msgstr "Надавати перевагу шифруванню"
 
 msgid "Prefer TCP"
-msgstr "Преферен TCP"
+msgstr "Надавати перевагу TCP"
 
 msgid "Preferences"
 msgstr "Налаштування"
 
 msgid "Preparing restart..."
-msgstr "Підготовка решти..."
+msgstr "Підготовка до перезапуску..."
 
 msgid "Previous"
-msgstr "Попереднє"
+msgstr "Назад"
 
 msgid "Priority"
-msgstr "Головна"
+msgstr "Пріоритет"
 
 msgid "Private torrent (disables DHT/PEX/LSD in most clients)"
-msgstr "Приватний торрент (знімки DHT/PEX/LSD у більшості клієнтів)"
+msgstr "Приватний торент (у більшості клієнтів вимикає DHT/PEX/LSD)"
 
 msgid "Private trackers work through Prowlarr or Jackett, which\nkeep your tracker logins. SerrebiTorrent stores only this\nURL and key."
-msgstr "Приватні трекери працюють через Prowlarr або Jackett, які\nзберігати ваші логіни трекера. SerrebiTorrent зберігає тільки це\nURL і ключ."
+msgstr "Приватні трекери працюють через Prowlarr або Jackett, де\nзберігаються ваші облікові дані. SerrebiTorrent зберігає лише\nцей URL і ключ."
 
 msgid "Profile"
 msgstr "Профіль"
@@ -1169,550 +1199,577 @@ msgid "Proxy Type:"
 msgstr "Тип проксі:"
 
 msgid "Public tracker list (press Enter to add to Included trackers)."
-msgstr "Список публічних трекерів (натисніть Enter, щоб додати в включені трекери)."
+msgstr "Публічний список трекерів (натисніть Enter, щоб додати до включених трекерів)."
 
 msgid "qBittorrent Remote &Settings..."
-msgstr "qBittorrent Віддалені &Settings ..."
+msgstr "&Віддалені налаштування qBittorrent..."
 
 msgid "qBittorrent Remote Settings..."
-msgstr "qBittorrent Віддалені налаштування ..."
+msgstr "Віддалені налаштування qBittorrent..."
 
 msgid "Queue"
-msgstr "Клей"
+msgstr "Черга"
 
 msgid "Ratio"
-msgstr "Рати"
+msgstr "Рейтинг"
 
 msgid "Reannounce not supported by this client."
-msgstr "Відмова не підтримується цим клієнтом."
+msgstr "Цей клієнт не підтримує повторний анонс."
 
 msgid "Reannouncing torrents..."
-msgstr "Переадресація торрентів ..."
+msgstr "Повторний анонс торентів..."
 
 msgid "Recheck not supported by this client."
-msgstr "Не підтримується цим клієнтом."
+msgstr "Цей клієнт не підтримує повторну перевірку."
 
 msgid "Rechecking torrents..."
-msgstr "Перегляд торрентів ..."
+msgstr "Повторна перевірка торентів..."
 
 msgid "Refresh"
-msgstr "Реверс"
+msgstr "Оновити"
 
 msgid "Refresh All"
-msgstr "Refresh Всі"
+msgstr "Оновити все"
 
 msgid "Regex Pattern:"
-msgstr "Regex шаблон:"
+msgstr "Регулярний вираз:"
 
 msgid "Register &Associations"
-msgstr "Реєстрація &Associations"
+msgstr "Зареєструвати &асоціації"
 
 msgid "Reject"
-msgstr "Відправити"
+msgstr "Відхилити"
 
 msgid "Remote Client"
 msgstr "Віддалений клієнт"
 
 msgid "Remote client did not return any recognized preferences."
-msgstr "Віддалений клієнт не повернув жодних уподобань."
+msgstr "Віддалений клієнт не повернув відомих налаштувань."
 
 msgid "Remote settings saved."
-msgstr "Віддалені налаштування збережені."
+msgstr "Віддалені налаштування збережено."
 
 msgid "Remove"
-msgstr "Прибрати"
+msgstr "Видалити"
+
+msgid "Remove failed: {error}"
+msgstr "Помилка видалення: {error}"
 
 msgid "Remove Feed"
-msgstr "Видалити корм"
+msgstr "Видалити стрічку"
 
 msgid "Remove feed {url}?"
-msgstr "Видалення корму {url}?"
+msgstr "Видалити стрічку {url}?"
 
 msgid "Remove Selected"
-msgstr "Видалити вибрано"
+msgstr "Видалити вибрані"
 
 msgid "Remove selected torrents"
-msgstr "Видалення вибраних торрентів"
+msgstr "Видалити вибрані торенти"
 
 msgid "Remove selected torrents and data"
-msgstr "Видалити вибрані торрент-файли та дані"
+msgstr "Видалити вибрані торенти разом із даними"
 
 msgid "Remove torrent"
-msgstr "Видалення торрентів"
+msgstr "Видалити торент"
 
 msgid "Remove with &Data\tShift+Del"
 msgstr "Видалити з &даними\tShift+Del"
 
 msgid "Remove with Data"
-msgstr "Видалення даних"
+msgstr "Видалити з даними"
+
+msgid "Remove {count} torrent and delete downloaded data?"
+msgstr "Видалити торенти ({count}) і завантажені дані?"
+
+msgid "Remove {count} torrent?"
+msgstr "Видалити торенти ({count})?"
+
+msgid "Remove {count} torrents and delete downloaded data?"
+msgstr "Видалити торенти ({count}) і завантажені дані?"
+
+msgid "Remove {count} torrents?"
+msgstr "Видалити торенти ({count})?"
 
 msgid "Removed {name}."
-msgstr "Видалено {name}."
+msgstr "{name} видалено."
 
 msgid "Reset failed: {error}"
-msgstr "Не вдалося: {error}"
+msgstr "Помилка скидання: {error}"
 
 msgid "Reset RSS (Clear all feeds and rules)"
-msgstr "Зареєструвати RSS (Зареєструвати всі корми та правила)"
+msgstr "Скинути RSS (видалити всі стрічки та правила)"
 
 msgid "Results"
 msgstr "Результати"
 
 msgid "Results, {count} result"
-msgstr "Результати, {count} результат"
+msgstr "Результати: {count}"
 
 msgid "Results, {count} results"
-msgstr "Результати {count}"
+msgstr "Результати: {count}"
 
 msgid "Resume"
-msgstr "Резюме"
+msgstr "Відновити"
 
 msgid "Resume selected torrents"
-msgstr "Вибрані торрент-файли"
+msgstr "Відновити вибрані торенти"
 
 msgid "Resuming torrents..."
-msgstr "Передача торрентів ..."
+msgstr "Відновлення торентів..."
 
 msgid "Round-robin"
-msgstr "Круглий будинок"
+msgstr "По колу"
 
 msgid "RSS Articles"
-msgstr "Новини"
+msgstr "Статті RSS"
 
 msgid "RSS data reset successfully."
-msgstr "Зберегти дані RSS успішно."
+msgstr "Дані RSS скинуто."
 
 msgid "RSS Downloader"
-msgstr "Завантажити PDF"
+msgstr "RSS-завантажувач"
 
 msgid "RSS Feeds"
-msgstr "RSS канали"
+msgstr "Стрічки RSS"
 
 msgid "RSS Rules Manager"
-msgstr "Статус на сервери"
+msgstr "Диспетчер правил RSS"
 
 msgid "RSS Update Interval (s)"
-msgstr "Статус на сервери"
+msgstr "Інтервал оновлення RSS (с)"
 
 msgid "RSS Update Interval (seconds):"
-msgstr "RSS Update Interval (секунди):"
+msgstr "Інтервал оновлення RSS (секунди):"
 
 msgid "rTorrent Remote &Settings..."
-msgstr "RTorrent Віддалені &Settings ..."
+msgstr "&Віддалені налаштування rTorrent..."
 
 msgid "rTorrent Remote Settings..."
-msgstr "RTorrent Віддалені налаштування ..."
+msgstr "Віддалені налаштування rTorrent..."
 
 msgid "Rule Type:"
-msgstr "Тип Рулі:"
+msgstr "Тип правила:"
 
 msgid "Rules"
 msgstr "Правила"
 
 msgid "Save App Settings"
-msgstr "Зберегти налаштування додатків"
+msgstr "Зберегти налаштування застосунку"
 
 msgid "Save As..."
-msgstr "Зберегти як ..."
+msgstr "Зберегти як..."
 
 msgid "Save entry"
 msgstr "Зберегти запис"
 
 msgid "Save Path"
-msgstr "Зберегти шлях"
+msgstr "Шлях збереження"
 
 msgid "Save Path (Optional)"
-msgstr "Заощаджувати шлях (опціонально)"
+msgstr "Шлях збереження (необов'язково)"
 
 msgid "Save Path:"
-msgstr "Зберегти шлях:"
+msgstr "Шлях збереження:"
 
 msgid "Save Remote Settings"
 msgstr "Зберегти віддалені налаштування"
 
 msgid "Save Torrent As"
-msgstr "Зберегти Torrent Як"
+msgstr "Зберегти торент як"
 
 msgid "Scheduler"
-msgstr "Розклад"
+msgstr "Планувальник"
 
 msgid "Scheduling"
-msgstr "Шопінг"
+msgstr "Розклад"
 
 msgid "Scope"
-msgstr "Навігація"
+msgstr "Область"
 
 msgid "Scripts"
-msgstr "Списки"
+msgstr "Скрипти"
 
 msgid "Sea&rch"
-msgstr "По&шук"
+msgstr "&Пошук"
 
 msgid "Search"
 msgstr "Пошук"
 
 msgid "Search failed: {error}"
-msgstr "Пошук не вдалося: {error}"
+msgstr "Помилка пошуку: {error}"
 
 msgid "Search for"
-msgstr "Пошук"
+msgstr "Шукати"
 
 msgid "Search for Torrents"
-msgstr "Пошук торрентів"
+msgstr "Пошук торентів"
 
 msgid "Search si&tes..."
-msgstr "Пошук si&tes ..."
+msgstr "Пошукові &сайти..."
 
 msgid "Search sites"
-msgstr "Пошук сайтів"
+msgstr "Пошукові сайти"
 
 msgid "Search sites..."
-msgstr "Пошук сайтів"
+msgstr "Пошукові сайти..."
 
 msgid "Search torrent indexers and add what you find"
-msgstr "Пошук індексаторів торрентів і додати те, що ви знайдете"
+msgstr "Шукати в торент-індексаторах і додавати знайдене"
 
 msgid "Searching {count} indexer..."
-msgstr "Пошук індексатора {count} ..."
+msgstr "Пошук в індексаторах: {count}..."
 
 msgid "Searching {count} indexers..."
-msgstr "Пошук індексаторів {count} ..."
+msgstr "Пошук в індексаторах: {count}..."
 
 msgid "Seeding"
-msgstr "Насінництво"
+msgstr "Роздається"
 
 msgid "Seeds"
-msgstr "Насіння"
+msgstr "Сиди"
 
 msgid "Select"
-msgstr "Обрати"
+msgstr "Вибрати"
 
 msgid "Select &all"
-msgstr "Виберіть &all"
+msgstr "Вибрати &все"
 
 msgid "Select &All\tCtrl+A"
-msgstr "&All\tCtrl+A"
+msgstr "Вибрати &все\tCtrl+A"
 
 msgid "Select &none"
-msgstr "Виберіть &ON"
+msgstr "&Зняти вибір"
 
 msgid "Select a result first."
-msgstr "Виберіть результат першим."
+msgstr "Спочатку виберіть результат."
 
 msgid "Select a torrent."
-msgstr "Виберіть торрент."
+msgstr "Виберіть торент."
 
 msgid "Select All"
-msgstr "Всі"
+msgstr "Вибрати все"
 
 msgid "Select all torrents"
-msgstr "Виберіть всі торренти"
+msgstr "Вибрати всі торенти"
 
 msgid "Select File"
-msgstr "Виберіть файл"
+msgstr "Вибрати файл"
 
 msgid "Select Folder"
-msgstr "Виберіть папку"
+msgstr "Вибрати теку"
 
 msgid "Select {name}"
-msgstr "Виберіть {name}"
+msgstr "Вибрати {name}"
+
+msgid "Selected all {count} torrents"
+msgstr "Вибрано всі торенти: {count}"
+
+msgid "Selected {name}"
+msgstr "Вибрано: {name}"
 
 msgid "Selection cleared"
-msgstr "Вибір очищеного"
+msgstr "Виділення знято"
+
+msgid "Session expired. Please sign in again."
+msgstr "Сеанс завершився. Увійдіть знову."
 
 msgid "Set"
-msgstr "Комплекти"
+msgstr "Задати"
 
 msgid "Set Default"
-msgstr "За замовчуванням"
+msgstr "Зробити типовим"
 
 msgid "Settings"
 msgstr "Налаштування"
 
 msgid "Settings saved."
-msgstr "Налаштування збережених."
+msgstr "Налаштування збережено."
 
 msgid "Size"
 msgstr "Розмір"
 
+msgid "Size: {size}"
+msgstr "Розмір: {size}"
+
 msgid "Skip"
-msgstr "Навігація"
+msgstr "Пропустити"
 
 msgid "Skip to torrent list"
-msgstr "Перейти до вмісту"
+msgstr "Перейти до списку торентів"
 
 msgid "SOCKS4 (no auth)"
-msgstr "СОККС4 (без аути)"
+msgstr "SOCKS4 (без автентифікації)"
 
 msgid "SOCKS5 (no auth)"
-msgstr "SOCKS5 (без аути)"
+msgstr "SOCKS5 (без автентифікації)"
 
 msgid "SOCKS5 (with auth)"
-msgstr "SOCKS5 (з атом)"
+msgstr "SOCKS5 (з автентифікацією)"
 
 msgid "Sort &by:"
-msgstr "Сорт &by:"
+msgstr "&Сортувати за:"
 
 msgid "Sort by"
 msgstr "Сортувати за"
 
 msgid "Sorted by {label}."
-msgstr "Сортування за {label}."
+msgstr "Сортування: {label}."
 
 msgid "Source (file or folder):"
-msgstr "Джерело (файл або папка):"
+msgstr "Джерело (файл або тека):"
 
 msgid "Source (written into info dict as 'source'):"
-msgstr "Джерело (записаний на інформаційний дикт як 'source'):"
+msgstr "Джерело (записується в словник info як 'source'):"
 
 msgid "Source path is required."
-msgstr "Необхідний шлях джерела."
+msgstr "Потрібно вказати шлях до джерела."
 
 msgid "Source path must not be a symlink or Windows reparse point."
-msgstr "Джерело шляху не повинен бути симліном або пунктом репарації Windows."
+msgstr "Шлях до джерела не може бути символьним посиланням або точкою повторної обробки Windows."
 
 msgid "Source text"
-msgstr "Джерело тексту"
+msgstr "Вихідний текст"
 
 msgid "Source text:"
-msgstr "Джерело тексту:"
+msgstr "Вихідний текст:"
 
 msgid "Speed"
-msgstr "швидкість"
+msgstr "Швидкість"
 
 msgid "Start"
-msgstr "Почати"
+msgstr "Запустити"
 
 msgid "Start All"
-msgstr "Почати все"
+msgstr "Запустити всі"
 
 msgid "Start selected torrents"
-msgstr "початок вибраних торрентів"
+msgstr "Запустити вибрані торенти"
 
 msgid "Starting all torrents..."
-msgstr "Почати всі торренти ..."
+msgstr "Запуск усіх торентів..."
 
 msgid "Starting torrents..."
-msgstr "початок торрентів ..."
+msgstr "Запуск торентів..."
 
 msgid "Status"
-msgstr "Статус на сервери"
+msgstr "Стан"
 
 msgid "Status Filters"
-msgstr "Статус Фільтри"
+msgstr "Фільтри стану"
 
 msgid "Stop All"
 msgstr "Зупинити всі"
 
 msgid "Stopped"
-msgstr "Смоктати"
+msgstr "Зупинено"
 
 msgid "Stopping all torrents..."
-msgstr "Стоптування всіх торрентів ..."
+msgstr "Зупинка всіх торентів..."
 
 msgid "Stopping torrents..."
-msgstr "Стопування торрентів ..."
+msgstr "Зупинка торентів..."
 
 msgid "Success"
-msgstr "Про нас"
+msgstr "Готово"
 
 msgid "Switch Profile"
-msgstr "Статус на сервери"
+msgstr "Змінити профіль"
 
 msgid "Switching client profile..."
-msgstr "Переключення профілю клієнта..."
+msgstr "Зміна профілю клієнта..."
 
 msgid "System"
 msgstr "Система"
 
 msgid "System default"
-msgstr "Тип системи"
+msgstr "Системна"
 
 msgid "TCP and uTP"
 msgstr "TCP і uTP"
 
 msgid "Theme"
-msgstr "Головна"
+msgstr "Тема"
 
 msgid "Those results carry a tracker file rather than a magnet link."
-msgstr "Ці результати виконують файл трекера замість магнітного посилання."
+msgstr "Ці результати містять файл трекера, а не magnet-посилання."
 
 msgid "Time Left"
-msgstr "Час"
+msgstr "Залишилося"
 
 msgid "Title"
-msgstr "Головна"
+msgstr "Назва"
 
 msgid "Toggle"
-msgstr "Виброхвост"
+msgstr "Перемкнути"
 
 msgid "Too many failed attempts. Try again later."
-msgstr "Занадто багато невдалих спроб. Спробуйте пізніше."
+msgstr "Забагато невдалих спроб. Повторіть пізніше."
 
 msgid "Torrent Actions"
-msgstr "Торентні дії"
+msgstr "Дії з торентами"
 
 msgid "Torrent actions"
-msgstr "Торентні дії"
+msgstr "Дії з торентами"
 
 msgid "Torrent added"
 msgstr "Торент додано"
 
 msgid "Torrent created:\n{path}"
-msgstr "Створено:\n{path}"
+msgstr "Торент створено:\n{path}"
 
 msgid "Torrent Details"
-msgstr "Torrent Детальніше"
+msgstr "Відомості про торент"
 
 msgid "Torrent download finished after the active profile changed."
-msgstr "Завантажувати торрентів після зміни активного профілю."
+msgstr "Завантаження торента завершилося після зміни активного профілю."
 
 msgid "Torrent File"
-msgstr "Торент файл"
+msgstr "Торент-файл"
 
 msgid "Torrent file added from CLI"
-msgstr "Torrent файл додано з CLI"
+msgstr "Торент-файл додано з командного рядка"
 
 msgid "Torrent Files"
-msgstr "Торентні файли"
+msgstr "Торент-файли"
 
 msgid "Torrent files (*.torrent)|*.torrent"
-msgstr "Torrent Файли (*.torrent) }}*.torrent"
+msgstr "Торент-файли (*.torrent)|*.torrent"
 
 msgid "Torrent List"
-msgstr "Список торрентів"
+msgstr "Список торентів"
 
 msgid "Torrent Options"
-msgstr "Параметри торренту"
+msgstr "Параметри торента"
 
 msgid "Torrents"
-msgstr "Торренти"
+msgstr "Торенти"
 
 msgid "torrents"
-msgstr "завантаження"
+msgstr "торенти"
 
 msgid "Tracker List URL:"
-msgstr "Адреса списку трекера:"
+msgstr "URL списку трекерів:"
 
 msgid "Trackers"
-msgstr "Відстеження"
+msgstr "Трекери"
 
 msgid "Translated"
-msgstr "Переклад"
+msgstr "Перекладено"
 
 msgid "Translation"
 msgstr "Переклад"
 
 msgid "Translation Center"
-msgstr "Центр перекладів"
+msgstr "Центр перекладу"
 
 msgid "Translation:"
 msgstr "Переклад:"
 
 msgid "Transmission Remote &Settings..."
-msgstr "Передача дистанційних &Settings ..."
+msgstr "&Віддалені налаштування Transmission..."
 
 msgid "Transmission Remote Settings..."
-msgstr "Віддалені налаштування передачі ..."
+msgstr "Віддалені налаштування Transmission..."
 
 msgid "Type"
 msgstr "Тип"
 
 msgid "Type what to look for first."
-msgstr "Види, які виглядають першими."
+msgstr "Спочатку введіть, що шукати."
 
 msgid "Type what to look for."
-msgstr "Види, які шукати."
+msgstr "Введіть, що шукати."
 
 msgid "UI Refresh Rate (ms)"
-msgstr "UI Бібліотечний тариф (MS)"
+msgstr "Частота оновлення інтерфейсу (мс)"
 
 msgid "Uncheck"
-msgstr "Нехек"
+msgstr "Зняти позначку"
 
 msgid "Uncheck All"
-msgstr "Показати всі"
+msgstr "Зняти всі позначки"
 
 msgid "Unknown"
 msgstr "Невідомо"
 
 msgid "Untranslated"
-msgstr "Неперекладений"
+msgstr "Не перекладено"
 
 msgid "Up Speed"
-msgstr "Швидкість"
+msgstr "Швидкість віддачі"
 
 msgid "Update Available"
-msgstr "Оновлення"
+msgstr "Доступне оновлення"
 
 msgid "Update canceled."
 msgstr "Оновлення скасовано."
 
 msgid "Update Check Failed"
-msgstr "Update Перевірити В’язаний"
+msgstr "Помилка перевірки оновлень"
 
 msgid "Update check failed."
-msgstr "Оновити перевірку не вдалося."
+msgstr "Помилка перевірки оновлень."
 
 msgid "Update Failed"
-msgstr "Оновлення"
+msgstr "Помилка оновлення"
 
 msgid "Update failed."
-msgstr "Оновлення не вдалося."
+msgstr "Не вдалося оновити."
 
 msgid "Update helper script not found."
-msgstr "Оновлення скрипта помічника не знайдено."
+msgstr "Допоміжний скрипт оновлення не знайдено."
 
 msgid "Update postponed."
 msgstr "Оновлення відкладено."
 
 msgid "Update prepared. Closing to install..."
-msgstr "Оновлення готового. Закриття для установки ..."
+msgstr "Оновлення підготовлено. Закриття для встановлення..."
 
 msgid "Update prepared. The app will restart after it exits."
-msgstr "Оновлення готового. Додаток буде перезапустити після виходу з неї."
+msgstr "Оновлення підготовлено. Застосунок перезапуститься після закриття."
 
 msgid "Updated executable not found."
-msgstr "Оновлено не знайдено."
+msgstr "Оновлений виконуваний файл не знайдено."
 
 msgid "Updates"
 msgstr "Оновлення"
 
 msgid "Updates are only available in the packaged app."
-msgstr "Оновлення доступні тільки в пакетному додатку."
+msgstr "Оновлення доступні лише в зібраному застосунку."
 
 msgid "Updating SerrebiTorrent"
 msgstr "Оновлення SerrebiTorrent"
 
 msgid "Updating..."
-msgstr "Поповнення ..."
+msgstr "Оновлення..."
 
 msgid "Upload Rate (bytes/s):"
-msgstr "Вартість завантаження (байти/с):"
+msgstr "Швидкість віддачі (байт/с):"
 
 msgid "Upload-rate based"
-msgstr "Завантажити"
+msgstr "За швидкістю віддачі"
 
 msgid "URL (e.g. scgi://... or http://...):"
-msgstr "URL-адреса (наприклад, scgi://... або http://...):"
+msgstr "URL (наприклад, scgi://... або http://...):"
 
 msgid "URL / Path"
-msgstr "URL / Патент"
+msgstr "URL / шлях"
 
 msgid "URL or download path"
-msgstr "URL або завантажити шлях"
+msgstr "URL або шлях завантаження"
 
 msgid "URL:Magnet Link"
-msgstr "Посилання:"
+msgstr "URL:Magnet-посилання"
 
 msgid "URLs / Magnets (one per line)"
-msgstr "URL-адреси / Magnets (один за рядок)"
+msgstr "URL / magnet-посилання (по одному в рядку)"
 
 msgid "Use DyDNS"
-msgstr "Використання барвників"
+msgstr "Використовувати DyDNS"
 
 msgid "Use NOIP"
-msgstr "Використання NOIP"
+msgstr "Використовувати NOIP"
 
 msgid "Username"
 msgstr "Ім'я користувача"
@@ -1721,67 +1778,82 @@ msgid "Username:"
 msgstr "Ім'я користувача:"
 
 msgid "Verifying download..."
-msgstr "Перевірити завантаження..."
+msgstr "Перевірка завантаження..."
 
 msgid "Verifying signature..."
-msgstr "Перевірити підпис..."
+msgstr "Перевірка підпису..."
 
 msgid "Warning"
-msgstr "Зареєструватися"
+msgstr "Попередження"
 
 msgid "Web Seeds (optional)"
-msgstr "Web Seeds (за бажанням)"
+msgstr "Веб-сиди (необов'язково)"
 
 msgid "Web UI"
-msgstr "Веб-сайт"
+msgstr "Веб-інтерфейс"
 
 msgid "YAML files (*.yml;*.yaml)|*.yml;*.yaml"
-msgstr "Файли YAML (*.yml;*.yaml)"
+msgstr "Файли YAML (*.yml;*.yaml)|*.yml;*.yaml"
 
 msgid "Yes"
-msgstr "Я"
+msgstr "Так"
 
 msgid "You're already on the latest version."
-msgstr "Ви вже на останню версію."
+msgstr "У вас уже остання версія."
 
 msgid "{action} complete"
-msgstr "{action} завершено"
+msgstr "{action}: виконано"
 
 msgid "{action} complete ({failed} failed). Last error: {error}"
-msgstr "{action} завершено ({failed} з помилкою). Остання помилка: {error}"
+msgstr "{action}: виконано (з помилками: {failed}). Остання помилка: {error}"
 
 msgid "{client} Remote Settings"
 msgstr "Віддалені налаштування {client}"
 
 msgid "{count} feeds"
-msgstr "{count} корми"
+msgstr "Стрічок: {count}"
 
 msgid "{count} indexer switched on."
-msgstr "{count} індексатор перейшов на."
+msgstr "Увімкнено індексаторів: {count}."
 
 msgid "{count} indexers switched on."
-msgstr "Індексатори {count} переключені на."
+msgstr "Увімкнено індексаторів: {count}."
 
 msgid "{count} of your own indexer configured."
-msgstr "{count} власного індексатора."
+msgstr "Налаштовано власних індексаторів: {count}."
 
 msgid "{count} of your own indexers configured."
-msgstr "{count} власних індексаторів, налаштованих."
+msgstr "Налаштовано власних індексаторів: {count}."
 
 msgid "{count} result"
-msgstr "{count} результат"
+msgstr "Результатів: {count}"
 
 msgid "{count} result so far, {pending} still searching. Last: {source}."
-msgstr "{count} результат так далеко, {pending} все ще шукає. Останнє: {source}."
+msgstr "Результатів поки: {count}, ще шукають: {pending}. Останній: {source}."
 
 msgid "{count} results"
-msgstr "{count} результати"
+msgstr "Результатів: {count}"
 
 msgid "{count} results so far, {pending} still searching. Last: {source}."
-msgstr "{count} результати так далеко, {pending} все ще шукає. Останнє: {source}."
+msgstr "Результатів поки: {count}, ще шукають: {pending}. Останній: {source}."
+
+msgid "{count} torrent added."
+msgstr "Додано торентів: {count}."
+
+msgid "{count} torrent removed."
+msgstr "Видалено торентів: {count}."
 
 msgid "{count} torrents"
-msgstr "{count} торрентів"
+msgstr "Торентів: {count}"
+
+msgid "{count} torrents added."
+msgstr "Додано торентів: {count}."
+
+msgid "{count} torrents removed."
+msgstr "Видалено торентів: {count}."
+
+msgid "{count} torrents selected."
+msgstr "Вибрано торентів: {count}."
 
 msgid "{name} preferences saved"
-msgstr "Уподобання {name} збережені"
+msgstr "Налаштування {name} збережено"

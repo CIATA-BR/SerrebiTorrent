@@ -24,7 +24,7 @@ def test_add_torrent_dialog_strings_translate_to_pt_br():
 def test_add_torrent_title_preserves_torrent_name():
     assert (
         add_torrent_dialog.tr_add("Add Torrent: {name}", "pt-BR").format(name="Ubuntu")
-        == "Adicionar o Torrent: Ubuntu"
+        == "Adicionar torrent: Ubuntu"
     )
 
 

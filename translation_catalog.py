@@ -283,6 +283,13 @@ def validate_translation(source: str, translated: str) -> list[str]:
             f"{source_newlines}, got {translated_newlines}."
         )
 
+    # wx file-dialog wildcards ("Label|*.ext"): only the label is translatable.
+    if "|" in source and source.split("|", 1)[1] != translated.partition("|")[2]:
+        errors.append(
+            "File filter pattern differs: expected "
+            f"{source.split('|', 1)[1]!r} after the first '|'."
+        )
+
     source_mnemonics = _mnemonic_count(source)
     translated_mnemonics = _mnemonic_count(translated)
     if source_mnemonics != translated_mnemonics:

@@ -5,91 +5,91 @@ msgstr ""
 "Project-Id-Version: SerrebiTorrent\\nLanguage: hu-HU\\nX-Language-Name: Magyar\\nMIME-Version: 1.0\\nContent-Type: text/plain; charset=UTF-8\\nContent-Transfer-Encoding: 8bit\\n"
 
 msgid "&About SerrebiTorrent"
-msgstr "&About SerrebiTorrent"
+msgstr "A SerrebiTorrent &névjegye"
 
 msgid "&Actions"
-msgstr "&Actions"
+msgstr "&Műveletek"
 
 msgid "&Add selected"
-msgstr "&Add kijelölve"
+msgstr "Kijelöltek &hozzáadása"
 
 msgid "&Add Torrent File...\tCtrl+O"
-msgstr "&Torrentfájl hozzáadása...\tCtrl+O"
+msgstr "Torrent&fájl hozzáadása...\tCtrl+O"
 
 msgid "&Add..."
-msgstr "&Add..."
+msgstr "&Hozzáadás..."
 
 msgid "&Close"
-msgstr "&Close"
+msgstr "&Bezárás"
 
 msgid "&Connect"
-msgstr "&Connect"
+msgstr "&Csatlakozás"
 
 msgid "&Connect...\tCtrl+Shift+C"
-msgstr "&Kapcsolódás...\tCtrl+Shift+C"
+msgstr "&Csatlakozás...\tCtrl+Shift+C"
 
 msgid "&Edit..."
-msgstr "&ZEdit..."
+msgstr "&Szerkesztés..."
 
 msgid "&File"
-msgstr "&File"
+msgstr "&Fájl"
 
 msgid "&Help"
-msgstr "&Help"
+msgstr "&Súgó"
 
 msgid "&Indexers to search:"
-msgstr "&Indexers keresése:"
+msgstr "Keresendő &indexelők:"
 
 msgid "&Indexers:"
-msgstr "&Indexers:"
+msgstr "&Indexelők:"
 
 msgid "&Name:"
-msgstr "&Name:"
+msgstr "&Név:"
 
 msgid "&Pause\tCtrl+P"
-msgstr "&Szünet\tCtrl+P"
+msgstr "&Szüneteltetés\tCtrl+P"
 
 msgid "&Remove"
-msgstr "&Távolítás"
+msgstr "&Eltávolítás"
 
 msgid "&Remove\tDel"
-msgstr "&Remove\tDel"
+msgstr "&Eltávolítás\tDel"
 
 msgid "&Resume\tCtrl+R"
 msgstr "&Folytatás\tCtrl+R"
 
 msgid "&Search for Torrents...\tCtrl+F"
-msgstr "&Keresés torrentekre...\tCtrl+F"
+msgstr "Torrentek &keresése...\tCtrl+F"
 
 msgid "&Search for:"
-msgstr "&Search for:"
+msgstr "&Keresés:"
 
 msgid "&Start\tCtrl+S"
 msgstr "&Indítás\tCtrl+S"
 
 msgid "&Tools"
-msgstr "&Tools"
+msgstr "&Eszközök"
 
 msgid "&URL:"
 msgstr "&URL:"
 
 msgid "1 feed"
-msgstr "1 takarmány"
+msgstr "1 hírcsatorna"
 
 msgid "A Torznab or Newznab search endpoint. Prowlarr: {prowlarr}. Jackett, all trackers at once: {jackett}"
-msgstr "Torznab vagy Newznab keresési végpont. Prowlarr: {prowlarr}. Jackett, minden nyomkövető egyszerre: {jackett}"
+msgstr "Torznab vagy Newznab keresési végpont. Prowlarr: {prowlarr}. Jackett, az összes tracker egyszerre: {jackett}"
 
 msgid "A Windows desktop torrent manager designed for keyboard-first use and screen readers."
-msgstr "A Windows desktop torrent manager a kulcstartóra tervezve - első használat és képernyőleolvasó."
+msgstr "Windowsos asztali torrentkezelő, amelyet billentyűzetes használatra és képernyőolvasókhoz terveztek."
 
 msgid "About this application"
-msgstr "A kérelemről"
+msgstr "Az alkalmazás névjegye"
 
 msgid "Accept"
 msgstr "Elfogadás"
 
 msgid "Action menu opened. Use arrow keys to navigate."
-msgstr "Akció menü megnyitva. Használja nyilakkal navigálni."
+msgstr "A műveletek menü megnyílt. A nyílbillentyűkkel navigálhat."
 
 msgid "Active"
 msgstr "Aktív"
@@ -104,28 +104,28 @@ msgid "Add a torrent from a local file"
 msgstr "Torrent hozzáadása helyi fájlból"
 
 msgid "Add a torrent from a URL or Magnet link"
-msgstr "Torrent hozzáadása URL vagy Magnet kapcsolatból"
+msgstr "Torrent hozzáadása URL-ből vagy magnet linkből"
 
 msgid "Add Connection Profile"
-msgstr "Csatlakozási profil hozzáadása"
+msgstr "Kapcsolati profil hozzáadása"
 
 msgid "Add created torrent to the currently connected client"
-msgstr "Létrehozott torrent hozzáadása a jelenleg csatlakoztatott klienshez"
+msgstr "A létrehozott torrent hozzáadása a csatlakoztatott klienshez"
 
 msgid "Add Feed"
-msgstr "Takarmány hozzáadása"
+msgstr "Hírcsatorna hozzáadása"
 
 msgid "Add indexer"
-msgstr "Indikátor hozzáadása"
+msgstr "Indexelő hozzáadása"
 
 msgid "Add Profile"
-msgstr "A profil hozzáadása"
+msgstr "Profil hozzáadása"
 
 msgid "Add RSS Rule"
-msgstr "RSS szabály hozzáadása"
+msgstr "RSS-szabály hozzáadása"
 
 msgid "Add Rule"
-msgstr "cikk hozzáadása"
+msgstr "Szabály hozzáadása"
 
 msgid "Add Torrent"
 msgstr "Torrent hozzáadása"
@@ -134,103 +134,109 @@ msgid "Add Torrent: {name}"
 msgstr "Torrent hozzáadása: {name}"
 
 msgid "Add Tracker"
-msgstr "Nyomkövető hozzáadása"
+msgstr "Tracker hozzáadása"
 
 msgid "Add/edit/delete profiles and connect"
-msgstr "Profilok hozzáadása / szerkesztése / törlése és csatlakoztatása"
+msgstr "Profilok hozzáadása, szerkesztése, törlése és csatlakozás"
+
+msgid "Added from RSS: {name}"
+msgstr "Hozzáadva RSS-ből: {name}"
 
 msgid "Added from RSS: {title}"
-msgstr "Hozzáadva az RSS-től: {title}"
+msgstr "Hozzáadva RSS-ből: {title}"
 
 msgid "Added your blindDL indexer: {names}."
-msgstr "Hozzáadta a vakDL indexet: {names}."
+msgstr "A blindDL-indexelője hozzáadva: {names}."
 
 msgid "Added your blindDL indexers: {names}."
-msgstr "Hozzáadta a vakDL indexeket: {names}."
+msgstr "A blindDL-indexelői hozzáadva: {names}."
 
 msgid "Added {title}"
-msgstr "Hozzáadott {title}"
+msgstr "Hozzáadva: {title}"
 
 msgid "Adding created torrent..."
-msgstr "Adding létrehozta Torrent..."
+msgstr "A létrehozott torrent hozzáadása..."
 
 msgid "Adding magnet link from CLI..."
-msgstr "Mágneses kapcsolat hozzáadása a CLI-ből..."
+msgstr "Magnet link hozzáadása a parancssorból..."
 
 msgid "Adding magnet link..."
-msgstr "Mágneses kapcsolat hozzáadása..."
+msgstr "Magnet link hozzáadása..."
 
 msgid "Adding torrent file from CLI..."
-msgstr "Torrent fájl hozzáadása a CLI-től..."
+msgstr "Torrentfájl hozzáadása a parancssorból..."
 
 msgid "Adding torrent..."
 msgstr "Torrent hozzáadása..."
 
+msgid "Adding torrent: {name}..."
+msgstr "Torrent hozzáadása: {name}..."
+
 msgid "Adding torrent: {title}..."
-msgstr "Torrent: {title}..."
+msgstr "Torrent hozzáadása: {title}..."
 
 msgid "Adding {count} torrent..."
 msgstr "{count} torrent hozzáadása..."
 
 msgid "Adding {count} torrents..."
-msgstr "{count} torrents hozzáadása..."
+msgstr "{count} torrent hozzáadása..."
 
 msgid "After Creation"
-msgstr "A teremtés után"
+msgstr "Létrehozás után"
 
 msgid "Age"
 msgstr "Kor"
 
 msgid "All"
-msgstr "Valamennyi"
+msgstr "Összes"
 
 msgid "An indexer needs both a name and a URL."
-msgstr "Egy indexnek név és URL is kell."
+msgstr "Az indexelőnek névre és URL-re is szüksége van."
 
 msgid "An update check or install is already in progress."
-msgstr "A frissítés ellenőrzése vagy telepítése már folyamatban van."
+msgstr "Már folyamatban van egy frissítés-ellenőrzés vagy telepítés."
 
 msgid "An update is already in progress."
-msgstr "A frissítés már folyamatban van."
+msgstr "Már folyamatban van egy frissítés."
 
 msgid "Announce IP (reported to trackers, blank = auto):"
-msgstr "Innounce IP (jelentett nyomkövetők, üres = auto):"
+msgstr "Bejelentett IP (a trackereknek jelentve, üres = automatikus):"
 
 msgid "Another indexer is already called {name}. Choose a different name."
-msgstr "Egy másik indexer már a {name}. Válasszon egy másik nevet."
+msgstr "Már van {name} nevű indexelő. Válasszon másik nevet."
 
 msgid "Another instance of SerrebiTorrent is already running."
-msgstr "A SerrebiTorrent egy másik példája már működik."
+msgstr "A SerrebiTorrent egy másik példánya már fut."
 
 msgid "Anti-leech"
-msgstr "Anti-pióca"
+msgstr "Leech-védelem"
 
 msgid "API &key:"
-msgstr "API &key:"
+msgstr "API-&kulcs:"
 
 msgid "API key"
-msgstr "API kulcs"
+msgstr "API-kulcs"
 
 msgid "Application"
 msgstr "Alkalmazás"
 
 msgid "Apply to Feeds (Uncheck all for Global):"
-msgstr "Alkalmazás a Reeds (Törölje minden a Global):"
+msgstr "Alkalmazás a hírcsatornákra (ha egy sincs bejelölve = globális):"
 
 msgid "Applying update..."
 msgstr "Frissítés alkalmazása..."
 
 msgid "Are you sure you want to clear ALL RSS feeds and rules?"
-msgstr "Biztos, hogy tisztázni akarod az összes RSS-t és szabályt?"
+msgstr "Biztosan törli az ÖSSZES RSS-hírcsatornát és -szabályt?"
 
 msgid "Associate .torrent and magnet links with this app"
-msgstr "Társ.torrent és mágnes kapcsolatok ezzel az alkalmazással"
+msgstr "A .torrent fájlok és magnet linkek társítása ehhez az alkalmazáshoz"
 
 msgid "Association is only supported on Windows for now."
-msgstr "Association csak Windows-on támogatott."
+msgstr "A fájltársítás egyelőre csak Windowson támogatott."
 
 msgid "Associations registered successfully!"
-msgstr "Az egyesületek sikeresen regisztráltak!"
+msgstr "A társítások regisztrálása sikerült!"
 
 msgid "Authentication (if required):"
 msgstr "Hitelesítés (ha szükséges):"
@@ -238,41 +244,44 @@ msgstr "Hitelesítés (ha szükséges):"
 msgid "Auto"
 msgstr "Automatikus"
 
+msgid "Auto-added from RSS: {name}"
+msgstr "Automatikusan hozzáadva RSS-ből: {name}"
+
 msgid "Auto-added from RSS: {title}"
-msgstr "Auto-add from RSS: {title}"
+msgstr "Automatikusan hozzáadva RSS-ből: {title}"
 
 msgid "Auto-start failed: {error}"
-msgstr "Auto-start nem sikerült: {error}"
+msgstr "Az automatikus indítás nem sikerült: {error}"
 
 msgid "Auto-started new torrent(s)"
-msgstr "Auto - új torrent (k) indítása"
+msgstr "Új torrentek automatikusan elindítva"
 
 msgid "Auto-update is not available for this build."
-msgstr "Auto-update nem áll rendelkezésre ehhez az építményhez."
+msgstr "Az automatikus frissítés nem érhető el ehhez a kiadáshoz."
 
 msgid "Automatically add trackers from URL"
-msgstr "Nyomkövetők automatikus hozzáadása az URL-ből"
+msgstr "Trackerek automatikus hozzáadása URL-ből"
 
 msgid "Automatically start torrents"
-msgstr "Automatikusan indítsa el a torrenteket"
+msgstr "Torrentek automatikus indítása"
 
 msgid "Availability"
 msgstr "Elérhetőség"
 
 msgid "Best match"
-msgstr "Legjobb mérkőzés"
+msgstr "Legjobb egyezés"
 
 msgid "Bind Host:"
-msgstr "Bind Host:"
+msgstr "Kötési cím:"
 
 msgid "BitTorrent"
 msgstr "BitTorrent"
 
 msgid "Browse..."
-msgstr "Böngészés..."
+msgstr "Tallózás..."
 
 msgid "Cancel"
-msgstr "Törlés"
+msgstr "Mégse"
 
 msgid "Categories"
 msgstr "Kategóriák"
@@ -281,88 +290,88 @@ msgid "Category"
 msgstr "Kategória"
 
 msgid "Check"
-msgstr "Ellenőrzés"
+msgstr "Bejelölés"
 
 msgid "Check All"
-msgstr "Minden ellenőrzés"
+msgstr "Összes bejelölése"
 
 msgid "Check for &Updates...\tF5"
-msgstr "Ellenőrizze a &Updates... \tF5"
+msgstr "&Frissítések keresése...\tF5"
 
 msgid "Check for Updates"
-msgstr "A frissítések ellenőrzése"
+msgstr "Frissítések keresése"
 
 msgid "Check for updates"
-msgstr "A frissítések ellenőrzése"
+msgstr "Frissítések keresése"
 
 msgid "Check for updates automatically on startup"
-msgstr "A frissítések automatikus ellenőrzése indításkor"
+msgstr "Frissítések automatikus keresése indításkor"
 
 msgid "Checking"
 msgstr "Ellenőrzés"
 
 msgid "Checking for updates..."
-msgstr "A frissítések ellenőrzése..."
+msgstr "Frissítések keresése..."
 
 msgid "Choose a profile, then connect or manage it with the buttons below."
-msgstr "Válassza ki a profilt, majd csatlakoztassa vagy kezelje az alábbi gombokkal."
+msgstr "Válasszon profilt, majd az alábbi gombokkal csatlakozzon vagy kezelje."
 
 msgid "Choose Download Directory"
-msgstr "A letöltési könyvtár kiválasztása"
+msgstr "Letöltési könyvtár kiválasztása"
 
 msgid "Choose Download Folder"
-msgstr "A mappa letöltése"
+msgstr "Letöltési mappa kiválasztása"
 
 msgid "Client"
-msgstr "Ügyfél"
+msgstr "Kliens"
 
 msgid "Client Type"
-msgstr "Ügyfél típusa"
+msgstr "Kliens típusa"
 
 msgid "Client Type:"
-msgstr "Ügyfél típusa:"
+msgstr "Kliens típusa:"
 
 msgid "Close"
 msgstr "Bezárás"
 
 msgid "Close to System Tray"
-msgstr "A rendszertálca közelében"
+msgstr "Bezáráskor a tálcára"
 
 msgid "Comment:"
 msgstr "Megjegyzés:"
 
 msgid "Configure local session and application settings"
-msgstr "Helyi munkamenet és alkalmazás beállításainak beállítása"
+msgstr "A helyi munkamenet és az alkalmazás beállítása"
 
 msgid "Confirm"
 msgstr "Megerősítés"
 
 msgid "Confirm Reset"
-msgstr "A visszaállítás megerősítése"
+msgstr "Visszaállítás megerősítése"
 
 msgid "Connect"
 msgstr "Csatlakozás"
 
 msgid "Connect or switch profile"
-msgstr "Csatlakozó vagy kapcsoló profil"
+msgstr "Csatlakozás vagy profilváltás"
 
 msgid "Connect to a client before adding torrents."
-msgstr "Csatlakozás az ügyfélhez, mielőtt torrenteket adnánk hozzá."
+msgstr "Torrentek hozzáadása előtt csatlakozzon egy klienshez."
 
 msgid "Connect to this profile"
 msgstr "Csatlakozás ehhez a profilhoz"
 
 msgid "Connected to {name}"
-msgstr "Kapcsolatban a {name} vállalattal"
+msgstr "Csatlakozva: {name}"
 
 msgid "Connecting..."
-msgstr "Kapcsolódás..."
+msgstr "Csatlakozás..."
 
 msgid "Connection"
 msgstr "Kapcsolat"
 
 msgid "Connection Failed"
-msgstr "A kapcsolat nem sikerült"
+msgstr "A csatlakozás nem sikerült"
 
 msgid "Connection Manager"
 msgstr "Kapcsolatkezelő"
@@ -374,49 +383,49 @@ msgid "Connection Manager...\tCtrl+Shift+C"
 msgstr "Kapcsolatkezelő...\tCtrl+Shift+C"
 
 msgid "Connection profiles"
-msgstr "Csatlakozási profilok"
+msgstr "Kapcsolati profilok"
 
 msgid "Context / validation:"
-msgstr "Kontextus / validálás:"
+msgstr "Környezet / ellenőrzés:"
 
 msgid "Copied to clipboard"
-msgstr "A vágólapra másolva"
+msgstr "Vágólapra másolva"
 
 msgid "Copied {count} magnet link."
-msgstr "Másolt {count} mágnes link."
+msgstr "{count} magnet link másolva."
 
 msgid "Copied {count} magnet links."
-msgstr "Másolt {count} mágnes linkek."
+msgstr "{count} magnet link másolva."
 
 msgid "Copy &Info Hash\tCtrl+I"
-msgstr "&Info hash másolása\tCtrl+I"
+msgstr "&Infohash másolása\tCtrl+I"
 
 msgid "Copy &Magnet Link\tCtrl+M"
 msgstr "&Magnet link másolása\tCtrl+M"
 
 msgid "Copy a magnet link for selected torrents"
-msgstr "Mágneses kapcsolat másolása kiválasztott torrentekhez"
+msgstr "A kijelölt torrentek magnet linkjének másolása"
 
 msgid "Copy Info Hash"
-msgstr "Info Hash másolása"
+msgstr "Infohash másolása"
 
 msgid "Copy it from Prowlarr or Jackett's own settings. Leave it empty if the endpoint needs no key."
-msgstr "Másold le Prowlarr vagy Jackett saját beállításaiból. Hagyd üresen, ha a végpontnak nem kell kulcs."
+msgstr "Másolja ki a Prowlarr vagy a Jackett beállításaiból. Hagyja üresen, ha a végpontnak nem kell kulcs."
 
 msgid "Copy Magnet Link"
-msgstr "Mágneses link másolása"
+msgstr "Magnet link másolása"
 
 msgid "Copy magnet link to clipboard"
-msgstr "Mágneses kapcsolat másolása a vágólapra"
+msgstr "Magnet link másolása a vágólapra"
 
 msgid "Copy the info hash for selected torrents"
-msgstr "Másolja le az info hash a kiválasztott torrent"
+msgstr "A kijelölt torrentek infohashének másolása"
 
 msgid "Create &Torrent...\tCtrl+N"
 msgstr "&Torrent létrehozása...\tCtrl+N"
 
 msgid "Create a .torrent file from a file or folder"
-msgstr "Egy .torrent fájl létrehozása fájlból vagy mappából"
+msgstr ".torrent fájl létrehozása fájlból vagy mappából"
 
 msgid "Create Profile"
 msgstr "Profil létrehozása"
@@ -425,22 +434,22 @@ msgid "Create Torrent"
 msgstr "Torrent létrehozása"
 
 msgid "Created by:"
-msgstr "Létrehozta:"
+msgstr "Létrehozó:"
 
 msgid "Created torrent added"
-msgstr "Létrehozott torrent hozzáadott"
+msgstr "A létrehozott torrent hozzáadva"
 
 msgid "Created torrent, but failed to add to client: {error}"
-msgstr "Létrehozott torrent, de nem tette hozzá az ügyfél: {error}"
+msgstr "A torrent elkészült, de a klienshez adása nem sikerült: {error}"
 
 msgid "Current"
-msgstr "Jelenleg"
+msgstr "Jelenlegi"
 
 msgid "Dark (Night)"
-msgstr "Sötét (éjszaka)"
+msgstr "Sötét (éjszakai)"
 
 msgid "Default"
-msgstr "Alapértelmezés"
+msgstr "Alapértelmezett"
 
 msgid "Default Download Path:"
 msgstr "Alapértelmezett letöltési útvonal:"
@@ -449,31 +458,34 @@ msgid "Delete"
 msgstr "Törlés"
 
 msgid "Delete this profile?"
-msgstr "Törölni ezt a profilt?"
+msgstr "Törli ezt a profilt?"
 
 msgid "Deselect All"
-msgstr "Az összes megválasztása"
+msgstr "Kijelölés megszüntetése"
+
+msgid "Deselected {name}"
+msgstr "Kijelölés megszüntetve: {name}"
 
 msgid "Disconnected"
-msgstr "Kikapcsolás"
+msgstr "Nincs kapcsolat"
 
 msgid "Down Speed"
-msgstr "Down Speed"
+msgstr "Letöltési sebesség"
 
 msgid "Download folder not available."
-msgstr "A mappa letöltése nem érhető el."
+msgstr "A letöltési mappa nem érhető el."
 
 msgid "Download Path"
-msgstr "Letöltés"
+msgstr "Letöltési útvonal"
 
 msgid "Download Path:"
-msgstr "Letöltés:"
+msgstr "Letöltési útvonal:"
 
 msgid "Download Rate (bytes/s):"
-msgstr "Letöltési arány (bájt / s):"
+msgstr "Letöltési sebesség (bájt/s):"
 
 msgid "Downloaded update failed SHA-256 verification."
-msgstr "A letöltés nem sikerült."
+msgstr "A letöltött frissítés nem felelt meg az SHA-256-ellenőrzésnek."
 
 msgid "Downloaded: {percent:.1f}%"
 msgstr "Letöltve: {percent:.1f}%"
@@ -482,7 +494,7 @@ msgid "Downloading"
 msgstr "Letöltés"
 
 msgid "Downloading torrent file..."
-msgstr "Torrent fájl letöltése..."
+msgstr "Torrentfájl letöltése..."
 
 msgid "Downloading update..."
 msgstr "Frissítés letöltése..."
@@ -491,7 +503,7 @@ msgid "Downloads"
 msgstr "Letöltések"
 
 msgid "E&xit"
-msgstr "E&xit"
+msgstr "&Kilépés"
 
 msgid "Edit"
 msgstr "Szerkesztés"
@@ -503,34 +515,34 @@ msgid "Edit connected rTorrent settings"
 msgstr "A csatlakoztatott rTorrent beállításainak szerkesztése"
 
 msgid "Edit connected Transmission settings"
-msgstr "A csatlakoztatott átviteli beállítások módosítása"
+msgstr "A csatlakoztatott Transmission beállításainak szerkesztése"
 
 msgid "Edit indexer"
-msgstr "Indikátor szerkesztése"
+msgstr "Indexelő szerkesztése"
 
 msgid "Edit Profile"
-msgstr "A profil szerkesztése"
+msgstr "Profil szerkesztése"
 
 msgid "Edit RSS Rule"
-msgstr "RSS szabály szerkesztése"
+msgstr "RSS-szabály szerkesztése"
 
 msgid "Edit Rule"
-msgstr "A szabály módosítása"
+msgstr "Szabály szerkesztése"
 
 msgid "Enable DHT"
 msgstr "DHT engedélyezése"
 
 msgid "Enable Local Service Discovery (LSD)"
-msgstr "Helyi szolgáltatás felfedezésének engedélyezése (LSD)"
+msgstr "Helyi partnerkeresés (LSD) engedélyezése"
 
 msgid "Enable NAT-PMP Port Mapping"
-msgstr "A Nat- PMP port feltérképezésének engedélyezése"
+msgstr "NAT-PMP porttovábbítás engedélyezése"
 
 msgid "Enable UPnP Port Mapping"
-msgstr "Az UPnP port feltérképezésének engedélyezése"
+msgstr "UPnP porttovábbítás engedélyezése"
 
 msgid "Enable Web UI"
-msgstr "Webes név engedélyezése"
+msgstr "Webes felület engedélyezése"
 
 msgid "Enabled"
 msgstr "Engedélyezve"
@@ -539,37 +551,40 @@ msgid "English"
 msgstr "Angol"
 
 msgid "Enter a JSON object (e.g. {\"/watched\": \"/home/user\"})."
-msgstr "Adja meg a JSON objektumot (pl. {\"/watched\": \"/home/user\"})."
+msgstr "Adjon meg egy JSON-objektumot (pl. {\"/watched\": \"/home/user\"})."
 
 msgid "Enter adds the selected torrents. Control C copies the magnet link."
-msgstr "Adja meg a kiválasztott torrenteket. Control C lemásolja a mágnes kapcsolatot."
+msgstr "Az Enter hozzáadja a kijelölt torrenteket. A Control+C másolja a magnet linket."
 
 msgid "Enter edits the selected indexer. Delete removes it."
-msgstr "A kijelölt indexer szerkesztése. A törlés eltávolítja."
+msgstr "Az Enter szerkeszti a kijelölt indexelőt. A Delete eltávolítja."
 
 msgid "Enter Magnet Link or URL:"
-msgstr "Adja meg a Magnet linket vagy URL:"
+msgstr "Adja meg a magnet linket vagy az URL-t:"
 
 msgid "Enter RSS Feed URL:"
-msgstr "Adja meg az RSS feed URL-t:"
+msgstr "Adja meg az RSS-hírcsatorna URL-jét:"
 
 msgid "Error"
 msgstr "Hiba"
 
 msgid "Error adding file: {error}"
-msgstr "Hiba történt a fájl hozzáadása: {error}"
+msgstr "Hiba a fájl hozzáadásakor: {error}"
 
 msgid "Error adding URL: {error}"
-msgstr "URL hozzáadása: {error}"
+msgstr "Hiba az URL hozzáadásakor: {error}"
 
 msgid "Error fetching preferences"
-msgstr "Hiba történt a beállítások bekötése közben"
+msgstr "Hiba a beállítások lekérésekor"
 
 msgid "Error saving remote settings."
-msgstr "Hiba történt a távoli beállítások mentése közben."
+msgstr "Hiba a távoli beállítások mentésekor."
+
+msgid "Error saving remote settings: {error}"
+msgstr "Hiba a távoli beállítások mentésekor: {error}"
 
 msgid "Error saving settings."
-msgstr "Hiba történt a beállítások mentése közben."
+msgstr "Hiba a beállítások mentésekor."
 
 msgid "Every day"
 msgstr "Minden nap"
@@ -596,43 +611,43 @@ msgid "Every Wednesday"
 msgstr "Minden szerdán"
 
 msgid "Every weekday"
-msgstr "Minden hétköznap"
+msgstr "Hétköznapokon"
 
 msgid "Every weekend"
-msgstr "Minden hétvégén"
+msgstr "Hétvégén"
 
 msgid "Exit"
 msgstr "Kilépés"
 
 msgid "Exit application"
-msgstr "Kilépési kérelem"
+msgstr "Kilépés az alkalmazásból"
 
 msgid "Export PO..."
-msgstr "Export PO..."
+msgstr "PO exportálása..."
 
 msgid "Extracted update does not contain application files."
-msgstr "Az extrahált frissítés nem tartalmaz alkalmazásfájlokat."
+msgstr "A kicsomagolt frissítés nem tartalmaz alkalmazásfájlokat."
 
 msgid "Extracting update..."
-msgstr "A frissítés kivonása..."
+msgstr "Frissítés kicsomagolása..."
 
 msgid "Failed"
-msgstr "Nem sikerült"
+msgstr "Sikertelen"
 
 msgid "Failed to access clipboard."
 msgstr "Nem sikerült hozzáférni a vágólaphoz."
 
 msgid "Failed to add from RSS: {error}"
-msgstr "Nem sikerült felvenni az RSS-ből: {error}"
+msgstr "Nem sikerült hozzáadni RSS-ből: {error}"
 
 msgid "Failed to add magnet: {error}"
-msgstr "Nem sikerült hozzáadni a mágnest: {error}"
+msgstr "Nem sikerült hozzáadni a magnet linket: {error}"
 
 msgid "Failed to add torrent: {error}"
-msgstr "Torrent hozzáadása nem sikerült: {error}"
+msgstr "Nem sikerült hozzáadni a torrentet: {error}"
 
 msgid "Failed to add torrents."
-msgstr "Torrenteket nem sikerült hozzáadni."
+msgstr "Nem sikerült hozzáadni a torrenteket."
 
 msgid "Failed to apply settings: {error}"
 msgstr "Nem sikerült alkalmazni a beállításokat: {error}"
@@ -641,46 +656,52 @@ msgid "Failed to download torrent from URL: {error}"
 msgstr "Nem sikerült letölteni a torrentet az URL-ről: {error}"
 
 msgid "Failed to fetch preferences"
-msgstr "A beállítások lekérdezése nem sikerült"
+msgstr "Nem sikerült lekérni a beállításokat"
 
 msgid "Failed to fetch remote preferences: {error}"
-msgstr "Nem sikerült távoli preferenciákat behozni: {error}"
+msgstr "Nem sikerült lekérni a távoli beállításokat: {error}"
 
 msgid "Failed to fetch {title}: {error}"
-msgstr "Nem sikerült elhozni {title}: {error}"
+msgstr "Nem sikerült lekérni: {title}: {error}"
 
 msgid "Failed to load settings."
 msgstr "Nem sikerült betölteni a beállításokat."
 
 msgid "Failed to read torrent file: {error}"
-msgstr "Nem sikerült elolvasni a torrent fájlt: {error}"
+msgstr "Nem sikerült beolvasni a torrentfájlt: {error}"
 
 msgid "Failed to register associations: {error}"
-msgstr "Nem regisztrált egyesületek: {error}"
+msgstr "Nem sikerült regisztrálni a társításokat: {error}"
 
 msgid "Failed to retrieve preferences from remote client."
-msgstr "Nem sikerült beállításokat visszaszerezni a távoli klienstől."
+msgstr "Nem sikerült lekérni a beállításokat a távoli klienstől."
 
 msgid "Failed to retrieve preferences from remote client. The client might not support this feature or there is a connection issue."
-msgstr "Nem sikerült beállításokat visszaszerezni a távoli klienstől. Az ügyfél lehet, hogy nem támogatja ezt a funkciót, vagy van egy kapcsolat probléma."
+msgstr "Nem sikerült lekérni a beállításokat a távoli klienstől. Lehet, hogy a kliens nem támogatja ezt a funkciót, vagy kapcsolati probléma van."
 
 msgid "Failed to update remote preferences: {error}"
-msgstr "Nem sikerült frissíteni a távoli preferenciákat: {error}"
+msgstr "Nem sikerült frissíteni a távoli beállításokat: {error}"
+
+msgid "Failed to {action} torrent(s)."
+msgstr "A(z) {action} művelet nem sikerült a torrent(ek)en."
+
+msgid "Failed to {action} torrent(s): {error}"
+msgstr "A(z) {action} művelet nem sikerült a torrent(ek)en: {error}"
 
 msgid "Failed to {action} torrent: {error}"
-msgstr "Nem felelt meg a {action} torrent-nek: {error}"
+msgstr "A(z) {action} művelet nem sikerült a torrenten: {error}"
 
 msgid "Failed to {action}: {error}"
-msgstr "Nem sikerült a {action} számára: {error}"
+msgstr "A(z) {action} művelet nem sikerült: {error}"
 
 msgid "Fastest upload"
 msgstr "Leggyorsabb feltöltés"
 
 msgid "Fetching {name} preferences..."
-msgstr "{name} preferenciák létrehozása..."
+msgstr "{name} beállításainak lekérése..."
 
 msgid "File list not available (Magnet link)."
-msgstr "Fájl lista nem elérhető (Magnet link)."
+msgstr "A fájllista nem érhető el (magnet link)."
 
 msgid "File..."
 msgstr "Fájl..."
@@ -695,37 +716,43 @@ msgid "Filter:"
 msgstr "Szűrő:"
 
 msgid "Finished"
-msgstr "Befejezve"
+msgstr "Befejezett"
 
 msgid "Fixed slots"
-msgstr "Rögzített résidők"
+msgstr "Rögzített helyek"
+
+msgid "Focused torrent is no longer available. Focus moved to {name}."
+msgstr "A fókuszban lévő torrent már nem érhető el. A fókusz ide került: {name}."
+
+msgid "Focused torrent is no longer available. The torrent list is empty."
+msgstr "A fókuszban lévő torrent már nem érhető el. A torrentlista üres."
 
 msgid "Folder..."
 msgstr "Mappa..."
 
 msgid "Force a recheck/verification (if supported)"
-msgstr "Újraellenőrzés / ellenőrzés kényszerítése (ha támogatott)"
+msgstr "Újraellenőrzés kényszerítése (ha támogatott)"
 
 msgid "Force an immediate tracker announce (if supported)"
-msgstr "Azonnali nyomkövető bejelentése (ha támogatott)"
+msgstr "Azonnali bejelentés kényszerítése a trackernél (ha támogatott)"
 
 msgid "Force encryption off"
-msgstr "Titkosítás kikapcsolása"
+msgstr "Titkosítás kényszerített kikapcsolása"
 
 msgid "Force encryption on"
-msgstr "Titkosítás bekapcsolása"
+msgstr "Titkosítás kényszerített bekapcsolása"
 
 msgid "Force Re&check"
-msgstr "Erő RE&check"
+msgstr "Újra&ellenőrzés kényszerítése"
 
 msgid "Force Reannoun&ce"
 msgstr "Újrabejelentés &kényszerítése"
 
 msgid "Force Reannounce"
-msgstr "Force Repointing"
+msgstr "Újrabejelentés kényszerítése"
 
 msgid "Force Recheck"
-msgstr "Erő Recheck"
+msgstr "Újraellenőrzés kényszerítése"
 
 msgid "General"
 msgstr "Általános"
@@ -734,100 +761,100 @@ msgid "Global"
 msgstr "Globális"
 
 msgid "Global DL Limit (B/s)"
-msgstr "Globális DL-határérték (B / s)"
+msgstr "Globális letöltési korlát (B/s)"
 
 msgid "Global Limits (0 or -1 for unlimited):"
-msgstr "Globális határértékek (0 vagy -1 a korlátlan):"
+msgstr "Globális korlátok (0 vagy -1 = korlátlan):"
 
 msgid "Global UL Limit (B/s)"
-msgstr "Globális UL-határérték (B / s)"
+msgstr "Globális feltöltési korlát (B/s)"
 
 msgid "Hash"
 msgstr "Hash"
 
 msgid "Hashing pieces and generating torrent metadata..."
-msgstr "Darabokat hasít és torrent metaadatokat generál..."
+msgstr "Darabok hash-elése és a torrent metaadatainak előállítása..."
 
 msgid "High"
 msgstr "Magas"
 
 msgid "Host:"
-msgstr "Host:"
+msgstr "Kiszolgáló:"
 
 msgid "HTTP (no auth)"
-msgstr "HTTP (no auth)"
+msgstr "HTTP (hitelesítés nélkül)"
 
 msgid "HTTP (with auth)"
-msgstr "HTTP (auth-al)"
+msgstr "HTTP (hitelesítéssel)"
 
 msgid "Import Complete"
-msgstr "Teljes importálás"
+msgstr "Az importálás befejeződött"
 
 msgid "Import Failed: {error}"
-msgstr "Import sikertelen: {error}"
+msgstr "Az importálás nem sikerült: {error}"
 
 msgid "Import FlexGet"
 msgstr "FlexGet importálása"
 
 msgid "Import FlexGet Config"
-msgstr "FlexGet Config importálása"
+msgstr "FlexGet-beállítások importálása"
 
 msgid "Import PO..."
 msgstr "PO importálása..."
 
 msgid "Imported {feeds} feeds and {rules} rules."
-msgstr "Importált {feeds} takarmányok és {rules} szabályok."
+msgstr "{feeds} hírcsatorna és {rules} szabály importálva."
 
 msgid "Included trackers (one per line):"
-msgstr "Nyomkövetők (vonalanként egy):"
+msgstr "Belefoglalt trackerek (soronként egy):"
 
 msgid "Indexer"
-msgstr "Indexer"
+msgstr "Indexelő"
 
 msgid "Indexer name"
-msgstr "Indexer név"
+msgstr "Indexelő neve"
 
 msgid "Indexer URL"
-msgstr "Indexer URL"
+msgstr "Indexelő URL-je"
 
 msgid "Indexers to search"
-msgstr "Indexers kereséshez"
+msgstr "Keresendő indexelők"
 
 msgid "Info"
 msgstr "Információ"
 
 msgid "Info hash copied to clipboard."
-msgstr "Info hash másolta a vágólapra."
+msgstr "Infohash a vágólapra másolva."
 
 msgid "Info Hash: {hash}"
-msgstr "Info Hash: {hash}"
+msgstr "Infohash: {hash}"
 
 msgid "Install directory not found."
-msgstr "A könyvtár telepítése nem található."
+msgstr "A telepítési könyvtár nem található."
 
 msgid "Invalid argument: {arg}"
-msgstr "Érvénytelen érv: {arg}"
+msgstr "Érvénytelen argumentum: {arg}"
 
 msgid "Invalid credentials."
-msgstr "Érvénytelen igazolványok."
+msgstr "Érvénytelen hitelesítő adatok."
 
 msgid "Invalid integer for {label}: {error}"
-msgstr "Érvénytelen egész szám: {label}: {error}"
+msgstr "Érvénytelen egész szám itt: {label}: {error}"
 
 msgid "Invalid JSON for {label}: {error}"
-msgstr "Érvénytelen JSON for {label}: {error}"
+msgstr "Érvénytelen JSON itt: {label}: {error}"
 
 msgid "Invalid number for {label}: {error}"
-msgstr "Érvénytelen szám: {label}: {error}"
+msgstr "Érvénytelen szám itt: {label}: {error}"
 
 msgid "Invalid torrent URL."
-msgstr "Érvénytelen torrent URL."
+msgstr "Érvénytelen torrent-URL."
 
 msgid "Language"
 msgstr "Nyelv"
 
 msgid "Language changes reload this page after saving."
-msgstr "A nyelvi változások újra betöltése ezt az oldalt mentés után."
+msgstr "Mentés után a nyelv módosítása újratölti ezt az oldalt."
 
 msgid "Language code:"
 msgstr "Nyelvkód:"
@@ -842,25 +869,25 @@ msgid "Largest"
 msgstr "Legnagyobb"
 
 msgid "Leave blank to retain the current password."
-msgstr "Hagyjuk üresen az aktuális jelszót."
+msgstr "Hagyja üresen a jelenlegi jelszó megtartásához."
 
 msgid "Leechers"
-msgstr "Leecher"
+msgstr "Leecherek"
 
 msgid "libtorrent is not available. Torrent creation requires python-libtorrent."
-msgstr "A libtorrent nem áll rendelkezésre. A torrenthez pyton- libtorrent kell."
+msgstr "A libtorrent nem érhető el. A torrentek létrehozásához python-libtorrent szükséges."
 
 msgid "Light (Classic)"
-msgstr "Light (Classic)"
+msgstr "Világos (klasszikus)"
 
 msgid "Limits"
-msgstr "Határértékek"
+msgstr "Korlátok"
 
 msgid "Link"
-msgstr "Kapcsolat"
+msgstr "Hivatkozás"
 
 msgid "Listening Port:"
-msgstr "Megfigyelési kikötő:"
+msgstr "Figyelő port:"
 
 msgid "Loading remote settings..."
 msgstr "Távoli beállítások betöltése..."
@@ -875,7 +902,7 @@ msgid "Local Session &Settings...\tCtrl+,"
 msgstr "Helyi munkamenet &beállításai...\tCtrl+,"
 
 msgid "Local session active"
-msgstr "Helyi ülés aktív"
+msgstr "Helyi munkamenet aktív"
 
 msgid "Local Session Settings"
 msgstr "Helyi munkamenet beállításai"
@@ -893,37 +920,37 @@ msgid "Logout"
 msgstr "Kijelentkezés"
 
 msgid "Magnet copied to clipboard."
-msgstr "Mágnes másolat a vágólapra."
+msgstr "Magnet link a vágólapra másolva."
 
 msgid "Magnet Link"
-msgstr "Mágneses kapcsolat"
+msgstr "Magnet link"
 
 msgid "Magnet link added"
-msgstr "Hozzáadott mágneses link"
+msgstr "Magnet link hozzáadva"
 
 msgid "Magnet link added from CLI"
-msgstr "A CLI-ből hozzáadott mágneses link"
+msgstr "Magnet link hozzáadva a parancssorból"
 
 msgid "Magnet link(s) copied to clipboard."
-msgstr "Mágneses link (ek) másolva a vágólapra."
+msgstr "Magnet link(ek) a vágólapra másolva."
 
 msgid "Magnet: {magnet}"
-msgstr "Mágnes: {magnet}"
+msgstr "Magnet: {magnet}"
 
 msgid "Manage Profiles & Connect"
-msgstr "Profilok kezelése & kapcsolat"
+msgstr "Profilok kezelése és csatlakozás"
 
 msgid "Max Connections:"
-msgstr "Max. kapcsolatok:"
+msgstr "Kapcsolatok max. száma:"
 
 msgid "Max Upload Slots:"
-msgstr "Max. feltöltési slots:"
+msgstr "Feltöltési helyek max. száma:"
 
 msgid "Menu closed"
-msgstr "A menü bezárt."
+msgstr "A menü bezárult"
 
 msgid "Menu opened"
-msgstr "Megnyitott étlap"
+msgstr "A menü megnyílt"
 
 msgid "Message"
 msgstr "Üzenet"
@@ -932,28 +959,28 @@ msgid "Metadata (optional)"
 msgstr "Metaadatok (nem kötelező)"
 
 msgid "Minimize to System Tray"
-msgstr "Minimalizálás a rendszertálcára"
+msgstr "Kis méret a rendszertálcára"
 
 msgid "Minimize to Tray"
-msgstr "Minimalizálás Tray-re"
+msgstr "Kis méret a tálcára"
 
 msgid "Most seeders"
-msgstr "A legtöbb magvető"
+msgstr "Legtöbb seeder"
 
 msgid "My &indexers..."
-msgstr "Az én &indexeim..."
+msgstr "Saját &indexelők..."
 
 msgid "My indexers..."
-msgstr "A mutatóim..."
+msgstr "Saját indexelők..."
 
 msgid "My Remote Server"
-msgstr "Távoli kiszolgálóm"
+msgstr "Saját távoli kiszolgáló"
 
 msgid "My torrent indexers"
-msgstr "A torrentindexeim"
+msgstr "Saját torrentindexelők"
 
 msgid "N/A"
-msgstr "N / A"
+msgstr "N/A"
 
 msgid "Name"
 msgstr "Név"
@@ -965,7 +992,7 @@ msgid "Navigation Sidebar"
 msgstr "Navigációs oldalsáv"
 
 msgid "Needs review"
-msgstr "A szükségletek felülvizsgálata"
+msgstr "Ellenőrzésre vár"
 
 msgid "Network"
 msgstr "Hálózat"
@@ -977,52 +1004,52 @@ msgid "Next"
 msgstr "Következő"
 
 msgid "No"
-msgstr "Nem."
+msgstr "Nem"
 
 msgid "No client connected."
-msgstr "Nincs ügyfelünk."
+msgstr "Nincs csatlakoztatott kliens."
 
 msgid "No indexers are switched on. Use Search sites."
-msgstr "Nincs indexelő bekapcsolva. Keresés oldalak használata."
+msgstr "Egy indexelő sincs bekapcsolva. Használja a Keresőoldalakat."
 
 msgid "No regular files found to include in torrent."
-msgstr "Nem találtak olyan fájlokat, amelyek Torrent-ben szerepelnének."
+msgstr "Nem található a torrentbe foglalható normál fájl."
 
 msgid "No remote settings available (or Local client active)."
-msgstr "Nincs távoli beállítás (vagy helyi kliens aktív)."
+msgstr "Nincsenek elérhető távoli beállítások (vagy a helyi kliens aktív)."
 
 msgid "No torrent selected."
-msgstr "Torrent nincs kiválasztva."
+msgstr "Nincs kijelölt torrent."
 
 msgid "No torrents selected to {action}."
-msgstr "A {action}-be nem kiválasztott torrent."
+msgstr "Nincs kijelölt torrent ehhez: {action}."
 
 msgid "No torrents selected."
-msgstr "Nincs kiválasztva torrent."
+msgstr "Nincsenek kijelölt torrentek."
 
 msgid "No torrents to start."
-msgstr "Nincs torrent."
+msgstr "Nincs indítható torrent."
 
 msgid "No torrents to stop."
-msgstr "Nincs torrent, amit megállíthatnánk."
+msgstr "Nincs leállítható torrent."
 
 msgid "No updates available."
-msgstr "Nem áll rendelkezésre frissítés."
+msgstr "Nincs elérhető frissítés."
 
 msgid "None"
 msgstr "Nincs"
 
 msgid "None (No feeds)"
-msgstr "Nincs (nincs takarmány)"
+msgstr "Nincs (nincs hírcsatorna)"
 
 msgid "Normal"
 msgstr "Normál"
 
 msgid "Not connected to any client."
-msgstr "Nincs köze egyik ügyfélhez sem."
+msgstr "Nincs kapcsolat egyik klienssel sem."
 
 msgid "Nothing found. Try fewer words, or switch on more indexers in Search sites."
-msgstr "Nem találtunk semmit. Próbálja meg kevesebb szó, vagy kapcsolja be több indexer a Keresési oldalak."
+msgstr "Nincs találat. Próbáljon kevesebb szót, vagy kapcsoljon be több indexelőt a Keresőoldalakban."
 
 msgid "Notifications"
 msgstr "Értesítések"
@@ -1031,16 +1058,16 @@ msgid "Off"
 msgstr "Ki"
 
 msgid "OK"
-msgstr "Oké."
+msgstr "OK"
 
 msgid "On"
 msgstr "Be"
 
 msgid "One URL per line (HTTP/HTTPS)."
-msgstr "Egy URL soronként (HTTP / HTTPS)."
+msgstr "Soronként egy URL (HTTP/HTTPS)."
 
 msgid "Open Download &Folder"
-msgstr "&Folder letöltése"
+msgstr "Letöltési &mappa megnyitása"
 
 msgid "Open Download Folder"
 msgstr "Letöltési mappa megnyitása"
@@ -1049,16 +1076,16 @@ msgid "Open online translation"
 msgstr "Online fordítás megnyitása"
 
 msgid "Open the download folder (if available)"
-msgstr "A letöltési mappa megnyitása (ha rendelkezésre áll)"
+msgstr "A letöltési mappa megnyitása (ha elérhető)"
 
 msgid "Open Torrent File"
-msgstr "Torrent fájl megnyitása"
+msgstr "Torrentfájl megnyitása"
 
 msgid "Open {name}"
 msgstr "{name} megnyitása"
 
 msgid "Opened download folder."
-msgstr "Megnyílt a letöltési mappa."
+msgstr "A letöltési mappa megnyílt."
 
 msgid "Other"
 msgstr "Egyéb"
@@ -1067,7 +1094,7 @@ msgid "Output .torrent file:"
 msgstr "Kimeneti .torrent fájl:"
 
 msgid "Output .torrent path is required."
-msgstr "Kimeneti .torrent útvonal szükséges."
+msgstr "A kimeneti .torrent útvonala kötelező."
 
 msgid "Password"
 msgstr "Jelszó"
@@ -1078,56 +1105,59 @@ msgstr "Jelszó:"
 msgid "Path"
 msgstr "Útvonal"
 
+msgid "Path: {path}"
+msgstr "Útvonal: {path}"
+
 msgid "Pattern"
 msgstr "Minta"
 
 msgid "Pause"
-msgstr "Szünet"
+msgstr "Szüneteltetés"
 
 msgid "Pause selected torrents"
-msgstr "A kijelölt torrentek leállítása"
+msgstr "A kijelölt torrentek szüneteltetése"
 
 msgid "Pause torrent"
-msgstr "Torrent megszakítása"
+msgstr "Torrent szüneteltetése"
 
 msgid "Paused"
-msgstr "Szünet"
+msgstr "Szüneteltetve"
 
 msgid "Pausing torrents..."
-msgstr "Torrents megállítása..."
+msgstr "Torrentek szüneteltetése..."
 
 msgid "Peer proportional"
-msgstr "Egymással arányos"
+msgstr "Partnerarányos"
 
 msgid "Peers"
-msgstr "Egyebek"
+msgstr "Partnerek"
 
 msgid "Piece size:"
-msgstr "A darabméret:"
+msgstr "Darabméret:"
 
 msgid "Please select a profile to connect."
-msgstr "Válassza ki a kapcsolat profilját."
+msgstr "Válassza ki, melyik profilhoz csatlakozzon."
 
 msgid "Please select at least one torrent first."
-msgstr "Először válasszon legalább egy torrent-et."
+msgstr "Először jelöljön ki legalább egy torrentet."
 
 msgid "Port:"
-msgstr "Kikötő:"
+msgstr "Port:"
 
 msgid "Portuguese (Brazil)"
-msgstr "Portugália (Brazília)"
+msgstr "Portugál (Brazília)"
 
 msgid "Prefer encryption"
-msgstr "Javasolt titkosítás"
+msgstr "Titkosítás előnyben részesítése"
 
 msgid "Prefer TCP"
-msgstr "A TCP előnyben részesítése"
+msgstr "TCP előnyben részesítése"
 
 msgid "Preferences"
-msgstr "Előirányzatok"
+msgstr "Beállítások"
 
 msgid "Preparing restart..."
-msgstr "Az újrakezdés előkészítése..."
+msgstr "Újraindítás előkészítése..."
 
 msgid "Previous"
 msgstr "Előző"
@@ -1136,10 +1166,10 @@ msgid "Priority"
 msgstr "Prioritás"
 
 msgid "Private torrent (disables DHT/PEX/LSD in most clients)"
-msgstr "Privát torrent (letiltja a DHT / PEX / LSD-t a legtöbb kliensnél)"
+msgstr "Privát torrent (a legtöbb kliensben letiltja a DHT/PEX/LSD-t)"
 
 msgid "Private trackers work through Prowlarr or Jackett, which\nkeep your tracker logins. SerrebiTorrent stores only this\nURL and key."
-msgstr "Privát nyomkövetők Prowlarr vagy Jackett, ami\nTartsa meg a nyomkövető bejelentkezéseit. SerrebiTorrent üzletek csak ez\nURL és kulcs."
+msgstr "A privát trackerek a Prowlarr vagy a Jackett révén működnek, amelyek\nőrzik a tracker-bejelentkezéseit. A SerrebiTorrent csak ezt az\nURL-t és kulcsot tárolja."
 
 msgid "Profile"
 msgstr "Profil"
@@ -1148,16 +1178,16 @@ msgid "Profile Name"
 msgstr "Profilnév"
 
 msgid "Profile Name:"
-msgstr "Profil neve:"
+msgstr "Profilnév:"
 
 msgid "PROFILES"
-msgstr "Profil"
+msgstr "PROFILOK"
 
 msgid "Profiles"
 msgstr "Profilok"
 
 msgid "Progress"
-msgstr "Előrehaladás"
+msgstr "Folyamat"
 
 msgid "Proxy"
 msgstr "Proxy"
@@ -1166,46 +1196,46 @@ msgid "Proxy disabled"
 msgstr "Proxy letiltva"
 
 msgid "Proxy Type:"
-msgstr "ProxyType:"
+msgstr "Proxy típusa:"
 
 msgid "Public tracker list (press Enter to add to Included trackers)."
-msgstr "Nyilvános nyomkövetők listája (Nyomja meg az Entert, hogy hozzáadhassa a benne lévő nyomkövetőket)."
+msgstr "Nyilvános trackerlista (az Enter hozzáadja a belefoglalt trackerekhez)."
 
 msgid "qBittorrent Remote &Settings..."
-msgstr "qBittorrent távoli &Settings..."
+msgstr "qBittorrent távoli &beállításai..."
 
 msgid "qBittorrent Remote Settings..."
-msgstr "qBittorrent távoli beállítások..."
+msgstr "qBittorrent távoli beállításai..."
 
 msgid "Queue"
-msgstr "Sorozat"
+msgstr "Várólista"
 
 msgid "Ratio"
 msgstr "Arány"
 
 msgid "Reannounce not supported by this client."
-msgstr "Az ügyfél nem támogatja."
+msgstr "Ez a kliens nem támogatja az újrabejelentést."
 
 msgid "Reannouncing torrents..."
-msgstr "Újra bejelentem Torrents-et..."
+msgstr "Torrentek újrabejelentése..."
 
 msgid "Recheck not supported by this client."
-msgstr "Recheck nem támogatja az ügyfél."
+msgstr "Ez a kliens nem támogatja az újraellenőrzést."
 
 msgid "Rechecking torrents..."
-msgstr "Torrent visszaállítása..."
+msgstr "Torrentek újraellenőrzése..."
 
 msgid "Refresh"
 msgstr "Frissítés"
 
 msgid "Refresh All"
-msgstr "Frissítés"
+msgstr "Összes frissítése"
 
 msgid "Regex Pattern:"
-msgstr "Regex Minta:"
+msgstr "Reguláris kifejezés:"
 
 msgid "Register &Associations"
-msgstr "Regisztrálja &Associations"
+msgstr "&Társítások regisztrálása"
 
 msgid "Reject"
 msgstr "Elutasítás"
@@ -1214,28 +1244,31 @@ msgid "Remote Client"
 msgstr "Távoli kliens"
 
 msgid "Remote client did not return any recognized preferences."
-msgstr "Távoli kliens nem adott vissza semmilyen elismert preferenciát."
+msgstr "A távoli kliens nem adott vissza felismerhető beállítást."
 
 msgid "Remote settings saved."
-msgstr "Távoli beállítások mentve."
+msgstr "A távoli beállítások mentve."
 
 msgid "Remove"
 msgstr "Eltávolítás"
 
+msgid "Remove failed: {error}"
+msgstr "Az eltávolítás nem sikerült: {error}"
+
 msgid "Remove Feed"
-msgstr "Takarmány eltávolítása"
+msgstr "Hírcsatorna eltávolítása"
 
 msgid "Remove feed {url}?"
-msgstr "Távolítsa el a takarmány {url}?"
+msgstr "Eltávolítja a hírcsatornát: {url}?"
 
 msgid "Remove Selected"
-msgstr "Válogatott eltávolítása"
+msgstr "Kijelöltek eltávolítása"
 
 msgid "Remove selected torrents"
 msgstr "A kijelölt torrentek eltávolítása"
 
 msgid "Remove selected torrents and data"
-msgstr "A kijelölt torrentek és adatok eltávolítása"
+msgstr "A kijelölt torrentek és adataik eltávolítása"
 
 msgid "Remove torrent"
 msgstr "Torrent eltávolítása"
@@ -1244,25 +1277,37 @@ msgid "Remove with &Data\tShift+Del"
 msgstr "Eltávolítás &adatokkal\tShift+Del"
 
 msgid "Remove with Data"
-msgstr "Az adatok eltávolítása"
+msgstr "Eltávolítás adatokkal"
+
+msgid "Remove {count} torrent and delete downloaded data?"
+msgstr "Eltávolít {count} torrentet, és törli a letöltött adatokat?"
+
+msgid "Remove {count} torrent?"
+msgstr "Eltávolít {count} torrentet?"
+
+msgid "Remove {count} torrents and delete downloaded data?"
+msgstr "Eltávolít {count} torrentet, és törli a letöltött adatokat?"
+
+msgid "Remove {count} torrents?"
+msgstr "Eltávolít {count} torrentet?"
 
 msgid "Removed {name}."
-msgstr "Eltávolítottam {name}-t."
+msgstr "{name} eltávolítva."
 
 msgid "Reset failed: {error}"
-msgstr "Nem sikerült újraindítani: {error}"
+msgstr "A visszaállítás nem sikerült: {error}"
 
 msgid "Reset RSS (Clear all feeds and rules)"
-msgstr "RSS újraindítása (Az összes adatátvitel és szabály törlése)"
+msgstr "RSS visszaállítása (összes hírcsatorna és szabály törlése)"
 
 msgid "Results"
-msgstr "Eredmények"
+msgstr "Találatok"
 
 msgid "Results, {count} result"
-msgstr "Eredmények, {count} eredmény"
+msgstr "Találatok, {count} találat"
 
 msgid "Results, {count} results"
-msgstr "Eredmények, {count} eredmények"
+msgstr "Találatok, {count} találat"
 
 msgid "Resume"
 msgstr "Folytatás"
@@ -1271,334 +1316,346 @@ msgid "Resume selected torrents"
 msgstr "A kijelölt torrentek folytatása"
 
 msgid "Resuming torrents..."
-msgstr "Torrent visszaállítása..."
+msgstr "Torrentek folytatása..."
 
 msgid "Round-robin"
-msgstr "Kerek- robin"
+msgstr "Körbeforgó (round-robin)"
 
 msgid "RSS Articles"
-msgstr "RSS cikkek"
+msgstr "RSS-cikkek"
 
 msgid "RSS data reset successfully."
-msgstr "RSS adatok újraindítása sikeresen."
+msgstr "Az RSS-adatok visszaállítása sikerült."
 
 msgid "RSS Downloader"
-msgstr "RSS letöltő"
+msgstr "RSS-letöltő"
 
 msgid "RSS Feeds"
-msgstr "RSS visszajelzések"
+msgstr "RSS-hírcsatornák"
 
 msgid "RSS Rules Manager"
-msgstr "RSS szabálykezelő"
+msgstr "RSS-szabálykezelő"
 
 msgid "RSS Update Interval (s)"
-msgstr "RSS frissítési intervallum (ok)"
+msgstr "RSS-frissítési időköz (s)"
 
 msgid "RSS Update Interval (seconds):"
-msgstr "RSS frissítési szakasz (másodperc):"
+msgstr "RSS-frissítési időköz (másodperc):"
 
 msgid "rTorrent Remote &Settings..."
-msgstr "rTorrent távoli &Settings..."
+msgstr "rTorrent távoli &beállításai..."
 
 msgid "rTorrent Remote Settings..."
-msgstr "rTorrent távoli beállítások..."
+msgstr "rTorrent távoli beállításai..."
 
 msgid "Rule Type:"
-msgstr "Szabálytípus:"
+msgstr "Szabály típusa:"
 
 msgid "Rules"
 msgstr "Szabályok"
 
 msgid "Save App Settings"
-msgstr "Az alkalmazás mentése"
+msgstr "Alkalmazásbeállítások mentése"
 
 msgid "Save As..."
-msgstr "Mentés..."
+msgstr "Mentés másként..."
 
 msgid "Save entry"
-msgstr "Belépés mentése"
+msgstr "Bejegyzés mentése"
 
 msgid "Save Path"
-msgstr "Útvonal mentése"
+msgstr "Mentési útvonal"
 
 msgid "Save Path (Optional)"
-msgstr "Menetvonal mentése (nem kötelező)"
+msgstr "Mentési útvonal (nem kötelező)"
 
 msgid "Save Path:"
-msgstr "Mentés:"
+msgstr "Mentési útvonal:"
 
 msgid "Save Remote Settings"
 msgstr "Távoli beállítások mentése"
 
 msgid "Save Torrent As"
-msgstr "Torrent mentése"
+msgstr "Torrent mentése másként"
 
 msgid "Scheduler"
-msgstr "Scheduler"
+msgstr "Ütemező"
 
 msgid "Scheduling"
-msgstr "Tervezés"
+msgstr "Ütemezés"
 
 msgid "Scope"
-msgstr "Hatály"
+msgstr "Hatókör"
 
 msgid "Scripts"
 msgstr "Szkriptek"
 
 msgid "Sea&rch"
-msgstr "Kere&sés"
+msgstr "&Keresés"
 
 msgid "Search"
 msgstr "Keresés"
 
 msgid "Search failed: {error}"
-msgstr "Keresés sikertelen: {error}"
+msgstr "A keresés nem sikerült: {error}"
 
 msgid "Search for"
 msgstr "Keresés"
 
 msgid "Search for Torrents"
-msgstr "Torrents keresése"
+msgstr "Torrentek keresése"
 
 msgid "Search si&tes..."
-msgstr "Keresés az &oldalakon..."
+msgstr "Kereső&oldalak..."
 
 msgid "Search sites"
-msgstr "Keresés"
+msgstr "Keresőoldalak"
 
 msgid "Search sites..."
-msgstr "Keresés..."
+msgstr "Keresőoldalak..."
 
 msgid "Search torrent indexers and add what you find"
-msgstr "Keresés torrent indexers és add hozzá, amit talál"
+msgstr "Torrentindexelők keresése és a találatok hozzáadása"
 
 msgid "Searching {count} indexer..."
-msgstr "{count} indexer keresése..."
+msgstr "Keresés {count} indexelőben..."
 
 msgid "Searching {count} indexers..."
-msgstr "{count}-indexek keresése..."
+msgstr "Keresés {count} indexelőben..."
 
 msgid "Seeding"
-msgstr "Vetés"
+msgstr "Seedelés"
 
 msgid "Seeds"
-msgstr "Mag"
+msgstr "Seedek"
 
 msgid "Select"
 msgstr "Kijelölés"
 
 msgid "Select &all"
-msgstr "Válassza ki a &allt"
+msgstr "&Összes kijelölése"
 
 msgid "Select &All\tCtrl+A"
-msgstr "Összes &kijelölése\tCtrl+A"
+msgstr "&Összes kijelölése\tCtrl+A"
 
 msgid "Select &none"
-msgstr "A &None kiválasztása"
+msgstr "&Kijelölés megszüntetése"
 
 msgid "Select a result first."
-msgstr "Válassza ki először az eredményt."
+msgstr "Először jelöljön ki egy találatot."
 
 msgid "Select a torrent."
-msgstr "Válasszon egy torrent."
+msgstr "Jelöljön ki egy torrentet."
 
 msgid "Select All"
-msgstr "Az összes kiválasztása"
+msgstr "Összes kijelölése"
 
 msgid "Select all torrents"
-msgstr "Válassza ki az összes torrent"
+msgstr "Az összes torrent kijelölése"
 
 msgid "Select File"
 msgstr "Fájl kiválasztása"
 
 msgid "Select Folder"
-msgstr "A mappa kiválasztása"
+msgstr "Mappa kiválasztása"
 
 msgid "Select {name}"
-msgstr "Válasszon {name}"
+msgstr "{name} kijelölése"
+
+msgid "Selected all {count} torrents"
+msgstr "Mind a(z) {count} torrent kijelölve"
+
+msgid "Selected {name}"
+msgstr "Kijelölve: {name}"
 
 msgid "Selection cleared"
-msgstr "Kiválasztás törölve"
+msgstr "Kijelölés törölve"
+
+msgid "Session expired. Please sign in again."
+msgstr "A munkamenet lejárt. Jelentkezzen be újra."
 
 msgid "Set"
 msgstr "Beállítás"
 
 msgid "Set Default"
-msgstr "Alapértelmezés"
+msgstr "Beállítás alapértelmezettként"
 
 msgid "Settings"
 msgstr "Beállítások"
 
 msgid "Settings saved."
-msgstr "Beállítások elmentve."
+msgstr "A beállítások mentve."
 
 msgid "Size"
 msgstr "Méret"
 
+msgid "Size: {size}"
+msgstr "Méret: {size}"
+
 msgid "Skip"
-msgstr "Skip"
+msgstr "Kihagyás"
 
 msgid "Skip to torrent list"
 msgstr "Ugrás a torrentlistára"
 
 msgid "SOCKS4 (no auth)"
-msgstr "SOCKS4 (no auth)"
+msgstr "SOCKS4 (hitelesítés nélkül)"
 
 msgid "SOCKS5 (no auth)"
-msgstr "SOCKS5 (no auth)"
+msgstr "SOCKS5 (hitelesítés nélkül)"
 
 msgid "SOCKS5 (with auth)"
-msgstr "SOCKS5 (avuttal)"
+msgstr "SOCKS5 (hitelesítéssel)"
 
 msgid "Sort &by:"
-msgstr "Rendezés &by:"
+msgstr "&Rendezés:"
 
 msgid "Sort by"
 msgstr "Rendezés"
 
 msgid "Sorted by {label}."
-msgstr "Sorted by {label}."
+msgstr "Rendezve: {label}."
 
 msgid "Source (file or folder):"
 msgstr "Forrás (fájl vagy mappa):"
 
 msgid "Source (written into info dict as 'source'):"
-msgstr "Forrás (az info szerint \"forrás\"):"
+msgstr "Forrás (az info szótárba 'source' néven kerül):"
 
 msgid "Source path is required."
-msgstr "A forrásút szükséges."
+msgstr "A forrás útvonala kötelező."
 
 msgid "Source path must not be a symlink or Windows reparse point."
-msgstr "A forrásút nem lehet szimlink vagy Windows reparse pont."
+msgstr "A forrás útvonala nem lehet szimbolikus hivatkozás vagy Windows újraelemzési pont."
 
 msgid "Source text"
-msgstr "A forrás szövege"
+msgstr "Forrásszöveg"
 
 msgid "Source text:"
-msgstr "A forrás szövege:"
+msgstr "Forrásszöveg:"
 
 msgid "Speed"
 msgstr "Sebesség"
 
 msgid "Start"
-msgstr "Kezdés"
+msgstr "Indítás"
 
 msgid "Start All"
-msgstr "Az összes indítása"
+msgstr "Összes indítása"
 
 msgid "Start selected torrents"
 msgstr "A kijelölt torrentek indítása"
 
 msgid "Starting all torrents..."
-msgstr "Minden torrent..."
+msgstr "Az összes torrent indítása..."
 
 msgid "Starting torrents..."
-msgstr "Torrent indítása..."
+msgstr "Torrentek indítása..."
 
 msgid "Status"
 msgstr "Állapot"
 
 msgid "Status Filters"
-msgstr "állapotszűrők"
+msgstr "Állapotszűrők"
 
 msgid "Stop All"
-msgstr "Minden leállítás"
+msgstr "Összes leállítása"
 
 msgid "Stopped"
-msgstr "Megállt"
+msgstr "Leállítva"
 
 msgid "Stopping all torrents..."
-msgstr "Minden torrent leállítása..."
+msgstr "Az összes torrent leállítása..."
 
 msgid "Stopping torrents..."
-msgstr "Torrent megállítása..."
+msgstr "Torrentek leállítása..."
 
 msgid "Success"
-msgstr "Siker"
+msgstr "Sikerült"
 
 msgid "Switch Profile"
-msgstr "A profil megváltoztatása"
+msgstr "Profilváltás"
 
 msgid "Switching client profile..."
-msgstr "Az ügyfél profiljának megváltoztatása..."
+msgstr "Kliensprofil váltása..."
 
 msgid "System"
 msgstr "Rendszer"
 
 msgid "System default"
-msgstr "Rendszerhiba"
+msgstr "Rendszer alapértelmezése"
 
 msgid "TCP and uTP"
-msgstr "TCP és utP"
+msgstr "TCP és uTP"
 
 msgid "Theme"
 msgstr "Téma"
 
 msgid "Those results carry a tracker file rather than a magnet link."
-msgstr "Ezek az eredmények egy nyomkövető fájlt hordoznak, nem pedig egy mágnes linket."
+msgstr "Ezek a találatok magnet link helyett trackerfájlt tartalmaznak."
 
 msgid "Time Left"
-msgstr "Bal oldali idő"
+msgstr "Hátralévő idő"
 
 msgid "Title"
 msgstr "Cím"
 
 msgid "Toggle"
-msgstr "Kikapcsolás"
+msgstr "Váltás"
 
 msgid "Too many failed attempts. Try again later."
-msgstr "Túl sok sikertelen bejelentkezési kísérlet. Próbálja újra később."
+msgstr "Túl sok sikertelen próbálkozás. Próbálja újra később."
 
 msgid "Torrent Actions"
-msgstr "Erőszakos intézkedések"
+msgstr "Torrentműveletek"
 
 msgid "Torrent actions"
-msgstr "Torrent actions"
+msgstr "Torrentműveletek"
 
 msgid "Torrent added"
-msgstr "Torrent hozzáadása"
+msgstr "Torrent hozzáadva"
 
 msgid "Torrent created:\n{path}"
 msgstr "Torrent létrehozva:\n{path}"
 
 msgid "Torrent Details"
-msgstr "Torrent Details"
+msgstr "Torrent részletei"
 
 msgid "Torrent download finished after the active profile changed."
-msgstr "Torrent letöltés befejeződött, miután az aktív profil megváltozott."
+msgstr "A torrent letöltése az aktív profil váltása után fejeződött be."
 
 msgid "Torrent File"
-msgstr "Torrent fájl"
+msgstr "Torrentfájl"
 
 msgid "Torrent file added from CLI"
-msgstr "Torrent fájl hozzáadva a CLI-ből"
+msgstr "Torrentfájl hozzáadva a parancssorból"
 
 msgid "Torrent Files"
-msgstr "Torrent fájlok"
+msgstr "Torrentfájlok"
 
 msgid "Torrent files (*.torrent)|*.torrent"
-msgstr "Torrent fájlok (*. torrent)"
+msgstr "Torrentfájlok (*.torrent)|*.torrent"
 
 msgid "Torrent List"
-msgstr "Töréslista"
+msgstr "Torrentlista"
 
 msgid "Torrent Options"
-msgstr "Torrent opciók"
+msgstr "Torrentbeállítások"
 
 msgid "Torrents"
-msgstr "Torrent"
+msgstr "Torrentek"
 
 msgid "torrents"
 msgstr "torrent"
 
 msgid "Tracker List URL:"
-msgstr "Nyomkövető lista URL:"
+msgstr "Trackerlista URL-je:"
 
 msgid "Trackers"
-msgstr "Nyomkövetők"
+msgstr "Trackerek"
 
 msgid "Translated"
-msgstr "Fordítás"
+msgstr "Lefordítva"
 
 msgid "Translation"
 msgstr "Fordítás"
@@ -1610,76 +1667,76 @@ msgid "Translation:"
 msgstr "Fordítás:"
 
 msgid "Transmission Remote &Settings..."
-msgstr "Átvitel távoli &Settings..."
+msgstr "Transmission távoli &beállításai..."
 
 msgid "Transmission Remote Settings..."
-msgstr "A távirányító beállításai..."
+msgstr "Transmission távoli beállításai..."
 
 msgid "Type"
 msgstr "Típus"
 
 msgid "Type what to look for first."
-msgstr "Írja be, mit keressünk először."
+msgstr "Először írja be, mit keres."
 
 msgid "Type what to look for."
-msgstr "Írd be, mit keress!"
+msgstr "Írja be, mit keres."
 
 msgid "UI Refresh Rate (ms)"
-msgstr "UI Frissítési ráta (ms)"
+msgstr "Felület frissítési gyakorisága (ms)"
 
 msgid "Uncheck"
-msgstr "Ellenőrzés megszüntetése"
+msgstr "Bejelölés törlése"
 
 msgid "Uncheck All"
-msgstr "Az összes eltávolítása"
+msgstr "Összes bejelölés törlése"
 
 msgid "Unknown"
 msgstr "Ismeretlen"
 
 msgid "Untranslated"
-msgstr "Fordítás nélkül"
+msgstr "Lefordítatlan"
 
 msgid "Up Speed"
-msgstr "Fel"
+msgstr "Feltöltési sebesség"
 
 msgid "Update Available"
-msgstr "Frissítés"
+msgstr "Frissítés érhető el"
 
 msgid "Update canceled."
-msgstr "A frissítés törölve."
+msgstr "Frissítés megszakítva."
 
 msgid "Update Check Failed"
-msgstr "Frissítés Nem sikerült"
+msgstr "A frissítések keresése nem sikerült"
 
 msgid "Update check failed."
-msgstr "Frissítési ellenőrzés nem sikerült."
+msgstr "A frissítések keresése nem sikerült."
 
 msgid "Update Failed"
-msgstr "Frissítés sikertelen"
+msgstr "A frissítés nem sikerült"
 
 msgid "Update failed."
-msgstr "Frissítés sikertelen."
+msgstr "A frissítés nem sikerült."
 
 msgid "Update helper script not found."
-msgstr "A helper script frissítése nem található."
+msgstr "A frissítési segédszkript nem található."
 
 msgid "Update postponed."
-msgstr "A frissítés elhalasztva."
+msgstr "Frissítés elhalasztva."
 
 msgid "Update prepared. Closing to install..."
-msgstr "Frissítés előkészítve. Bezárás a telepítéshez..."
+msgstr "A frissítés előkészítve. Bezárás a telepítéshez..."
 
 msgid "Update prepared. The app will restart after it exits."
-msgstr "Frissítés előkészítve. Az alkalmazás a kilépés után újraindul."
+msgstr "A frissítés előkészítve. Az alkalmazás kilépés után újraindul."
 
 msgid "Updated executable not found."
-msgstr "Frissített végrehajtható nem található."
+msgstr "A frissített végrehajtható fájl nem található."
 
 msgid "Updates"
 msgstr "Frissítések"
 
 msgid "Updates are only available in the packaged app."
-msgstr "Frissítések csak a csomagolt app."
+msgstr "Frissítések csak a csomagolt alkalmazásban érhetők el."
 
 msgid "Updating SerrebiTorrent"
 msgstr "SerrebiTorrent frissítése"
@@ -1688,31 +1745,31 @@ msgid "Updating..."
 msgstr "Frissítés..."
 
 msgid "Upload Rate (bytes/s):"
-msgstr "Feltöltési arány (bájt / s):"
+msgstr "Feltöltési sebesség (bájt/s):"
 
 msgid "Upload-rate based"
-msgstr "A feltöltés mértéke"
+msgstr "Feltöltési sebesség alapján"
 
 msgid "URL (e.g. scgi://... or http://...):"
-msgstr "URL (pl. scgi: / /... vagy http: / /...):"
+msgstr "URL (pl. scgi://... vagy http://...):"
 
 msgid "URL / Path"
-msgstr "URL / Útvonal"
+msgstr "URL / útvonal"
 
 msgid "URL or download path"
 msgstr "URL vagy letöltési útvonal"
 
 msgid "URL:Magnet Link"
-msgstr "URL: Mágneses kapcsolat"
+msgstr "URL:Magnet link"
 
 msgid "URLs / Magnets (one per line)"
-msgstr "URL- ek / mágnesek (vonalanként egy)"
+msgstr "URL-ek / magnet linkek (soronként egy)"
 
 msgid "Use DyDNS"
 msgstr "DyDNS használata"
 
 msgid "Use NOIP"
-msgstr "A NOIP használata"
+msgstr "NOIP használata"
 
 msgid "Username"
 msgstr "Felhasználónév"
@@ -1724,64 +1781,79 @@ msgid "Verifying download..."
 msgstr "A letöltés ellenőrzése..."
 
 msgid "Verifying signature..."
-msgstr "Aláírás ellenőrzése..."
+msgstr "Az aláírás ellenőrzése..."
 
 msgid "Warning"
-msgstr "Figyelem"
+msgstr "Figyelmeztetés"
 
 msgid "Web Seeds (optional)"
-msgstr "Web Seeds (választható)"
+msgstr "Webes seedek (nem kötelező)"
 
 msgid "Web UI"
-msgstr "Web UI"
+msgstr "Webes felület"
 
 msgid "YAML files (*.yml;*.yaml)|*.yml;*.yaml"
-msgstr "YAML fájlok (* .yml; * .yaml)"
+msgstr "YAML-fájlok (*.yml;*.yaml)|*.yml;*.yaml"
 
 msgid "Yes"
-msgstr "Igen."
+msgstr "Igen"
 
 msgid "You're already on the latest version."
-msgstr "Már a legújabb verzióban vagy."
+msgstr "Már a legújabb verziót használja."
 
 msgid "{action} complete"
-msgstr "{action} teljes"
+msgstr "{action} kész"
 
 msgid "{action} complete ({failed} failed). Last error: {error}"
-msgstr "{action} teljes ({failed} sikertelen). Utolsó hiba: {error}"
+msgstr "{action} kész ({failed} sikertelen). Utolsó hiba: {error}"
 
 msgid "{client} Remote Settings"
-msgstr "{client} távoli beállítások"
+msgstr "{client} távoli beállításai"
 
 msgid "{count} feeds"
-msgstr "{count} takarmányok"
+msgstr "{count} hírcsatorna"
 
 msgid "{count} indexer switched on."
-msgstr "A {count} indexer bekapcsolt."
+msgstr "{count} indexelő bekapcsolva."
 
 msgid "{count} indexers switched on."
-msgstr "{count} indexelők bekapcsolva."
+msgstr "{count} indexelő bekapcsolva."
 
 msgid "{count} of your own indexer configured."
-msgstr "{count} saját indexer konfigurálva."
+msgstr "{count} saját indexelő beállítva."
 
 msgid "{count} of your own indexers configured."
-msgstr "{count} saját indexek konfigurálva."
+msgstr "{count} saját indexelő beállítva."
 
 msgid "{count} result"
-msgstr "{count} eredmény"
+msgstr "{count} találat"
 
 msgid "{count} result so far, {pending} still searching. Last: {source}."
-msgstr "{count} eredmény eddig, {pending} még mindig keresi. Utolsó: {source}."
+msgstr "Eddig {count} találat, {pending} még keres. Utolsó: {source}."
 
 msgid "{count} results"
 msgstr "{count} találat"
 
 msgid "{count} results so far, {pending} still searching. Last: {source}."
-msgstr "{count} eredmények eddig, {pending} még mindig keresik. Utolsó: {source}."
+msgstr "Eddig {count} találat, {pending} még keres. Utolsó: {source}."
+
+msgid "{count} torrent added."
+msgstr "{count} torrent hozzáadva."
+
+msgid "{count} torrent removed."
+msgstr "{count} torrent eltávolítva."
 
 msgid "{count} torrents"
-msgstr "{count} torrents"
+msgstr "{count} torrent"
+
+msgid "{count} torrents added."
+msgstr "{count} torrent hozzáadva."
+
+msgid "{count} torrents removed."
+msgstr "{count} torrent eltávolítva."
+
+msgid "{count} torrents selected."
+msgstr "{count} torrent kijelölve."
 
 msgid "{name} preferences saved"
-msgstr "{name} preferenciák mentve"
+msgstr "{name} beállításai mentve"

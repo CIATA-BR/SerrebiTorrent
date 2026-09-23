@@ -139,6 +139,9 @@ msgstr ""
 msgid "Add/edit/delete profiles and connect"
 msgstr ""
 
+msgid "Added from RSS: {name}"
+msgstr ""
+
 msgid "Added from RSS: {title}"
 msgstr ""
 
@@ -164,6 +167,9 @@ msgid "Adding torrent file from CLI..."
 msgstr ""
 
 msgid "Adding torrent..."
+msgstr ""
+
+msgid "Adding torrent: {name}..."
 msgstr ""
 
 msgid "Adding torrent: {title}..."
@@ -236,6 +242,9 @@ msgid "Authentication (if required):"
 msgstr ""
 
 msgid "Auto"
+msgstr ""
+
+msgid "Auto-added from RSS: {name}"
 msgstr ""
 
 msgid "Auto-added from RSS: {title}"
@@ -454,6 +463,9 @@ msgstr ""
 msgid "Deselect All"
 msgstr ""
 
+msgid "Deselected {name}"
+msgstr ""
+
 msgid "Disconnected"
 msgstr ""
 
@@ -568,6 +580,9 @@ msgstr ""
 msgid "Error saving remote settings."
 msgstr ""
 
+msgid "Error saving remote settings: {error}"
+msgstr ""
+
 msgid "Error saving settings."
 msgstr ""
 
@@ -667,6 +682,12 @@ msgstr ""
 msgid "Failed to update remote preferences: {error}"
 msgstr ""
 
+msgid "Failed to {action} torrent(s)."
+msgstr ""
+
+msgid "Failed to {action} torrent(s): {error}"
+msgstr ""
+
 msgid "Failed to {action} torrent: {error}"
 msgstr ""
 
@@ -698,6 +719,12 @@ msgid "Finished"
 msgstr ""
 
 msgid "Fixed slots"
+msgstr ""
+
+msgid "Focused torrent is no longer available. Focus moved to {name}."
+msgstr ""
+
+msgid "Focused torrent is no longer available. The torrent list is empty."
 msgstr ""
 
 msgid "Folder..."
@@ -1078,6 +1105,9 @@ msgstr ""
 msgid "Path"
 msgstr ""
 
+msgid "Path: {path}"
+msgstr ""
+
 msgid "Pattern"
 msgstr ""
 
@@ -1222,6 +1252,9 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
+msgid "Remove failed: {error}"
+msgstr ""
+
 msgid "Remove Feed"
 msgstr ""
 
@@ -1244,6 +1277,18 @@ msgid "Remove with &Data\tShift+Del"
 msgstr ""
 
 msgid "Remove with Data"
+msgstr ""
+
+msgid "Remove {count} torrent and delete downloaded data?"
+msgstr ""
+
+msgid "Remove {count} torrent?"
+msgstr ""
+
+msgid "Remove {count} torrents and delete downloaded data?"
+msgstr ""
+
+msgid "Remove {count} torrents?"
 msgstr ""
 
 msgid "Removed {name}."
@@ -1417,7 +1462,16 @@ msgstr ""
 msgid "Select {name}"
 msgstr ""
 
+msgid "Selected all {count} torrents"
+msgstr ""
+
+msgid "Selected {name}"
+msgstr ""
+
 msgid "Selection cleared"
+msgstr ""
+
+msgid "Session expired. Please sign in again."
 msgstr ""
 
 msgid "Set"
@@ -1433,6 +1487,9 @@ msgid "Settings saved."
 msgstr ""
 
 msgid "Size"
+msgstr ""
+
+msgid "Size: {size}"
 msgstr ""
 
 msgid "Skip"
@@ -1780,7 +1837,22 @@ msgstr ""
 msgid "{count} results so far, {pending} still searching. Last: {source}."
 msgstr ""
 
+msgid "{count} torrent added."
+msgstr ""
+
+msgid "{count} torrent removed."
+msgstr ""
+
 msgid "{count} torrents"
+msgstr ""
+
+msgid "{count} torrents added."
+msgstr ""
+
+msgid "{count} torrents removed."
+msgstr ""
+
+msgid "{count} torrents selected."
 msgstr ""
 
 msgid "{name} preferences saved"
