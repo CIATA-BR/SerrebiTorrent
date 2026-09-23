@@ -377,19 +377,26 @@ def switch_profile():
 def add_profile():
     app_ref = WEB_CONFIG['app']
     if not app_ref:
-        return "Error", 500
-    
-    name = request.form.get('name')
-    type = request.form.get('type')
-    url = request.form.get('url')
+        return "Application context is unavailable.", 503
+
+    name = (request.form.get('name') or '').strip()
+    client_type = (request.form.get('type') or '').strip().lower()
+    url = (request.form.get('url') or '').strip()
     user = request.form.get('user', '')
     pw = request.form.get('password', '')
-    
-    if name and type and url:
-        import wx
-        wx.CallAfter(app_ref.config_manager.add_profile, name, type, url, user, pw)
-        return "Ok."
-    return "Missing data", 400
+
+    if not name or not client_type or not url:
+        return "Missing data", 400
+
+    supported_types = {'local', 'rtorrent', 'qbittorrent', 'transmission'}
+    if client_type not in supported_types:
+        return "Unsupported profile type.", 400
+
+    try:
+        app_ref.config_manager.add_profile(name, client_type, url, user, pw)
+    except Exception:
+        return "Failed to create profile.", 500
+    return "Ok."
 
 @app.route('/api/v2/torrents/info')
 @login_required
