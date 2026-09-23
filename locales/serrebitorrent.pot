@@ -934,7 +934,6 @@ msgstr ""
 msgid "Loading peers..."
 msgstr ""
 
-
 msgid "Loading remote settings..."
 msgstr ""
 
@@ -1066,7 +1065,6 @@ msgstr ""
 
 msgid "No peers available."
 msgstr ""
-
 
 msgid "No regular files found to include in torrent."
 msgstr ""
@@ -1733,7 +1731,6 @@ msgstr ""
 
 msgid "Trackers"
 msgstr ""
-
 
 msgid "Translated"
 msgstr ""
