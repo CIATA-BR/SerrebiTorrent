@@ -88,28 +88,79 @@ if not exist "%STAGING_DIR%" (
     exit /b 1
 )
 
-call :launch_and_verify_app
-set "APP_PATH=%INSTALL_DIR%\%EXE_NAME%"
-if not exist "%APP_PATH%" (
-    echo [X] Updated executable is missing: "%APP_PATH%"
-    exit /b 1
-)
-powershell -WindowStyle Hidden -NoProfile -InputFormat None -Command "$ErrorActionPreference='Stop'; $p=Start-Process -FilePath ([string]$env:APP_PATH) -PassThru; Start-Sleep -Seconds 3; try { $p.Refresh() } catch { }; if ($p.HasExited) { Write-Host ('[X] Updated application exited during startup with code ' + $p.ExitCode); exit 1 }; exit 0"
-exit /b %ERRORLEVEL%
-
-:launch_app_once
-set "APP_PATH=%INSTALL_DIR%\%EXE_NAME%"
-if not exist "%APP_PATH%" exit /b 1
-powershell -WindowStyle Hidden -NoProfile -InputFormat None -Command "$ErrorActionPreference='SilentlyContinue'; Start-Process -FilePath ([string]$env:APP_PATH) | Out-Null; exit 0" >nul 2>nul
-exit /b %ERRORLEVEL%
-
-:clear_install_runtime
-echo [SerrebiTorrent Update] Clearing partially installed runtime before rollback...
-powershell -WindowStyle Hidden -NoProfile -InputFormat None -Command "$ErrorActionPreference='Stop'; $install=[IO.Path]::GetFullPath([string]$env:INSTALL_DIR); $keep=@('SerrebiTorrent_Data','config.json','.git','.venv','__pycache__'); Get-ChildItem -LiteralPath $install -Force | Where-Object { $keep -notcontains $_.Name } | ForEach-Object { Remove-Item -LiteralPath $_.FullName -Recurse -Force -ErrorAction Stop }; exit 0"
-exit /b %ERRORLEVEL%
-
-:ensure_app_stopped
+call :ensure_app_stopped
 if errorlevel 1 goto :rollback
+
+call :verify_install_unlocked
+if errorlevel 1 goto :rollback
+
+rem OneDrive Fix: don't move the root folder; move CONTENTS via robocopy /MOVE.
+rem Keep user data in place (portable mode): SerrebiTorrent_Data and any legacy config.json.
+
+if not defined BACKUP_DIR (
+    for /f %%T in ('powershell -WindowStyle Hidden -NoProfile -InputFormat None -Command "(Get-Date).ToString(\"yyyyMMddHHmmss\")"') do set STAMP=%%T
+    set "BACKUP_DIR=%INSTALL_DIR%_backup_!STAMP!"
+)
+
+echo [SerrebiTorrent Update] Backing up current install to "%BACKUP_DIR%"...
+if exist "%BACKUP_DIR%" rmdir /s /q "%BACKUP_DIR%" >nul 2>nul
+if not exist "%BACKUP_DIR%" mkdir "%BACKUP_DIR%" >nul 2>nul
+
+robocopy "%INSTALL_DIR%" "%BACKUP_DIR%" /E /MOVE /R:3 /W:1 /NFL /NDL /XD SerrebiTorrent_Data .git .venv __pycache__ /XF config.json
+set "RC=%ERRORLEVEL%"
+if %RC% geq 8 (
+    echo [X] Backup failed with robocopy code %RC%.
+    goto :rollback
+)
+call :verify_install_drained
+if errorlevel 1 (
+    echo [X] Backup did not fully move the current install.
+    goto :rollback
+)
+
+echo [SerrebiTorrent Update] Applying update...
+robocopy "%STAGING_DIR%" "%INSTALL_DIR%" /E /MOVE /R:3 /W:1 /NFL /NDL /XD SerrebiTorrent_Data .git .venv __pycache__ /XF config.json
+set "RC=%ERRORLEVEL%"
+if %RC% geq 8 (
+    echo [X] Update application failed with robocopy code %RC%.
+    goto :rollback
+)
+
+echo [SerrebiTorrent Update] Launching updated app and verifying startup...
+call :launch_and_verify_app
+if errorlevel 1 (
+    echo [X] Updated application failed its startup health check.
+    goto :rollback
+)
+
+echo [SerrebiTorrent Update] Cleaning up staging folder...
+if exist "%STAGING_DIR%" (
+    rmdir /s /q "%STAGING_DIR%" >nul 2>nul
+)
+call :cleanup_staging_root "%STAGING_DIR%"
+if not "%TEMP_ROOT%"=="" (
+    call :schedule_temp_cleanup "%TEMP_ROOT%"
+)
+
+rem Handle backup cleanup based on retention policy only after startup succeeds.
+set "KEEP_BACKUPS=%SERREBITORRENT_KEEP_BACKUPS%"
+if not defined KEEP_BACKUPS set "KEEP_BACKUPS=1"
+
+echo [SerrebiTorrent Update] Backup retention policy: keep %KEEP_BACKUPS% backup(s)
+
+if /i "%KEEP_BACKUPS%"=="0" (
+    echo [SerrebiTorrent Update] Deleting backup immediately retention=0...
+    if exist "%BACKUP_DIR%" rmdir /s /q "%BACKUP_DIR%" >nul 2>&1
+    if exist "%BACKUP_DIR%" (
+        echo [SerrebiTorrent Update] WARNING: Backup folder still exists after delete attempt
+    )
+) else (
+    call :schedule_backup_cleanup "%BACKUP_DIR%" "%INSTALL_DIR%" "%KEEP_BACKUPS%" "%STAGING_DIR%"
+)
+
+exit /b 0
+
+:rollback
 echo [SerrebiTorrent Update] Update failed. Restoring backup...
 call :clear_install_runtime
 if errorlevel 1 (
@@ -129,6 +180,26 @@ if not exist "%INSTALL_DIR%\%EXE_NAME%" (
 )
 powershell -WindowStyle Hidden -NoProfile -InputFormat None -Command "$log=[string]$env:LOG_FILE; try { Add-Type -AssemblyName PresentationFramework | Out-Null; $msg = 'SerrebiTorrent update failed and the previous version was restored.' + "`n`n" + 'Log file:' + "`n" + $log; [System.Windows.MessageBox]::Show($msg, 'SerrebiTorrent Update', 'OK', 'Error') | Out-Null } catch { }" >nul 2>nul
 exit /b 1
+
+:launch_and_verify_app
+set "APP_PATH=%INSTALL_DIR%\%EXE_NAME%"
+if not exist "%APP_PATH%" (
+    echo [X] Updated executable is missing: "%APP_PATH%"
+    exit /b 1
+)
+powershell -WindowStyle Hidden -NoProfile -InputFormat None -Command "$ErrorActionPreference='Stop'; $p=Start-Process -FilePath ([string]$env:APP_PATH) -PassThru; Start-Sleep -Seconds 3; try { $p.Refresh() } catch { }; if ($p.HasExited) { Write-Host ('[X] Updated application exited during startup with code ' + $p.ExitCode); exit 1 }; exit 0"
+exit /b %ERRORLEVEL%
+
+:launch_app_once
+set "APP_PATH=%INSTALL_DIR%\%EXE_NAME%"
+if not exist "%APP_PATH%" exit /b 1
+powershell -WindowStyle Hidden -NoProfile -InputFormat None -Command "$ErrorActionPreference='SilentlyContinue'; Start-Process -FilePath ([string]$env:APP_PATH) | Out-Null; exit 0" >nul 2>nul
+exit /b %ERRORLEVEL%
+
+:clear_install_runtime
+echo [SerrebiTorrent Update] Clearing partially installed runtime before rollback...
+powershell -WindowStyle Hidden -NoProfile -InputFormat None -Command "$ErrorActionPreference='Stop'; $install=[IO.Path]::GetFullPath([string]$env:INSTALL_DIR); $keep=@('SerrebiTorrent_Data','config.json','.git','.venv','__pycache__'); Get-ChildItem -LiteralPath $install -Force | Where-Object { $keep -notcontains $_.Name } | ForEach-Object { Remove-Item -LiteralPath $_.FullName -Recurse -Force -ErrorAction Stop }; exit 0"
+exit /b %ERRORLEVEL%
 
 :ensure_app_stopped
 echo [SerrebiTorrent Update] Waiting for process %PID% and install-owned app instances to exit...
