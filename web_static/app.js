@@ -437,6 +437,8 @@ function handleSidebarNavigation(e) {
 }
 
 async function refreshData(force = false) {
+    // Keep background refresh from mutating list/selection while a dialog is active.
+    if (!force && document.querySelector('.modal.show')) return;
     // If user is actively typing or interacting, skip background refresh unless forced
     if (!force && Date.now() - lastUserActivity < 1000) return;
     
