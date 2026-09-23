@@ -694,6 +694,9 @@ msgstr ""
 msgid "Failed to load torrent peers."
 msgstr ""
 
+msgid "Failed to load torrent trackers."
+msgstr ""
+
 msgid "Failed to open download folder."
 msgstr ""
 
@@ -931,6 +934,9 @@ msgstr ""
 msgid "Loading peers..."
 msgstr ""
 
+msgid "Loading trackers..."
+msgstr ""
+
 msgid "Loading remote settings..."
 msgstr ""
 
@@ -1058,6 +1064,9 @@ msgid "No indexers are switched on. Use Search sites."
 msgstr ""
 
 msgid "No peers available."
+msgstr ""
+
+msgid "No trackers available."
 msgstr ""
 
 msgid "No regular files found to include in torrent."
@@ -1516,6 +1525,9 @@ msgstr ""
 msgid "Select one torrent to view peers."
 msgstr ""
 
+msgid "Select one torrent to view trackers."
+msgstr ""
+
 msgid "Select {name}"
 msgstr ""
 
@@ -1702,6 +1714,9 @@ msgstr ""
 msgid "Torrent Peers"
 msgstr ""
 
+msgid "Torrent Trackers"
+msgstr ""
+
 msgid "Torrents"
 msgstr ""
 
@@ -1712,6 +1727,9 @@ msgid "Tracker List URL:"
 msgstr ""
 
 msgid "Trackers"
+msgstr ""
+
+msgid "Tracker URL"
 msgstr ""
 
 msgid "Translated"
