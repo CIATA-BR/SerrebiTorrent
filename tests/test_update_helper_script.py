@@ -73,8 +73,9 @@ def test_update_helper_powershell_hosts_are_hidden():
 def test_update_helper_relaunches_app_visible():
     text = _helper_text()
 
-    assert 'WshShell.Run Chr(34) ^& "%INSTALL_DIR%\\%EXE_NAME%" ^& Chr(34), 1, False' in text
-    assert 'WshShell.Run Chr(34) ^& "%INSTALL_DIR%\\%EXE_NAME%" ^& Chr(34), 0, False' not in text
+    assert 'Start-Process -FilePath ([string]$env:APP_PATH) -PassThru' in text
+    assert 'Start-Process -FilePath ([string]$env:APP_PATH) | Out-Null' in text
+    assert '-WindowStyle Hidden' not in text[text.index(':launch_and_verify_app'):text.index(':launch_app_once')]
 
 
 def test_update_helper_accepts_and_cleans_temp_root():
