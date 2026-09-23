@@ -254,23 +254,18 @@ window.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        const focusedRow = document.activeElement.closest('tr[data-hash]');
+        if (!focusedRow) return;
+
         lastUserActivity = Date.now();
         if (visibleTorrents.length === 0) return;
 
         // Arrow Key Navigation Logic
         const navKeys = ['ArrowDown', 'ArrowUp', 'Home', 'End', 'PageUp', 'PageDown'];
         if (navKeys.includes(e.key)) {
-            // We already returned early if in INPUT/TEXTAREA or Sidebar.
-            // So we can safely capture these keys for the main torrent list.
             e.preventDefault();
             
-            let currentIndex = -1;
-            const focusedRow = document.activeElement.closest('tr[data-hash]');
-            if (focusedRow) {
-                currentIndex = visibleTorrents.findIndex(t => t.hash === focusedRow.dataset.hash);
-            } else if (lastFocusedHash) {
-                currentIndex = visibleTorrents.findIndex(t => t.hash === lastFocusedHash);
-            }
+            let currentIndex = visibleTorrents.findIndex(t => t.hash === focusedRow.dataset.hash);
 
             let nextIndex = currentIndex;
             if (e.key === 'ArrowDown') nextIndex++;
@@ -308,17 +303,14 @@ window.addEventListener('DOMContentLoaded', () => {
 
         // Space toggles selection for the focused torrent row without moving focus.
         if (e.key === ' ') {
-            const focusedRow = document.activeElement.closest('tr[data-hash]');
-            if (focusedRow) {
-                e.preventDefault();
-                const hash = focusedRow.dataset.hash;
-                const torrent = torrentsMap.get(hash);
-                const selecting = !selectedHashes.has(hash);
-                toggleSelection(hash);
-                focusRow(hash, true);
-                announceToSR(`${selecting ? 'Selected' : 'Deselected'} ${torrent?.name || 'torrent'}`);
-                return;
-            }
+            e.preventDefault();
+            const hash = focusedRow.dataset.hash;
+            const torrent = torrentsMap.get(hash);
+            const selecting = !selectedHashes.has(hash);
+            toggleSelection(hash);
+            focusRow(hash, true);
+            announceToSR(`${selecting ? 'Selected' : 'Deselected'} ${torrent?.name || 'torrent'}`);
+            return;
         }
 
         // Ctrl+A Select All
