@@ -217,8 +217,9 @@ def test_web_ui_refresh_moves_focus_when_focused_torrent_disappears(page, web_ui
         arg="a" * 40,
     )
 
-    assert page.locator("#aria-announcer").inner_text() == (
-        "Focused torrent is no longer available. Focus moved to Alpha."
+    page.wait_for_function(
+        "(message) => document.getElementById('aria-announcer').textContent === message",
+        arg="O torrent em foco não está mais disponível. Foco movido para Alpha.",
     )
 
 
@@ -242,8 +243,9 @@ def test_web_ui_refresh_keeps_focus_in_grid_when_last_torrent_disappears(page, w
     page.wait_for_function("document.activeElement && document.activeElement.id === 'torrentTable'")
 
     assert page.locator("#torrentTable").get_attribute("tabindex") == "0"
-    assert page.locator("#aria-announcer").inner_text() == (
-        "Focused torrent is no longer available. The torrent list is empty."
+    page.wait_for_function(
+        "(message) => document.getElementById('aria-announcer').textContent === message",
+        arg="O torrent em foco não está mais disponível. A lista de torrents está vazia. 1 torrent removido.",
     )
 
 
@@ -262,7 +264,7 @@ def test_web_ui_space_toggles_focused_torrent_selection(page, web_ui_server):
     assert page.evaluate("document.activeElement.dataset.hash") == focused_hash
     page.wait_for_function(
         "(message) => document.getElementById('aria-announcer').textContent === message",
-        arg=f"Selected {focused_name}",
+        arg=f"Selecionado: {focused_name}",
     )
 
     page.keyboard.press("Space")
@@ -273,7 +275,7 @@ def test_web_ui_space_toggles_focused_torrent_selection(page, web_ui_server):
     assert page.evaluate("document.activeElement.dataset.hash") == focused_hash
     page.wait_for_function(
         "(message) => document.getElementById('aria-announcer').textContent === message",
-        arg=f"Deselected {focused_name}",
+        arg=f"Desmarcado: {focused_name}",
     )
 
 
@@ -362,6 +364,8 @@ def test_web_ui_modals_focus_useful_entry_controls(page, web_ui_server):
         page.evaluate(
             """({modalSelector}) => {
                 const modal = document.querySelector(modalSelector);
+                // Bootstrap fires show (which lifts inert) before shown.
+                modal.dispatchEvent(new Event('show.bs.modal'));
                 modal.dispatchEvent(new Event('shown.bs.modal'));
             }""",
             {"modalSelector": modal_selector},
@@ -442,16 +446,16 @@ def test_web_ui_announces_material_torrent_list_changes(page, web_ui_server):
             status=200,
             content_type="application/json",
             body='['
-                 '{"hash":"' + "a" * 40 + '","name":"Alpha","size":1000,"done":250,"state":1,"message":"","tracker_domain":"tracker.one","down_rate":0,"up_rate":0,"save_path":"C:\\Downloads"},'
-                 '{"hash":"' + "b" * 40 + '","name":"Beta","size":1000,"done":1000,"state":1,"message":"","tracker_domain":"tracker.two","down_rate":0,"up_rate":0,"save_path":"C:\\Downloads"},'
-                 '{"hash":"' + "c" * 40 + '","name":"Gamma","size":1000,"done":100,"state":1,"message":"","tracker_domain":"tracker.three","down_rate":0,"up_rate":0,"save_path":"C:\\Downloads"}'
+                 '{"hash":"' + "a" * 40 + '","name":"Alpha","size":1000,"done":250,"state":1,"message":"","tracker_domain":"tracker.one","down_rate":0,"up_rate":0,"save_path":"C:\\\\Downloads"},'
+                 '{"hash":"' + "b" * 40 + '","name":"Beta","size":1000,"done":1000,"state":1,"message":"","tracker_domain":"tracker.two","down_rate":0,"up_rate":0,"save_path":"C:\\\\Downloads"},'
+                 '{"hash":"' + "c" * 40 + '","name":"Gamma","size":1000,"done":100,"state":1,"message":"","tracker_domain":"tracker.three","down_rate":0,"up_rate":0,"save_path":"C:\\\\Downloads"}'
                  ']',
         )
 
     page.route("**/api/v2/torrents/all", three_torrents)
     page.evaluate("refreshData(true)")
     page.wait_for_function(
-        "() => document.getElementById('aria-announcer').textContent === '1 torrent added.'"
+        "() => document.getElementById('aria-announcer').textContent === '1 torrent adicionado.'"
     )
 
     def swapped_torrents(route):
@@ -459,9 +463,9 @@ def test_web_ui_announces_material_torrent_list_changes(page, web_ui_server):
             status=200,
             content_type="application/json",
             body='['
-                 '{"hash":"' + "a" * 40 + '","name":"Alpha","size":1000,"done":250,"state":1,"message":"","tracker_domain":"tracker.one","down_rate":0,"up_rate":0,"save_path":"C:\\Downloads"},'
-                 '{"hash":"' + "c" * 40 + '","name":"Gamma","size":1000,"done":100,"state":1,"message":"","tracker_domain":"tracker.three","down_rate":0,"up_rate":0,"save_path":"C:\\Downloads"},'
-                 '{"hash":"' + "d" * 40 + '","name":"Delta","size":1000,"done":100,"state":1,"message":"","tracker_domain":"tracker.four","down_rate":0,"up_rate":0,"save_path":"C:\\Downloads"}'
+                 '{"hash":"' + "a" * 40 + '","name":"Alpha","size":1000,"done":250,"state":1,"message":"","tracker_domain":"tracker.one","down_rate":0,"up_rate":0,"save_path":"C:\\\\Downloads"},'
+                 '{"hash":"' + "c" * 40 + '","name":"Gamma","size":1000,"done":100,"state":1,"message":"","tracker_domain":"tracker.three","down_rate":0,"up_rate":0,"save_path":"C:\\\\Downloads"},'
+                 '{"hash":"' + "d" * 40 + '","name":"Delta","size":1000,"done":100,"state":1,"message":"","tracker_domain":"tracker.four","down_rate":0,"up_rate":0,"save_path":"C:\\\\Downloads"}'
                  ']',
         )
 
@@ -469,7 +473,7 @@ def test_web_ui_announces_material_torrent_list_changes(page, web_ui_server):
     page.route("**/api/v2/torrents/all", swapped_torrents)
     page.evaluate("refreshData(true)")
     page.wait_for_function(
-        "() => document.getElementById('aria-announcer').textContent === '1 torrent added. 1 torrent removed.'"
+        "() => document.getElementById('aria-announcer').textContent === '1 torrent adicionado. 1 torrent removido.'"
     )
 
 
@@ -495,7 +499,7 @@ def test_web_ui_expired_session_redirects_with_accessible_login_feedback(page, w
     page.evaluate("apiFetch('/api/v2/app/prefs')")
     page.wait_for_url(f"{web_ui_server}/login.html")
     page.wait_for_function(
-        "() => document.getElementById('errorMsg').textContent === 'Session expired. Please sign in again.'"
+        "() => document.getElementById('errorMsg').textContent === 'Sessão expirada. Entre novamente.'"
     )
 
     assert page.locator("#errorMsg").is_visible()

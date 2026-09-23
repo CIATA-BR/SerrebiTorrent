@@ -516,10 +516,9 @@ async function refreshData(force = false) {
             const removedCount = focusedRemovalWasAnnounced
                 ? listChanges.removed.length - 1
                 : listChanges.removed.length;
-            const parts = [];
-            if (addedCount > 0) parts.push(`${addedCount} torrent${addedCount === 1 ? '' : 's'} added`);
-            if (removedCount > 0) parts.push(`${removedCount} torrent${removedCount === 1 ? '' : 's'} removed`);
-            if (parts.length > 0) announceToSR(parts.join('. ') + '.');
+            // Separate calls so each sentence is translated on its own.
+            if (addedCount > 0) announceToSR(`${addedCount} torrent${addedCount === 1 ? '' : 's'} added.`);
+            if (removedCount > 0) announceToSR(`${removedCount} torrent${removedCount === 1 ? '' : 's'} removed.`);
         }
     } catch (e) { console.error("Refresh error", e); }
 }
@@ -882,13 +881,25 @@ function fmtSize(bytes) {
 
 async function logout() { await apiFetch('/api/v2/auth/logout', { method: 'POST' }); window.location.href = '/login.html'; }
 
+let pendingAnnouncement = null;
+
+// Messages raised in the same tick are spoken together; otherwise the last one
+// would overwrite the others before the live region ever showed them.
 function announceToSR(m, assertive = false) {
     const a = els.aria();
-    if (a) {
-        a.setAttribute('aria-live', assertive ? 'assertive' : 'polite');
-        a.textContent = '';
-        setTimeout(() => { a.textContent = m; }, 50);
+    if (!a) return;
+    if (pendingAnnouncement) {
+        pendingAnnouncement.text += ' ' + m;
+        pendingAnnouncement.assertive = pendingAnnouncement.assertive || assertive;
+        return;
     }
+    pendingAnnouncement = { text: m, assertive };
+    a.textContent = '';
+    setTimeout(() => {
+        a.setAttribute('aria-live', pendingAnnouncement.assertive ? 'assertive' : 'polite');
+        a.textContent = pendingAnnouncement.text;
+        pendingAnnouncement = null;
+    }, 50);
 }
 
 function applyTheme(theme) {
