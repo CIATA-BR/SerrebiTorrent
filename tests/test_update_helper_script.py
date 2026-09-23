@@ -73,9 +73,10 @@ def test_update_helper_powershell_hosts_are_hidden():
 def test_update_helper_relaunches_app_visible():
     text = _helper_text()
 
-    assert 'Start-Process -FilePath ([string]$env:APP_PATH) -PassThru' in text
-    assert 'Start-Process -FilePath ([string]$env:APP_PATH) | Out-Null' in text
-    assert 'Start-Process -FilePath ([string]$env:APP_PATH) -WindowStyle Hidden' not in text
+    launches = [line for line in text.splitlines() if "$env:APP_PATH" in line and "Start-Process" in line]
+    assert len(launches) == 2
+    assert all("-WindowStyle Normal" in line for line in launches)
+    assert "WshShell.Run" not in text
 
 
 def test_update_helper_accepts_and_cleans_temp_root():

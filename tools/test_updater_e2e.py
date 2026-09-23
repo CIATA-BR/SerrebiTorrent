@@ -23,9 +23,10 @@ def create_mock_app(app_dir: Path, version: str, exe_name: str = "SerrebiTorrent
     """Create a mock application directory with dummy files."""
     app_dir.mkdir(parents=True, exist_ok=True)
     
-    # Create dummy executable (just a text file for testing)
-    exe_path = app_dir / exe_name
-    exe_path.write_text(f"Mock SerrebiTorrent v{version}\n")
+    # The helper health-checks the new exe by launching it, so it must be a real
+    # program that stays up; cmd.exe does. The version lives beside it.
+    shutil.copy(Path(os.environ["SystemRoot"]) / "System32" / "cmd.exe", app_dir / exe_name)
+    (app_dir / "version.txt").write_text(f"Mock SerrebiTorrent v{version}\n")
     
     # Create update helper
     helper_path = app_dir / "update_helper.bat"
@@ -112,6 +113,11 @@ def test_update_flow(test_root: Path, keep_backups: int = 1) -> None:
         text=True
     )
     
+    subprocess.run(
+        ["powershell", "-NoProfile", "-Command",
+         f"Get-Process SerrebiTorrent -EA 0 | ? {{ $_.Path -like '{install_dir}*' }} | Stop-Process -Force"],
+        capture_output=True,
+    )
     print(f"\n      Helper exit code: {result.returncode}")
     if result.stdout:
         print(f"      Helper stdout:\n{result.stdout}")
@@ -124,7 +130,7 @@ def test_update_flow(test_root: Path, keep_backups: int = 1) -> None:
         print(f"      ❌ FAIL: Executable not found!")
         return False
     
-    content = exe_path.read_text()
+    content = (install_dir / "version.txt").read_text()
     if "v1.1.0" not in content:
         print(f"      ❌ FAIL: Wrong version! Content: {content}")
         return False
