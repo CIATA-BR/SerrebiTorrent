@@ -122,3 +122,9 @@ def test_load_po_rejects_unsafe_language_code(tmp_path):
 
     with pytest.raises(ValueError, match="invalid catalog language code"):
         load_po(catalog)
+
+
+def test_validate_translation_keeps_file_dialog_wildcard():
+    source = "Torrent files (*.torrent)|*.torrent"
+    assert validate_translation(source, "Archivos torrent (*.torrent)|*.torrent") == []
+    assert validate_translation(source, "Archivos de Torrent (*.torrent)")

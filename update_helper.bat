@@ -30,6 +30,7 @@ set "PID="
 set "INSTALL_DIR="
 set "STAGING_DIR="
 set "BACKUP_DIR="
+set "UPDATE_APPLYING="
 set "EXE_NAME="
 set "TEMP_ROOT=%ARG5%"
 set "SHOW_LOG=%ARG6%"
@@ -119,6 +120,7 @@ if errorlevel 1 (
 )
 
 echo [SerrebiTorrent Update] Applying update...
+set "UPDATE_APPLYING=1"
 robocopy "%STAGING_DIR%" "%INSTALL_DIR%" /E /MOVE /R:3 /W:1 /NFL /NDL /XD SerrebiTorrent_Data .git .venv __pycache__ /XF config.json
 set "RC=%ERRORLEVEL%"
 if %RC% geq 8 (
@@ -162,13 +164,17 @@ exit /b 0
 
 :rollback
 echo [SerrebiTorrent Update] Update failed. Restoring backup...
-call :clear_install_runtime
-if errorlevel 1 (
-    echo [X] Could not clear the partially installed runtime before rollback.
+rem Clear only once new files may be in place; before that the install holds the only copy of what has not been backed up.
+if defined UPDATE_APPLYING (
+    call :ensure_app_stopped
+    call :clear_install_runtime
+    if errorlevel 1 (
+        echo [X] Could not clear the partially installed runtime before rollback.
+    )
 )
 if exist "%BACKUP_DIR%" (
     robocopy "%BACKUP_DIR%" "%INSTALL_DIR%" /E /MOVE /R:3 /W:1 /NFL /NDL /XD SerrebiTorrent_Data .git .venv __pycache__ /XF config.json
-    set "RC=%ERRORLEVEL%"
+    set "RC=!ERRORLEVEL!"
     if !RC! geq 8 (
         echo [X] Backup restore failed with robocopy code !RC!.
     )
@@ -178,7 +184,7 @@ if not exist "%INSTALL_DIR%\%EXE_NAME%" (
 ) else (
     call :launch_app_once
 )
-powershell -WindowStyle Hidden -NoProfile -InputFormat None -Command "$log=[string]$env:LOG_FILE; try { Add-Type -AssemblyName PresentationFramework | Out-Null; $msg = 'SerrebiTorrent update failed and the previous version was restored.' + "`n`n" + 'Log file:' + "`n" + $log; [System.Windows.MessageBox]::Show($msg, 'SerrebiTorrent Update', 'OK', 'Error') | Out-Null } catch { }" >nul 2>nul
+powershell -WindowStyle Hidden -NoProfile -InputFormat None -Command "$log=[string]$env:LOG_FILE; try { Add-Type -AssemblyName PresentationFramework | Out-Null; $msg = 'SerrebiTorrent update failed.' + \"`n`n\" + 'Log file:' + \"`n\" + $log; [System.Windows.MessageBox]::Show($msg, 'SerrebiTorrent Update', 'OK', 'Error') | Out-Null } catch { }" >nul 2>nul
 exit /b 1
 
 :launch_and_verify_app
@@ -187,13 +193,13 @@ if not exist "%APP_PATH%" (
     echo [X] Updated executable is missing: "%APP_PATH%"
     exit /b 1
 )
-powershell -WindowStyle Hidden -NoProfile -InputFormat None -Command "$ErrorActionPreference='Stop'; $p=Start-Process -FilePath ([string]$env:APP_PATH) -PassThru; Start-Sleep -Seconds 3; try { $p.Refresh() } catch { }; if ($p.HasExited) { Write-Host ('[X] Updated application exited during startup with code ' + $p.ExitCode); exit 1 }; exit 0"
+powershell -WindowStyle Hidden -NoProfile -InputFormat None -Command "$ErrorActionPreference='Stop'; $p=Start-Process -FilePath ([string]$env:APP_PATH) -WindowStyle Normal -PassThru; Start-Sleep -Seconds 3; try { $p.Refresh() } catch { }; if ($p.HasExited) { Write-Host ('[X] Updated application exited during startup with code ' + $p.ExitCode); exit 1 }; exit 0"
 exit /b %ERRORLEVEL%
 
 :launch_app_once
 set "APP_PATH=%INSTALL_DIR%\%EXE_NAME%"
 if not exist "%APP_PATH%" exit /b 1
-powershell -WindowStyle Hidden -NoProfile -InputFormat None -Command "$ErrorActionPreference='SilentlyContinue'; Start-Process -FilePath ([string]$env:APP_PATH) | Out-Null; exit 0" >nul 2>nul
+powershell -WindowStyle Hidden -NoProfile -InputFormat None -Command "$ErrorActionPreference='SilentlyContinue'; Start-Process -FilePath ([string]$env:APP_PATH) -WindowStyle Normal | Out-Null; exit 0" >nul 2>nul
 exit /b %ERRORLEVEL%
 
 :clear_install_runtime

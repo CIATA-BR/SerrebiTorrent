@@ -104,7 +104,32 @@
         'Login - SerrebiTorrent': 'Entrar - SerrebiTorrent',
         'Login': 'Entrar',
         'Invalid credentials.': 'Credenciais inválidas.',
-        'Too many failed attempts. Try again later.': 'Muitas tentativas de login falharam. Tente novamente mais tarde.'
+        'Too many failed attempts. Try again later.': 'Muitas tentativas de login falharam. Tente novamente mais tarde.',
+        'Selected all {count} torrents': 'Selecionados todos os {count} torrents',
+        '{count} torrents selected.': '{count} torrents selecionados.',
+        'Failed to add torrent: {error}': 'Falha ao adicionar torrent: {error}',
+        'Error saving remote settings: {error}': 'Erro ao salvar as configurações remotas: {error}',
+        'Failed to {action} torrent(s).': 'Falha ao executar {action} no(s) torrent(s).',
+        'Failed to {action} torrent(s): {error}': 'Falha ao executar {action} no(s) torrent(s): {error}',
+        'Remove failed: {error}': 'Falha ao remover: {error}',
+        'Remove {count} torrent?': 'Remover {count} torrent?',
+        'Remove {count} torrents?': 'Remover {count} torrents?',
+        'Remove {count} torrent and delete downloaded data?': 'Remover {count} torrent e excluir os dados baixados?',
+        'Remove {count} torrents and delete downloaded data?': 'Remover {count} torrents e excluir os dados baixados?',
+        'Size: {size}': 'Tamanho: {size}',
+        'Path: {path}': 'Caminho: {path}',
+        'Auto-added from RSS: {name}': 'Adicionado automaticamente do RSS: {name}',
+        'Added from RSS: {name}': 'Adicionado do RSS: {name}',
+        'Adding torrent: {name}...': 'Adicionando torrent: {name}...',
+        'Focused torrent is no longer available. Focus moved to {name}.': 'O torrent em foco não está mais disponível. Foco movido para {name}.',
+        'Selected {name}': 'Selecionado: {name}',
+        'Deselected {name}': 'Desmarcado: {name}',
+        '{count} torrent added.': '{count} torrent adicionado.',
+        '{count} torrents added.': '{count} torrents adicionados.',
+        '{count} torrent removed.': '{count} torrent removido.',
+        '{count} torrents removed.': '{count} torrents removidos.',
+        'Session expired. Please sign in again.': 'Sessão expirada. Entre novamente.',
+        'Focused torrent is no longer available. The torrent list is empty.': 'O torrent em foco não está mais disponível. A lista de torrents está vazia.'
     };
 
     const REMOTE_WORDS = {
@@ -130,23 +155,31 @@
         script: 'script', done: 'concluído', filename: 'nome do arquivo', save: 'salvar'
     };
 
-    const PT_PATTERNS = [
-        [/^Selected all (\d+) torrents$/, 'Selecionados todos os $1 torrents'],
-        [/^(\d+) torrents selected\.$/, '$1 torrents selecionados.'],
-        [/^Failed to add torrent: (.+)$/, 'Falha ao adicionar torrent: $1'],
-        [/^Error saving remote settings: (.+)$/, 'Erro ao salvar as configurações remotas: $1'],
-        [/^Failed to (.+) torrent\(s\)\.$/, 'Falha ao executar $1 no(s) torrent(s).'],
-        [/^Failed to (.+) torrent\(s\): (.+)$/, 'Falha ao executar $1 no(s) torrent(s): $2'],
-        [/^Remove failed: (.+)$/, 'Falha ao remover: $1'],
-        [/^Remove (\d+) torrent\?$/, 'Remover $1 torrent?'],
-        [/^Remove (\d+) torrents\?$/, 'Remover $1 torrents?'],
-        [/^Remove (\d+) torrent and delete downloaded data\?$/, 'Remover $1 torrent e excluir os dados baixados?'],
-        [/^Remove (\d+) torrents and delete downloaded data\?$/, 'Remover $1 torrents e excluir os dados baixados?'],
-        [/^Size: (.+)$/, 'Tamanho: $1'],
-        [/^Path: (.+)$/, 'Caminho: $1'],
-        [/^Auto-added from RSS: (.+)$/, 'Adicionado automaticamente do RSS: $1'],
-        [/^Added from RSS: (.+)$/, 'Adicionado do RSS: $1'],
-        [/^Adding torrent: (.+)\.\.\.$/, 'Adicionando torrent: $1...']
+    // Messages built with values: the key's {placeholders} take the regex captures in order.
+    const TEMPLATES = [
+        [/^Selected all (\d+) torrents$/, 'Selected all {count} torrents'],
+        [/^(\d+) torrent added\.$/, '{count} torrent added.'],
+        [/^(\d+) torrents added\.$/, '{count} torrents added.'],
+        [/^(\d+) torrent removed\.$/, '{count} torrent removed.'],
+        [/^(\d+) torrents removed\.$/, '{count} torrents removed.'],
+        [/^(\d+) torrents selected\.$/, '{count} torrents selected.'],
+        [/^Failed to add torrent: (.+)$/, 'Failed to add torrent: {error}'],
+        [/^Error saving remote settings: (.+)$/, 'Error saving remote settings: {error}'],
+        [/^Failed to (.+) torrent\(s\)\.$/, 'Failed to {action} torrent(s).'],
+        [/^Failed to (.+) torrent\(s\): (.+)$/, 'Failed to {action} torrent(s): {error}'],
+        [/^Remove failed: (.+)$/, 'Remove failed: {error}'],
+        [/^Remove (\d+) torrent\?$/, 'Remove {count} torrent?'],
+        [/^Remove (\d+) torrents\?$/, 'Remove {count} torrents?'],
+        [/^Remove (\d+) torrent and delete downloaded data\?$/, 'Remove {count} torrent and delete downloaded data?'],
+        [/^Remove (\d+) torrents and delete downloaded data\?$/, 'Remove {count} torrents and delete downloaded data?'],
+        [/^Size: (.+)$/, 'Size: {size}'],
+        [/^Path: (.+)$/, 'Path: {path}'],
+        [/^Auto-added from RSS: (.+)$/, 'Auto-added from RSS: {name}'],
+        [/^Added from RSS: (.+)$/, 'Added from RSS: {name}'],
+        [/^Adding torrent: (.+)\.\.\.$/, 'Adding torrent: {name}...'],
+        [/^Focused torrent is no longer available\. Focus moved to (.+)\.$/, 'Focused torrent is no longer available. Focus moved to {name}.'],
+        [/^Selected (.+)$/, 'Selected {name}'],
+        [/^Deselected (.+)$/, 'Deselected {name}']
     ];
 
     const ATTRS = ['title', 'aria-label', 'placeholder'];
@@ -222,10 +255,15 @@
         if (currentLanguage !== 'en' && Object.prototype.hasOwnProperty.call(externalTranslations, text)) {
             return externalTranslations[text];
         }
-        if (currentLanguage !== 'pt-BR') return text;
-        if (Object.prototype.hasOwnProperty.call(PT_BR, text)) return PT_BR[text];
-        for (const [pattern, replacement] of PT_PATTERNS) {
-            if (pattern.test(text)) return text.replace(pattern, replacement);
+        if (currentLanguage === 'pt-BR' && Object.prototype.hasOwnProperty.call(PT_BR, text)) return PT_BR[text];
+        if (currentLanguage === 'en') return text;
+        for (const [pattern, key] of TEMPLATES) {
+            const match = text.match(pattern);
+            if (!match) continue;
+            const template = externalTranslations[key] || (currentLanguage === 'pt-BR' ? PT_BR[key] : null);
+            if (!template) return text;
+            const names = [...key.matchAll(/\{(\w+)\}/g)].map(m => m[1]);
+            return names.reduce((out, name, i) => out.split(`{${name}}`).join(match[i + 1]), template);
         }
         return text;
     }

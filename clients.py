@@ -10,6 +10,7 @@ import time
 from urllib.parse import quote, urljoin, urlparse, urlunparse
 
 import requests
+import urllib3
 from torrent_parsing import build_magnet_from_hashes, torrent_file_storage
 
 MAX_TORRENT_DOWNLOAD_BYTES = 64 * 1024 * 1024
@@ -92,28 +93,55 @@ def validate_public_torrent_url(url):
     return parsed
 
 
-def _connected_torrent_peer_ip(response):
-    raw = getattr(response, "raw", None)
-    connection = getattr(raw, "_connection", None)
-    sock = getattr(connection, "sock", None)
-    if sock is None:
-        original = getattr(raw, "_original_response", None)
-        fp = getattr(original, "fp", None)
-        raw_fp = getattr(fp, "raw", None)
-        sock = getattr(raw_fp, "_sock", None)
-    if sock is None:
-        raise ValueError("Torrent connection peer address could not be verified.")
-    try:
-        return ipaddress.ip_address(sock.getpeername()[0])
-    except (OSError, ValueError, IndexError, TypeError) as exc:
-        raise ValueError("Torrent connection peer address could not be verified.") from exc
+class _PublicPeerMixin:
+    # Checked on the connected socket, not a second DNS lookup, so a rebinding
+    # name cannot validate as public and then connect somewhere local. Runs at
+    # connect time because urllib3 returns empty-body responses (most redirects)
+    # to the pool before requests hands them back.
+    def _new_conn(self):
+        sock = super()._new_conn()
+        # ponytail: through a proxy the proxy resolves the host, so only the pre-request DNS check applies.
+        if self.proxy:
+            return sock
+        try:
+            peer = ipaddress.ip_address(sock.getpeername()[0])
+        except (OSError, ValueError, IndexError, TypeError) as exc:
+            sock.close()
+            raise ValueError("Torrent connection peer address could not be verified.") from exc
+        if _is_blocked_torrent_ip(peer):
+            sock.close()
+            raise ValueError("Torrent connection reached a private or local network address.")
+        return sock
 
 
-def _validate_connected_torrent_peer(response):
-    peer = _connected_torrent_peer_ip(response)
-    if _is_blocked_torrent_ip(peer):
-        raise ValueError("Torrent connection reached a private or local network address.")
-    return peer
+class _PublicHTTPConnection(_PublicPeerMixin, urllib3.connection.HTTPConnection):
+    pass
+
+
+class _PublicHTTPSConnection(_PublicPeerMixin, urllib3.connection.HTTPSConnection):
+    pass
+
+
+class _PublicHTTPPool(urllib3.HTTPConnectionPool):
+    ConnectionCls = _PublicHTTPConnection
+
+
+class _PublicHTTPSPool(urllib3.HTTPSConnectionPool):
+    ConnectionCls = _PublicHTTPSConnection
+
+
+class _PublicPeerAdapter(requests.adapters.HTTPAdapter):
+    def init_poolmanager(self, *args, **kwargs):
+        super().init_poolmanager(*args, **kwargs)
+        self.poolmanager.pool_classes_by_scheme = {"http": _PublicHTTPPool, "https": _PublicHTTPSPool}
+
+
+def _public_torrent_session():
+    session = requests.Session()
+    adapter = _PublicPeerAdapter()
+    session.mount("http://", adapter)
+    session.mount("https://", adapter)
+    return session
 
 
 def download_torrent_url(url, timeout=30):
@@ -121,8 +149,9 @@ def download_torrent_url(url, timeout=30):
     for _ in range(MAX_TORRENT_URL_REDIRECTS + 1):
         validate_public_torrent_url(current)
         content = b""
-        with requests.get(safe_encode_url(current), timeout=timeout, stream=True, allow_redirects=False) as r:
-            _validate_connected_torrent_peer(r)
+        with _public_torrent_session() as session, session.get(
+            safe_encode_url(current), timeout=timeout, stream=True, allow_redirects=False
+        ) as r:
             if r.status_code in _REDIRECT_STATUSES:
                 location = r.headers.get("Location")
                 if not location:

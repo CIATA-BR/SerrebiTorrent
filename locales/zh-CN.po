@@ -5,82 +5,82 @@ msgstr ""
 "Project-Id-Version: SerrebiTorrent\\nLanguage: zh-CN\\nX-Language-Name: 简体中文\\nMIME-Version: 1.0\\nContent-Type: text/plain; charset=UTF-8\\nContent-Transfer-Encoding: 8bit\\n"
 
 msgid "&About SerrebiTorrent"
-msgstr "&关于塞雷比托伦特"
+msgstr "关于 SerrebiTorrent(&A)"
 
 msgid "&Actions"
-msgstr "&操作"
+msgstr "操作(&A)"
 
 msgid "&Add selected"
-msgstr "选定 &Z Add"
+msgstr "添加所选项(&A)"
 
 msgid "&Add Torrent File...\tCtrl+O"
-msgstr "&ZAdd 种子文件... \tCtrl+O"
+msgstr "添加种子文件(&A)...\tCtrl+O"
 
 msgid "&Add..."
-msgstr "&添加..."
+msgstr "添加(&A)..."
 
 msgid "&Close"
-msgstr "&关闭"
+msgstr "关闭(&C)"
 
 msgid "&Connect"
-msgstr "&连接"
+msgstr "连接(&C)"
 
 msgid "&Connect...\tCtrl+Shift+C"
-msgstr "&连接...\tCtrl+Shift+C"
+msgstr "连接(&C)...\tCtrl+Shift+C"
 
 msgid "&Edit..."
-msgstr "&编辑..."
+msgstr "编辑(&E)..."
 
 msgid "&File"
-msgstr "&文件"
+msgstr "文件(&F)"
 
 msgid "&Help"
-msgstr "&帮助"
+msgstr "帮助(&H)"
 
 msgid "&Indexers to search:"
-msgstr "要搜索的&索引器："
+msgstr "要搜索的索引器(&I)："
 
 msgid "&Indexers:"
-msgstr "&索引器："
+msgstr "索引器(&I)："
 
 msgid "&Name:"
-msgstr "&名称："
+msgstr "名称(&N)："
 
 msgid "&Pause\tCtrl+P"
-msgstr "&暂停\tCtrl+P"
+msgstr "暂停(&P)\tCtrl+P"
 
 msgid "&Remove"
-msgstr "&删除"
+msgstr "删除(&R)"
 
 msgid "&Remove\tDel"
-msgstr "&删除\tDel"
+msgstr "删除(&R)\tDel"
 
 msgid "&Resume\tCtrl+R"
-msgstr "&继续\tCtrl+R"
+msgstr "继续(&R)\tCtrl+R"
 
 msgid "&Search for Torrents...\tCtrl+F"
-msgstr "&搜索种子...\tCtrl+F"
+msgstr "搜索种子(&S)...\tCtrl+F"
 
 msgid "&Search for:"
-msgstr "&搜索："
+msgstr "搜索内容(&S)："
 
 msgid "&Start\tCtrl+S"
-msgstr "&开始\tCtrl+S"
+msgstr "开始(&S)\tCtrl+S"
 
 msgid "&Tools"
-msgstr "&工具"
+msgstr "工具(&T)"
 
 msgid "&URL:"
-msgstr "&URL："
+msgstr "URL(&U)："
 
 msgid "1 feed"
-msgstr "1支饲料"
+msgstr "1 个订阅源"
 
 msgid "A Torznab or Newznab search endpoint. Prowlarr: {prowlarr}. Jackett, all trackers at once: {jackett}"
-msgstr "Torznab 或 Newznab 搜索端点。Prowlarr：{prowlarr}。Jackett 一次搜索所有站点：{jackett}"
+msgstr "Torznab 或 Newznab 搜索端点。Prowlarr：{prowlarr}。Jackett（一次搜索所有站点）：{jackett}"
 
 msgid "A Windows desktop torrent manager designed for keyboard-first use and screen readers."
-msgstr "一个Windows桌面种子管理器,为键盘的先用和屏幕阅读器设计."
+msgstr "一款专为键盘操作和屏幕阅读器设计的 Windows 桌面种子管理器。"
 
 msgid "About this application"
 msgstr "关于此应用程序"
@@ -89,7 +89,7 @@ msgid "Accept"
 msgstr "接受"
 
 msgid "Action menu opened. Use arrow keys to navigate."
-msgstr "打开动作菜单 。 使用箭头键来导航 。"
+msgstr "操作菜单已打开。使用方向键导航。"
 
 msgid "Active"
 msgstr "活动"
@@ -98,13 +98,13 @@ msgid "Add"
 msgstr "添加"
 
 msgid "Add &URL/Magnet...\tCtrl+U"
-msgstr "添加 &URL/磁力链接...\tCtrl+U"
+msgstr "添加 URL/磁力链接(&U)...\tCtrl+U"
 
 msgid "Add a torrent from a local file"
 msgstr "从本地文件添加种子"
 
 msgid "Add a torrent from a URL or Magnet link"
-msgstr "从 URL 或 Magnet 链接中添加种子"
+msgstr "从 URL 或磁力链接添加种子"
 
 msgid "Add Connection Profile"
 msgstr "添加连接配置"
@@ -113,13 +113,13 @@ msgid "Add created torrent to the currently connected client"
 msgstr "将创建的种子添加到当前连接的客户端"
 
 msgid "Add Feed"
-msgstr "添加种子"
+msgstr "添加订阅源"
 
 msgid "Add indexer"
 msgstr "添加索引器"
 
 msgid "Add Profile"
-msgstr "添加配置文件"
+msgstr "添加配置"
 
 msgid "Add RSS Rule"
 msgstr "添加 RSS 规则"
@@ -134,16 +134,19 @@ msgid "Add Torrent: {name}"
 msgstr "添加种子：{name}"
 
 msgid "Add Tracker"
-msgstr "添加跟踪器"
+msgstr "添加 Tracker"
 
 msgid "Add/edit/delete profiles and connect"
-msgstr "添加/编辑/删除配置文件并连接"
+msgstr "添加、编辑、删除配置并连接"
+
+msgid "Added from RSS: {name}"
+msgstr "已从 RSS 添加：{name}"
 
 msgid "Added from RSS: {title}"
-msgstr "从RSS添加:{title}"
+msgstr "已从 RSS 添加：{title}"
 
 msgid "Added your blindDL indexer: {names}."
-msgstr "加入了你的盲DL索引器:{names}."
+msgstr "已添加你的 blindDL 索引器：{names}。"
 
 msgid "Added your blindDL indexers: {names}."
 msgstr "已添加你的 blindDL 索引器：{names}。"
@@ -155,19 +158,22 @@ msgid "Adding created torrent..."
 msgstr "正在添加创建的种子..."
 
 msgid "Adding magnet link from CLI..."
-msgstr "正在从 CLI 添加磁链接..."
+msgstr "正在从命令行添加磁力链接..."
 
 msgid "Adding magnet link..."
-msgstr "正在添加磁铁链接..."
+msgstr "正在添加磁力链接..."
 
 msgid "Adding torrent file from CLI..."
-msgstr "正在从 CLI 添加种子文件..."
+msgstr "正在从命令行添加种子文件..."
 
 msgid "Adding torrent..."
 msgstr "正在添加种子..."
 
+msgid "Adding torrent: {name}..."
+msgstr "正在添加种子：{name}..."
+
 msgid "Adding torrent: {title}..."
-msgstr "正在添加种子: {title}..."
+msgstr "正在添加种子：{title}..."
 
 msgid "Adding {count} torrent..."
 msgstr "正在添加 {count} 个种子..."
@@ -176,97 +182,100 @@ msgid "Adding {count} torrents..."
 msgstr "正在添加 {count} 个种子..."
 
 msgid "After Creation"
-msgstr "创建后"
+msgstr "创建之后"
 
 msgid "Age"
-msgstr "年龄"
+msgstr "时间"
 
 msgid "All"
-msgstr "全体"
+msgstr "全部"
 
 msgid "An indexer needs both a name and a URL."
-msgstr "索引器既需要名称,也需要URL."
+msgstr "索引器需要名称和 URL。"
 
 msgid "An update check or install is already in progress."
-msgstr "正在更新检查或安装中 。"
+msgstr "已有更新检查或安装正在进行。"
 
 msgid "An update is already in progress."
-msgstr "目前正在更新。"
+msgstr "已有更新正在进行。"
 
 msgid "Announce IP (reported to trackers, blank = auto):"
-msgstr "宣布 IP( 向跟踪器报告, 空白 = 自动 ):"
+msgstr "通告 IP（报告给 Tracker，留空 = 自动）："
 
 msgid "Another indexer is already called {name}. Choose a different name."
-msgstr "另一个索引器已经叫做{name}. 选取别名."
+msgstr "已有名为 {name} 的索引器。请换一个名称。"
 
 msgid "Another instance of SerrebiTorrent is already running."
-msgstr "SerrebiTorrent的另一个实例已经在运行中。"
+msgstr "SerrebiTorrent 的另一个实例已在运行。"
 
 msgid "Anti-leech"
-msgstr "反弹出"
+msgstr "反吸血"
 
 msgid "API &key:"
-msgstr "API &ZKY: (美国英语)."
+msgstr "API 密钥(&K)："
 
 msgid "API key"
 msgstr "API 密钥"
 
 msgid "Application"
-msgstr "应用"
+msgstr "应用程序"
 
 msgid "Apply to Feeds (Uncheck all for Global):"
-msgstr "应用到种子( 取消对全局的检查) :"
+msgstr "应用到订阅源（全部不选 = 全局）："
 
 msgid "Applying update..."
 msgstr "正在应用更新..."
 
 msgid "Are you sure you want to clear ALL RSS feeds and rules?"
-msgstr "您确定要清除所有 RSS 种子和规则 ?"
+msgstr "确定要清除所有 RSS 订阅源和规则吗？"
 
 msgid "Associate .torrent and magnet links with this app"
-msgstr "与此应用程序的关联 . torrent和磁铁链接"
+msgstr "将 .torrent 文件和磁力链接与此应用关联"
 
 msgid "Association is only supported on Windows for now."
-msgstr "目前只在Windows上支持关联."
+msgstr "目前仅在 Windows 上支持文件关联。"
 
 msgid "Associations registered successfully!"
-msgstr "社团注册成功!"
+msgstr "文件关联注册成功！"
 
 msgid "Authentication (if required):"
-msgstr "认证( 如果需要) :"
+msgstr "身份验证（如需要）："
 
 msgid "Auto"
 msgstr "自动"
 
+msgid "Auto-added from RSS: {name}"
+msgstr "已从 RSS 自动添加：{name}"
+
 msgid "Auto-added from RSS: {title}"
-msgstr "从RSS自动添加: {title}"
+msgstr "已从 RSS 自动添加：{title}"
 
 msgid "Auto-start failed: {error}"
-msgstr "自动启动失败: {error}"
+msgstr "自动启动失败：{error}"
 
 msgid "Auto-started new torrent(s)"
-msgstr "自动启动的新种子"
+msgstr "已自动启动新种子"
 
 msgid "Auto-update is not available for this build."
-msgstr "此构建无法自动更新 。"
+msgstr "此版本不支持自动更新。"
 
 msgid "Automatically add trackers from URL"
-msgstr "从 URL 自动添加跟踪器"
+msgstr "从 URL 自动添加 Tracker"
 
 msgid "Automatically start torrents"
-msgstr "自动启动种子"
+msgstr "自动开始种子"
 
 msgid "Availability"
 msgstr "可用性"
 
 msgid "Best match"
-msgstr "最佳配对"
+msgstr "最佳匹配"
 
 msgid "Bind Host:"
-msgstr "绑定主机 :"
+msgstr "绑定主机："
 
 msgid "BitTorrent"
-msgstr "比特特伦特"
+msgstr "BitTorrent"
 
 msgid "Browse..."
 msgstr "浏览..."
@@ -275,19 +284,19 @@ msgid "Cancel"
 msgstr "取消"
 
 msgid "Categories"
-msgstr "类别"
+msgstr "分类"
 
 msgid "Category"
-msgstr "类别"
+msgstr "分类"
 
 msgid "Check"
-msgstr "检查"
+msgstr "勾选"
 
 msgid "Check All"
-msgstr "全部检查"
+msgstr "全部勾选"
 
 msgid "Check for &Updates...\tF5"
-msgstr "检查&更新...\tF5"
+msgstr "检查更新(&U)...\tF5"
 
 msgid "Check for Updates"
 msgstr "检查更新"
@@ -299,13 +308,13 @@ msgid "Check for updates automatically on startup"
 msgstr "启动时自动检查更新"
 
 msgid "Checking"
-msgstr "检查中"
+msgstr "正在校验"
 
 msgid "Checking for updates..."
 msgstr "正在检查更新..."
 
 msgid "Choose a profile, then connect or manage it with the buttons below."
-msgstr "选择一个配置,然后用下面的按钮连接或管理它."
+msgstr "选择一个配置，然后使用下方按钮连接或管理它。"
 
 msgid "Choose Download Directory"
 msgstr "选择下载目录"
@@ -317,22 +326,22 @@ msgid "Client"
 msgstr "客户端"
 
 msgid "Client Type"
-msgstr "客户类型"
+msgstr "客户端类型"
 
 msgid "Client Type:"
-msgstr "客户类型 :"
+msgstr "客户端类型："
 
 msgid "Close"
 msgstr "关闭"
 
 msgid "Close to System Tray"
-msgstr "接近系统托盘"
+msgstr "关闭时最小化到系统托盘"
 
 msgid "Comment:"
-msgstr "注释 :"
+msgstr "注释："
 
 msgid "Configure local session and application settings"
-msgstr "配置本地会话和应用程序设置"
+msgstr "配置本地会话和应用程序"
 
 msgid "Confirm"
 msgstr "确认"
@@ -344,16 +353,16 @@ msgid "Connect"
 msgstr "连接"
 
 msgid "Connect or switch profile"
-msgstr "连接或切换配置文件"
+msgstr "连接或切换配置"
 
 msgid "Connect to a client before adding torrents."
-msgstr "在添加种子前连接到客户端 。"
+msgstr "添加种子前请先连接客户端。"
 
 msgid "Connect to this profile"
-msgstr "连接到此配置文件"
+msgstr "连接到此配置"
 
 msgid "Connected to {name}"
-msgstr "连接到 {name}"
+msgstr "已连接到 {name}"
 
 msgid "Connecting..."
 msgstr "正在连接..."
@@ -374,115 +383,118 @@ msgid "Connection Manager...\tCtrl+Shift+C"
 msgstr "连接管理器...\tCtrl+Shift+C"
 
 msgid "Connection profiles"
-msgstr "连接配置文件"
+msgstr "连接配置"
 
 msgid "Context / validation:"
-msgstr "背景/ 验证 :"
+msgstr "上下文 / 校验："
 
 msgid "Copied to clipboard"
-msgstr "复制到剪贴板"
+msgstr "已复制到剪贴板"
 
 msgid "Copied {count} magnet link."
-msgstr "复制了{count}磁铁链路."
+msgstr "已复制 {count} 个磁力链接。"
 
 msgid "Copied {count} magnet links."
-msgstr "复制了{count}磁铁链路."
+msgstr "已复制 {count} 个磁力链接。"
 
 msgid "Copy &Info Hash\tCtrl+I"
-msgstr "复制 &Info Hash\tCtrl+I"
+msgstr "复制信息哈希(&I)\tCtrl+I"
 
 msgid "Copy &Magnet Link\tCtrl+M"
-msgstr "复制&磁力链接\tCtrl+M"
+msgstr "复制磁力链接(&M)\tCtrl+M"
 
 msgid "Copy a magnet link for selected torrents"
-msgstr "复制选中种子的磁铁链接"
+msgstr "复制所选种子的磁力链接"
 
 msgid "Copy Info Hash"
-msgstr "复制信息散列"
+msgstr "复制信息哈希"
 
 msgid "Copy it from Prowlarr or Jackett's own settings. Leave it empty if the endpoint needs no key."
-msgstr "从Prowlarr或Jackett自己的设置中复制. 如果端点不需要密钥, 请留空 。"
+msgstr "请从 Prowlarr 或 Jackett 的设置中复制。如果端点不需要密钥，请留空。"
 
 msgid "Copy Magnet Link"
-msgstr "复制磁铁链接"
+msgstr "复制磁力链接"
 
 msgid "Copy magnet link to clipboard"
-msgstr "复制磁铁链接到剪贴板"
+msgstr "将磁力链接复制到剪贴板"
 
 msgid "Copy the info hash for selected torrents"
-msgstr "复制选中种子的信息散列"
+msgstr "复制所选种子的信息哈希"
 
 msgid "Create &Torrent...\tCtrl+N"
-msgstr "创建&种子...\tCtrl+N"
+msgstr "创建种子(&T)...\tCtrl+N"
 
 msgid "Create a .torrent file from a file or folder"
-msgstr "从文件或文件夹创建.torrent文件"
+msgstr "从文件或文件夹创建 .torrent 文件"
 
 msgid "Create Profile"
-msgstr "创建配置文件"
+msgstr "创建配置"
 
 msgid "Create Torrent"
 msgstr "创建种子"
 
 msgid "Created by:"
-msgstr "创建者:"
+msgstr "创建者："
 
 msgid "Created torrent added"
-msgstr "已创建种子已添加"
+msgstr "已添加创建的种子"
 
 msgid "Created torrent, but failed to add to client: {error}"
-msgstr "创建了 torrent, 但无法添加到客户端 : {error}"
+msgstr "已创建种子，但添加到客户端失败：{error}"
 
 msgid "Current"
 msgstr "当前"
 
 msgid "Dark (Night)"
-msgstr "黑暗( 夜间)"
+msgstr "深色（夜间）"
 
 msgid "Default"
 msgstr "默认"
 
 msgid "Default Download Path:"
-msgstr "默认下载路径 :"
+msgstr "默认下载路径："
 
 msgid "Delete"
 msgstr "删除"
 
 msgid "Delete this profile?"
-msgstr "删除此配置文件吗 ?"
+msgstr "删除此配置？"
 
 msgid "Deselect All"
 msgstr "全部取消选择"
 
+msgid "Deselected {name}"
+msgstr "已取消选择：{name}"
+
 msgid "Disconnected"
-msgstr "断开连接"
+msgstr "已断开连接"
 
 msgid "Down Speed"
-msgstr "减速"
+msgstr "下载速度"
 
 msgid "Download folder not available."
-msgstr "无法下载文件夹 。"
+msgstr "下载文件夹不可用。"
 
 msgid "Download Path"
 msgstr "下载路径"
 
 msgid "Download Path:"
-msgstr "下载路径 :"
+msgstr "下载路径："
 
 msgid "Download Rate (bytes/s):"
-msgstr "下载率( 字节/ 秒) :"
+msgstr "下载速率（字节/秒）："
 
 msgid "Downloaded update failed SHA-256 verification."
-msgstr "下载更新失败 SHA-256 校验 。"
+msgstr "下载的更新未通过 SHA-256 校验。"
 
 msgid "Downloaded: {percent:.1f}%"
-msgstr "下载: {percent:.1f}%"
+msgstr "已下载：{percent:.1f}%"
 
 msgid "Downloading"
-msgstr "下载"
+msgstr "下载中"
 
 msgid "Downloading torrent file..."
-msgstr "正在下载 torrent 文件..."
+msgstr "正在下载种子文件..."
 
 msgid "Downloading update..."
 msgstr "正在下载更新..."
@@ -491,25 +503,25 @@ msgid "Downloads"
 msgstr "下载"
 
 msgid "E&xit"
-msgstr "退&出"
+msgstr "退出(&X)"
 
 msgid "Edit"
 msgstr "编辑"
 
 msgid "Edit connected qBittorrent settings"
-msgstr "编辑连接的 qBitorrent 设置"
+msgstr "编辑已连接的 qBittorrent 设置"
 
 msgid "Edit connected rTorrent settings"
-msgstr "编辑连接的 rTorrent 设置"
+msgstr "编辑已连接的 rTorrent 设置"
 
 msgid "Edit connected Transmission settings"
-msgstr "编辑连接的传输设置"
+msgstr "编辑已连接的 Transmission 设置"
 
 msgid "Edit indexer"
 msgstr "编辑索引器"
 
 msgid "Edit Profile"
-msgstr "编辑配置文件"
+msgstr "编辑配置"
 
 msgid "Edit RSS Rule"
 msgstr "编辑 RSS 规则"
@@ -521,85 +533,88 @@ msgid "Enable DHT"
 msgstr "启用 DHT"
 
 msgid "Enable Local Service Discovery (LSD)"
-msgstr "启用本地服务发现( LSD)"
+msgstr "启用本地节点发现（LSD）"
 
 msgid "Enable NAT-PMP Port Mapping"
-msgstr "启用 NAT- PMP 端口映射"
+msgstr "启用 NAT-PMP 端口映射"
 
 msgid "Enable UPnP Port Mapping"
 msgstr "启用 UPnP 端口映射"
 
 msgid "Enable Web UI"
-msgstr "启用网络用户界面"
+msgstr "启用 Web 界面"
 
 msgid "Enabled"
 msgstr "已启用"
 
 msgid "English"
-msgstr "联合国"
+msgstr "英语"
 
 msgid "Enter a JSON object (e.g. {\"/watched\": \"/home/user\"})."
-msgstr "输入 JSON 对象( 如 {\"/watched\": \"/home/user\"}) 。"
+msgstr "请输入 JSON 对象（例如 {\"/watched\": \"/home/user\"}）。"
 
 msgid "Enter adds the selected torrents. Control C copies the magnet link."
-msgstr "输入添加选中的种子 。 控制C复制了磁铁链接."
+msgstr "按 Enter 添加所选种子。按 Ctrl+C 复制磁力链接。"
 
 msgid "Enter edits the selected indexer. Delete removes it."
-msgstr "输入编辑所选索引器。 删除它。"
+msgstr "按 Enter 编辑所选索引器。按 Delete 删除。"
 
 msgid "Enter Magnet Link or URL:"
-msgstr "输入磁铁链接或 URL :"
+msgstr "输入磁力链接或 URL："
 
 msgid "Enter RSS Feed URL:"
-msgstr "输入 RSS 种子 URL :"
+msgstr "输入 RSS 订阅源 URL："
 
 msgid "Error"
 msgstr "错误"
 
 msgid "Error adding file: {error}"
-msgstr "添加文件出错: {error}"
+msgstr "添加文件出错：{error}"
 
 msgid "Error adding URL: {error}"
-msgstr "添加 URL 出错: {error}"
+msgstr "添加 URL 出错：{error}"
 
 msgid "Error fetching preferences"
 msgstr "获取首选项出错"
 
 msgid "Error saving remote settings."
-msgstr "保存远程设置出错 。"
+msgstr "保存远程设置出错。"
+
+msgid "Error saving remote settings: {error}"
+msgstr "保存远程设置出错：{error}"
 
 msgid "Error saving settings."
-msgstr "保存设置出错 。"
+msgstr "保存设置出错。"
 
 msgid "Every day"
-msgstr "每天都会"
+msgstr "每天"
 
 msgid "Every Friday"
-msgstr "每个星期五"
+msgstr "每周五"
 
 msgid "Every Monday"
-msgstr "每个星期一"
+msgstr "每周一"
 
 msgid "Every Saturday"
-msgstr "每个星期六"
+msgstr "每周六"
 
 msgid "Every Sunday"
-msgstr "每个星期天"
+msgstr "每周日"
 
 msgid "Every Thursday"
-msgstr "每个星期四"
+msgstr "每周四"
 
 msgid "Every Tuesday"
-msgstr "每个星期二"
+msgstr "每周二"
 
 msgid "Every Wednesday"
-msgstr "每个星期三"
+msgstr "每周三"
 
 msgid "Every weekday"
-msgstr "每个工作日"
+msgstr "工作日"
 
 msgid "Every weekend"
-msgstr "每个周末"
+msgstr "周末"
 
 msgid "Exit"
 msgstr "退出"
@@ -611,76 +626,82 @@ msgid "Export PO..."
 msgstr "导出 PO..."
 
 msgid "Extracted update does not contain application files."
-msgstr "已提取的更新不包含应用程序文件 。"
+msgstr "解压后的更新不包含应用程序文件。"
 
 msgid "Extracting update..."
-msgstr "正在提取更新..."
+msgstr "正在解压更新..."
 
 msgid "Failed"
 msgstr "失败"
 
 msgid "Failed to access clipboard."
-msgstr "访问剪贴板失败 。"
+msgstr "无法访问剪贴板。"
 
 msgid "Failed to add from RSS: {error}"
-msgstr "从 RSS 添加失败: {error}"
+msgstr "从 RSS 添加失败：{error}"
 
 msgid "Failed to add magnet: {error}"
-msgstr "添加磁铁失败: {error}"
+msgstr "添加磁力链接失败：{error}"
 
 msgid "Failed to add torrent: {error}"
-msgstr "添加种子失败: {error}"
+msgstr "添加种子失败：{error}"
 
 msgid "Failed to add torrents."
-msgstr "添加种子失败 。"
+msgstr "添加种子失败。"
 
 msgid "Failed to apply settings: {error}"
-msgstr "应用设置失败: {error}"
+msgstr "应用设置失败：{error}"
 
 msgid "Failed to download torrent from URL: {error}"
-msgstr "从 URL 下载种子失败: {error}"
+msgstr "从 URL 下载种子失败：{error}"
 
 msgid "Failed to fetch preferences"
 msgstr "获取首选项失败"
 
 msgid "Failed to fetch remote preferences: {error}"
-msgstr "获取远程首选项失败: {error}"
+msgstr "获取远程首选项失败：{error}"
 
 msgid "Failed to fetch {title}: {error}"
-msgstr "获取 {title} 失败: {error}"
+msgstr "获取 {title} 失败：{error}"
 
 msgid "Failed to load settings."
-msgstr "装入设置失败 。"
+msgstr "加载设置失败。"
 
 msgid "Failed to read torrent file: {error}"
-msgstr "读取种子文件失败: {error}"
+msgstr "读取种子文件失败：{error}"
 
 msgid "Failed to register associations: {error}"
-msgstr "注册协会失败: {error}"
+msgstr "注册文件关联失败：{error}"
 
 msgid "Failed to retrieve preferences from remote client."
-msgstr "从远程客户端获取首选项失败 。"
+msgstr "无法从远程客户端获取首选项。"
 
 msgid "Failed to retrieve preferences from remote client. The client might not support this feature or there is a connection issue."
-msgstr "从远程客户端获取首选项失败 。 客户端可能不支持此功能, 或者存在连接问题 。"
+msgstr "无法从远程客户端获取首选项。客户端可能不支持此功能，或存在连接问题。"
 
 msgid "Failed to update remote preferences: {error}"
-msgstr "更新远程首选项失败: {error}"
+msgstr "更新远程首选项失败：{error}"
+
+msgid "Failed to {action} torrent(s)."
+msgstr "对种子执行 {action} 失败。"
+
+msgid "Failed to {action} torrent(s): {error}"
+msgstr "对种子执行 {action} 失败：{error}"
 
 msgid "Failed to {action} torrent: {error}"
-msgstr "{action}种子失败：{error}"
+msgstr "对种子执行 {action} 失败：{error}"
 
 msgid "Failed to {action}: {error}"
-msgstr "{action} 失败：{error}"
+msgstr "执行 {action} 失败：{error}"
 
 msgid "Fastest upload"
-msgstr "最快的上传"
+msgstr "最快上传"
 
 msgid "Fetching {name} preferences..."
-msgstr "获取 {name} 偏好..."
+msgstr "正在获取 {name} 首选项..."
 
 msgid "File list not available (Magnet link)."
-msgstr "文件列表不可用( Magnet 链接) 。"
+msgstr "文件列表不可用（磁力链接）。"
 
 msgid "File..."
 msgstr "文件..."
@@ -689,82 +710,88 @@ msgid "Files"
 msgstr "文件"
 
 msgid "Files:"
-msgstr "文件 :"
+msgstr "文件："
 
 msgid "Filter:"
-msgstr "过滤器 :"
+msgstr "筛选："
 
 msgid "Finished"
-msgstr "完成"
+msgstr "已完成"
 
 msgid "Fixed slots"
-msgstr "固定时间档"
+msgstr "固定槽位"
+
+msgid "Focused torrent is no longer available. Focus moved to {name}."
+msgstr "原先聚焦的种子已不存在。焦点已移到 {name}。"
+
+msgid "Focused torrent is no longer available. The torrent list is empty."
+msgstr "原先聚焦的种子已不存在。种子列表为空。"
 
 msgid "Folder..."
 msgstr "文件夹..."
 
 msgid "Force a recheck/verification (if supported)"
-msgstr "强制重新检查/核查(如果得到支持)"
+msgstr "强制重新校验（如支持）"
 
 msgid "Force an immediate tracker announce (if supported)"
-msgstr "强制立即跟踪器宣布( 如果支持)"
+msgstr "强制立即向 Tracker 汇报（如支持）"
 
 msgid "Force encryption off"
-msgstr "强制加密关闭"
+msgstr "强制关闭加密"
 
 msgid "Force encryption on"
-msgstr "强制加密"
+msgstr "强制开启加密"
 
 msgid "Force Re&check"
-msgstr "强制重新&检查"
+msgstr "强制重新校验(&C)"
 
 msgid "Force Reannoun&ce"
-msgstr "强制Reannoun &CE"
+msgstr "强制重新汇报(&E)"
 
 msgid "Force Reannounce"
-msgstr "强制重播"
+msgstr "强制重新汇报"
 
 msgid "Force Recheck"
-msgstr "强制重新检查"
+msgstr "强制重新校验"
 
 msgid "General"
 msgstr "常规"
 
 msgid "Global"
-msgstr "全球"
+msgstr "全局"
 
 msgid "Global DL Limit (B/s)"
-msgstr "全球DL限制(B/s)"
+msgstr "全局下载限制（B/s）"
 
 msgid "Global Limits (0 or -1 for unlimited):"
-msgstr "全局限制( 0 或 - 1 为无限限制) :"
+msgstr "全局限制（0 或 -1 表示不限制）："
 
 msgid "Global UL Limit (B/s)"
-msgstr "全球UL限制(B/s)"
+msgstr "全局上传限制（B/s）"
 
 msgid "Hash"
-msgstr "散开"
+msgstr "哈希"
 
 msgid "Hashing pieces and generating torrent metadata..."
-msgstr "抓取块并生成种子元数据..."
+msgstr "正在计算分块哈希并生成种子元数据..."
 
 msgid "High"
-msgstr "高级"
+msgstr "高"
 
 msgid "Host:"
-msgstr "主机 :"
+msgstr "主机："
 
 msgid "HTTP (no auth)"
-msgstr "HTTP( 无认证)"
+msgstr "HTTP（无身份验证）"
 
 msgid "HTTP (with auth)"
-msgstr "HTTP( 有认证)"
+msgstr "HTTP（有身份验证）"
 
 msgid "Import Complete"
 msgstr "导入完成"
 
 msgid "Import Failed: {error}"
-msgstr "导入失败: {error}"
+msgstr "导入失败：{error}"
 
 msgid "Import FlexGet"
 msgstr "导入 FlexGet"
@@ -776,10 +803,10 @@ msgid "Import PO..."
 msgstr "导入 PO..."
 
 msgid "Imported {feeds} feeds and {rules} rules."
-msgstr "已导入 {feeds} 个源和 {rules} 条规则。"
+msgstr "已导入 {feeds} 个订阅源和 {rules} 条规则。"
 
 msgid "Included trackers (one per line):"
-msgstr "包含跟踪器( 每行1个):"
+msgstr "包含的 Tracker（每行一个）："
 
 msgid "Indexer"
 msgstr "索引器"
@@ -794,64 +821,64 @@ msgid "Indexers to search"
 msgstr "要搜索的索引器"
 
 msgid "Info"
-msgstr "资讯"
+msgstr "信息"
 
 msgid "Info hash copied to clipboard."
-msgstr "信息散列复制到剪贴板 。"
+msgstr "信息哈希已复制到剪贴板。"
 
 msgid "Info Hash: {hash}"
-msgstr "信息哈什:{hash}"
+msgstr "信息哈希：{hash}"
 
 msgid "Install directory not found."
-msgstr "未找到安装目录 。"
+msgstr "未找到安装目录。"
 
 msgid "Invalid argument: {arg}"
-msgstr "无效的参数: {arg}"
+msgstr "无效参数：{arg}"
 
 msgid "Invalid credentials."
-msgstr "无效的证书 。"
+msgstr "凭据无效。"
 
 msgid "Invalid integer for {label}: {error}"
-msgstr "{label}的无效整数: {error}"
+msgstr "{label} 的整数无效：{error}"
 
 msgid "Invalid JSON for {label}: {error}"
-msgstr "无效的 JSON 对 {label}: {error}"
+msgstr "{label} 的 JSON 无效：{error}"
 
 msgid "Invalid number for {label}: {error}"
 msgstr "{label} 的数字无效：{error}"
 
 msgid "Invalid torrent URL."
-msgstr "无效的种子 URL 。"
+msgstr "种子 URL 无效。"
 
 msgid "Language"
 msgstr "语言"
 
 msgid "Language changes reload this page after saving."
-msgstr "语言在保存后会更改此页面的装入 。"
+msgstr "保存后，更改语言会重新加载此页面。"
 
 msgid "Language code:"
-msgstr "语言代码 :"
+msgstr "语言代码："
 
 msgid "Language name:"
-msgstr "语言名称 :"
+msgstr "语言名称："
 
 msgid "Language:"
-msgstr "语言 :"
+msgstr "语言："
 
 msgid "Largest"
 msgstr "最大"
 
 msgid "Leave blank to retain the current password."
-msgstr "留下空白保留当前密码 。"
+msgstr "留空以保留当前密码。"
 
 msgid "Leechers"
-msgstr "猎人"
+msgstr "下载者"
 
 msgid "libtorrent is not available. Torrent creation requires python-libtorrent."
-msgstr "无法使用 libtorrent 。 种子创作需要python-libtorrent."
+msgstr "libtorrent 不可用。创建种子需要 python-libtorrent。"
 
 msgid "Light (Classic)"
-msgstr "轻( Classic)"
+msgstr "浅色（经典）"
 
 msgid "Limits"
 msgstr "限制"
@@ -860,22 +887,22 @@ msgid "Link"
 msgstr "链接"
 
 msgid "Listening Port:"
-msgstr "听从端口 :"
+msgstr "监听端口："
 
 msgid "Loading remote settings..."
-msgstr "正在装入远程设置..."
+msgstr "正在加载远程设置..."
 
 msgid "Loading..."
-msgstr "正在装入..."
+msgstr "正在加载..."
 
 msgid "Local libtorrent"
-msgstr "地方政府"
+msgstr "本地 libtorrent"
 
 msgid "Local Session &Settings...\tCtrl+,"
-msgstr "本地会话&设置...\tCtrl+,"
+msgstr "本地会话设置(&S)...\tCtrl+,"
 
 msgid "Local session active"
-msgstr "本地会话活动"
+msgstr "本地会话已激活"
 
 msgid "Local Session Settings"
 msgstr "本地会话设置"
@@ -893,31 +920,31 @@ msgid "Logout"
 msgstr "注销"
 
 msgid "Magnet copied to clipboard."
-msgstr "磁铁复制到剪贴板 。"
+msgstr "磁力链接已复制到剪贴板。"
 
 msgid "Magnet Link"
-msgstr "磁铁链接"
+msgstr "磁力链接"
 
 msgid "Magnet link added"
-msgstr "添加了磁铁链接"
+msgstr "已添加磁力链接"
 
 msgid "Magnet link added from CLI"
-msgstr "从CLI中添加了磁带链接"
+msgstr "已从命令行添加磁力链接"
 
 msgid "Magnet link(s) copied to clipboard."
-msgstr "磁铁链接已复制到剪贴板 。"
+msgstr "磁力链接已复制到剪贴板。"
 
 msgid "Magnet: {magnet}"
-msgstr "磁铁:{magnet}"
+msgstr "磁力链接：{magnet}"
 
 msgid "Manage Profiles & Connect"
-msgstr "管理配置文件 & 连接"
+msgstr "管理配置并连接"
 
 msgid "Max Connections:"
-msgstr "最大连接 :"
+msgstr "最大连接数："
 
 msgid "Max Upload Slots:"
-msgstr "最大上传槽 :"
+msgstr "最大上传槽位："
 
 msgid "Menu closed"
 msgstr "菜单已关闭"
@@ -929,7 +956,7 @@ msgid "Message"
 msgstr "消息"
 
 msgid "Metadata (optional)"
-msgstr "元数据( 可选)"
+msgstr "元数据（可选）"
 
 msgid "Minimize to System Tray"
 msgstr "最小化到系统托盘"
@@ -938,13 +965,13 @@ msgid "Minimize to Tray"
 msgstr "最小化到托盘"
 
 msgid "Most seeders"
-msgstr "大多数播种者"
+msgstr "做种者最多"
 
 msgid "My &indexers..."
-msgstr "我的&指数器..."
+msgstr "我的索引器(&I)..."
 
 msgid "My indexers..."
-msgstr "我的索引员..."
+msgstr "我的索引器..."
 
 msgid "My Remote Server"
 msgstr "我的远程服务器"
@@ -953,7 +980,7 @@ msgid "My torrent indexers"
 msgstr "我的种子索引器"
 
 msgid "N/A"
-msgstr "不详"
+msgstr "无"
 
 msgid "Name"
 msgstr "名称"
@@ -962,124 +989,127 @@ msgid "Navigation"
 msgstr "导航"
 
 msgid "Navigation Sidebar"
-msgstr "导航侧边栏"
+msgstr "导航侧栏"
 
 msgid "Needs review"
-msgstr "需要审查"
+msgstr "需要审核"
 
 msgid "Network"
 msgstr "网络"
 
 msgid "Newest"
-msgstr "最新数据"
+msgstr "最新"
 
 msgid "Next"
 msgstr "下一个"
 
 msgid "No"
-msgstr "没有"
+msgstr "否"
 
 msgid "No client connected."
-msgstr "没有客户端连接 。"
+msgstr "未连接客户端。"
 
 msgid "No indexers are switched on. Use Search sites."
-msgstr "没有打开索引器 。 使用搜索站点."
+msgstr "没有启用任何索引器。请使用“搜索站点”。"
 
 msgid "No regular files found to include in torrent."
-msgstr "找不到常规文件包含在 torrent 中 。"
+msgstr "没有找到可放入种子的常规文件。"
 
 msgid "No remote settings available (or Local client active)."
-msgstr "没有可用的远程设置( 或者本地客户端活动) 。"
+msgstr "没有可用的远程设置（或本地客户端处于活动状态）。"
 
 msgid "No torrent selected."
-msgstr "未选择种子 。"
+msgstr "未选择种子。"
 
 msgid "No torrents selected to {action}."
-msgstr "没有为 {action} 选择种子 。"
+msgstr "没有为 {action} 选择种子。"
 
 msgid "No torrents selected."
-msgstr "未选择种子 。"
+msgstr "未选择种子。"
 
 msgid "No torrents to start."
-msgstr "无种子启动 。"
+msgstr "没有可开始的种子。"
 
 msgid "No torrents to stop."
-msgstr "没有种子可以停止 。"
+msgstr "没有可停止的种子。"
 
 msgid "No updates available."
-msgstr "无更新 。"
+msgstr "没有可用的更新。"
 
 msgid "None"
 msgstr "无"
 
 msgid "None (No feeds)"
-msgstr "无( 无种子)"
+msgstr "无（没有订阅源）"
 
 msgid "Normal"
-msgstr "常规"
+msgstr "普通"
 
 msgid "Not connected to any client."
-msgstr "没有连接到任何客户端 。"
+msgstr "未连接任何客户端。"
 
 msgid "Nothing found. Try fewer words, or switch on more indexers in Search sites."
-msgstr "没有找到 尝试更少的单词, 或者在搜索站点切换更多的索引器 。"
+msgstr "未找到结果。请尝试减少关键词，或在“搜索站点”中启用更多索引器。"
 
 msgid "Notifications"
 msgstr "通知"
 
 msgid "Off"
-msgstr "关闭"
+msgstr "关"
 
 msgid "OK"
-msgstr ""
+msgstr "确定"
 
 msgid "On"
-msgstr "打开"
+msgstr "开"
 
 msgid "One URL per line (HTTP/HTTPS)."
-msgstr "每行1个URL(HTTP/HTTPS)."
+msgstr "每行一个 URL（HTTP/HTTPS）。"
 
 msgid "Open Download &Folder"
-msgstr "打开下载&文件夹"
+msgstr "打开下载文件夹(&F)"
 
 msgid "Open Download Folder"
 msgstr "打开下载文件夹"
 
 msgid "Open online translation"
-msgstr "开放在线翻译"
+msgstr "打开在线翻译"
 
 msgid "Open the download folder (if available)"
-msgstr "打开下载文件夹( 如果可用)"
+msgstr "打开下载文件夹（如可用）"
 
 msgid "Open Torrent File"
 msgstr "打开种子文件"
 
 msgid "Open {name}"
-msgstr "打开{name}"
+msgstr "打开 {name}"
 
 msgid "Opened download folder."
-msgstr "打开了下载文件夹 。"
+msgstr "已打开下载文件夹。"
 
 msgid "Other"
-msgstr "其它"
+msgstr "其他"
 
 msgid "Output .torrent file:"
-msgstr "输出.torrent 文件 :"
+msgstr "输出 .torrent 文件："
 
 msgid "Output .torrent path is required."
-msgstr "需要输出.torrent路径."
+msgstr "必须指定输出 .torrent 路径。"
 
 msgid "Password"
 msgstr "密码"
 
 msgid "Password:"
-msgstr "密码 :"
+msgstr "密码："
 
 msgid "Path"
 msgstr "路径"
 
+msgid "Path: {path}"
+msgstr "路径：{path}"
+
 msgid "Pattern"
-msgstr "图案"
+msgstr "模式"
 
 msgid "Pause"
 msgstr "暂停"
@@ -1094,106 +1124,106 @@ msgid "Paused"
 msgstr "已暂停"
 
 msgid "Pausing torrents..."
-msgstr "暂停种子..."
+msgstr "正在暂停种子..."
 
 msgid "Peer proportional"
-msgstr "相对比例"
+msgstr "按节点比例"
 
 msgid "Peers"
-msgstr "端点"
+msgstr "节点"
 
 msgid "Piece size:"
-msgstr "块大小 :"
+msgstr "分块大小："
 
 msgid "Please select a profile to connect."
-msgstr "请选择要连接的配置文件 。"
+msgstr "请选择要连接的配置。"
 
 msgid "Please select at least one torrent first."
-msgstr "请先选择至少一个种子 。"
+msgstr "请先至少选择一个种子。"
 
 msgid "Port:"
-msgstr "端口 :"
+msgstr "端口："
 
 msgid "Portuguese (Brazil)"
-msgstr "葡萄牙语( 巴西)"
+msgstr "葡萄牙语（巴西）"
 
 msgid "Prefer encryption"
 msgstr "优先加密"
 
 msgid "Prefer TCP"
-msgstr "偏好 TCP"
+msgstr "优先 TCP"
 
 msgid "Preferences"
 msgstr "首选项"
 
 msgid "Preparing restart..."
-msgstr "正在准备重新启动..."
+msgstr "正在准备重启..."
 
 msgid "Previous"
 msgstr "上一个"
 
 msgid "Priority"
-msgstr "优先权"
+msgstr "优先级"
 
 msgid "Private torrent (disables DHT/PEX/LSD in most clients)"
-msgstr "私人种子( 大多数客户端的DHT/PEX/LSD 残疾)"
+msgstr "私有种子（在大多数客户端中禁用 DHT/PEX/LSD）"
 
 msgid "Private trackers work through Prowlarr or Jackett, which\nkeep your tracker logins. SerrebiTorrent stores only this\nURL and key."
-msgstr "私人追踪者通过Prowlarr或Jackett工作。\n保持跟踪器登录。 SerrebiTorrent 只存储这个\nURL和密钥."
+msgstr "私有 Tracker 通过 Prowlarr 或 Jackett 使用，\n由它们保存你的 Tracker 登录信息。SerrebiTorrent 只保存\n此 URL 和密钥。"
 
 msgid "Profile"
-msgstr "简介"
+msgstr "配置"
 
 msgid "Profile Name"
-msgstr "配置文件名称"
+msgstr "配置名称"
 
 msgid "Profile Name:"
-msgstr "配置文件名称 :"
+msgstr "配置名称："
 
 msgid "PROFILES"
-msgstr "说明"
+msgstr "配置"
 
 msgid "Profiles"
-msgstr "简介"
+msgstr "配置"
 
 msgid "Progress"
-msgstr "进展"
+msgstr "进度"
 
 msgid "Proxy"
-msgstr "代理服务器"
+msgstr "代理"
 
 msgid "Proxy disabled"
 msgstr "代理已禁用"
 
 msgid "Proxy Type:"
-msgstr "代理类型 :"
+msgstr "代理类型："
 
 msgid "Public tracker list (press Enter to add to Included trackers)."
-msgstr "公共跟踪器列表(press Enter要添加到包含的跟踪器中)."
+msgstr "公共 Tracker 列表（按 Enter 添加到“包含的 Tracker”）。"
 
 msgid "qBittorrent Remote &Settings..."
-msgstr "qBittorrent 远程&设置..."
+msgstr "qBittorrent 远程设置(&S)..."
 
 msgid "qBittorrent Remote Settings..."
-msgstr "qBitorrent 远程设置..."
+msgstr "qBittorrent 远程设置..."
 
 msgid "Queue"
 msgstr "队列"
 
 msgid "Ratio"
-msgstr "比率"
+msgstr "分享率"
 
 msgid "Reannounce not supported by this client."
-msgstr "此客户端不支持的重新宣告 。"
+msgstr "此客户端不支持重新汇报。"
 
 msgid "Reannouncing torrents..."
-msgstr "正在放弃种子..."
+msgstr "正在重新汇报种子..."
 
 msgid "Recheck not supported by this client."
-msgstr "此客户端不支持重新检查 。"
+msgstr "此客户端不支持重新校验。"
 
 msgid "Rechecking torrents..."
-msgstr "正在重新检查种子..."
+msgstr "正在重新校验种子..."
 
 msgid "Refresh"
 msgstr "刷新"
@@ -1202,10 +1232,10 @@ msgid "Refresh All"
 msgstr "全部刷新"
 
 msgid "Regex Pattern:"
-msgstr "Regex 模式 :"
+msgstr "正则表达式："
 
 msgid "Register &Associations"
-msgstr "登记 &协会"
+msgstr "注册文件关联(&A)"
 
 msgid "Reject"
 msgstr "拒绝"
@@ -1214,103 +1244,118 @@ msgid "Remote Client"
 msgstr "远程客户端"
 
 msgid "Remote client did not return any recognized preferences."
-msgstr "远程客户端没有返回任何公认的偏好 。"
+msgstr "远程客户端没有返回可识别的首选项。"
 
 msgid "Remote settings saved."
-msgstr "远程设置已保存 。"
+msgstr "远程设置已保存。"
 
 msgid "Remove"
 msgstr "删除"
 
+msgid "Remove failed: {error}"
+msgstr "删除失败：{error}"
+
 msgid "Remove Feed"
-msgstr "删除种子"
+msgstr "删除订阅源"
 
 msgid "Remove feed {url}?"
-msgstr "删除种子 {url}?"
+msgstr "删除订阅源 {url}？"
 
 msgid "Remove Selected"
-msgstr "删除选中内容"
+msgstr "删除所选项"
 
 msgid "Remove selected torrents"
 msgstr "删除所选种子"
 
 msgid "Remove selected torrents and data"
-msgstr "删除选中的种子和数据"
+msgstr "删除所选种子及数据"
 
 msgid "Remove torrent"
 msgstr "删除种子"
 
 msgid "Remove with &Data\tShift+Del"
-msgstr "连同&数据删除\tShift+Del"
+msgstr "连同数据删除(&D)\tShift+Del"
 
 msgid "Remove with Data"
-msgstr "以数据删除"
+msgstr "连同数据删除"
+
+msgid "Remove {count} torrent and delete downloaded data?"
+msgstr "删除 {count} 个种子并删除已下载的数据？"
+
+msgid "Remove {count} torrent?"
+msgstr "删除 {count} 个种子？"
+
+msgid "Remove {count} torrents and delete downloaded data?"
+msgstr "删除 {count} 个种子并删除已下载的数据？"
+
+msgid "Remove {count} torrents?"
+msgstr "删除 {count} 个种子？"
 
 msgid "Removed {name}."
-msgstr "删除了{name}。"
+msgstr "已删除 {name}。"
 
 msgid "Reset failed: {error}"
-msgstr "重置失败: {error}"
+msgstr "重置失败：{error}"
 
 msgid "Reset RSS (Clear all feeds and rules)"
-msgstr "重置 RSS (清除所有种子和规则)"
+msgstr "重置 RSS（清除所有订阅源和规则）"
 
 msgid "Results"
 msgstr "结果"
 
 msgid "Results, {count} result"
-msgstr "结果,{count}结果"
+msgstr "结果，{count} 个"
 
 msgid "Results, {count} results"
-msgstr "结果,{count}结果"
+msgstr "结果，{count} 个"
 
 msgid "Resume"
 msgstr "继续"
 
 msgid "Resume selected torrents"
-msgstr "恢复所选种子"
+msgstr "继续所选种子"
 
 msgid "Resuming torrents..."
-msgstr "正在恢复种子..."
+msgstr "正在继续种子..."
 
 msgid "Round-robin"
-msgstr "圆筒"
+msgstr "轮询"
 
 msgid "RSS Articles"
 msgstr "RSS 文章"
 
 msgid "RSS data reset successfully."
-msgstr "RSS数据成功重置."
+msgstr "RSS 数据已重置。"
 
 msgid "RSS Downloader"
 msgstr "RSS 下载器"
 
 msgid "RSS Feeds"
-msgstr "RSS 种子软件"
+msgstr "RSS 订阅源"
 
 msgid "RSS Rules Manager"
 msgstr "RSS 规则管理器"
 
 msgid "RSS Update Interval (s)"
-msgstr "RSS 更新间隔( s)"
+msgstr "RSS 更新间隔（秒）"
 
 msgid "RSS Update Interval (seconds):"
-msgstr "RSS 更新间隔( 秒) :"
+msgstr "RSS 更新间隔（秒）："
 
 msgid "rTorrent Remote &Settings..."
-msgstr "rTorrent 远程&设置..."
+msgstr "rTorrent 远程设置(&S)..."
 
 msgid "rTorrent Remote Settings..."
 msgstr "rTorrent 远程设置..."
 
 msgid "Rule Type:"
-msgstr "规则类型 :"
+msgstr "规则类型："
 
 msgid "Rules"
 msgstr "规则"
 
 msgid "Save App Settings"
-msgstr "保存 App 设置"
+msgstr "保存应用设置"
 
 msgid "Save As..."
 msgstr "另存为..."
@@ -1322,22 +1367,22 @@ msgid "Save Path"
 msgstr "保存路径"
 
 msgid "Save Path (Optional)"
-msgstr "保存路径( 可选)"
+msgstr "保存路径（可选）"
 
 msgid "Save Path:"
-msgstr "保存路径 :"
+msgstr "保存路径："
 
 msgid "Save Remote Settings"
 msgstr "保存远程设置"
 
 msgid "Save Torrent As"
-msgstr "另存种子为"
+msgstr "种子另存为"
 
 msgid "Scheduler"
-msgstr "调度器"
+msgstr "计划程序"
 
 msgid "Scheduling"
-msgstr "时间安排"
+msgstr "计划"
 
 msgid "Scope"
 msgstr "范围"
@@ -1346,67 +1391,67 @@ msgid "Scripts"
 msgstr "脚本"
 
 msgid "Sea&rch"
-msgstr "搜&索"
+msgstr "搜索(&R)"
 
 msgid "Search"
 msgstr "搜索"
 
 msgid "Search failed: {error}"
-msgstr "搜索失败: {error}"
+msgstr "搜索失败：{error}"
 
 msgid "Search for"
-msgstr "搜索"
+msgstr "搜索内容"
 
 msgid "Search for Torrents"
-msgstr "寻找种子"
+msgstr "搜索种子"
 
 msgid "Search si&tes..."
-msgstr "搜索&站点..."
+msgstr "搜索站点(&T)..."
 
 msgid "Search sites"
-msgstr "搜索地点"
+msgstr "搜索站点"
 
 msgid "Search sites..."
 msgstr "搜索站点..."
 
 msgid "Search torrent indexers and add what you find"
-msgstr "搜索种子索引器并添加您找到的内容"
+msgstr "搜索种子索引器并添加找到的内容"
 
 msgid "Searching {count} indexer..."
-msgstr "正在搜索 {count}索引器..."
+msgstr "正在搜索 {count} 个索引器..."
 
 msgid "Searching {count} indexers..."
-msgstr "正在搜索 {count}索引器..."
+msgstr "正在搜索 {count} 个索引器..."
 
 msgid "Seeding"
-msgstr "种子"
+msgstr "做种中"
 
 msgid "Seeds"
-msgstr "种子"
+msgstr "做种数"
 
 msgid "Select"
 msgstr "选择"
 
 msgid "Select &all"
-msgstr "选择 &AL"
+msgstr "全选(&A)"
 
 msgid "Select &All\tCtrl+A"
-msgstr "全&选\tCtrl+A"
+msgstr "全选(&A)\tCtrl+A"
 
 msgid "Select &none"
-msgstr "全不&选"
+msgstr "全不选(&N)"
 
 msgid "Select a result first."
-msgstr "先选择结果 。"
+msgstr "请先选择一个结果。"
 
 msgid "Select a torrent."
-msgstr "选择种子 。"
+msgstr "请选择一个种子。"
 
 msgid "Select All"
-msgstr "全部选择"
+msgstr "全选"
 
 msgid "Select all torrents"
-msgstr "选择全部种子"
+msgstr "选择所有种子"
 
 msgid "Select File"
 msgstr "选择文件"
@@ -1417,65 +1462,77 @@ msgstr "选择文件夹"
 msgid "Select {name}"
 msgstr "选择 {name}"
 
+msgid "Selected all {count} torrents"
+msgstr "已选择全部 {count} 个种子"
+
+msgid "Selected {name}"
+msgstr "已选择：{name}"
+
 msgid "Selection cleared"
-msgstr "选择已清除"
+msgstr "已清除选择"
+
+msgid "Session expired. Please sign in again."
+msgstr "会话已过期。请重新登录。"
 
 msgid "Set"
-msgstr "设定"
+msgstr "设置"
 
 msgid "Set Default"
-msgstr "设置默认"
+msgstr "设为默认"
 
 msgid "Settings"
 msgstr "设置"
 
 msgid "Settings saved."
-msgstr "设置已保存 。"
+msgstr "设置已保存。"
 
 msgid "Size"
 msgstr "大小"
+
+msgid "Size: {size}"
+msgstr "大小：{size}"
 
 msgid "Skip"
 msgstr "跳过"
 
 msgid "Skip to torrent list"
-msgstr "跳转到种子列表"
+msgstr "跳到种子列表"
 
 msgid "SOCKS4 (no auth)"
-msgstr "SOCKS4( 无认证)"
+msgstr "SOCKS4（无身份验证）"
 
 msgid "SOCKS5 (no auth)"
-msgstr "SOCKS5( 无认证)"
+msgstr "SOCKS5（无身份验证）"
 
 msgid "SOCKS5 (with auth)"
-msgstr "SOCKS5 (带有认证)"
+msgstr "SOCKS5（有身份验证）"
 
 msgid "Sort &by:"
-msgstr "排序 &by :"
+msgstr "排序方式(&B)："
 
 msgid "Sort by"
-msgstr "排序为"
+msgstr "排序方式"
 
 msgid "Sorted by {label}."
-msgstr "按 {label} 排序。"
+msgstr "已按 {label} 排序。"
 
 msgid "Source (file or folder):"
-msgstr "来源( 文件或文件夹) :"
+msgstr "来源（文件或文件夹）："
 
 msgid "Source (written into info dict as 'source'):"
-msgstr "来源( 写入信息命令为“ 来源 ”) :"
+msgstr "来源（以 'source' 写入 info 字典）："
 
 msgid "Source path is required."
-msgstr "需要源路径 。"
+msgstr "必须指定来源路径。"
 
 msgid "Source path must not be a symlink or Windows reparse point."
-msgstr "源路径不能是一个同义链接或Windows reparse 点."
+msgstr "来源路径不能是符号链接或 Windows 重分析点。"
 
 msgid "Source text"
-msgstr "来源文本"
+msgstr "原文"
 
 msgid "Source text:"
-msgstr "资料来源:"
+msgstr "原文："
 
 msgid "Speed"
 msgstr "速度"
@@ -1487,19 +1544,19 @@ msgid "Start All"
 msgstr "全部开始"
 
 msgid "Start selected torrents"
-msgstr "启动所选种子"
+msgstr "开始所选种子"
 
 msgid "Starting all torrents..."
-msgstr "启动全部种子..."
+msgstr "正在开始所有种子..."
 
 msgid "Starting torrents..."
-msgstr "正在启动种子..."
+msgstr "正在开始种子..."
 
 msgid "Status"
 msgstr "状态"
 
 msgid "Status Filters"
-msgstr "状态过滤器"
+msgstr "状态筛选"
 
 msgid "Stop All"
 msgstr "全部停止"
@@ -1508,16 +1565,16 @@ msgid "Stopped"
 msgstr "已停止"
 
 msgid "Stopping all torrents..."
-msgstr "停止所有种子..."
+msgstr "正在停止所有种子..."
 
 msgid "Stopping torrents..."
 msgstr "正在停止种子..."
 
 msgid "Success"
-msgstr "成绩"
+msgstr "成功"
 
 msgid "Switch Profile"
-msgstr "切换配置文件"
+msgstr "切换配置"
 
 msgid "Switching client profile..."
 msgstr "正在切换客户端配置..."
@@ -1529,16 +1586,16 @@ msgid "System default"
 msgstr "系统默认"
 
 msgid "TCP and uTP"
-msgstr "TCP 和 uTP 软件"
+msgstr "TCP 和 uTP"
 
 msgid "Theme"
 msgstr "主题"
 
 msgid "Those results carry a tracker file rather than a magnet link."
-msgstr "这些结果包含一个跟踪器文件,而不是一个磁铁链接。"
+msgstr "这些结果带有 Tracker 文件，而不是磁力链接。"
 
 msgid "Time Left"
-msgstr "左边的时间"
+msgstr "剩余时间"
 
 msgid "Title"
 msgstr "标题"
@@ -1547,37 +1604,37 @@ msgid "Toggle"
 msgstr "切换"
 
 msgid "Too many failed attempts. Try again later."
-msgstr "登录失败次数过多，请稍后重试。"
+msgstr "失败次数过多，请稍后重试。"
 
 msgid "Torrent Actions"
-msgstr "种子动作"
+msgstr "种子操作"
 
 msgid "Torrent actions"
-msgstr "种子动作"
+msgstr "种子操作"
 
 msgid "Torrent added"
-msgstr "种子已添加"
+msgstr "已添加种子"
 
 msgid "Torrent created:\n{path}"
 msgstr "种子已创建：\n{path}"
 
 msgid "Torrent Details"
-msgstr "种子细节"
+msgstr "种子详情"
 
 msgid "Torrent download finished after the active profile changed."
-msgstr "活动配置更改后 Torrent 下载完成 。"
+msgstr "活动配置更改后种子下载才完成。"
 
 msgid "Torrent File"
 msgstr "种子文件"
 
 msgid "Torrent file added from CLI"
-msgstr "从 CLI 添加种子文件"
+msgstr "已从命令行添加种子文件"
 
 msgid "Torrent Files"
 msgstr "种子文件"
 
 msgid "Torrent files (*.torrent)|*.torrent"
-msgstr "种子文件 (*.torrent) *%.torrent"
+msgstr "种子文件 (*.torrent)|*.torrent"
 
 msgid "Torrent List"
 msgstr "种子列表"
@@ -1589,16 +1646,16 @@ msgid "Torrents"
 msgstr "种子"
 
 msgid "torrents"
-msgstr "种子数"
+msgstr "种子"
 
 msgid "Tracker List URL:"
-msgstr "跟踪列表 URL :"
+msgstr "Tracker 列表 URL："
 
 msgid "Trackers"
-msgstr "跟踪器"
+msgstr "Tracker"
 
 msgid "Translated"
-msgstr "翻译"
+msgstr "已翻译"
 
 msgid "Translation"
 msgstr "翻译"
@@ -1607,31 +1664,31 @@ msgid "Translation Center"
 msgstr "翻译中心"
 
 msgid "Translation:"
-msgstr "翻译 :"
+msgstr "翻译："
 
 msgid "Transmission Remote &Settings..."
-msgstr "Transmission 远程&设置..."
+msgstr "Transmission 远程设置(&S)..."
 
 msgid "Transmission Remote Settings..."
-msgstr "传输远程设置..."
+msgstr "Transmission 远程设置..."
 
 msgid "Type"
 msgstr "类型"
 
 msgid "Type what to look for first."
-msgstr "先打个字看看"
+msgstr "请先输入要搜索的内容。"
 
 msgid "Type what to look for."
-msgstr "键入什么寻找。"
+msgstr "输入要搜索的内容。"
 
 msgid "UI Refresh Rate (ms)"
-msgstr "UI 刷新率( 毫秒)"
+msgstr "界面刷新间隔（毫秒）"
 
 msgid "Uncheck"
-msgstr "取消检查"
+msgstr "取消勾选"
 
 msgid "Uncheck All"
-msgstr "全部取消检查"
+msgstr "全部取消勾选"
 
 msgid "Unknown"
 msgstr "未知"
@@ -1640,85 +1697,85 @@ msgid "Untranslated"
 msgstr "未翻译"
 
 msgid "Up Speed"
-msgstr "加速"
+msgstr "上传速度"
 
 msgid "Update Available"
-msgstr "可更新"
+msgstr "有可用更新"
 
 msgid "Update canceled."
-msgstr "更新已取消 。"
+msgstr "更新已取消。"
 
 msgid "Update Check Failed"
-msgstr "更新检查失败"
+msgstr "检查更新失败"
 
 msgid "Update check failed."
-msgstr "更新检查失败 。"
+msgstr "检查更新失败。"
 
 msgid "Update Failed"
 msgstr "更新失败"
 
 msgid "Update failed."
-msgstr "更新失败 。"
+msgstr "更新失败。"
 
 msgid "Update helper script not found."
-msgstr "找不到更新帮助脚本 。"
+msgstr "找不到更新辅助脚本。"
 
 msgid "Update postponed."
-msgstr "更新推迟。"
+msgstr "更新已推迟。"
 
 msgid "Update prepared. Closing to install..."
-msgstr "已编写最新资料。 关闭安装..."
+msgstr "更新已准备好。正在关闭以安装..."
 
 msgid "Update prepared. The app will restart after it exits."
-msgstr "已编写最新资料。 该应用程序退出后将重新启动 。"
+msgstr "更新已准备好。应用退出后将重新启动。"
 
 msgid "Updated executable not found."
-msgstr "找不到更新的可执行文件 。"
+msgstr "找不到更新后的可执行文件。"
 
 msgid "Updates"
 msgstr "更新"
 
 msgid "Updates are only available in the packaged app."
-msgstr "更新仅在被包的app中提供."
+msgstr "更新仅在打包版应用中可用。"
 
 msgid "Updating SerrebiTorrent"
-msgstr "更新 SerrebiTorrent"
+msgstr "正在更新 SerrebiTorrent"
 
 msgid "Updating..."
-msgstr "更新..."
+msgstr "正在更新..."
 
 msgid "Upload Rate (bytes/s):"
-msgstr "上传率( 字节/ s) :"
+msgstr "上传速率（字节/秒）："
 
 msgid "Upload-rate based"
-msgstr "基于上传率"
+msgstr "基于上传速率"
 
 msgid "URL (e.g. scgi://... or http://...):"
-msgstr "URL(例如scgi://.或http://.):"
+msgstr "URL（例如 scgi://... 或 http://...）："
 
 msgid "URL / Path"
-msgstr "URL/ 路径"
+msgstr "URL / 路径"
 
 msgid "URL or download path"
 msgstr "URL 或下载路径"
 
 msgid "URL:Magnet Link"
-msgstr "URL: Magnet 链接"
+msgstr "URL:磁力链接"
 
 msgid "URLs / Magnets (one per line)"
-msgstr "URL/磁铁(每行一)"
+msgstr "URL / 磁力链接（每行一个）"
 
 msgid "Use DyDNS"
-msgstr "使用 DyDNS 软件"
+msgstr "使用 DyDNS"
 
 msgid "Use NOIP"
-msgstr "使用NOIP"
+msgstr "使用 NOIP"
 
 msgid "Username"
 msgstr "用户名"
 
 msgid "Username:"
-msgstr "用户名 :"
+msgstr "用户名："
 
 msgid "Verifying download..."
 msgstr "正在校验下载..."
@@ -1727,61 +1784,76 @@ msgid "Verifying signature..."
 msgstr "正在验证签名..."
 
 msgid "Warning"
-msgstr "3⁄4 ̄ ̧漯B"
+msgstr "警告"
 
 msgid "Web Seeds (optional)"
-msgstr "Web 种子( 可选)"
+msgstr "Web 种子（可选）"
 
 msgid "Web UI"
-msgstr "网络用户界面"
+msgstr "Web 界面"
 
 msgid "YAML files (*.yml;*.yaml)|*.yml;*.yaml"
-msgstr "YAML 文件 (*.yml; *.yaml) * *.yml; *.yaml"
+msgstr "YAML 文件 (*.yml;*.yaml)|*.yml;*.yaml"
 
 msgid "Yes"
-msgstr "对"
+msgstr "是"
 
 msgid "You're already on the latest version."
-msgstr "你已经在最新版本了"
+msgstr "已是最新版本。"
 
 msgid "{action} complete"
-msgstr "{action} 完成 存档副本."
+msgstr "{action} 已完成"
 
 msgid "{action} complete ({failed} failed). Last error: {error}"
-msgstr "{action}完成({failed}失败). 上次错误: {error}"
+msgstr "{action} 已完成（{failed} 个失败）。最后的错误：{error}"
 
 msgid "{client} Remote Settings"
 msgstr "{client} 远程设置"
 
 msgid "{count} feeds"
-msgstr "{count} 饲料"
+msgstr "{count} 个订阅源"
 
 msgid "{count} indexer switched on."
-msgstr "{count}指数器开机."
+msgstr "已启用 {count} 个索引器。"
 
 msgid "{count} indexers switched on."
-msgstr "{count}指数器开机."
+msgstr "已启用 {count} 个索引器。"
 
 msgid "{count} of your own indexer configured."
-msgstr "自己编的索引机的{count}"
+msgstr "已配置 {count} 个自有索引器。"
 
 msgid "{count} of your own indexers configured."
-msgstr "自己编索引的{count}"
+msgstr "已配置 {count} 个自有索引器。"
 
 msgid "{count} result"
-msgstr "{count}结果"
+msgstr "{count} 个结果"
 
 msgid "{count} result so far, {pending} still searching. Last: {source}."
 msgstr "目前 {count} 个结果，{pending} 个仍在搜索。最后：{source}。"
 
 msgid "{count} results"
-msgstr "{count} 结果"
+msgstr "{count} 个结果"
 
 msgid "{count} results so far, {pending} still searching. Last: {source}."
 msgstr "目前 {count} 个结果，{pending} 个仍在搜索。最后：{source}。"
 
+msgid "{count} torrent added."
+msgstr "已添加 {count} 个种子。"
+
+msgid "{count} torrent removed."
+msgstr "已删除 {count} 个种子。"
+
 msgid "{count} torrents"
 msgstr "{count} 个种子"
 
+msgid "{count} torrents added."
+msgstr "已添加 {count} 个种子。"
+
+msgid "{count} torrents removed."
+msgstr "已删除 {count} 个种子。"
+
+msgid "{count} torrents selected."
+msgstr "已选择 {count} 个种子。"
+
 msgid "{name} preferences saved"
-msgstr "保存的 {name} 首选项"
+msgstr "已保存 {name} 首选项"

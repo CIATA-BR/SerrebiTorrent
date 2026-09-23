@@ -5,13 +5,13 @@ msgstr ""
 "Project-Id-Version: SerrebiTorrent\\nLanguage: lt-LT\\nX-Language-Name: Lietuvių\\nMIME-Version: 1.0\\nContent-Type: text/plain; charset=UTF-8\\nContent-Transfer-Encoding: 8bit\\n"
 
 msgid "&About SerrebiTorrent"
-msgstr "&AaplinkName"
+msgstr "&Apie SerrebiTorrent"
 
 msgid "&Actions"
 msgstr "&Veiksmai"
 
 msgid "&Add selected"
-msgstr "&Pridėti pasirinktus"
+msgstr "&Pridėti pažymėtus"
 
 msgid "&Add Torrent File...\tCtrl+O"
 msgstr "&Pridėti torrent failą...\tCtrl+O"
@@ -50,10 +50,10 @@ msgid "&Pause\tCtrl+P"
 msgstr "&Pristabdyti\tCtrl+P"
 
 msgid "&Remove"
-msgstr "&Pašalinti"
+msgstr "Pa&šalinti"
 
 msgid "&Remove\tDel"
-msgstr "&Pašalinti\tDel"
+msgstr "Pa&šalinti\tDel"
 
 msgid "&Resume\tCtrl+R"
 msgstr "&Tęsti\tCtrl+R"
@@ -65,58 +65,58 @@ msgid "&Search for:"
 msgstr "&Ieškoti:"
 
 msgid "&Start\tCtrl+S"
-msgstr "&Pradėti\tCtrl+S"
+msgstr "Pa&leisti\tCtrl+S"
 
 msgid "&Tools"
-msgstr "&Įrankiai"
+msgstr "Į&rankiai"
 
 msgid "&URL:"
 msgstr "&URL:"
 
 msgid "1 feed"
-msgstr "1 pašaras"
+msgstr "Srautų: 1"
 
 msgid "A Torznab or Newznab search endpoint. Prowlarr: {prowlarr}. Jackett, all trackers at once: {jackett}"
-msgstr "Torznab arba Newznab paieškos vertinamoji baigtis. Prowlarr: {prowlarr}. Jackett, visi atsektojai vienu metu: {jackett}"
+msgstr "Torznab arba Newznab paieškos galinis taškas. Prowlarr: {prowlarr}. Jackett, visi sekikliai iš karto: {jackett}"
 
 msgid "A Windows desktop torrent manager designed for keyboard-first use and screen readers."
-msgstr "Name"
+msgstr "Windows darbalaukio torrentų tvarkyklė, sukurta darbui klaviatūra ir su ekrano skaitytuvais."
 
 msgid "About this application"
 msgstr "Apie šią programą"
 
 msgid "Accept"
-msgstr "Priėmimas"
+msgstr "Priimti"
 
 msgid "Action menu opened. Use arrow keys to navigate."
-msgstr "Name Naudokite rodyklių klavišus naršyti."
+msgstr "Veiksmų meniu atvertas. Naršykite rodyklių klavišais."
 
 msgid "Active"
-msgstr "Aktyvus"
+msgstr "Aktyvūs"
 
 msgid "Add"
 msgstr "Pridėti"
 
 msgid "Add &URL/Magnet...\tCtrl+U"
-msgstr "Pridėti &URL/magnetą...\tCtrl+U"
+msgstr "Pridėti &URL/magnet...\tCtrl+U"
 
 msgid "Add a torrent from a local file"
 msgstr "Pridėti torrentą iš vietinio failo"
 
 msgid "Add a torrent from a URL or Magnet link"
-msgstr "Name"
+msgstr "Pridėti torrentą iš URL arba magnet nuorodos"
 
 msgid "Add Connection Profile"
 msgstr "Pridėti ryšio profilį"
 
 msgid "Add created torrent to the currently connected client"
-msgstr "Pridėti sukurtą torrentą šiuo metu prijungtam klientui"
+msgstr "Pridėti sukurtą torrentą prie šiuo metu prijungto kliento"
 
 msgid "Add Feed"
-msgstr "Pridėti kanalą"
+msgstr "Pridėti srautą"
 
 msgid "Add indexer"
-msgstr "Pridėti indeksatorių"
+msgstr "Pridėti indeksuotoją"
 
 msgid "Add Profile"
 msgstr "Pridėti profilį"
@@ -128,52 +128,58 @@ msgid "Add Rule"
 msgstr "Pridėti taisyklę"
 
 msgid "Add Torrent"
-msgstr "Pridėti Torrentą"
+msgstr "Pridėti torrentą"
 
 msgid "Add Torrent: {name}"
-msgstr "Add Torrent: {name}"
+msgstr "Pridėti torrentą: {name}"
 
 msgid "Add Tracker"
-msgstr "Add Tracker"
+msgstr "Pridėti sekiklį"
 
 msgid "Add/edit/delete profiles and connect"
-msgstr "Pridėti / redaguoti / ištrinti profilius ir prisijungti"
+msgstr "Pridėti, redaguoti ir šalinti profilius bei prisijungti"
+
+msgid "Added from RSS: {name}"
+msgstr "Pridėta iš RSS: {name}"
 
 msgid "Added from RSS: {title}"
-msgstr "Pridėta RSS: {title}"
+msgstr "Pridėta iš RSS: {title}"
 
 msgid "Added your blindDL indexer: {names}."
-msgstr "Added your blindDL index: {names}."
+msgstr "Pridėtas jūsų blindDL indeksuotojas: {names}."
 
 msgid "Added your blindDL indexers: {names}."
-msgstr "Pridėjo savo BlindDL indeksus: {names}."
+msgstr "Pridėti jūsų blindDL indeksuotojai: {names}."
 
 msgid "Added {title}"
-msgstr "Pridėta {title}"
+msgstr "Pridėta: {title}"
 
 msgid "Adding created torrent..."
-msgstr "Pridedama sukurta torrent..."
+msgstr "Pridedamas sukurtas torrentas..."
 
 msgid "Adding magnet link from CLI..."
-msgstr "Magnetinė jungtis iš CLI..."
+msgstr "Pridedama magnet nuoroda iš komandų eilutės..."
 
 msgid "Adding magnet link..."
-msgstr "Magneto jungtis..."
+msgstr "Pridedama magnet nuoroda..."
 
 msgid "Adding torrent file from CLI..."
-msgstr "Pridedamas torrent failas iš CLI..."
+msgstr "Pridedamas torrent failas iš komandų eilutės..."
 
 msgid "Adding torrent..."
 msgstr "Pridedamas torrentas..."
+
+msgid "Adding torrent: {name}..."
+msgstr "Pridedamas torrentas: {name}..."
 
 msgid "Adding torrent: {title}..."
 msgstr "Pridedamas torrentas: {title}..."
 
 msgid "Adding {count} torrent..."
-msgstr "Pridėti {count} torrent..."
+msgstr "Pridedama torrentų: {count}..."
 
 msgid "Adding {count} torrents..."
-msgstr "Pridedamas {count} torrents..."
+msgstr "Pridedama torrentų: {count}..."
 
 msgid "After Creation"
 msgstr "Sukūrus"
@@ -182,28 +188,28 @@ msgid "Age"
 msgstr "Amžius"
 
 msgid "All"
-msgstr "All"
+msgstr "Visi"
 
 msgid "An indexer needs both a name and a URL."
-msgstr "indeksatoriui reikia pavadinimo ir URL."
+msgstr "Indeksuotojui reikia ir pavadinimo, ir URL."
 
 msgid "An update check or install is already in progress."
-msgstr "Noun, name of the user action"
+msgstr "Naujinimų tikrinimas arba diegimas jau vyksta."
 
 msgid "An update is already in progress."
-msgstr "Jau vyksta atnaujinimas."
+msgstr "Naujinimas jau vyksta."
 
 msgid "Announce IP (reported to trackers, blank = auto):"
-msgstr "Pranešimas IP (pranešta sekėjams, neužpildyta = automatiškai):"
+msgstr "Skelbiamas IP (pranešamas sekikliams, tuščia = automatiškai):"
 
 msgid "Another indexer is already called {name}. Choose a different name."
-msgstr "kitas indeksatorius jau vadinamas {name}. Pasirinkite kitą pavadinimą."
+msgstr "Indeksuotojas pavadinimu {name} jau yra. Pasirinkite kitą pavadinimą."
 
 msgid "Another instance of SerrebiTorrent is already running."
-msgstr "Jau veikia kitas SerreBiTorrent atvejis."
+msgstr "SerrebiTorrent jau paleista."
 
 msgid "Anti-leech"
-msgstr "Antilechas"
+msgstr "Apsauga nuo leecherių"
 
 msgid "API &key:"
 msgstr "API &raktas:"
@@ -212,58 +218,61 @@ msgid "API key"
 msgstr "API raktas"
 
 msgid "Application"
-msgstr "taikymas"
+msgstr "Programa"
 
 msgid "Apply to Feeds (Uncheck all for Global):"
-msgstr "Taikyti kanalams (atžymėkite viską, kad būtų bendra):"
+msgstr "Taikyti srautams (nieko nepažymėta = visiems):"
 
 msgid "Applying update..."
 msgstr "Taikomas naujinimas..."
 
 msgid "Are you sure you want to clear ALL RSS feeds and rules?"
-msgstr "Jūs tikrai norite išvalyti visus RSS ir taisykles?"
+msgstr "Ar tikrai norite išvalyti VISUS RSS srautus ir taisykles?"
 
 msgid "Associate .torrent and magnet links with this app"
-msgstr "Asocijuoti .torrent ir magnetas nuorodos su šia programa"
+msgstr "Susieti .torrent failus ir magnet nuorodas su šia programa"
 
 msgid "Association is only supported on Windows for now."
-msgstr "Asociacijos palaiko tik Windows dabar."
+msgstr "Susiejimai kol kas palaikomi tik Windows."
 
 msgid "Associations registered successfully!"
-msgstr "sėkmingai registruotos asociacijos!"
+msgstr "Susiejimai sėkmingai užregistruoti!"
 
 msgid "Authentication (if required):"
-msgstr "Autentiškumo nustatymas (jei reikalaujama):"
+msgstr "Tapatybės nustatymas (jei reikia):"
 
 msgid "Auto"
-msgstr "Auto"
+msgstr "Automatiškai"
+
+msgid "Auto-added from RSS: {name}"
+msgstr "Automatiškai pridėta iš RSS: {name}"
 
 msgid "Auto-added from RSS: {title}"
-msgstr "Auto- pridėta iš RSS: {title}"
+msgstr "Automatiškai pridėta iš RSS: {title}"
 
 msgid "Auto-start failed: {error}"
-msgstr "Auto-start nepavyko: {error}"
+msgstr "Automatinis paleidimas nepavyko: {error}"
 
 msgid "Auto-started new torrent(s)"
-msgstr "Autostart naujas torrentas (-ai)"
+msgstr "Nauji torrentai paleisti automatiškai"
 
 msgid "Auto-update is not available for this build."
-msgstr "Auto- naujinimas nėra prieinamas šiam kūrimui."
+msgstr "Šiai versijai automatinis naujinimas negalimas."
 
 msgid "Automatically add trackers from URL"
-msgstr "Automatiškai pridėti takelius iš URL"
+msgstr "Automatiškai pridėti sekiklius iš URL"
 
 msgid "Automatically start torrents"
 msgstr "Automatiškai paleisti torrentus"
 
 msgid "Availability"
-msgstr "Prieinamumas"
+msgstr "Pasiekiamumas"
 
 msgid "Best match"
-msgstr "Geriausios rungtynės"
+msgstr "Geriausias atitikmuo"
 
 msgid "Bind Host:"
-msgstr "Bind mazgas:"
+msgstr "Susiejimo adresas:"
 
 msgid "BitTorrent"
 msgstr "BitTorrent"
@@ -272,7 +281,7 @@ msgid "Browse..."
 msgstr "Naršyti..."
 
 msgid "Cancel"
-msgstr "Atsisakyti"
+msgstr "Atšaukti"
 
 msgid "Categories"
 msgstr "Kategorijos"
@@ -281,37 +290,37 @@ msgid "Category"
 msgstr "Kategorija"
 
 msgid "Check"
-msgstr "Patikrinti"
+msgstr "Pažymėti"
 
 msgid "Check All"
-msgstr "Patikrinti visus"
+msgstr "Pažymėti visus"
 
 msgid "Check for &Updates...\tF5"
-msgstr "Tikrinti &naujinimus...\tF5"
+msgstr "Ieškoti &naujinimų...\tF5"
 
 msgid "Check for Updates"
-msgstr "Ieškoti atnaujinimų"
+msgstr "Ieškoti naujinimų"
 
 msgid "Check for updates"
 msgstr "Ieškoti naujinimų"
 
 msgid "Check for updates automatically on startup"
-msgstr "Tikrinti naujinimus automatiškai paleidžiant"
+msgstr "Paleidžiant automatiškai ieškoti naujinimų"
 
 msgid "Checking"
-msgstr "Patikra"
+msgstr "Tikrinama"
 
 msgid "Checking for updates..."
-msgstr "NAME OF TRANSLATORS"
+msgstr "Ieškoma naujinimų..."
 
 msgid "Choose a profile, then connect or manage it with the buttons below."
-msgstr "Pasirinkite profilį, tada prijunkite arba valdykite jį žemiau esančių mygtukų."
+msgstr "Pasirinkite profilį ir prisijunkite arba tvarkykite jį toliau esančiais mygtukais."
 
 msgid "Choose Download Directory"
-msgstr "Pasirinkite Parsisiųsti aplanką"
+msgstr "Pasirinkite atsisiuntimų katalogą"
 
 msgid "Choose Download Folder"
-msgstr "Pasirinkite atsiuntimo aplanką"
+msgstr "Pasirinkite atsisiuntimų aplanką"
 
 msgid "Client"
 msgstr "Klientas"
@@ -326,67 +335,67 @@ msgid "Close"
 msgstr "Užverti"
 
 msgid "Close to System Tray"
-msgstr "NAME OF TRANSLATORS"
+msgstr "Užvėrus slėpti sistemos dėkle"
 
 msgid "Comment:"
-msgstr "Pastaba:"
+msgstr "Komentaras:"
 
 msgid "Configure local session and application settings"
-msgstr "Konfigūruoti vietinius seanso ir programos nustatymus"
+msgstr "Konfigūruoti vietinį seansą ir programą"
 
 msgid "Confirm"
 msgstr "Patvirtinti"
 
 msgid "Confirm Reset"
-msgstr "Patikrinti atkūrimą"
+msgstr "Patvirtinti atkūrimą"
 
 msgid "Connect"
 msgstr "Prisijungti"
 
 msgid "Connect or switch profile"
-msgstr "Prisijungti arba perjungti profilį"
+msgstr "Prisijungti arba pakeisti profilį"
 
 msgid "Connect to a client before adding torrents."
-msgstr "Prijunkite prie kliento prieš pridedant torrents."
+msgstr "Prieš pridėdami torrentus prisijunkite prie kliento."
 
 msgid "Connect to this profile"
 msgstr "Prisijungti prie šio profilio"
 
 msgid "Connected to {name}"
-msgstr "Jungiamasi prie {name}"
+msgstr "Prisijungta prie {name}"
 
 msgid "Connecting..."
 msgstr "Jungiamasi..."
 
 msgid "Connection"
-msgstr "Prisijungimas"
+msgstr "Ryšys"
 
 msgid "Connection Failed"
-msgstr "Prisijungimas nepavyko"
+msgstr "Nepavyko prisijungti"
 
 msgid "Connection Manager"
-msgstr "Comment"
+msgstr "Ryšių tvarkyklė"
 
 msgid "Connection Manager..."
-msgstr "Comment"
+msgstr "Ryšių tvarkyklė..."
 
 msgid "Connection Manager...\tCtrl+Shift+C"
 msgstr "Ryšių tvarkyklė...\tCtrl+Shift+C"
 
 msgid "Connection profiles"
-msgstr "Jungčių profiliai"
+msgstr "Ryšių profiliai"
 
 msgid "Context / validation:"
-msgstr "Kontekstas / patvirtinimas:"
+msgstr "Kontekstas / tikrinimas:"
 
 msgid "Copied to clipboard"
-msgstr "Kopijuota į iškarpinę"
+msgstr "Nukopijuota į iškarpinę"
 
 msgid "Copied {count} magnet link."
-msgstr "Kopijuota {count} magnetas nuoroda."
+msgstr "Nukopijuota magnet nuorodų: {count}."
 
 msgid "Copied {count} magnet links."
-msgstr "Kopijuotos {count} magneto nuorodos."
+msgstr "Nukopijuota magnet nuorodų: {count}."
 
 msgid "Copy &Info Hash\tCtrl+I"
 msgstr "Kopijuoti &info maišą\tCtrl+I"
@@ -395,82 +404,85 @@ msgid "Copy &Magnet Link\tCtrl+M"
 msgstr "Kopijuoti &magnet nuorodą\tCtrl+M"
 
 msgid "Copy a magnet link for selected torrents"
-msgstr "Kopijuoti magnetinę nuorodą pasirinktiems torrentams"
+msgstr "Kopijuoti pažymėtų torrentų magnet nuorodą"
 
 msgid "Copy Info Hash"
-msgstr "Kopijuoti informacijos maišą"
+msgstr "Kopijuoti info maišą"
 
 msgid "Copy it from Prowlarr or Jackett's own settings. Leave it empty if the endpoint needs no key."
-msgstr "Kopijuoti jį iš Prowlarr arba Jackett savo nustatymus. Palik jį tuščią, jei rezultatui nereikia rakto."
+msgstr "Nukopijuokite jį iš Prowlarr arba Jackett nustatymų. Palikite tuščią, jei galiniam taškui rakto nereikia."
 
 msgid "Copy Magnet Link"
-msgstr "Kopijuoti Magneto sąsają"
+msgstr "Kopijuoti magnet nuorodą"
 
 msgid "Copy magnet link to clipboard"
-msgstr "Kopijuoti magneto nuorodą į iškarpinę"
+msgstr "Kopijuoti magnet nuorodą į iškarpinę"
 
 msgid "Copy the info hash for selected torrents"
-msgstr "Kopijuoti pasirinktų torrentų informacijos maišą"
+msgstr "Kopijuoti pažymėtų torrentų info maišą"
 
 msgid "Create &Torrent...\tCtrl+N"
-msgstr "Kurti &torrentą...\tCtrl+N"
+msgstr "Sukurti &torrentą...\tCtrl+N"
 
 msgid "Create a .torrent file from a file or folder"
-msgstr "Sukurti .torrent failą iš failo ar aplanko"
+msgstr "Sukurti .torrent failą iš failo arba aplanko"
 
 msgid "Create Profile"
 msgstr "Sukurti profilį"
 
 msgid "Create Torrent"
-msgstr "Sukurti Torrentą"
+msgstr "Sukurti torrentą"
 
 msgid "Created by:"
 msgstr "Sukūrė:"
 
 msgid "Created torrent added"
-msgstr "Name"
+msgstr "Sukurtas torrentas pridėtas"
 
 msgid "Created torrent, but failed to add to client: {error}"
-msgstr "Sukurtas torrentas, bet nepavyko pridėti prie kliento: {error}"
+msgstr "Torrentas sukurtas, bet nepavyko jo pridėti prie kliento: {error}"
 
 msgid "Current"
-msgstr "Dabartinis"
+msgstr "Dabartinė"
 
 msgid "Dark (Night)"
-msgstr "Tamsus (naktis)"
+msgstr "Tamsi (naktinė)"
 
 msgid "Default"
-msgstr "NAME OF TRANSLATORS"
+msgstr "Numatytasis"
 
 msgid "Default Download Path:"
 msgstr "Numatytasis atsisiuntimo kelias:"
 
 msgid "Delete"
-msgstr "Trinti"
+msgstr "Ištrinti"
 
 msgid "Delete this profile?"
-msgstr "Trinti šį profilį?"
+msgstr "Ištrinti šį profilį?"
 
 msgid "Deselect All"
-msgstr "Pašalinti visus"
+msgstr "Atžymėti viską"
+
+msgid "Deselected {name}"
+msgstr "Atžymėta: {name}"
 
 msgid "Disconnected"
-msgstr "NAME OF TRANSLATORS"
+msgstr "Atsijungta"
 
 msgid "Down Speed"
-msgstr "Žemyn"
+msgstr "Atsisiuntimo greitis"
 
 msgid "Download folder not available."
-msgstr "Parsisiųsti aplanką nėra."
+msgstr "Atsisiuntimų aplankas nepasiekiamas."
 
 msgid "Download Path"
-msgstr "Atsisiųsti kelią"
+msgstr "Atsisiuntimo kelias"
 
 msgid "Download Path:"
-msgstr "Parsisiųsti kelią:"
+msgstr "Atsisiuntimo kelias:"
 
 msgid "Download Rate (bytes/s):"
-msgstr "Atsisiuntimo dažnis (baitai / s):"
+msgstr "Atsisiuntimo greitis (baitai/s):"
 
 msgid "Downloaded update failed SHA-256 verification."
 msgstr "Atsisiųstas naujinimas nepraėjo SHA-256 patikros."
@@ -479,79 +491,79 @@ msgid "Downloaded: {percent:.1f}%"
 msgstr "Atsisiųsta: {percent:.1f}%"
 
 msgid "Downloading"
-msgstr "Atsiunčiama"
+msgstr "Atsisiunčiama"
 
 msgid "Downloading torrent file..."
-msgstr "Atsiunčiamas torrent failas..."
+msgstr "Atsisiunčiamas torrent failas..."
 
 msgid "Downloading update..."
-msgstr "Atsiunčiama atnaujinta..."
+msgstr "Atsisiunčiamas naujinimas..."
 
 msgid "Downloads"
-msgstr "Atsiuntimai"
+msgstr "Atsisiuntimai"
 
 msgid "E&xit"
-msgstr "I&šeiti"
+msgstr "&Išeiti"
 
 msgid "Edit"
-msgstr "Keisti"
+msgstr "Redaguoti"
 
 msgid "Edit connected qBittorrent settings"
-msgstr "Keisti prijungtus qBittorrent nustatymus"
+msgstr "Redaguoti prijungto qBittorrent nustatymus"
 
 msgid "Edit connected rTorrent settings"
-msgstr "Keisti prijungtus rTorrent nustatymus"
+msgstr "Redaguoti prijungto rTorrent nustatymus"
 
 msgid "Edit connected Transmission settings"
-msgstr "Keisti prijungtus perdavimo nustatymus"
+msgstr "Redaguoti prijungto Transmission nustatymus"
 
 msgid "Edit indexer"
-msgstr "Keisti indeksatorių"
+msgstr "Redaguoti indeksuotoją"
 
 msgid "Edit Profile"
-msgstr "Keisti profilį"
+msgstr "Redaguoti profilį"
 
 msgid "Edit RSS Rule"
-msgstr "Keisti RSS taisyklę"
+msgstr "Redaguoti RSS taisyklę"
 
 msgid "Edit Rule"
-msgstr "Keisti taisyklę"
+msgstr "Redaguoti taisyklę"
 
 msgid "Enable DHT"
 msgstr "Įjungti DHT"
 
 msgid "Enable Local Service Discovery (LSD)"
-msgstr "Įjungti vietinio paslaugų paieškos sistemą (LSD)"
+msgstr "Įjungti vietinių siuntėjų aptikimą (LSD)"
 
 msgid "Enable NAT-PMP Port Mapping"
-msgstr "Įjungti NAT- PMP prievadų žemėlapį"
+msgstr "Įjungti NAT-PMP prievadų persiuntimą"
 
 msgid "Enable UPnP Port Mapping"
-msgstr "Įjungti UPnP prievadų žemėlapį"
+msgstr "Įjungti UPnP prievadų persiuntimą"
 
 msgid "Enable Web UI"
-msgstr "Name"
+msgstr "Įjungti žiniatinklio sąsają"
 
 msgid "Enabled"
-msgstr "Įjungtas"
+msgstr "Įjungta"
 
 msgid "English"
 msgstr "Anglų"
 
 msgid "Enter a JSON object (e.g. {\"/watched\": \"/home/user\"})."
-msgstr "Įveskite JSON objektą (pvz. {\"/watched\": \"/home/user\"})."
+msgstr "Įveskite JSON objektą (pvz., {\"/watched\": \"/home/user\"})."
 
 msgid "Enter adds the selected torrents. Control C copies the magnet link."
-msgstr "Enter prideda pasirinktus torrentus. Control C nukopijuoja magnet nuorodą."
+msgstr "Enter prideda pažymėtus torrentus. Control+C nukopijuoja magnet nuorodą."
 
 msgid "Enter edits the selected indexer. Delete removes it."
-msgstr "Enter redaguoja pasirinktą indeksuotoją. Delete jį pašalina."
+msgstr "Enter redaguoja pažymėtą indeksuotoją. Delete jį pašalina."
 
 msgid "Enter Magnet Link or URL:"
 msgstr "Įveskite magnet nuorodą arba URL:"
 
 msgid "Enter RSS Feed URL:"
-msgstr "Įveskite RSS kanalų URL:"
+msgstr "Įveskite RSS srauto URL:"
 
 msgid "Error"
 msgstr "Klaida"
@@ -563,10 +575,13 @@ msgid "Error adding URL: {error}"
 msgstr "Klaida pridedant URL: {error}"
 
 msgid "Error fetching preferences"
-msgstr "Klaida gaunant nustatymus"
+msgstr "Klaida gaunant nuostatas"
 
 msgid "Error saving remote settings."
-msgstr "Klaida išsaugant nutolusius nustatymus."
+msgstr "Klaida įrašant nuotolinius nustatymus."
+
+msgid "Error saving remote settings: {error}"
+msgstr "Klaida įrašant nuotolinius nustatymus: {error}"
 
 msgid "Error saving settings."
 msgstr "Klaida įrašant nustatymus."
@@ -581,7 +596,7 @@ msgid "Every Monday"
 msgstr "Kiekvieną pirmadienį"
 
 msgid "Every Saturday"
-msgstr "Kas šeštadienį"
+msgstr "Kiekvieną šeštadienį"
 
 msgid "Every Sunday"
 msgstr "Kiekvieną sekmadienį"
@@ -596,55 +611,55 @@ msgid "Every Wednesday"
 msgstr "Kiekvieną trečiadienį"
 
 msgid "Every weekday"
-msgstr "Kasdien"
+msgstr "Darbo dienomis"
 
 msgid "Every weekend"
-msgstr "Kiekvieną savaitgalį"
+msgstr "Savaitgaliais"
 
 msgid "Exit"
 msgstr "Išeiti"
 
 msgid "Exit application"
-msgstr "Comment"
+msgstr "Išeiti iš programos"
 
 msgid "Export PO..."
 msgstr "Eksportuoti PO..."
 
 msgid "Extracted update does not contain application files."
-msgstr "Pratęstas atnaujinimas neturi programos failų."
+msgstr "Išskleistame naujinime nėra programos failų."
 
 msgid "Extracting update..."
-msgstr "Ekstrahuojamas atnaujinimas..."
+msgstr "Išskleidžiamas naujinimas..."
 
 msgid "Failed"
 msgstr "Nepavyko"
 
 msgid "Failed to access clipboard."
-msgstr "Nepavyko pasiekti talpyklės."
+msgstr "Nepavyko pasiekti iškarpinės."
 
 msgid "Failed to add from RSS: {error}"
 msgstr "Nepavyko pridėti iš RSS: {error}"
 
 msgid "Failed to add magnet: {error}"
-msgstr "Nepavyko pridėti magneto: {error}"
+msgstr "Nepavyko pridėti magnet nuorodos: {error}"
 
 msgid "Failed to add torrent: {error}"
-msgstr "Nepavyko pridėti torrent: {error}"
+msgstr "Nepavyko pridėti torrento: {error}"
 
 msgid "Failed to add torrents."
 msgstr "Nepavyko pridėti torrentų."
 
 msgid "Failed to apply settings: {error}"
-msgstr "Nepavyko taikyti nustatymų: {error}"
+msgstr "Nepavyko pritaikyti nustatymų: {error}"
 
 msgid "Failed to download torrent from URL: {error}"
-msgstr "Nepavyko atsisiųsti torrent iš URL: {error}"
+msgstr "Nepavyko atsisiųsti torrento iš URL: {error}"
 
 msgid "Failed to fetch preferences"
-msgstr "Nepavyko gauti nustatymų"
+msgstr "Nepavyko gauti nuostatų"
 
 msgid "Failed to fetch remote preferences: {error}"
-msgstr "Nepavyko gauti nutolusių nustatymų: {error}"
+msgstr "Nepavyko gauti nuotolinių nuostatų: {error}"
 
 msgid "Failed to fetch {title}: {error}"
 msgstr "Nepavyko gauti {title}: {error}"
@@ -656,31 +671,37 @@ msgid "Failed to read torrent file: {error}"
 msgstr "Nepavyko perskaityti torrent failo: {error}"
 
 msgid "Failed to register associations: {error}"
-msgstr "Nepavyko registruoti asociacijų: {error}"
+msgstr "Nepavyko užregistruoti susiejimų: {error}"
 
 msgid "Failed to retrieve preferences from remote client."
-msgstr "Nepavyko gauti nustatymų iš nuotolinio kliento."
+msgstr "Nepavyko gauti nuostatų iš nuotolinio kliento."
 
 msgid "Failed to retrieve preferences from remote client. The client might not support this feature or there is a connection issue."
-msgstr "Nepavyko gauti nustatymų iš nuotolinio kliento. Klientas gali nepalaikyti šios funkcijos arba yra ryšio problema."
+msgstr "Nepavyko gauti nuostatų iš nuotolinio kliento. Klientas gali nepalaikyti šios funkcijos arba yra ryšio problema."
 
 msgid "Failed to update remote preferences: {error}"
-msgstr "Nepavyko atnaujinti nutolusių nustatymų: {error}"
+msgstr "Nepavyko atnaujinti nuotolinių nuostatų: {error}"
+
+msgid "Failed to {action} torrent(s)."
+msgstr "Veiksmas „{action}“ torrentams nepavyko."
+
+msgid "Failed to {action} torrent(s): {error}"
+msgstr "Veiksmas „{action}“ torrentams nepavyko: {error}"
 
 msgid "Failed to {action} torrent: {error}"
-msgstr "Nepavyko priskirti {action} torrent: {error}"
+msgstr "Veiksmas „{action}“ torrentui nepavyko: {error}"
 
 msgid "Failed to {action}: {error}"
-msgstr "Nepavyko priskirti {action}: {error}"
+msgstr "Veiksmas „{action}“ nepavyko: {error}"
 
 msgid "Fastest upload"
-msgstr "Lėčiau įkelti"
+msgstr "Greičiausias išsiuntimas"
 
 msgid "Fetching {name} preferences..."
-msgstr "Fetching ZTAKEN0ZZ nustatymai... {name}"
+msgstr "Gaunamos {name} nuostatos..."
 
 msgid "File list not available (Magnet link)."
-msgstr "Failų sąrašas neprieinamas (Magnet link)."
+msgstr "Failų sąrašas nepasiekiamas (magnet nuoroda)."
 
 msgid "File..."
 msgstr "Failas..."
@@ -695,25 +716,31 @@ msgid "Filter:"
 msgstr "Filtras:"
 
 msgid "Finished"
-msgstr "Baigta"
+msgstr "Baigti"
 
 msgid "Fixed slots"
-msgstr "Fiksuoti laiko tarpsniai"
+msgstr "Fiksuotos vietos"
+
+msgid "Focused torrent is no longer available. Focus moved to {name}."
+msgstr "Židinyje buvęs torrentas nebepasiekiamas. Židinys perkeltas į {name}."
+
+msgid "Focused torrent is no longer available. The torrent list is empty."
+msgstr "Židinyje buvęs torrentas nebepasiekiamas. Torrentų sąrašas tuščias."
 
 msgid "Folder..."
 msgstr "Aplankas..."
 
 msgid "Force a recheck/verification (if supported)"
-msgstr "Priverskite pakartotinę patikrą (patikrą) (jei palaikoma)"
+msgstr "Priverstinai patikrinti iš naujo (jei palaikoma)"
 
 msgid "Force an immediate tracker announce (if supported)"
-msgstr "Priverskite nedelsiant pranešti apie atsekamąją priemonę (jei palaikoma)"
+msgstr "Priverstinai iškart paskelbti sekikliui (jei palaikoma)"
 
 msgid "Force encryption off"
-msgstr "Priverstinis šifravimas išjungtas"
+msgstr "Priverstinai išjungti šifravimą"
 
 msgid "Force encryption on"
-msgstr "Priverstinis šifravimas įjungtas"
+msgstr "Priverstinai įjungti šifravimą"
 
 msgid "Force Re&check"
 msgstr "Priverstinai &patikrinti iš naujo"
@@ -728,40 +755,40 @@ msgid "Force Recheck"
 msgstr "Priverstinai patikrinti iš naujo"
 
 msgid "General"
-msgstr "Bendrosios nuostatos"
+msgstr "Bendra"
 
 msgid "Global"
-msgstr "Globalus"
+msgstr "Visuotinis"
 
 msgid "Global DL Limit (B/s)"
-msgstr "Globalinė DLriba (B / s)"
+msgstr "Visuotinis atsisiuntimo apribojimas (B/s)"
 
 msgid "Global Limits (0 or -1 for unlimited):"
-msgstr "bendrieji apribojimai (0 arba -1 - neribota):"
+msgstr "Visuotiniai apribojimai (0 arba -1 = neribota):"
 
 msgid "Global UL Limit (B/s)"
-msgstr "Globalinė UL riba (B / s)"
+msgstr "Visuotinis išsiuntimo apribojimas (B/s)"
 
 msgid "Hash"
-msgstr "Raktažodis"
+msgstr "Maišas"
 
 msgid "Hashing pieces and generating torrent metadata..."
-msgstr "Plakimo detalės ir torrento metaduomenų generavimas..."
+msgstr "Skaičiuojami dalių maišai ir kuriami torrento metaduomenys..."
 
 msgid "High"
 msgstr "Aukštas"
 
 msgid "Host:"
-msgstr "Mazgas:"
+msgstr "Serveris:"
 
 msgid "HTTP (no auth)"
-msgstr "HTTP (nėra auth)"
+msgstr "HTTP (be tapatybės nustatymo)"
 
 msgid "HTTP (with auth)"
-msgstr "HTTP (su auth)"
+msgstr "HTTP (su tapatybės nustatymu)"
 
 msgid "Import Complete"
-msgstr "Importuoti užbaigtą"
+msgstr "Importavimas baigtas"
 
 msgid "Import Failed: {error}"
 msgstr "Importuoti nepavyko: {error}"
@@ -776,58 +803,58 @@ msgid "Import PO..."
 msgstr "Importuoti PO..."
 
 msgid "Imported {feeds} feeds and {rules} rules."
-msgstr "Importuotas {feeds} pašarai ir {rules} taisyklės."
+msgstr "Importuota srautų: {feeds}, taisyklių: {rules}."
 
 msgid "Included trackers (one per line):"
-msgstr "Vožtuvai:"
+msgstr "Įtraukti sekikliai (po vieną eilutėje):"
 
 msgid "Indexer"
-msgstr "indeksatorius"
+msgstr "Indeksuotojas"
 
 msgid "Indexer name"
-msgstr "Indikatoriaus pavadinimas"
+msgstr "Indeksuotojo pavadinimas"
 
 msgid "Indexer URL"
-msgstr "indeksatoriaus URL"
+msgstr "Indeksuotojo URL"
 
 msgid "Indexers to search"
-msgstr "Paieškai naudojami indeksai"
+msgstr "Indeksuotojai, kuriuose ieškoti"
 
 msgid "Info"
 msgstr "Informacija"
 
 msgid "Info hash copied to clipboard."
-msgstr "Info brūkšnelis nukopijuotas į iškarpinę."
+msgstr "Info maišas nukopijuotas į iškarpinę."
 
 msgid "Info Hash: {hash}"
-msgstr "Info Hash: {hash}"
+msgstr "Info maišas: {hash}"
 
 msgid "Install directory not found."
-msgstr "Įdiegimo katalogas nerastas."
+msgstr "Diegimo katalogas nerastas."
 
 msgid "Invalid argument: {arg}"
-msgstr "Klaidingas argumentas: {arg}"
+msgstr "Netinkamas argumentas: {arg}"
 
 msgid "Invalid credentials."
-msgstr "Nesąžiningi duomenys."
+msgstr "Neteisingi prisijungimo duomenys."
 
 msgid "Invalid integer for {label}: {error}"
-msgstr "Klaidingas {label} sveikasis skaičius: {error}"
+msgstr "Netinkamas sveikasis skaičius lauke „{label}“: {error}"
 
 msgid "Invalid JSON for {label}: {error}"
-msgstr "{label}: {error}"
+msgstr "Netinkamas JSON lauke „{label}“: {error}"
 
 msgid "Invalid number for {label}: {error}"
-msgstr "{label}: {error}"
+msgstr "Netinkamas skaičius lauke „{label}“: {error}"
 
 msgid "Invalid torrent URL."
-msgstr "Blogas torrent URL."
+msgstr "Netinkamas torrento URL."
 
 msgid "Language"
 msgstr "Kalba"
 
 msgid "Language changes reload this page after saving."
-msgstr "Kalbos pakeitimai iš naujo įkelti šį puslapį po įrašymo."
+msgstr "Įrašius kalbos pakeitimas iš naujo įkels šį puslapį."
 
 msgid "Language code:"
 msgstr "Kalbos kodas:"
@@ -839,22 +866,22 @@ msgid "Language:"
 msgstr "Kalba:"
 
 msgid "Largest"
-msgstr "Didžiausias"
+msgstr "Didžiausi"
 
 msgid "Leave blank to retain the current password."
-msgstr "Palikite tuščią, kad dabartinis slaptažodis būtų išsaugotas."
+msgstr "Palikite tuščią, jei norite išlaikyti dabartinį slaptažodį."
 
 msgid "Leechers"
-msgstr "Lynai"
+msgstr "Leecheriai"
 
 msgid "libtorrent is not available. Torrent creation requires python-libtorrent."
-msgstr "libtorrent nėra. Torrent kūrimas reikalauja python- libtorrent."
+msgstr "libtorrent nepasiekiama. Torrentams kurti reikia python-libtorrent."
 
 msgid "Light (Classic)"
-msgstr "Šviesa (Classic)"
+msgstr "Šviesi (klasikinė)"
 
 msgid "Limits"
-msgstr "Ribos"
+msgstr "Apribojimai"
 
 msgid "Link"
 msgstr "Nuoroda"
@@ -863,67 +890,67 @@ msgid "Listening Port:"
 msgstr "Klausymo prievadas:"
 
 msgid "Loading remote settings..."
-msgstr "Įkeliami nutolę nustatymai..."
+msgstr "Įkeliami nuotoliniai nustatymai..."
 
 msgid "Loading..."
 msgstr "Įkeliama..."
 
 msgid "Local libtorrent"
-msgstr "Lokalus libtorrent"
+msgstr "Vietinis libtorrent"
 
 msgid "Local Session &Settings...\tCtrl+,"
-msgstr "Vietinės sesijos &nustatymai...\tCtrl+,"
+msgstr "Vietinio seanso &nustatymai...\tCtrl+,"
 
 msgid "Local session active"
-msgstr "Lokali sesija aktyvi"
+msgstr "Vietinis seansas aktyvus"
 
 msgid "Local Session Settings"
-msgstr "Comment"
+msgstr "Vietinio seanso nustatymai"
 
 msgid "Local Session Settings..."
-msgstr "Vietos sesijų nustatymai..."
+msgstr "Vietinio seanso nustatymai..."
 
 msgid "Login"
-msgstr "Prisijungimas"
+msgstr "Prisijungti"
 
 msgid "Login - SerrebiTorrent"
 msgstr "Prisijungimas - SerrebiTorrent"
 
 msgid "Logout"
-msgstr "Comment"
+msgstr "Atsijungti"
 
 msgid "Magnet copied to clipboard."
-msgstr "Magnetas nukopijuotas į iškarpinę."
+msgstr "Magnet nuoroda nukopijuota į iškarpinę."
 
 msgid "Magnet Link"
-msgstr "Magnetas sąsaja"
+msgstr "Magnet nuoroda"
 
 msgid "Magnet link added"
-msgstr "Magnetas nuoroda pridėta"
+msgstr "Magnet nuoroda pridėta"
 
 msgid "Magnet link added from CLI"
-msgstr "Magnetas nuoroda pridėta iš CLI"
+msgstr "Magnet nuoroda pridėta iš komandų eilutės"
 
 msgid "Magnet link(s) copied to clipboard."
-msgstr "Name"
+msgstr "Magnet nuorodos nukopijuotos į iškarpinę."
 
 msgid "Magnet: {magnet}"
-msgstr "Magnetas: {magnet}"
+msgstr "Magnet: {magnet}"
 
 msgid "Manage Profiles & Connect"
-msgstr "Tvarkyti profilius & prisijungti"
+msgstr "Tvarkyti profilius ir prisijungti"
 
 msgid "Max Connections:"
-msgstr "Maks. jungtys:"
+msgstr "Daugiausia ryšių:"
 
 msgid "Max Upload Slots:"
-msgstr "Max įkelti lizdus:"
+msgstr "Daugiausia išsiuntimo vietų:"
 
 msgid "Menu closed"
-msgstr "Meniu uždarytas"
+msgstr "Meniu užvertas"
 
 msgid "Menu opened"
-msgstr "Meniu atidarytas"
+msgstr "Meniu atvertas"
 
 msgid "Message"
 msgstr "Pranešimas"
@@ -932,103 +959,103 @@ msgid "Metadata (optional)"
 msgstr "Metaduomenys (neprivaloma)"
 
 msgid "Minimize to System Tray"
-msgstr "Sumažinti iki sistemos dėklo"
+msgstr "Sumažinti į sistemos dėklą"
 
 msgid "Minimize to Tray"
-msgstr "Sumažinti iki dėklo"
+msgstr "Sumažinti į dėklą"
 
 msgid "Most seeders"
-msgstr "Kurių didžiausia pakrautos transporto priemonės masė ne didesnė kaip 5 tonos"
+msgstr "Daugiausia skleidėjų"
 
 msgid "My &indexers..."
 msgstr "Mano &indeksuotojai..."
 
 msgid "My indexers..."
-msgstr "Mano indeksai..."
+msgstr "Mano indeksuotojai..."
 
 msgid "My Remote Server"
-msgstr "Mano nutolęs serveris"
+msgstr "Mano nuotolinis serveris"
 
 msgid "My torrent indexers"
-msgstr "Mano torrentų indeksai"
+msgstr "Mano torrentų indeksuotojai"
 
 msgid "N/A"
-msgstr "netaikoma"
+msgstr "Nėra"
 
 msgid "Name"
 msgstr "Pavadinimas"
 
 msgid "Navigation"
-msgstr "Navigacija"
+msgstr "Naršymas"
 
 msgid "Navigation Sidebar"
 msgstr "Naršymo šoninė juosta"
 
 msgid "Needs review"
-msgstr "Poreikių peržiūra"
+msgstr "Reikia peržiūrėti"
 
 msgid "Network"
 msgstr "Tinklas"
 
 msgid "Newest"
-msgstr "Naujausia"
+msgstr "Naujausi"
 
 msgid "Next"
-msgstr "Sekantis"
+msgstr "Kitas"
 
 msgid "No"
-msgstr "Nr."
+msgstr "Ne"
 
 msgid "No client connected."
-msgstr "Nvienas klientas nėra prijungtas."
+msgstr "Neprijungtas joks klientas."
 
 msgid "No indexers are switched on. Use Search sites."
-msgstr "indeksatoriai neįjungti. Naudokite paieškos svetaines."
+msgstr "Neįjungtas joks indeksuotojas. Naudokite „Paieškos svetainės“."
 
 msgid "No regular files found to include in torrent."
-msgstr "Nėra įprastų failų, kurie būtų įtraukti į torrent."
+msgstr "Nerasta įprastų failų, kuriuos būtų galima įtraukti į torrentą."
 
 msgid "No remote settings available (or Local client active)."
-msgstr "Nuotolinių nustatymų nėra (arba veikia vietinis klientas)."
+msgstr "Nuotolinių nustatymų nėra (arba aktyvus vietinis klientas)."
 
 msgid "No torrent selected."
-msgstr "Nepasirinktas nė vienas torrentas."
+msgstr "Nepažymėtas joks torrentas."
 
 msgid "No torrents selected to {action}."
-msgstr "{action} torrentų nepasirinkta."
+msgstr "Veiksmui „{action}“ nepažymėta torrentų."
 
 msgid "No torrents selected."
-msgstr "Nepasirinkta nė viena torrentų."
+msgstr "Nepažymėta torrentų."
 
 msgid "No torrents to start."
-msgstr "Nėra torrentų pradėti."
+msgstr "Nėra torrentų, kuriuos būtų galima paleisti."
 
 msgid "No torrents to stop."
-msgstr "Nr torrentų sustabdyti."
+msgstr "Nėra torrentų, kuriuos būtų galima sustabdyti."
 
 msgid "No updates available."
-msgstr "Atnaujinimų nėra."
+msgstr "Naujinimų nėra."
 
 msgid "None"
-msgstr "Nieko"
+msgstr "Nėra"
 
 msgid "None (No feeds)"
-msgstr "Nėra (nėra pašarų)"
+msgstr "Nėra (be srautų)"
 
 msgid "Normal"
-msgstr "Normalus"
+msgstr "Įprastas"
 
 msgid "Not connected to any client."
-msgstr "Nr prijungtas prie bet kurio kliento."
+msgstr "Neprisijungta prie jokio kliento."
 
 msgid "Nothing found. Try fewer words, or switch on more indexers in Search sites."
-msgstr "Nieko neradau. Bandykite mažiau žodžių, arba perjunkite daugiau indeksus paieškos svetainėse."
+msgstr "Nieko nerasta. Pabandykite mažiau žodžių arba „Paieškos svetainėse“ įjunkite daugiau indeksuotojų."
 
 msgid "Notifications"
 msgstr "Pranešimai"
 
 msgid "Off"
-msgstr "NAME OF TRANSLATORS"
+msgstr "Išjungta"
 
 msgid "OK"
 msgstr "Gerai"
@@ -1040,34 +1067,34 @@ msgid "One URL per line (HTTP/HTTPS)."
 msgstr "Po vieną URL eilutėje (HTTP/HTTPS)."
 
 msgid "Open Download &Folder"
-msgstr "Atidaryti atsisiuntimo &aplanką"
+msgstr "Atverti atsisiuntimų &aplanką"
 
 msgid "Open Download Folder"
-msgstr "Atidaryti atsisiuntimo aplanką"
+msgstr "Atverti atsisiuntimų aplanką"
 
 msgid "Open online translation"
-msgstr "Open online translation"
+msgstr "Atverti internetinį vertimą"
 
 msgid "Open the download folder (if available)"
-msgstr "Atidaryti atsisiuntimo aplanką (jei galima)"
+msgstr "Atverti atsisiuntimų aplanką (jei pasiekiamas)"
 
 msgid "Open Torrent File"
-msgstr "Open Torrent failas"
+msgstr "Atverti torrent failą"
 
 msgid "Open {name}"
-msgstr "Open {name}"
+msgstr "Atverti {name}"
 
 msgid "Opened download folder."
-msgstr "Atsisiųsti aplanką."
+msgstr "Atsisiuntimų aplankas atvertas."
 
 msgid "Other"
-msgstr "Kiti"
+msgstr "Kita"
 
 msgid "Output .torrent file:"
-msgstr "išvesties .torrent failas:"
+msgstr "Išvesties .torrent failas:"
 
 msgid "Output .torrent path is required."
-msgstr "Išvesties .torrent kelias yra būtinas."
+msgstr "Būtina nurodyti išvesties .torrent kelią."
 
 msgid "Password"
 msgstr "Slaptažodis"
@@ -1078,38 +1105,41 @@ msgstr "Slaptažodis:"
 msgid "Path"
 msgstr "Kelias"
 
+msgid "Path: {path}"
+msgstr "Kelias: {path}"
+
 msgid "Pattern"
-msgstr "Modelis"
+msgstr "Šablonas"
 
 msgid "Pause"
-msgstr "Pauzė"
+msgstr "Pristabdyti"
 
 msgid "Pause selected torrents"
-msgstr "Pristabdyti pasirinktus torrentus"
+msgstr "Pristabdyti pažymėtus torrentus"
 
 msgid "Pause torrent"
-msgstr "Name"
+msgstr "Pristabdyti torrentą"
 
 msgid "Paused"
-msgstr "Pristabdytas"
+msgstr "Pristabdyta"
 
 msgid "Pausing torrents..."
-msgstr "Torrentai pristabdomi..."
+msgstr "Pristabdomi torrentai..."
 
 msgid "Peer proportional"
-msgstr "Proporcingas"
+msgstr "Proporcingai siuntėjams"
 
 msgid "Peers"
-msgstr "Kamuoliai"
+msgstr "Siuntėjai"
 
 msgid "Piece size:"
-msgstr "Gabalų dydis:"
+msgstr "Dalies dydis:"
 
 msgid "Please select a profile to connect."
-msgstr "Pasirinkite profilį, kad prisijungtumėte."
+msgstr "Pasirinkite profilį, prie kurio prisijungti."
 
 msgid "Please select at least one torrent first."
-msgstr "Prašome iš pradžių pasirinkti bent vieną torrentą."
+msgstr "Pirmiausia pažymėkite bent vieną torrentą."
 
 msgid "Port:"
 msgstr "Prievadas:"
@@ -1118,13 +1148,13 @@ msgid "Portuguese (Brazil)"
 msgstr "Portugalų (Brazilija)"
 
 msgid "Prefer encryption"
-msgstr "Pageidaujamas šifravimas"
+msgstr "Teikti pirmenybę šifravimui"
 
 msgid "Prefer TCP"
-msgstr "TCP"
+msgstr "Teikti pirmenybę TCP"
 
 msgid "Preferences"
-msgstr "Nustatymai"
+msgstr "Nuostatos"
 
 msgid "Preparing restart..."
 msgstr "Ruošiamasi paleisti iš naujo..."
@@ -1136,10 +1166,10 @@ msgid "Priority"
 msgstr "Prioritetas"
 
 msgid "Private torrent (disables DHT/PEX/LSD in most clients)"
-msgstr "Privatus torrentas (išjungia DHT / PEX / LSD daugelyje klientų)"
+msgstr "Privatus torrentas (daugelyje klientų išjungia DHT/PEX/LSD)"
 
 msgid "Private trackers work through Prowlarr or Jackett, which\nkeep your tracker logins. SerrebiTorrent stores only this\nURL and key."
-msgstr "privatūs sekliai dirbti per Prowlarr arba Jacktt, kuris\nSaugok savo pėdsakus. SerreBiTorrent parduotuvės tik tai\nURL ir raktas."
+msgstr "Privatūs sekikliai veikia per Prowlarr arba Jackett, kurie\nsaugo jūsų prisijungimo duomenis. SerrebiTorrent saugo tik\nšį URL ir raktą."
 
 msgid "Profile"
 msgstr "Profilis"
@@ -1151,34 +1181,34 @@ msgid "Profile Name:"
 msgstr "Profilio pavadinimas:"
 
 msgid "PROFILES"
-msgstr "PROFILAI"
+msgstr "PROFILIAI"
 
 msgid "Profiles"
 msgstr "Profiliai"
 
 msgid "Progress"
-msgstr "Pažanga"
+msgstr "Eiga"
 
 msgid "Proxy"
-msgstr "Proxy"
+msgstr "Tarpinis serveris"
 
 msgid "Proxy disabled"
-msgstr "Proxy išjungtas"
+msgstr "Tarpinis serveris išjungtas"
 
 msgid "Proxy Type:"
-msgstr "Proxy tipas:"
+msgstr "Tarpinio serverio tipas:"
 
 msgid "Public tracker list (press Enter to add to Included trackers)."
-msgstr "Viešas sekimo sąrašas (spauskite Enter, norėdami pridėti prie įtrauktų sekimo įrenginių)."
+msgstr "Viešas sekiklių sąrašas (paspauskite Enter, kad pridėtumėte prie įtrauktų sekiklių)."
 
 msgid "qBittorrent Remote &Settings..."
 msgstr "qBittorrent nuotoliniai &nustatymai..."
 
 msgid "qBittorrent Remote Settings..."
-msgstr "Name"
+msgstr "qBittorrent nuotoliniai nustatymai..."
 
 msgid "Queue"
-msgstr "Eilutė"
+msgstr "Eilė"
 
 msgid "Ratio"
 msgstr "Santykis"
@@ -1187,10 +1217,10 @@ msgid "Reannounce not supported by this client."
 msgstr "Šis klientas nepalaiko pakartotinio paskelbimo."
 
 msgid "Reannouncing torrents..."
-msgstr "Atsiunčiamas torrentas..."
+msgstr "Torrentai skelbiami iš naujo..."
 
 msgid "Recheck not supported by this client."
-msgstr "Name"
+msgstr "Šis klientas nepalaiko pakartotinio tikrinimo."
 
 msgid "Rechecking torrents..."
 msgstr "Torrentai tikrinami iš naujo..."
@@ -1202,40 +1232,43 @@ msgid "Refresh All"
 msgstr "Atnaujinti visus"
 
 msgid "Regex Pattern:"
-msgstr "Name"
+msgstr "Reguliarusis reiškinys:"
 
 msgid "Register &Associations"
 msgstr "Registruoti &susiejimus"
 
 msgid "Reject"
-msgstr "Pašalinti"
+msgstr "Atmesti"
 
 msgid "Remote Client"
-msgstr "Nutolęs klientas"
+msgstr "Nuotolinis klientas"
 
 msgid "Remote client did not return any recognized preferences."
-msgstr "Nuotolinis klientas negrįžo jokių pripažintų nustatymų."
+msgstr "Nuotolinis klientas negrąžino jokių atpažįstamų nuostatų."
 
 msgid "Remote settings saved."
-msgstr "Noun, name of the user action"
+msgstr "Nuotoliniai nustatymai įrašyti."
 
 msgid "Remove"
 msgstr "Pašalinti"
 
+msgid "Remove failed: {error}"
+msgstr "Pašalinti nepavyko: {error}"
+
 msgid "Remove Feed"
-msgstr "Pašalinti kanalą"
+msgstr "Pašalinti srautą"
 
 msgid "Remove feed {url}?"
-msgstr "Pašalinti pašarų ZTAKEN0ZZ? {url}"
+msgstr "Pašalinti srautą {url}?"
 
 msgid "Remove Selected"
-msgstr "Pašalinti pažymėtą"
+msgstr "Pašalinti pažymėtus"
 
 msgid "Remove selected torrents"
-msgstr "Pašalinti pasirinktus torrentus"
+msgstr "Pašalinti pažymėtus torrentus"
 
 msgid "Remove selected torrents and data"
-msgstr "Pašalinti pasirinktus torrentus ir duomenis"
+msgstr "Pašalinti pažymėtus torrentus kartu su duomenimis"
 
 msgid "Remove torrent"
 msgstr "Pašalinti torrentą"
@@ -1246,62 +1279,74 @@ msgstr "Pašalinti su &duomenimis\tShift+Del"
 msgid "Remove with Data"
 msgstr "Pašalinti su duomenimis"
 
+msgid "Remove {count} torrent and delete downloaded data?"
+msgstr "Pašalinti torrentus ({count}) ir ištrinti atsisiųstus duomenis?"
+
+msgid "Remove {count} torrent?"
+msgstr "Pašalinti torrentus ({count})?"
+
+msgid "Remove {count} torrents and delete downloaded data?"
+msgstr "Pašalinti torrentus ({count}) ir ištrinti atsisiųstus duomenis?"
+
+msgid "Remove {count} torrents?"
+msgstr "Pašalinti torrentus ({count})?"
+
 msgid "Removed {name}."
-msgstr "Pašalintas ZTAKEN0ZZ. {name}"
+msgstr "{name} pašalintas."
 
 msgid "Reset failed: {error}"
-msgstr "Nepavyko atkurti: {error}"
+msgstr "Atkurti nepavyko: {error}"
 
 msgid "Reset RSS (Clear all feeds and rules)"
-msgstr "Atsistatyti RSS (Išvalyti visus kanalus ir taisykles)"
+msgstr "Atkurti RSS (išvalyti visus srautus ir taisykles)"
 
 msgid "Results"
-msgstr "Nr."
+msgstr "Rezultatai"
 
 msgid "Results, {count} result"
-msgstr "Rezultatai, {count} rezultatas"
+msgstr "Rezultatai: {count}"
 
 msgid "Results, {count} results"
-msgstr "Rezultatai, {count} rezultatai"
+msgstr "Rezultatai: {count}"
 
 msgid "Resume"
 msgstr "Tęsti"
 
 msgid "Resume selected torrents"
-msgstr "Tęsti pasirinktą torrentą"
+msgstr "Tęsti pažymėtus torrentus"
 
 msgid "Resuming torrents..."
-msgstr "Torrentai tęsiami..."
+msgstr "Tęsiami torrentai..."
 
 msgid "Round-robin"
-msgstr "Rubinas"
+msgstr "Paeiliui (round-robin)"
 
 msgid "RSS Articles"
 msgstr "RSS straipsniai"
 
 msgid "RSS data reset successfully."
-msgstr "RSS duomenų grąžinimas sėkmingai."
+msgstr "RSS duomenys atkurti."
 
 msgid "RSS Downloader"
-msgstr "RSS siųstuvas"
+msgstr "RSS atsisiuntimo priemonė"
 
 msgid "RSS Feeds"
-msgstr "RSS reikmenys"
+msgstr "RSS srautai"
 
 msgid "RSS Rules Manager"
-msgstr "RSS taisyklių tvarkytuvė"
+msgstr "RSS taisyklių tvarkyklė"
 
 msgid "RSS Update Interval (s)"
-msgstr "RSS atnaujinimo intervalas (-iai)"
+msgstr "RSS atnaujinimo intervalas (s)"
 
 msgid "RSS Update Interval (seconds):"
 msgstr "RSS atnaujinimo intervalas (sekundėmis):"
 
 msgid "rTorrent Remote &Settings..."
-msgstr "RTorrent Remote &Parametrai..."
+msgstr "rTorrent nuotoliniai &nustatymai..."
 
 msgid "rTorrent Remote Settings..."
-msgstr "RTorrent nutolę nustatymai..."
+msgstr "rTorrent nuotoliniai nustatymai..."
 
 msgid "Rule Type:"
 msgstr "Taisyklės tipas:"
@@ -1310,7 +1355,7 @@ msgid "Rules"
 msgstr "Taisyklės"
 
 msgid "Save App Settings"
-msgstr "Įrašyti programų nustatymus"
+msgstr "Įrašyti programos nustatymus"
 
 msgid "Save As..."
 msgstr "Įrašyti kaip..."
@@ -1319,34 +1364,34 @@ msgid "Save entry"
 msgstr "Įrašyti įrašą"
 
 msgid "Save Path"
-msgstr "Įrašyti kelią"
+msgstr "Įrašymo kelias"
 
 msgid "Save Path (Optional)"
-msgstr "Įrašyti kelią (neprivaloma)"
+msgstr "Įrašymo kelias (neprivaloma)"
 
 msgid "Save Path:"
-msgstr "Įrašyti kelią:"
+msgstr "Įrašymo kelias:"
 
 msgid "Save Remote Settings"
-msgstr "Įrašyti nutolusius nustatymus"
+msgstr "Įrašyti nuotolinius nustatymus"
 
 msgid "Save Torrent As"
 msgstr "Įrašyti torrentą kaip"
 
 msgid "Scheduler"
-msgstr "Tvarkaraštis"
+msgstr "Planuoklis"
 
 msgid "Scheduling"
-msgstr "Tvarkaraštis"
+msgstr "Planavimas"
 
 msgid "Scope"
-msgstr "Taikymo sritis"
+msgstr "Aprėptis"
 
 msgid "Scripts"
 msgstr "Scenarijai"
 
 msgid "Sea&rch"
-msgstr "Iešk&oti"
+msgstr "Ieš&koti"
 
 msgid "Search"
 msgstr "Ieškoti"
@@ -1358,34 +1403,34 @@ msgid "Search for"
 msgstr "Ieškoti"
 
 msgid "Search for Torrents"
-msgstr "Torrentų paieška"
+msgstr "Ieškoti torrentų"
 
 msgid "Search si&tes..."
-msgstr "Ieškoti &svetainėse..."
+msgstr "Paieškos &svetainės..."
 
 msgid "Search sites"
-msgstr "Paieškos vietos"
+msgstr "Paieškos svetainės"
 
 msgid "Search sites..."
 msgstr "Paieškos svetainės..."
 
 msgid "Search torrent indexers and add what you find"
-msgstr "Ieškoti torrent indeksus ir pridėti tai, ką rasite"
+msgstr "Ieškoti torrentų indeksuotojuose ir pridėti tai, ką radote"
 
 msgid "Searching {count} indexer..."
-msgstr "Ieškoma ZTAKEN0ZZ indeksatoriaus... {count}"
+msgstr "Ieškoma indeksuotojuose ({count})..."
 
 msgid "Searching {count} indexers..."
-msgstr "Ieškomi ZTAKEN0ZZ indeksai... {count}"
+msgstr "Ieškoma indeksuotojuose ({count})..."
 
 msgid "Seeding"
-msgstr "Rytas"
+msgstr "Skleidžiama"
 
 msgid "Seeds"
-msgstr "Sėklos"
+msgstr "Skleidėjai"
 
 msgid "Select"
-msgstr "Žymėti"
+msgstr "Pažymėti"
 
 msgid "Select &all"
 msgstr "Pažymėti &viską"
@@ -1394,61 +1439,73 @@ msgid "Select &All\tCtrl+A"
 msgstr "Pažymėti &viską\tCtrl+A"
 
 msgid "Select &none"
-msgstr "Nepažymėti &nieko"
+msgstr "&Nieko nežymėti"
 
 msgid "Select a result first."
-msgstr "Parinkite rezultatą."
+msgstr "Pirmiausia pažymėkite rezultatą."
 
 msgid "Select a torrent."
-msgstr "Pasirinkite torrentą."
+msgstr "Pažymėkite torrentą."
 
 msgid "Select All"
-msgstr "Žymėti visus"
+msgstr "Pažymėti viską"
 
 msgid "Select all torrents"
-msgstr "Žymėti visus torrentus"
+msgstr "Pažymėti visus torrentus"
 
 msgid "Select File"
-msgstr "Pasirinkite failą"
+msgstr "Pasirinkti failą"
 
 msgid "Select Folder"
-msgstr "Pasirinkite aplanką"
+msgstr "Pasirinkti aplanką"
 
 msgid "Select {name}"
-msgstr "Pasirinkite {name}"
+msgstr "Pažymėti {name}"
+
+msgid "Selected all {count} torrents"
+msgstr "Pažymėti visi torrentai ({count})"
+
+msgid "Selected {name}"
+msgstr "Pažymėta: {name}"
 
 msgid "Selection cleared"
-msgstr "Žymėjimas patvirtintas"
+msgstr "Žymėjimas išvalytas"
+
+msgid "Session expired. Please sign in again."
+msgstr "Seansas baigėsi. Prisijunkite iš naujo."
 
 msgid "Set"
 msgstr "Nustatyti"
 
 msgid "Set Default"
-msgstr "Nustatyti numatytąjį"
+msgstr "Nustatyti kaip numatytąjį"
 
 msgid "Settings"
 msgstr "Nustatymai"
 
 msgid "Settings saved."
-msgstr "Nustatymai išsaugoti."
+msgstr "Nustatymai įrašyti."
 
 msgid "Size"
 msgstr "Dydis"
+
+msgid "Size: {size}"
+msgstr "Dydis: {size}"
 
 msgid "Skip"
 msgstr "Praleisti"
 
 msgid "Skip to torrent list"
-msgstr "Praleisti į torrent sąrašą"
+msgstr "Pereiti į torrentų sąrašą"
 
 msgid "SOCKS4 (no auth)"
-msgstr "SOCKS4 (nėra auth)"
+msgstr "SOCKS4 (be tapatybės nustatymo)"
 
 msgid "SOCKS5 (no auth)"
-msgstr "SOCKS5 (nėra auth)"
+msgstr "SOCKS5 (be tapatybės nustatymo)"
 
 msgid "SOCKS5 (with auth)"
-msgstr "SOCKS5 (su auth)"
+msgstr "SOCKS5 (su tapatybės nustatymu)"
 
 msgid "Sort &by:"
 msgstr "Rikiuoti &pagal:"
@@ -1457,19 +1514,19 @@ msgid "Sort by"
 msgstr "Rikiuoti pagal"
 
 msgid "Sorted by {label}."
-msgstr "Rikiavo {label}."
+msgstr "Surikiuota pagal: {label}."
 
 msgid "Source (file or folder):"
 msgstr "Šaltinis (failas arba aplankas):"
 
 msgid "Source (written into info dict as 'source'):"
-msgstr "Šaltiniai (įrašyti į info dict kaip \"šaltinis\"):"
+msgstr "Šaltinis (įrašomas į info žodyną kaip 'source'):"
 
 msgid "Source path is required."
-msgstr "Šaltinio kelias yra būtinas."
+msgstr "Būtina nurodyti šaltinio kelią."
 
 msgid "Source path must not be a symlink or Windows reparse point."
-msgstr "Šaltinio kelias neturi būti simbolinė nuoroda arba Windows atkūrimo taškas."
+msgstr "Šaltinio kelias negali būti simbolinė nuoroda ar Windows pakartotinio analizavimo taškas."
 
 msgid "Source text"
 msgstr "Šaltinio tekstas"
@@ -1481,64 +1538,64 @@ msgid "Speed"
 msgstr "Greitis"
 
 msgid "Start"
-msgstr "Pradžia"
+msgstr "Paleisti"
 
 msgid "Start All"
 msgstr "Paleisti visus"
 
 msgid "Start selected torrents"
-msgstr "Paleisti pasirinktus torrentus"
+msgstr "Paleisti pažymėtus torrentus"
 
 msgid "Starting all torrents..."
-msgstr "Pradedami visi torrentai..."
+msgstr "Paleidžiami visi torrentai..."
 
 msgid "Starting torrents..."
-msgstr "Torrentai pradedami..."
+msgstr "Paleidžiami torrentai..."
 
 msgid "Status"
-msgstr "Statusas"
+msgstr "Būsena"
 
 msgid "Status Filters"
-msgstr "Statusų filtrai"
+msgstr "Būsenos filtrai"
 
 msgid "Stop All"
 msgstr "Stabdyti visus"
 
 msgid "Stopped"
-msgstr "Stabdyta"
+msgstr "Sustabdyta"
 
 msgid "Stopping all torrents..."
-msgstr "Stabdyti visus torrentus..."
+msgstr "Stabdomi visi torrentai..."
 
 msgid "Stopping torrents..."
 msgstr "Stabdomi torrentai..."
 
 msgid "Success"
-msgstr "Sėkmė"
+msgstr "Pavyko"
 
 msgid "Switch Profile"
-msgstr "Pakeisti profilį"
+msgstr "Keisti profilį"
 
 msgid "Switching client profile..."
-msgstr "Krentančio kliento profilio keitimas..."
+msgstr "Keičiamas kliento profilis..."
 
 msgid "System"
 msgstr "Sistema"
 
 msgid "System default"
-msgstr "Sistemos numatytasis"
+msgstr "Sistemos numatytoji"
 
 msgid "TCP and uTP"
-msgstr "TCP ir UTP"
+msgstr "TCP ir uTP"
 
 msgid "Theme"
 msgstr "Tema"
 
 msgid "Those results carry a tracker file rather than a magnet link."
-msgstr "Tuos rezultatus atlikti tracker failą, ne magnetas nuorodą."
+msgstr "Šiuose rezultatuose yra sekiklio failas, o ne magnet nuoroda."
 
 msgid "Time Left"
-msgstr "Laikas kairėn"
+msgstr "Liko laiko"
 
 msgid "Title"
 msgstr "Pavadinimas"
@@ -1547,43 +1604,43 @@ msgid "Toggle"
 msgstr "Perjungti"
 
 msgid "Too many failed attempts. Try again later."
-msgstr "Per daug nepavykusių bandymų. Bandykite dar kartą vėliau."
+msgstr "Per daug nepavykusių bandymų. Bandykite vėliau."
 
 msgid "Torrent Actions"
-msgstr "Torrent veiksmai"
+msgstr "Torrento veiksmai"
 
 msgid "Torrent actions"
 msgstr "Torrento veiksmai"
 
 msgid "Torrent added"
-msgstr "PridėtaTorrent"
+msgstr "Torrentas pridėtas"
 
 msgid "Torrent created:\n{path}"
-msgstr "Torrent sukurta:\n{path}"
+msgstr "Torrentas sukurtas:\n{path}"
 
 msgid "Torrent Details"
-msgstr "Torrento duomenys"
+msgstr "Torrento informacija"
 
 msgid "Torrent download finished after the active profile changed."
-msgstr "Torrent atsisiuntimas baigtas po aktyvaus profilio pakeitimo."
+msgstr "Torrento atsisiuntimas baigėsi pakeitus aktyvų profilį."
 
 msgid "Torrent File"
 msgstr "Torrent failas"
 
 msgid "Torrent file added from CLI"
-msgstr "Torrent failas pridėtas iš CLI"
+msgstr "Torrent failas pridėtas iš komandų eilutės"
 
 msgid "Torrent Files"
 msgstr "Torrent failai"
 
 msgid "Torrent files (*.torrent)|*.torrent"
-msgstr "Torrent failai (* .torrent)"
+msgstr "Torrent failai (*.torrent)|*.torrent"
 
 msgid "Torrent List"
-msgstr "Torrent sąrašas"
+msgstr "Torrentų sąrašas"
 
 msgid "Torrent Options"
-msgstr "Torrent parinktys"
+msgstr "Torrento parinktys"
 
 msgid "Torrents"
 msgstr "Torrentai"
@@ -1592,10 +1649,10 @@ msgid "torrents"
 msgstr "torrentai"
 
 msgid "Tracker List URL:"
-msgstr "Takelio sąrašo URL:"
+msgstr "Sekiklių sąrašo URL:"
 
 msgid "Trackers"
-msgstr "Traktoriai"
+msgstr "Sekikliai"
 
 msgid "Translated"
 msgstr "Išversta"
@@ -1604,7 +1661,7 @@ msgid "Translation"
 msgstr "Vertimas"
 
 msgid "Translation Center"
-msgstr "Vertimo centras"
+msgstr "Vertimų centras"
 
 msgid "Translation:"
 msgstr "Vertimas:"
@@ -1613,88 +1670,88 @@ msgid "Transmission Remote &Settings..."
 msgstr "Transmission nuotoliniai &nustatymai..."
 
 msgid "Transmission Remote Settings..."
-msgstr "Comment"
+msgstr "Transmission nuotoliniai nustatymai..."
 
 msgid "Type"
 msgstr "Tipas"
 
 msgid "Type what to look for first."
-msgstr "Įveskite, ką ieškoti pirmą."
+msgstr "Pirmiausia įveskite, ko ieškoti."
 
 msgid "Type what to look for."
 msgstr "Įveskite, ko ieškoti."
 
 msgid "UI Refresh Rate (ms)"
-msgstr "UI atnaujinimo dažnis (ms)"
+msgstr "Sąsajos atnaujinimo dažnis (ms)"
 
 msgid "Uncheck"
-msgstr "Naikinti"
+msgstr "Atžymėti"
 
 msgid "Uncheck All"
-msgstr "Pašalinti viską"
+msgstr "Atžymėti visus"
 
 msgid "Unknown"
 msgstr "Nežinoma"
 
 msgid "Untranslated"
-msgstr "Neliesta"
+msgstr "Neišversta"
 
 msgid "Up Speed"
-msgstr "Aukštyn"
+msgstr "Išsiuntimo greitis"
 
 msgid "Update Available"
 msgstr "Yra naujinimas"
 
 msgid "Update canceled."
-msgstr "Noun, name of the user action"
+msgstr "Naujinimas atšauktas."
 
 msgid "Update Check Failed"
-msgstr "Noun, name of the user action"
+msgstr "Naujinimų paieška nepavyko"
 
 msgid "Update check failed."
-msgstr "Naujinimo patikra nepavyko."
+msgstr "Naujinimų paieška nepavyko."
 
 msgid "Update Failed"
-msgstr "Atnaujinti nepavyko"
+msgstr "Naujinimas nepavyko"
 
 msgid "Update failed."
 msgstr "Naujinimas nepavyko."
 
 msgid "Update helper script not found."
-msgstr "Naujinimo pagalbinis scenarijus nerastas."
+msgstr "Pagalbinis naujinimo scenarijus nerastas."
 
 msgid "Update postponed."
-msgstr "Atnaujinimas atidėtas."
+msgstr "Naujinimas atidėtas."
 
 msgid "Update prepared. Closing to install..."
-msgstr "Ruošiamas atnaujinimas. Rengiamasi įdiegti..."
+msgstr "Naujinimas paruoštas. Užveriama diegimui..."
 
 msgid "Update prepared. The app will restart after it exits."
-msgstr "Ruošiamas atnaujinimas. Programėlė bus paleista iš naujo, kai ji išeis."
+msgstr "Naujinimas paruoštas. Programa bus paleista iš naujo, kai ją užversite."
 
 msgid "Updated executable not found."
 msgstr "Atnaujintas vykdomasis failas nerastas."
 
 msgid "Updates"
-msgstr "Atnaujinimai"
+msgstr "Naujinimai"
 
 msgid "Updates are only available in the packaged app."
-msgstr "Atnaujinimai yra prieinami tik supakuota programa."
+msgstr "Naujinimai pasiekiami tik supakuotoje programoje."
 
 msgid "Updating SerrebiTorrent"
-msgstr "SerreBiTorrent atnaujinimas"
+msgstr "Atnaujinama SerrebiTorrent"
 
 msgid "Updating..."
 msgstr "Atnaujinama..."
 
 msgid "Upload Rate (bytes/s):"
-msgstr "Siuntimo sparta (baitai/s):"
+msgstr "Išsiuntimo greitis (baitai/s):"
 
 msgid "Upload-rate based"
-msgstr "Gaunamas kiekis"
+msgstr "Pagal išsiuntimo greitį"
 
 msgid "URL (e.g. scgi://... or http://...):"
-msgstr "URL (pvz., scgi: / /... arba http: / /...):"
+msgstr "URL (pvz., scgi://... arba http://...):"
 
 msgid "URL / Path"
 msgstr "URL / kelias"
@@ -1703,85 +1760,100 @@ msgid "URL or download path"
 msgstr "URL arba atsisiuntimo kelias"
 
 msgid "URL:Magnet Link"
-msgstr "URL: Magnet Link"
+msgstr "URL:Magnet nuoroda"
 
 msgid "URLs / Magnets (one per line)"
-msgstr "URL / Magnetai (po vieną kiekvienai eilutei)"
+msgstr "URL / magnet nuorodos (po vieną eilutėje)"
 
 msgid "Use DyDNS"
-msgstr "Naudokite DDNS"
+msgstr "Naudoti DyDNS"
 
 msgid "Use NOIP"
-msgstr "NOIP naudojimas"
+msgstr "Naudoti NOIP"
 
 msgid "Username"
-msgstr "Vartotojo vardas"
+msgstr "Naudotojo vardas"
 
 msgid "Username:"
-msgstr "Vartotojo vardas:"
+msgstr "Naudotojo vardas:"
 
 msgid "Verifying download..."
-msgstr "NAME OF TRANSLATORS"
+msgstr "Tikrinamas atsisiuntimas..."
 
 msgid "Verifying signature..."
-msgstr "Parašas"
+msgstr "Tikrinamas parašas..."
 
 msgid "Warning"
 msgstr "Įspėjimas"
 
 msgid "Web Seeds (optional)"
-msgstr "žiniatinklio sėklos (neprivaloma)"
+msgstr "Žiniatinklio skleidėjai (neprivaloma)"
 
 msgid "Web UI"
-msgstr "Name"
+msgstr "Žiniatinklio sąsaja"
 
 msgid "YAML files (*.yml;*.yaml)|*.yml;*.yaml"
-msgstr "YAML bylos (* .Yml; * .Yaml) Bendrijoje"
+msgstr "YAML failai (*.yml;*.yaml)|*.yml;*.yaml"
 
 msgid "Yes"
 msgstr "Taip"
 
 msgid "You're already on the latest version."
-msgstr "Tu jau naujausioje versijoje."
+msgstr "Jau naudojate naujausią versiją."
 
 msgid "{action} complete"
-msgstr "{action} baigtas"
+msgstr "{action}: atlikta"
 
 msgid "{action} complete ({failed} failed). Last error: {error}"
-msgstr "{action} pilnas ({failed} nepavyko). Paskutinė klaida: {error}"
+msgstr "{action}: atlikta (nepavyko: {failed}). Paskutinė klaida: {error}"
 
 msgid "{client} Remote Settings"
-msgstr "{client} nutolę nustatymai"
+msgstr "{client} nuotoliniai nustatymai"
 
 msgid "{count} feeds"
-msgstr "{count} feeds"
+msgstr "Srautų: {count}"
 
 msgid "{count} indexer switched on."
-msgstr "ZTAKEN0ZZ indeksatorius įjungtas. {count}"
+msgstr "Įjungta indeksuotojų: {count}."
 
 msgid "{count} indexers switched on."
-msgstr "ZTAKEN0ZZ indeksai įjungti. {count}"
+msgstr "Įjungta indeksuotojų: {count}."
 
 msgid "{count} of your own indexer configured."
-msgstr "{count} Jūsų paties sukonfigūruotas indeksatorius."
+msgstr "Sukonfigūruota savų indeksuotojų: {count}."
 
 msgid "{count} of your own indexers configured."
-msgstr "{count} Jūsų pačių sukonfigūruoti indeksai."
+msgstr "Sukonfigūruota savų indeksuotojų: {count}."
 
 msgid "{count} result"
-msgstr "{count} rezultatas"
+msgstr "Rezultatų: {count}"
 
 msgid "{count} result so far, {pending} still searching. Last: {source}."
-msgstr "{count} rezultatas, {pending} vis dar ieško. Paskutinis: {source}."
+msgstr "Kol kas rezultatų: {count}, dar ieško: {pending}. Paskutinis: {source}."
 
 msgid "{count} results"
-msgstr "{count} rezultatai"
+msgstr "Rezultatų: {count}"
 
 msgid "{count} results so far, {pending} still searching. Last: {source}."
-msgstr "{count} rezultatai, {pending} vis dar ieško. Paskutinis: {source}."
+msgstr "Kol kas rezultatų: {count}, dar ieško: {pending}. Paskutinis: {source}."
+
+msgid "{count} torrent added."
+msgstr "Pridėta torrentų: {count}."
+
+msgid "{count} torrent removed."
+msgstr "Pašalinta torrentų: {count}."
 
 msgid "{count} torrents"
-msgstr "{count} torrents"
+msgstr "Torrentų: {count}"
+
+msgid "{count} torrents added."
+msgstr "Pridėta torrentų: {count}."
+
+msgid "{count} torrents removed."
+msgstr "Pašalinta torrentų: {count}."
+
+msgid "{count} torrents selected."
+msgstr "Pažymėta torrentų: {count}."
 
 msgid "{name} preferences saved"
-msgstr "{name} nustatymai įrašyti"
+msgstr "{name} nuostatos įrašytos"

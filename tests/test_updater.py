@@ -773,3 +773,17 @@ def test_update_helper_health_checks_the_restarted_executable():
     assert "Start-Sleep -Seconds 3" in section
     assert "$p.HasExited" in section
     assert "exit 1" in section
+
+
+def test_update_helper_only_clears_install_after_the_update_starts_applying():
+    helper = Path("update_helper.bat").read_text(encoding="utf-8")
+
+    # Earlier failures (app still running, files locked, backup failed) must not
+    # wipe an install that was never fully backed up.
+    first_rollback = helper.index("goto :rollback")
+    applying = helper.index('set "UPDATE_APPLYING=1"')
+    assert first_rollback < helper.index("Backing up current install") < applying
+    rollback = helper[helper.index("\n:rollback\n"):helper.index("\n:launch_and_verify_app\n")]
+    guard = rollback.index("if defined UPDATE_APPLYING (")
+    assert guard < rollback.index("call :clear_install_runtime")
+    assert 'set "RC=!ERRORLEVEL!"' in rollback
