@@ -19,11 +19,26 @@ let csrfToken = null;
 let actionMenuReturnFocus = null;
 const modalReturnFocus = new WeakMap();
 
+async function redirectIfSessionExpired(response) {
+    if (response.status !== 403) return false;
+    let body = '';
+    try {
+        body = (await response.clone().text()).trim();
+    } catch (_error) {}
+    if (body !== 'Unauthorized') return false;
+
+    csrfToken = null;
+    try {
+        sessionStorage.setItem('serrebitorrent-session-expired', '1');
+    } catch (_error) {}
+    window.location.href = '/login.html';
+    return true;
+}
+
 async function ensureCsrfToken() {
     if (csrfToken) return csrfToken;
     const res = await fetch('/api/v2/auth/csrf');
-    if (res.status === 403) {
-        window.location.href = '/login.html';
+    if (await redirectIfSessionExpired(res)) {
         throw new Error('Unauthorized');
     }
     const data = await res.json();
@@ -40,10 +55,7 @@ async function apiFetch(url, options = {}) {
         options.headers = headers;
     }
     const res = await fetch(url, options);
-    if (res.status === 403) {
-        csrfToken = null;
-        window.location.href = '/login.html';
-    }
+    await redirectIfSessionExpired(res);
     return res;
 }
 
@@ -451,11 +463,12 @@ async function refreshData(force = false) {
             : -1;
         // Get the full list from the client directly, info only provides MainFrame's filtered list
         const res = await fetch('/api/v2/torrents/all');
-        if (res.status === 403) { window.location.href = '/login.html'; return; }
+        if (await redirectIfSessionExpired(res)) return;
         const torrentsList = await res.json();
         
         // Also get stats from info
         const infoRes = await fetch('/api/v2/torrents/info');
+        if (await redirectIfSessionExpired(infoRes)) return;
         const infoData = await infoRes.json();
         
         const listChanges = syncTorrentsMap(Array.isArray(torrentsList) ? torrentsList : []);
@@ -758,6 +771,7 @@ function setFilter(f, event) {
 window.fetchProfiles = async function() {
     try {
         const res = await fetch('/api/v2/profiles');
+        if (await redirectIfSessionExpired(res)) return;
         const data = await res.json();
         const list = document.getElementById('profileList');
         if (!list) return;
@@ -935,6 +949,7 @@ function copyToClipboard(type) {
 async function loadAppSettings() {
     try {
         const res = await fetch('/api/v2/app/prefs');
+        if (await redirectIfSessionExpired(res)) return;
         const prefs = await res.json();
         const form = document.getElementById('settingsForm');
         if (!form) return;
@@ -965,6 +980,7 @@ async function loadRemoteSettings() {
     
     try {
         const res = await fetch('/api/v2/app/remote_prefs');
+        if (await redirectIfSessionExpired(res)) return;
         const data = await res.json();
         
         if (!data.prefs) {

@@ -105,6 +105,13 @@
 
         localizeLogin();
 
+        try {
+            if (sessionStorage.getItem('serrebitorrent-session-expired') === '1') {
+                sessionStorage.removeItem('serrebitorrent-session-expired');
+                showLoginError('Session expired. Please sign in again.');
+            }
+        } catch (_error) {}
+
         document.getElementById('loginForm').onsubmit = async (e) => {
             e.preventDefault();
             const formData = new FormData();
