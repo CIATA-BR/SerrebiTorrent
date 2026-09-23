@@ -532,6 +532,51 @@ def test_web_ui_non_auth_403_does_not_fake_session_expiry(page, web_ui_server):
     ) is None
 
 
+def test_web_ui_grid_shortcuts_do_not_capture_toolbar_keys(page, web_ui_server):
+    _login(page, web_ui_server)
+
+    settings = page.locator('[data-bs-target="#settingsModal"]')
+    settings.focus()
+    assert page.evaluate(
+        "document.activeElement === document.querySelector('[data-bs-target=\"#settingsModal\"]')"
+    )
+
+    page.keyboard.press("ArrowDown")
+    assert page.evaluate(
+        "document.activeElement === document.querySelector('[data-bs-target=\"#settingsModal\"]')"
+    )
+
+    page.keyboard.press("Control+A")
+    assert page.locator('tr[data-hash][aria-selected="true"]').count() == 0
+
+
+def test_web_ui_grid_shortcuts_do_not_capture_actions_button_keys(page, web_ui_server):
+    _login(page, web_ui_server)
+
+    actions = page.locator("#torrentActionsBtn")
+    actions.focus()
+    assert page.evaluate("document.activeElement && document.activeElement.id === 'torrentActionsBtn'")
+
+    page.keyboard.press("ArrowDown")
+    assert page.evaluate("document.activeElement && document.activeElement.id === 'torrentActionsBtn'")
+
+    page.keyboard.press("Control+A")
+    assert page.locator('tr[data-hash][aria-selected="true"]').count() == 0
+
+
+def test_web_ui_arrow_from_focused_grid_enters_first_row(page, web_ui_server):
+    # The grid itself takes focus when the list empties; arrows must still reach the rows.
+    _login(page, web_ui_server)
+    page.wait_for_function("document.querySelectorAll('tr[data-hash]').length >= 2")
+    page.evaluate("() => { const t = document.getElementById('torrentTable'); t.tabIndex = 0; t.focus(); }")
+
+    page.keyboard.press("ArrowDown")
+
+    page.wait_for_function(
+        "() => document.activeElement && document.activeElement.matches('tr[data-hash]') && document.activeElement === document.querySelector('tr[data-hash]')"
+    )
+
+
 def test_web_ui_sidebar_arrows_move_focus_without_activating_filter(page, web_ui_server):
     _login(page, web_ui_server)
 
