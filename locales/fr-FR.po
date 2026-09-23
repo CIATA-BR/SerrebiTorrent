@@ -1609,8 +1609,6 @@ msgstr "Trop de tentatives échouées. Réessayez plus tard."
 msgid "Torrent Actions"
 msgstr "Actions sur les torrents"
 
-msgid "Torrent actions"
-msgstr "Actions sur les torrents"
 
 msgid "Torrent added"
 msgstr "Torrent ajouté"
