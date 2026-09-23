@@ -73,6 +73,9 @@ msgstr ""
 msgid "&URL:"
 msgstr ""
 
+msgid "...and {count} more"
+msgstr ""
+
 msgid "1 feed"
 msgstr ""
 
@@ -149,6 +152,9 @@ msgid "Added your blindDL indexer: {names}."
 msgstr ""
 
 msgid "Added your blindDL indexers: {names}."
+msgstr ""
+
+msgid "Added {added} of {total} torrents"
 msgstr ""
 
 msgid "Added {title}"
@@ -320,6 +326,9 @@ msgid "Choose Download Directory"
 msgstr ""
 
 msgid "Choose Download Folder"
+msgstr ""
+
+msgid "Choose Watch Folder"
 msgstr ""
 
 msgid "Client"
@@ -650,6 +659,9 @@ msgid "Failed to add torrent: {error}"
 msgstr ""
 
 msgid "Failed to add torrents."
+msgstr ""
+
+msgid "Failed to add {count} torrents:"
 msgstr ""
 
 msgid "Failed to apply settings: {error}"
@@ -1603,6 +1615,9 @@ msgstr ""
 msgid "TCP and uTP"
 msgstr ""
 
+msgid "The active profile changed."
+msgstr ""
+
 msgid "Theme"
 msgstr ""
 
@@ -1799,6 +1814,15 @@ msgid "Verifying signature..."
 msgstr ""
 
 msgid "Warning"
+msgstr ""
+
+msgid "Watch folder (checked every minute; leave empty to turn off):"
+msgstr ""
+
+msgid "Watch folder: added {added}, failed {failed} ({name}: {error})"
+msgstr ""
+
+msgid "Watch folder: added {count} torrent(s)"
 msgstr ""
 
 msgid "Web Seeds (optional)"

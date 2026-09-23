@@ -1872,3 +1872,27 @@ msgstr "Download-Ordner konnte nicht geöffnet werden."
 
 msgid "Download folder is unavailable."
 msgstr "Download-Ordner ist nicht verfügbar."
+
+msgid "...and {count} more"
+msgstr "...und {count} weitere"
+
+msgid "Added {added} of {total} torrents"
+msgstr "{added} von {total} Torrents hinzugefügt"
+
+msgid "Choose Watch Folder"
+msgstr "Überwachten Ordner wählen"
+
+msgid "Failed to add {count} torrents:"
+msgstr "{count} Torrents konnten nicht hinzugefügt werden:"
+
+msgid "The active profile changed."
+msgstr "Das aktive Profil wurde geändert."
+
+msgid "Watch folder (checked every minute; leave empty to turn off):"
+msgstr "Überwachter Ordner (jede Minute geprüft; leer lassen zum Ausschalten):"
+
+msgid "Watch folder: added {added}, failed {failed} ({name}: {error})"
+msgstr "Überwachter Ordner: {added} hinzugefügt, {failed} fehlgeschlagen ({name}: {error})"
+
+msgid "Watch folder: added {count} torrent(s)"
+msgstr "Überwachter Ordner: {count} Torrent(s) hinzugefügt"

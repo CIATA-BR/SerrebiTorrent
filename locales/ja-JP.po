@@ -1872,3 +1872,27 @@ msgstr "ダウンロードフォルダーを開けませんでした。"
 
 msgid "Download folder is unavailable."
 msgstr "ダウンロードフォルダーを利用できません。"
+
+msgid "...and {count} more"
+msgstr "...ほか {count} 件"
+
+msgid "Added {added} of {total} torrents"
+msgstr "{total} 件中 {added} 件のトレントを追加しました"
+
+msgid "Choose Watch Folder"
+msgstr "監視フォルダーを選択"
+
+msgid "Failed to add {count} torrents:"
+msgstr "{count} 件のトレントを追加できませんでした:"
+
+msgid "The active profile changed."
+msgstr "アクティブなプロファイルが変更されました。"
+
+msgid "Watch folder (checked every minute; leave empty to turn off):"
+msgstr "監視フォルダー (1 分ごとに確認。空にするとオフ):"
+
+msgid "Watch folder: added {added}, failed {failed} ({name}: {error})"
+msgstr "監視フォルダー: {added} 件追加、{failed} 件失敗 ({name}: {error})"
+
+msgid "Watch folder: added {count} torrent(s)"
+msgstr "監視フォルダー: {count} 件のトレントを追加しました"

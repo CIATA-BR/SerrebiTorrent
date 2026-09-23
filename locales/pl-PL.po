@@ -1872,3 +1872,27 @@ msgstr "Nie udało się otworzyć folderu pobierania."
 
 msgid "Download folder is unavailable."
 msgstr "Folder pobierania jest niedostępny."
+
+msgid "...and {count} more"
+msgstr "...i {count} więcej"
+
+msgid "Added {added} of {total} torrents"
+msgstr "Dodano {added} z {total} torrentów"
+
+msgid "Choose Watch Folder"
+msgstr "Wybierz obserwowany folder"
+
+msgid "Failed to add {count} torrents:"
+msgstr "Nie udało się dodać {count} torrentów:"
+
+msgid "The active profile changed."
+msgstr "Aktywny profil został zmieniony."
+
+msgid "Watch folder (checked every minute; leave empty to turn off):"
+msgstr "Obserwowany folder (sprawdzany co minutę; pozostaw puste, aby wyłączyć):"
+
+msgid "Watch folder: added {added}, failed {failed} ({name}: {error})"
+msgstr "Obserwowany folder: dodano {added}, niepowodzenia: {failed} ({name}: {error})"
+
+msgid "Watch folder: added {count} torrent(s)"
+msgstr "Obserwowany folder: dodano torrentów: {count}"

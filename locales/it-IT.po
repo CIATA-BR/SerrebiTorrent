@@ -1872,3 +1872,27 @@ msgstr "Impossibile aprire la cartella di download."
 
 msgid "Download folder is unavailable."
 msgstr "La cartella di download non è disponibile."
+
+msgid "...and {count} more"
+msgstr "...e altri {count}"
+
+msgid "Added {added} of {total} torrents"
+msgstr "Aggiunti {added} torrent su {total}"
+
+msgid "Choose Watch Folder"
+msgstr "Scegli la cartella monitorata"
+
+msgid "Failed to add {count} torrents:"
+msgstr "Impossibile aggiungere {count} torrent:"
+
+msgid "The active profile changed."
+msgstr "Il profilo attivo è cambiato."
+
+msgid "Watch folder (checked every minute; leave empty to turn off):"
+msgstr "Cartella monitorata (controllata ogni minuto; lasciare vuoto per disattivare):"
+
+msgid "Watch folder: added {added}, failed {failed} ({name}: {error})"
+msgstr "Cartella monitorata: {added} aggiunti, {failed} non riusciti ({name}: {error})"
+
+msgid "Watch folder: added {count} torrent(s)"
+msgstr "Cartella monitorata: aggiunti {count} torrent"

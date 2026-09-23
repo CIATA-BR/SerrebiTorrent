@@ -1872,3 +1872,27 @@ msgstr "Kan de downloadmap niet openen."
 
 msgid "Download folder is unavailable."
 msgstr "De downloadmap is niet beschikbaar."
+
+msgid "...and {count} more"
+msgstr "...en nog {count}"
+
+msgid "Added {added} of {total} torrents"
+msgstr "{added} van {total} torrents toegevoegd"
+
+msgid "Choose Watch Folder"
+msgstr "Gevolgde map kiezen"
+
+msgid "Failed to add {count} torrents:"
+msgstr "{count} torrents konden niet worden toegevoegd:"
+
+msgid "The active profile changed."
+msgstr "Het actieve profiel is gewijzigd."
+
+msgid "Watch folder (checked every minute; leave empty to turn off):"
+msgstr "Gevolgde map (elke minuut gecontroleerd; leeg laten om uit te schakelen):"
+
+msgid "Watch folder: added {added}, failed {failed} ({name}: {error})"
+msgstr "Gevolgde map: {added} toegevoegd, {failed} mislukt ({name}: {error})"
+
+msgid "Watch folder: added {count} torrent(s)"
+msgstr "Gevolgde map: {count} torrent(s) toegevoegd"

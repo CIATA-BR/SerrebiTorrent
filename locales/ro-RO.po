@@ -1872,3 +1872,27 @@ msgstr "Nu s-a putut deschide dosarul de descărcare."
 
 msgid "Download folder is unavailable."
 msgstr "Dosarul de descărcare nu este disponibil."
+
+msgid "...and {count} more"
+msgstr "...și încă {count}"
+
+msgid "Added {added} of {total} torrents"
+msgstr "Au fost adăugate {added} din {total} torente"
+
+msgid "Choose Watch Folder"
+msgstr "Alegeți dosarul urmărit"
+
+msgid "Failed to add {count} torrents:"
+msgstr "Nu s-au putut adăuga {count} torente:"
+
+msgid "The active profile changed."
+msgstr "Profilul activ s-a schimbat."
+
+msgid "Watch folder (checked every minute; leave empty to turn off):"
+msgstr "Dosar urmărit (verificat în fiecare minut; lăsați gol pentru a dezactiva):"
+
+msgid "Watch folder: added {added}, failed {failed} ({name}: {error})"
+msgstr "Dosar urmărit: {added} adăugate, {failed} eșuate ({name}: {error})"
+
+msgid "Watch folder: added {count} torrent(s)"
+msgstr "Dosar urmărit: {count} torent(e) adăugat(e)"

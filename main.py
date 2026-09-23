@@ -2802,6 +2802,8 @@ class MainFrame(wx.Frame):
         
         self.splitter.SplitVertically(self.sidebar, self.right_splitter, 220)
         self.splitter.SetMinimumPaneSize(150)
+        # right_splitter was created first; Tab must reach the categories before the list.
+        self.sidebar.MoveBeforeInTabOrder(self.right_splitter)
 
         self.statusbar = self.CreateStatusBar(2)
         self.statusbar.SetStatusText("Disconnected", 0)

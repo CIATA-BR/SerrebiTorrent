@@ -83,6 +83,23 @@ class PreferencesDialog(wx.Dialog):
         path_sizer.Add(browse_btn, 0)
         gen_sizer.Add(path_sizer, 0, wx.EXPAND | wx.ALL, 5)
 
+        gen_sizer.Add(
+            wx.StaticText(
+                general_panel,
+                label=self._("Watch folder (checked every minute; leave empty to turn off):"),
+            ),
+            0,
+            wx.ALL,
+            5,
+        )
+        watch_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        self.watch_input = wx.TextCtrl(general_panel, value=self.prefs.get("watch_folder", ""))
+        watch_sizer.Add(self.watch_input, 1, wx.EXPAND | wx.RIGHT, 5)
+        watch_btn = wx.Button(general_panel, label=self._("Browse..."))
+        watch_btn.Bind(wx.EVT_BUTTON, self.on_browse_watch)
+        watch_sizer.Add(watch_btn, 0)
+        gen_sizer.Add(watch_sizer, 0, wx.EXPAND | wx.ALL, 5)
+
         self.auto_start_chk = wx.CheckBox(
             general_panel, label=self._("Automatically start torrents"))
         self.auto_start_chk.SetValue(self.prefs.get("auto_start", True))
@@ -337,6 +354,13 @@ class PreferencesDialog(wx.Dialog):
             self.path_input.SetValue(dlg.GetPath())
         dlg.Destroy()
 
+    def on_browse_watch(self, event):
+        dlg = wx.DirDialog(
+            self, self._("Choose Watch Folder"), self.watch_input.GetValue())
+        if dlg.ShowModal() == wx.ID_OK:
+            self.watch_input.SetValue(dlg.GetPath())
+        dlg.Destroy()
+
     def on_reset_rss(self, event):
         if wx.MessageBox(
             self._("Are you sure you want to clear ALL RSS feeds and rules?"),
@@ -355,6 +379,7 @@ class PreferencesDialog(wx.Dialog):
             "language": _language_value(
                 self._language_options, self.language_choice.GetSelection()),
             "download_path": self.path_input.GetValue(),
+            "watch_folder": self.watch_input.GetValue().strip(),
             "auto_start": self.auto_start_chk.GetValue(),
             "min_to_tray": self.min_tray_chk.GetValue(),
             "close_to_tray": self.close_tray_chk.GetValue(),

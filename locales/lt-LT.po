@@ -1872,3 +1872,27 @@ msgstr "Nepavyko atidaryti atsisiuntimų aplanko."
 
 msgid "Download folder is unavailable."
 msgstr "Atsisiuntimų aplankas nepasiekiamas."
+
+msgid "...and {count} more"
+msgstr "...ir dar {count}"
+
+msgid "Added {added} of {total} torrents"
+msgstr "Pridėta {added} iš {total} torrentų"
+
+msgid "Choose Watch Folder"
+msgstr "Pasirinkite stebimą aplanką"
+
+msgid "Failed to add {count} torrents:"
+msgstr "Nepavyko pridėti {count} torrentų:"
+
+msgid "The active profile changed."
+msgstr "Aktyvus profilis pasikeitė."
+
+msgid "Watch folder (checked every minute; leave empty to turn off):"
+msgstr "Stebimas aplankas (tikrinamas kas minutę; palikite tuščią, kad išjungtumėte):"
+
+msgid "Watch folder: added {added}, failed {failed} ({name}: {error})"
+msgstr "Stebimas aplankas: pridėta {added}, nepavyko {failed} ({name}: {error})"
+
+msgid "Watch folder: added {count} torrent(s)"
+msgstr "Stebimas aplankas: pridėta torrentų: {count}"

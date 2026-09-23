@@ -5,6 +5,8 @@
 
 from __future__ import annotations
 
+import os
+
 import wx
 
 import main as legacy
@@ -15,6 +17,9 @@ _PT_BR = {
     "Open Torrent File": "Abrir arquivo torrent",
     "Torrent files (*.torrent)|*.torrent": "Arquivos torrent (*.torrent)|*.torrent",
     "Error adding file: {error}": "Erro ao adicionar arquivo: {error}",
+    "Added {added} of {total} torrents": "Adicionados {added} de {total} torrents",
+    "Failed to add {count} torrents:": "Falha ao adicionar {count} torrents:",
+    "...and {count} more": "...e mais {count}",
 }
 
 
@@ -45,11 +50,15 @@ def localized_on_add_file(self, event):
         self,
         tr_file_add("Open Torrent File", language),
         wildcard=tr_file_add("Torrent files (*.torrent)|*.torrent", language),
-        style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST,
+        style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST | wx.FD_MULTIPLE,
     ) as file_dialog:
         if file_dialog.ShowModal() == wx.ID_CANCEL:
             return
-        path = file_dialog.GetPath()
+        paths = file_dialog.GetPaths()
+        if len(paths) > 1:
+            _add_many_files(self, paths, language)
+            return
+        path = paths[0]
         try:
             with open(path, "rb") as torrent_file:
                 data = torrent_file.read()
@@ -102,6 +111,60 @@ def localized_on_add_file(self, event):
             wx.LogError(
                 tr_file_add("Error adding file: {error}", language).format(error=exc)
             )
+
+
+def _add_many_files(self, paths, language):
+    """Ask for the save folder once and add every file in one background task."""
+    if not self.client:
+        wx.LogError(tr_runtime_message("Connect to a client before adding torrents.", language))
+        return
+    name = tr_runtime_message("{count} torrents", language).format(count=len(paths))
+    dlg = legacy.AddTorrentDialog(self, name, None, self._get_default_save_path())
+    try:
+        if dlg.ShowModal() != wx.ID_OK:
+            return
+        save_path = dlg.get_selected_path() or None
+    finally:
+        dlg.Destroy()
+    self._prepare_auto_start()
+    self.statusbar.SetStatusText(
+        tr_runtime_message("Adding {count} torrents...", language).format(count=len(paths)), 0
+    )
+    self.thread_pool.submit(
+        _add_many_files_background, self, self.client, self.client_generation,
+        paths, save_path, language,
+    )
+
+
+def _add_many_files_background(self, client, generation, paths, save_path, language):
+    failed = []
+    for path in paths:
+        if generation != self.client_generation:
+            return
+        try:
+            with open(path, "rb") as torrent_file:
+                data = torrent_file.read()
+            hash_hint = self._maybe_hash_from_torrent_bytes(data)
+            if hash_hint:
+                self.pending_hash_starts.add(hash_hint)
+            client.add_torrent_file(data, save_path, None)
+        except Exception as exc:  # noqa: BLE001 - file/client boundary
+            failed.append(f"{os.path.basename(path)}: {exc}")
+    wx.CallAfter(
+        self._on_action_complete,
+        tr_file_add("Added {added} of {total} torrents", language).format(
+            added=len(paths) - len(failed), total=len(paths)),
+    )
+    if failed:
+        # One summary, not a dialog per file: a batch can be a thousand files.
+        lines = failed[:10]
+        if len(failed) > 10:
+            lines.append(tr_file_add("...and {count} more", language).format(count=len(failed) - 10))
+        wx.CallAfter(
+            self._on_action_error,
+            tr_file_add("Failed to add {count} torrents:", language).format(count=len(failed))
+            + "\n" + "\n".join(lines),
+        )
 
 
 def install_file_add_localization():

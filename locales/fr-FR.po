@@ -1872,3 +1872,27 @@ msgstr "Impossible d’ouvrir le dossier de téléchargement."
 
 msgid "Download folder is unavailable."
 msgstr "Le dossier de téléchargement n’est pas disponible."
+
+msgid "...and {count} more"
+msgstr "...et {count} de plus"
+
+msgid "Added {added} of {total} torrents"
+msgstr "{added} torrents ajoutés sur {total}"
+
+msgid "Choose Watch Folder"
+msgstr "Choisir le dossier surveillé"
+
+msgid "Failed to add {count} torrents:"
+msgstr "Impossible d’ajouter {count} torrents :"
+
+msgid "The active profile changed."
+msgstr "Le profil actif a changé."
+
+msgid "Watch folder (checked every minute; leave empty to turn off):"
+msgstr "Dossier surveillé (vérifié chaque minute ; laisser vide pour désactiver) :"
+
+msgid "Watch folder: added {added}, failed {failed} ({name}: {error})"
+msgstr "Dossier surveillé : {added} ajoutés, {failed} en échec ({name} : {error})"
+
+msgid "Watch folder: added {count} torrent(s)"
+msgstr "Dossier surveillé : {count} torrent(s) ajouté(s)"

@@ -1872,3 +1872,27 @@ msgstr "Falha ao abrir a pasta de download."
 
 msgid "Download folder is unavailable."
 msgstr "A pasta de download não está disponível."
+
+msgid "...and {count} more"
+msgstr "...e mais {count}"
+
+msgid "Added {added} of {total} torrents"
+msgstr "Adicionados {added} de {total} torrents"
+
+msgid "Choose Watch Folder"
+msgstr "Escolher pasta monitorada"
+
+msgid "Failed to add {count} torrents:"
+msgstr "Falha ao adicionar {count} torrents:"
+
+msgid "The active profile changed."
+msgstr "O perfil ativo foi alterado."
+
+msgid "Watch folder (checked every minute; leave empty to turn off):"
+msgstr "Pasta monitorada (verificada a cada minuto; deixe vazio para desativar):"
+
+msgid "Watch folder: added {added}, failed {failed} ({name}: {error})"
+msgstr "Pasta monitorada: {added} adicionados, {failed} com falha ({name}: {error})"
+
+msgid "Watch folder: added {count} torrent(s)"
+msgstr "Pasta monitorada: {count} torrent(s) adicionado(s)"

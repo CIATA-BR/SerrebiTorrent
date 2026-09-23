@@ -1872,3 +1872,27 @@ msgstr "无法打开下载文件夹。"
 
 msgid "Download folder is unavailable."
 msgstr "下载文件夹不可用。"
+
+msgid "...and {count} more"
+msgstr "...以及另外 {count} 个"
+
+msgid "Added {added} of {total} torrents"
+msgstr "已添加 {added} 个种子，共 {total} 个"
+
+msgid "Choose Watch Folder"
+msgstr "选择监视文件夹"
+
+msgid "Failed to add {count} torrents:"
+msgstr "无法添加 {count} 个种子："
+
+msgid "The active profile changed."
+msgstr "当前配置文件已更改。"
+
+msgid "Watch folder (checked every minute; leave empty to turn off):"
+msgstr "监视文件夹（每分钟检查一次；留空则关闭）："
+
+msgid "Watch folder: added {added}, failed {failed} ({name}: {error})"
+msgstr "监视文件夹：已添加 {added} 个，失败 {failed} 个（{name}：{error}）"
+
+msgid "Watch folder: added {count} torrent(s)"
+msgstr "监视文件夹：已添加 {count} 个种子"

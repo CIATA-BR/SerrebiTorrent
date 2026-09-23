@@ -19,6 +19,9 @@ def get_bundle_dir():
 static_dir = os.path.join(get_bundle_dir(), 'web_static')
 app = Flask(__name__, static_folder=static_dir)
 
+# v1.16.8 accidentally published this shared session key.
+_COMPROMISED_SECRET_KEY_SHA256 = "235913427a91431f02c54460026b545ee2e1ad7e1fac34591031eb38a4a45687"
+
 
 def _load_or_create_secret_key():
     """Persist the Flask secret key so sessions survive restarts.
@@ -31,7 +34,7 @@ def _load_or_create_secret_key():
         if os.path.exists(key_path):
             with open(key_path, 'rb') as f:
                 data = f.read()
-            if len(data) >= 16:
+            if len(data) >= 16 and hashlib.sha256(data).hexdigest() != _COMPROMISED_SECRET_KEY_SHA256:
                 return data
         key = os.urandom(32)
         try:

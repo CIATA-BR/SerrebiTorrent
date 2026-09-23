@@ -1872,3 +1872,27 @@ msgstr "No se pudo abrir la carpeta de descargas."
 
 msgid "Download folder is unavailable."
 msgstr "La carpeta de descargas no está disponible."
+
+msgid "...and {count} more"
+msgstr "...y {count} más"
+
+msgid "Added {added} of {total} torrents"
+msgstr "Se añadieron {added} de {total} torrents"
+
+msgid "Choose Watch Folder"
+msgstr "Elegir carpeta vigilada"
+
+msgid "Failed to add {count} torrents:"
+msgstr "No se pudieron añadir {count} torrents:"
+
+msgid "The active profile changed."
+msgstr "El perfil activo cambió."
+
+msgid "Watch folder (checked every minute; leave empty to turn off):"
+msgstr "Carpeta vigilada (se revisa cada minuto; déjela vacía para desactivarla):"
+
+msgid "Watch folder: added {added}, failed {failed} ({name}: {error})"
+msgstr "Carpeta vigilada: {added} añadidos, {failed} con error ({name}: {error})"
+
+msgid "Watch folder: added {count} torrent(s)"
+msgstr "Carpeta vigilada: se añadieron {count} torrent(s)"

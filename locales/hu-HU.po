@@ -1872,3 +1872,27 @@ msgstr "Nem sikerült megnyitni a letöltési mappát."
 
 msgid "Download folder is unavailable."
 msgstr "A letöltési mappa nem érhető el."
+
+msgid "...and {count} more"
+msgstr "...és még {count}"
+
+msgid "Added {added} of {total} torrents"
+msgstr "{total} torrentből {added} hozzáadva"
+
+msgid "Choose Watch Folder"
+msgstr "Figyelt mappa kiválasztása"
+
+msgid "Failed to add {count} torrents:"
+msgstr "{count} torrent hozzáadása nem sikerült:"
+
+msgid "The active profile changed."
+msgstr "Az aktív profil megváltozott."
+
+msgid "Watch folder (checked every minute; leave empty to turn off):"
+msgstr "Figyelt mappa (percenként ellenőrizve; hagyja üresen a kikapcsoláshoz):"
+
+msgid "Watch folder: added {added}, failed {failed} ({name}: {error})"
+msgstr "Figyelt mappa: {added} hozzáadva, {failed} sikertelen ({name}: {error})"
+
+msgid "Watch folder: added {count} torrent(s)"
+msgstr "Figyelt mappa: {count} torrent hozzáadva"

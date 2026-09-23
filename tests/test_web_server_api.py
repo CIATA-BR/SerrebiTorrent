@@ -4,6 +4,7 @@ import sys
 import os
 import json
 import time
+import hashlib
 from unittest.mock import MagicMock, patch
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -38,6 +39,26 @@ def auth_client(client):
 def csrf_headers(client):
     with client.session_transaction() as session:
         return {'X-CSRF-Token': session['csrf_token']}
+
+
+def test_compromised_web_secret_is_rotated(tmp_path, monkeypatch):
+    import app_paths
+
+    key_path = tmp_path / 'web_secret.key'
+    compromised = b'published session key'
+    key_path.write_bytes(compromised)
+    monkeypatch.setattr(app_paths, 'get_data_dir', lambda: str(tmp_path))
+    monkeypatch.setattr(
+        web_server,
+        '_COMPROMISED_SECRET_KEY_SHA256',
+        hashlib.sha256(compromised).hexdigest(),
+    )
+
+    key = web_server._load_or_create_secret_key()
+
+    assert len(key) == 32
+    assert key != compromised
+    assert key_path.read_bytes() == key
 
 def test_login(client):
     rv = client.post('/api/v2/auth/login', data={'username': 'admin', 'password': 'password'})

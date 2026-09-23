@@ -1872,3 +1872,27 @@ msgstr "Не вдалося відкрити теку завантаження."
 
 msgid "Download folder is unavailable."
 msgstr "Тека завантаження недоступна."
+
+msgid "...and {count} more"
+msgstr "...і ще {count}"
+
+msgid "Added {added} of {total} torrents"
+msgstr "Додано торентів: {added} з {total}"
+
+msgid "Choose Watch Folder"
+msgstr "Виберіть теку для стеження"
+
+msgid "Failed to add {count} torrents:"
+msgstr "Не вдалося додати торенти ({count}):"
+
+msgid "The active profile changed."
+msgstr "Активний профіль змінився."
+
+msgid "Watch folder (checked every minute; leave empty to turn off):"
+msgstr "Тека для стеження (перевіряється щохвилини; залиште порожнім, щоб вимкнути):"
+
+msgid "Watch folder: added {added}, failed {failed} ({name}: {error})"
+msgstr "Тека для стеження: додано {added}, помилок {failed} ({name}: {error})"
+
+msgid "Watch folder: added {count} torrent(s)"
+msgstr "Тека для стеження: додано торентів: {count}"

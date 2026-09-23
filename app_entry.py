@@ -21,6 +21,7 @@ from external_catalog_runtime import install_external_catalogs
 install_external_catalogs()
 
 import main as legacy
+import watch_folder
 from add_torrent_dialog import AddTorrentDialog as LocalizedAddTorrentDialog
 from connection_dialog import ConnectDialog
 from main_ui_i18n import sidebar_label, tr_main
@@ -47,6 +48,51 @@ class LocalizedMainFrame(legacy.MainFrame):
         super().__init__()
         self._install_localized_torrent_list()
         self._apply_localized_static_labels()
+        self._watch_scan_busy = False
+        self.watch_timer = wx.Timer(self)
+        self.Bind(wx.EVT_TIMER, self.on_watch_timer, self.watch_timer)
+        self.watch_timer.Start(watch_folder.SCAN_INTERVAL_SECONDS * 1000)
+
+    def on_watch_timer(self, event):
+        folder = str(self.config_manager.get_preferences().get("watch_folder") or "").strip()
+        if not folder or not self.client or self._watch_scan_busy or self._closing:
+            return
+        self._watch_scan_busy = True
+        self.thread_pool.submit(
+            self._watch_scan_background, self.client, self.client_generation, folder)
+
+    def _watch_scan_background(self, client, generation, folder):
+        hashes = []
+
+        def add(data):
+            if generation != self.client_generation:
+                raise RuntimeError(self._("The active profile changed."))
+            client.add_torrent_file(data, None, None)
+            hash_hint = self._maybe_hash_from_torrent_bytes(data)
+            if hash_hint:
+                hashes.append(hash_hint)
+
+        added, failed = [], []
+        try:
+            added, failed = watch_folder.import_folder(folder, add)
+            if hashes and self.config_manager.get_preferences().get("auto_start", True):
+                self._auto_start_hashes(generation, hashes)
+        finally:
+            wx.CallAfter(self._on_watch_scan_done, added, failed)
+
+    def _on_watch_scan_done(self, added, failed):
+        self._watch_scan_busy = False
+        if self._closing or not (added or failed):
+            return
+        # Errors go to the status bar, not a dialog: this runs every minute
+        # unattended, and a broken file is renamed to .failed so it stops.
+        if failed:
+            message = self._("Watch folder: added {added}, failed {failed} ({name}: {error})").format(
+                added=len(added), failed=len(failed), name=failed[0][0], error=failed[0][1])
+        else:
+            message = self._("Watch folder: added {count} torrent(s)").format(count=len(added))
+        self.statusbar.SetStatusText(message, 0)
+        self.refresh_data()
 
     def _install_localized_torrent_list(self):
         """Replace the empty legacy list before deferred auto-connect can populate it."""
@@ -62,6 +108,8 @@ class LocalizedMainFrame(legacy.MainFrame):
         new_list.Bind(wx.EVT_LIST_ITEM_DESELECTED, self.on_torrent_selected)
         new_list.Bind(wx.EVT_LIST_ITEM_FOCUSED, self.on_torrent_selected)
 
+        # A new child goes last in Tab order; keep the list before the details panel.
+        new_list.MoveBeforeInTabOrder(old_list)
         self.right_splitter.ReplaceWindow(old_list, new_list)
         old_list.Hide()
         self.torrent_list = new_list

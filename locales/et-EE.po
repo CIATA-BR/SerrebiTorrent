@@ -1872,3 +1872,27 @@ msgstr "Allalaadimiskausta avamine ebaõnnestus."
 
 msgid "Download folder is unavailable."
 msgstr "Allalaadimiskaust pole saadaval."
+
+msgid "...and {count} more"
+msgstr "...ja veel {count}"
+
+msgid "Added {added} of {total} torrents"
+msgstr "Lisatud {added} torrentit {total}-st"
+
+msgid "Choose Watch Folder"
+msgstr "Vali jälgitav kaust"
+
+msgid "Failed to add {count} torrents:"
+msgstr "{count} torrenti lisamine ebaõnnestus:"
+
+msgid "The active profile changed."
+msgstr "Aktiivne profiil muutus."
+
+msgid "Watch folder (checked every minute; leave empty to turn off):"
+msgstr "Jälgitav kaust (kontrollitakse iga minut; väljalülitamiseks jäta tühjaks):"
+
+msgid "Watch folder: added {added}, failed {failed} ({name}: {error})"
+msgstr "Jälgitav kaust: lisatud {added}, ebaõnnestus {failed} ({name}: {error})"
+
+msgid "Watch folder: added {count} torrent(s)"
+msgstr "Jälgitav kaust: lisatud {count} torrentit"

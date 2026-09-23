@@ -64,6 +64,7 @@ DEFAULT_PREFERENCES: Dict[str, Any] = {
     "enable_dht": True,
     "enable_lsd": True,
     "auto_start": True,
+    "watch_folder": "",
     "min_to_tray": True,
     "close_to_tray": True,
     "auto_check_updates": True,

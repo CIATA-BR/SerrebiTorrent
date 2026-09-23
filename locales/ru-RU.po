@@ -1872,3 +1872,27 @@ msgstr "Не удалось открыть папку загрузки."
 
 msgid "Download folder is unavailable."
 msgstr "Папка загрузки недоступна."
+
+msgid "...and {count} more"
+msgstr "...и ещё {count}"
+
+msgid "Added {added} of {total} torrents"
+msgstr "Добавлено торрентов: {added} из {total}"
+
+msgid "Choose Watch Folder"
+msgstr "Выберите отслеживаемую папку"
+
+msgid "Failed to add {count} torrents:"
+msgstr "Не удалось добавить торренты ({count}):"
+
+msgid "The active profile changed."
+msgstr "Активный профиль изменился."
+
+msgid "Watch folder (checked every minute; leave empty to turn off):"
+msgstr "Отслеживаемая папка (проверяется каждую минуту; оставьте пустым, чтобы отключить):"
+
+msgid "Watch folder: added {added}, failed {failed} ({name}: {error})"
+msgstr "Отслеживаемая папка: добавлено {added}, ошибок {failed} ({name}: {error})"
+
+msgid "Watch folder: added {count} torrent(s)"
+msgstr "Отслеживаемая папка: добавлено торрентов: {count}"
