@@ -465,11 +465,16 @@ def torrents_all():
 @app.route('/api/v2/torrents/files')
 @login_required
 def torrents_files():
-    hash = request.args.get('hash')
+    torrent_hash = (request.args.get('hash') or '').strip()
     client = WEB_CONFIG['client']
-    if client and hash:
-        return jsonify(client.get_files(hash))
-    return jsonify([])
+    if not client:
+        return "No torrent client is connected.", 503
+    if not torrent_hash:
+        return "Torrent hash is required.", 400
+    try:
+        return jsonify(client.get_files(torrent_hash))
+    except Exception:
+        return "Failed to load torrent files.", 500
 
 
 @app.route('/api/v2/torrents/peers')
