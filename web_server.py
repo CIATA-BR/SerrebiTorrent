@@ -729,33 +729,50 @@ def rss_rules():
 @login_required
 def rss_set_rule():
     app_ref = WEB_CONFIG['app']
+    if not app_ref or not hasattr(app_ref, 'rss_panel'):
+        return "Application context is unavailable.", 503
+
     index = request.form.get('index', type=int)
-    pattern = request.form.get('pattern')
-    rule_type = request.form.get('type', 'accept')
+    pattern = (request.form.get('pattern') or '').strip()
+    rule_type = (request.form.get('type') or 'accept').strip().lower()
     enabled = request.form.get('enabled') == 'true'
-    
-    if app_ref and pattern:
-        data = {'pattern': pattern, 'type': rule_type, 'enabled': enabled}
-        import wx
-        def do_update():
-            if index is not None and index >= 0:
-                app_ref.rss_panel.manager.update_rule(index, data)
-            else:
-                app_ref.rss_panel.manager.add_rule(pattern, rule_type)
-        wx.CallAfter(do_update)
-        return "Ok."
-    return "Failed", 400
+
+    if not pattern:
+        return "Rule pattern is required.", 400
+    if rule_type not in {'accept', 'reject'}:
+        return "Unsupported rule type.", 400
+
+    manager = app_ref.rss_panel.manager
+    if index is not None and index >= 0:
+        if index >= len(manager.rules):
+            return "RSS rule not found.", 404
+        if not manager.update_rule(
+            index,
+            {'pattern': pattern, 'type': rule_type, 'enabled': enabled},
+        ):
+            return "Failed to save RSS rule.", 500
+    else:
+        if not manager.add_rule(pattern, rule_type, enabled=enabled):
+            return "Failed to save RSS rule.", 500
+    return "Ok."
 
 @app.route('/api/v2/rss/remove_rule', methods=['POST'])
 @login_required
 def rss_remove_rule():
     app_ref = WEB_CONFIG['app']
+    if not app_ref or not hasattr(app_ref, 'rss_panel'):
+        return "Application context is unavailable.", 503
+
     index = request.form.get('index', type=int)
-    if app_ref and index is not None:
-        import wx
-        wx.CallAfter(app_ref.rss_panel.manager.remove_rule, index)
-        return "Ok."
-    return "Failed", 400
+    if index is None or index < 0:
+        return "RSS rule index is required.", 400
+
+    manager = app_ref.rss_panel.manager
+    if index >= len(manager.rules):
+        return "RSS rule not found.", 404
+    if not manager.remove_rule(index):
+        return "Failed to remove RSS rule.", 500
+    return "Ok."
 
 @app.route('/api/v2/rss/import_flexget', methods=['POST'])
 @login_required

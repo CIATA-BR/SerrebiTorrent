@@ -162,3 +162,10 @@ def test_remove_rule_rolls_back_when_save_fails(rss_manager):
 
     assert rss_manager.remove_rule(0) is False
     assert rss_manager.rules == [rule]
+
+
+def test_add_rule_preserves_disabled_state(rss_manager):
+    rss_manager.save.return_value = True
+
+    assert rss_manager.add_rule("ubuntu", "accept", enabled=False) is True
+    assert rss_manager.rules[-1]["enabled"] is False
