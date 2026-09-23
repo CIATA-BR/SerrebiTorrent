@@ -410,7 +410,10 @@ function startRefreshLoop() {
 }
 
 function handleSidebarNavigation(e) {
-    const links = Array.from(document.querySelectorAll('.sidebar-link'));
+    const listbox = document.activeElement.closest('[role="listbox"]');
+    if (!listbox) return;
+
+    const links = Array.from(listbox.querySelectorAll('.sidebar-link'));
     if (links.length === 0) return;
 
     let currentIndex = links.indexOf(document.activeElement);
@@ -424,16 +427,16 @@ function handleSidebarNavigation(e) {
     else if (e.key === 'ArrowUp') nextIndex = (currentIndex - 1 + links.length) % links.length;
     else if (e.key === 'Home') nextIndex = 0;
     else if (e.key === 'End') nextIndex = links.length - 1;
-    else if (e.key === 'Enter' || e.key === ' ') { 
-        e.preventDefault(); 
-        activateSidebarLink(links[currentIndex], e); 
-        return; 
+    else if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        activateSidebarLink(links[currentIndex], e);
+        return;
     }
 
     if (nextIndex !== -1) {
         e.preventDefault();
         const target = links[nextIndex];
-        // Roving tabindex moves focus without changing the active filter/profile.
+        // Roving tabindex is scoped to the current listbox.
         links.forEach(l => l.setAttribute('tabindex', '-1'));
         target.setAttribute('tabindex', '0');
         target.focus();
