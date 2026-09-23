@@ -934,10 +934,11 @@ msgstr ""
 msgid "Loading peers..."
 msgstr ""
 
-msgid "Loading trackers..."
-msgstr ""
 
 msgid "Loading remote settings..."
+msgstr ""
+
+msgid "Loading trackers..."
 msgstr ""
 
 msgid "Loading..."
@@ -1066,8 +1067,6 @@ msgstr ""
 msgid "No peers available."
 msgstr ""
 
-msgid "No trackers available."
-msgstr ""
 
 msgid "No regular files found to include in torrent."
 msgstr ""
@@ -1091,6 +1090,9 @@ msgid "No torrents to start."
 msgstr ""
 
 msgid "No torrents to stop."
+msgstr ""
+
+msgid "No trackers available."
 msgstr ""
 
 msgid "No updates available."
@@ -1726,11 +1728,12 @@ msgstr ""
 msgid "Tracker List URL:"
 msgstr ""
 
+msgid "Tracker URL"
+msgstr ""
+
 msgid "Trackers"
 msgstr ""
 
-msgid "Tracker URL"
-msgstr ""
 
 msgid "Translated"
 msgstr ""
