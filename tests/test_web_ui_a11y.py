@@ -562,3 +562,15 @@ def test_web_ui_grid_shortcuts_do_not_capture_actions_button_keys(page, web_ui_s
 
     page.keyboard.press("Control+A")
     assert page.locator('tr[data-hash][aria-selected="true"]').count() == 0
+
+def test_web_ui_arrow_from_focused_grid_enters_first_row(page, web_ui_server):
+    # The grid itself takes focus when the list empties; arrows must still reach the rows.
+    _login(page, web_ui_server)
+    page.wait_for_function("document.querySelectorAll('tr[data-hash]').length >= 2")
+    page.evaluate("() => { const t = document.getElementById('torrentTable'); t.tabIndex = 0; t.focus(); }")
+
+    page.keyboard.press("ArrowDown")
+
+    page.wait_for_function(
+        "() => document.activeElement && document.activeElement.matches('tr[data-hash]') && document.activeElement === document.querySelector('tr[data-hash]')"
+    )

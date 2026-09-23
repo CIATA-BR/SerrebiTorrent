@@ -255,7 +255,8 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
         const focusedRow = document.activeElement.closest('tr[data-hash]');
-        if (!focusedRow) return;
+        // The grid itself holds focus when the list emptied; arrows must still enter the rows.
+        if (!focusedRow && document.activeElement !== els.table()) return;
 
         lastUserActivity = Date.now();
         if (visibleTorrents.length === 0) return;
@@ -265,7 +266,9 @@ window.addEventListener('DOMContentLoaded', () => {
         if (navKeys.includes(e.key)) {
             e.preventDefault();
             
-            let currentIndex = visibleTorrents.findIndex(t => t.hash === focusedRow.dataset.hash);
+            const currentIndex = focusedRow
+                ? visibleTorrents.findIndex(t => t.hash === focusedRow.dataset.hash)
+                : -1;
 
             let nextIndex = currentIndex;
             if (e.key === 'ArrowDown') nextIndex++;
@@ -302,7 +305,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
         // Space toggles selection for the focused torrent row without moving focus.
-        if (e.key === ' ') {
+        if (e.key === ' ' && focusedRow) {
             e.preventDefault();
             const hash = focusedRow.dataset.hash;
             const torrent = torrentsMap.get(hash);
