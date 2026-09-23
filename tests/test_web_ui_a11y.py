@@ -601,3 +601,57 @@ def test_web_ui_sidebar_arrows_move_focus_without_activating_filter(page, web_ui
     page.wait_for_function(
         "() => document.activeElement && document.activeElement.matches('tr[data-hash]')"
     )
+
+
+def test_web_ui_tracker_refresh_preserves_roving_focus(page, web_ui_server):
+    _login(page, web_ui_server)
+
+    page.wait_for_selector('#trackerList .sidebar-link[data-filter="tracker.two"]')
+    tracker = page.locator('#trackerList .sidebar-link[data-filter="tracker.two"]')
+    tracker.focus()
+    assert tracker.get_attribute("aria-selected") == "false"
+
+    page.evaluate(
+        """() => updateSidebarStats(
+            {all: 2},
+            {'tracker.one': 1, 'tracker.two': 1}
+        )"""
+    )
+
+    page.wait_for_function(
+        "() => document.activeElement && document.activeElement.dataset.filter === 'tracker.two'"
+    )
+    refreshed = page.locator('#trackerList .sidebar-link[data-filter="tracker.two"]')
+    assert refreshed.get_attribute("tabindex") == "0"
+    assert refreshed.get_attribute("aria-selected") == "false"
+
+
+def test_web_ui_profile_refresh_preserves_roving_focus(page, web_ui_server):
+    _login(page, web_ui_server)
+
+    page.route(
+        "**/api/v2/profiles",
+        lambda route: route.fulfill(
+            status=200,
+            content_type="application/json",
+            body='{"profiles":{'
+                 '"local":{"name":"Local","type":"local","url":"C:\\Downloads","user":"","password":""},'
+                 '"remote":{"name":"Remote","type":"qbittorrent","url":"https://example.invalid","user":"","password":""}'
+                 '},"current_id":"local"}',
+        ),
+    )
+
+    page.evaluate("fetchProfiles()")
+    page.wait_for_selector('#profileList .sidebar-link[data-profile-id="remote"]')
+    remote = page.locator('#profileList .sidebar-link[data-profile-id="remote"]')
+    remote.focus()
+    assert remote.get_attribute("aria-selected") == "false"
+
+    page.evaluate("fetchProfiles()")
+
+    page.wait_for_function(
+        "() => document.activeElement && document.activeElement.dataset.profileId === 'remote'"
+    )
+    refreshed = page.locator('#profileList .sidebar-link[data-profile-id="remote"]')
+    assert refreshed.get_attribute("tabindex") == "0"
+    assert refreshed.get_attribute("aria-selected") == "false"
