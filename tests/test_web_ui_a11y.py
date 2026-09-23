@@ -680,6 +680,35 @@ def test_web_ui_unchanged_refresh_keeps_the_same_focused_tracker_node(page, web_
     assert page.evaluate("window.__focusedTrackerNode.isConnected")
 
 
+def test_web_ui_successful_torrent_action_announces_completion(page, web_ui_server):
+    _login(page, web_ui_server)
+
+    page.wait_for_function(
+        "() => document.activeElement && document.activeElement.matches('tr[data-hash]')"
+    )
+    page.keyboard.press("Space")
+    # Let the selection announcement finish so it is not queued with the next one.
+    page.wait_for_function(
+        "() => document.getElementById('aria-announcer').textContent.startsWith('Selecionado')"
+    )
+
+    page.route(
+        "**/api/v2/torrents/pause",
+        lambda route: route.fulfill(
+            status=200,
+            content_type="text/plain",
+            body="Ok.",
+        ),
+    )
+
+    # The title is translated on the pt-BR test page, so select by action.
+    page.locator(".btn-group button[onclick*='pause']").click()
+
+    page.wait_for_function(
+        "() => document.getElementById('aria-announcer').textContent === 'Pausar concluído'"
+    )
+
+
 def test_web_ui_sidebar_roving_focus_stays_within_current_listbox(page, web_ui_server):
     _login(page, web_ui_server)
 
