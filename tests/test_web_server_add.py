@@ -100,27 +100,20 @@ def test_torrents_add_rejects_dns_private_host_before_client(app_client, fake_cl
     assert fake_client.urls == []
 
 
-def test_torrents_add_rejects_redirect_to_private_host_before_client(app_client, fake_client, monkeypatch):
-    calls = []
-
-    class RedirectResponse:
-        status_code = 302
-        headers = {"Location": "http://127.0.0.1/test.torrent"}
-
-        def close(self):
-            pass
-
+def test_torrents_add_delegates_redirect_safety_to_single_downloader(app_client, fake_client, monkeypatch):
     monkeypatch.setattr(
         web_server,
         "_resolve_add_host",
         lambda host, port: (ipaddress.ip_address("93.184.216.34"),),
     )
 
-    def fake_get(url, **kwargs):
-        calls.append(url)
-        return RedirectResponse()
+    calls = []
 
-    monkeypatch.setattr(web_server.requests, "get", fake_get)
+    def reject_rebound_download(url):
+        calls.append(url)
+        raise ValueError("Torrent connection reached a private or local network address.")
+
+    monkeypatch.setattr(web_server, "download_torrent_url", reject_rebound_download)
 
     res = app_client.post(
         "/api/v2/torrents/add",
@@ -128,10 +121,9 @@ def test_torrents_add_rejects_redirect_to_private_host_before_client(app_client,
         headers=csrf_headers(),
     )
 
-    assert res.status_code == 400
+    assert res.status_code == 500
     assert calls == ["http://example.com/test.torrent"]
     assert fake_client.urls == []
-
 
 def test_torrents_add_calls_client_for_files(app_client, fake_client):
     data = {
