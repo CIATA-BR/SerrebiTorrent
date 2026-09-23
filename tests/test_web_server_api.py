@@ -371,3 +371,67 @@ def test_profile_switch_requires_profile_id(auth_client):
     assert rv.status_code == 400
     assert b"Profile id is required." in rv.data
     mock_app.connect_profile.assert_not_called()
+
+
+def test_profile_add_rejects_unknown_type(auth_client):
+    mock_app = MagicMock()
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/profiles/add',
+        data={
+            'name': 'Broken',
+            'type': 'not-a-client',
+            'url': 'http://example.invalid',
+        },
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 400
+    assert b"Unsupported profile type." in rv.data
+    mock_app.config_manager.add_profile.assert_not_called()
+
+
+def test_profile_add_rejects_whitespace_only_required_fields(auth_client):
+    mock_app = MagicMock()
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/profiles/add',
+        data={
+            'name': '   ',
+            'type': 'rtorrent',
+            'url': '   ',
+        },
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 400
+    assert b"Missing data" in rv.data
+    mock_app.config_manager.add_profile.assert_not_called()
+
+
+def test_profile_add_normalizes_supported_type(auth_client):
+    mock_app = MagicMock()
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/profiles/add',
+        data={
+            'name': ' Remote ',
+            'type': ' QBITTORRENT ',
+            'url': ' http://127.0.0.1:8080 ',
+            'user': 'user',
+            'password': 'secret',
+        },
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 200
+    mock_app.config_manager.add_profile.assert_called_once_with(
+        'Remote',
+        'qbittorrent',
+        'http://127.0.0.1:8080',
+        'user',
+        'secret',
+    )
