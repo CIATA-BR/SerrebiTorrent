@@ -19,3 +19,30 @@ def test_web_delete_actions_confirm_and_report_failures():
     assert "window.confirm(`Remove ${count} ${label}${dataText}?`)" in script
     assert "announceToSR(message, true)" in script
     assert "alert(message)" in script
+
+
+def test_web_modal_controls_have_explicit_accessible_labels():
+    markup = (ROOT / "web_static" / "index.html").read_text(encoding="utf-8")
+
+    expected = [
+        'aria-labelledby="addProfileModalLabel"',
+        'for="profName"',
+        'for="profType"',
+        'for="profUrl"',
+        'for="profUser"',
+        'for="profPass"',
+        'aria-labelledby="addTorrentModalLabel"',
+        'for="torrentUrls"',
+        'for="torrentFiles"',
+        'for="torrentSavePath"',
+        'aria-labelledby="settingsModalLabel"',
+        'for="settingsDownloadPath"',
+        'for="settingsRssInterval"',
+        'for="settingsDlLimit"',
+        'for="settingsUlLimit"',
+        'for="webTheme"',
+        'for="webRefreshRate"',
+    ]
+
+    for token in expected:
+        assert token in markup
