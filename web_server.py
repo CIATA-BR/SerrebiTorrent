@@ -454,13 +454,13 @@ def torrents_info():
 @login_required
 def torrents_all():
     client = WEB_CONFIG['client']
-    if client:
-        try:
-            return jsonify(client.get_torrents_full())
-        except Exception as e:
-            print(f"torrents/all error: {e}")
-            return "Failed to fetch torrents.", 500
-    return jsonify([])
+    if not client:
+        return "No torrent client is connected.", 503
+    try:
+        return jsonify(client.get_torrents_full())
+    except Exception as e:
+        print(f"torrents/all error: {e}")
+        return "Failed to fetch torrents.", 500
 
 @app.route('/api/v2/torrents/files')
 @login_required
