@@ -1365,6 +1365,9 @@ async function loadAppSettings() {
     try {
         const res = await fetch('/api/v2/app/prefs');
         if (await redirectIfSessionExpired(res)) return;
+        if (!res.ok) {
+            throw new Error(await res.text() || 'Failed to load settings.');
+        }
         const prefs = await res.json();
         const form = document.getElementById('settingsForm');
         if (!form) return;
