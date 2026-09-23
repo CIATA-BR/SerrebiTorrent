@@ -48,20 +48,28 @@ class RSSManager:
                             pass
             except Exception as e:
                 print(f"Failed to save RSS: {e}")
+                return False
+            return True
 
     def add_feed(self, url, alias=""):
         with self.lock:
-            if url not in self.feeds:
-                self.feeds[url] = {'alias': alias, 'last_update': 0, 'articles': []}
-                self.save()
+            if url in self.feeds:
+                return False
+            self.feeds[url] = {'alias': alias, 'last_update': 0, 'articles': []}
+            if self.save():
                 return True
+            del self.feeds[url]
             return False
 
     def remove_feed(self, url):
         with self.lock:
-            if url in self.feeds:
-                del self.feeds[url]
-                self.save()
+            if url not in self.feeds:
+                return False
+            previous = self.feeds.pop(url)
+            if self.save():
+                return True
+            self.feeds[url] = previous
+            return False
 
     def add_rule(self, pattern, rule_type="accept", scope=None):
         """
@@ -70,19 +78,31 @@ class RSSManager:
         """
         with self.lock:
             self.rules.append({'pattern': pattern, 'enabled': True, 'type': rule_type, 'scope': scope})
-            self.save()
+            if self.save():
+                return True
+            self.rules.pop()
+            return False
 
     def remove_rule(self, index):
         with self.lock:
-            if 0 <= index < len(self.rules):
-                del self.rules[index]
-                self.save()
+            if not 0 <= index < len(self.rules):
+                return False
+            previous = self.rules.pop(index)
+            if self.save():
+                return True
+            self.rules.insert(index, previous)
+            return False
 
     def update_rule(self, index, data):
         with self.lock:
-            if 0 <= index < len(self.rules):
-                self.rules[index].update(data)
-                self.save()
+            if not 0 <= index < len(self.rules):
+                return False
+            previous = dict(self.rules[index])
+            self.rules[index].update(data)
+            if self.save():
+                return True
+            self.rules[index] = previous
+            return False
 
     def reset_all(self):
         with self.lock:
