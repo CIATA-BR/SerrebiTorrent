@@ -1132,6 +1132,24 @@ msgstr "Proporcional aos peers"
 msgid "Peers"
 msgstr "Peers"
 
+msgid "Address"
+msgstr "Endereço"
+
+msgid "Torrent Peers"
+msgstr "Peers do torrent"
+
+msgid "Select one torrent to view peers."
+msgstr "Selecione um torrent para ver os peers."
+
+msgid "Loading peers..."
+msgstr "Carregando peers..."
+
+msgid "No peers available."
+msgstr "Nenhum peer disponível."
+
+msgid "Failed to load torrent peers."
+msgstr "Falha ao carregar os peers do torrent."
+
 msgid "Piece size:"
 msgstr "Tamanho da peça:"
 
