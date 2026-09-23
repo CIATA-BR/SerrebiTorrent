@@ -109,6 +109,13 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    const filesTab = document.getElementById('files-tab');
+    if (filesTab) {
+        filesTab.addEventListener('shown.bs.tab', () => {
+            void updateFilesDetails();
+        });
+    }
+
     // Initial fetch
     refreshData(true);
     if (window.fetchProfiles) window.fetchProfiles(); 
@@ -889,15 +896,112 @@ function escapeHtml(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
+async function updateFilesDetails() {
+    const pane = document.getElementById('details-files');
+    if (!pane) return;
+
+    pane.replaceChildren();
+
+    if (selectedHashes.size === 0) {
+        const message = document.createElement('p');
+        message.textContent = 'Select a torrent.';
+        pane.appendChild(message);
+        return;
+    }
+    if (selectedHashes.size > 1) {
+        const message = document.createElement('p');
+        message.textContent = 'Select one torrent to view files.';
+        pane.appendChild(message);
+        return;
+    }
+
+    const hash = Array.from(selectedHashes)[0];
+    const loading = document.createElement('p');
+    loading.className = 'text-muted';
+    loading.setAttribute('role', 'status');
+    loading.textContent = 'Loading files...';
+    pane.appendChild(loading);
+
+    try {
+        const res = await fetch(`/api/v2/torrents/files?hash=${encodeURIComponent(hash)}`);
+        if (await redirectIfSessionExpired(res)) return;
+        if (!res.ok) {
+            throw new Error(await res.text() || 'Failed to load files.');
+        }
+        const files = await res.json();
+
+        pane.replaceChildren();
+        if (!Array.isArray(files) || files.length === 0) {
+            const message = document.createElement('p');
+            message.textContent = 'No files available.';
+            pane.appendChild(message);
+            return;
+        }
+
+        const table = document.createElement('table');
+        table.className = 'table table-sm';
+        table.setAttribute('aria-label', 'Torrent files');
+
+        const thead = document.createElement('thead');
+        const headerRow = document.createElement('tr');
+        for (const label of ['Name', 'Size', 'Progress', 'Priority']) {
+            const th = document.createElement('th');
+            th.scope = 'col';
+            th.textContent = label;
+            headerRow.appendChild(th);
+        }
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        const tbody = document.createElement('tbody');
+        for (const file of files) {
+            const row = document.createElement('tr');
+            const priorityLabels = ['Do not download', 'Normal', 'High'];
+            const values = [
+                file?.name || '',
+                fmtSize(Number(file?.size) || 0),
+                `${Math.round(Math.max(0, Math.min(1, Number(file?.progress) || 0)) * 100)}%`,
+                priorityLabels[Number(file?.priority)] || 'Normal',
+            ];
+            for (const value of values) {
+                const td = document.createElement('td');
+                td.textContent = value;
+                row.appendChild(td);
+            }
+            tbody.appendChild(row);
+        }
+        table.appendChild(tbody);
+        pane.appendChild(table);
+    } catch (error) {
+        pane.replaceChildren();
+        const message = document.createElement('p');
+        message.className = 'alert alert-danger';
+        message.setAttribute('role', 'alert');
+        message.textContent = 'Failed to load torrent files.';
+        pane.appendChild(message);
+        console.error('Load torrent files failed:', error);
+    }
+}
+
 async function updateDetails() {
     const detailPane = document.getElementById('details-general');
-    if (selectedHashes.size === 0) { detailPane.innerHTML = '<p>Select a torrent.</p>'; return; }
-    if (selectedHashes.size > 1) { detailPane.innerHTML = `<p>${selectedHashes.size} torrents selected.</p>`; return; }
-    const hash = Array.from(selectedHashes)[0];
-    const t = torrentsMap.get(hash);
-    if (!t) return;
-    // Escape torrent-supplied fields (name/hash/save_path) to prevent DOM XSS.
-    detailPane.innerHTML = `<h3 class="fs-5">${escapeHtml(t.name)}</h3><p>Size: ${fmtSize(t.size)}<br>Hash: ${escapeHtml(t.hash)}<br>Path: ${escapeHtml(t.save_path || 'N/A')}</p>`;
+    if (selectedHashes.size === 0) {
+        detailPane.innerHTML = '<p>Select a torrent.</p>';
+    } else if (selectedHashes.size > 1) {
+        detailPane.innerHTML = `<p>${selectedHashes.size} torrents selected.</p>`;
+    } else {
+        const hash = Array.from(selectedHashes)[0];
+        const t = torrentsMap.get(hash);
+        if (t) {
+            // Escape torrent-supplied fields (name/hash/save_path) to prevent DOM XSS.
+            detailPane.innerHTML = `<h3 class="fs-5">${escapeHtml(t.name)}</h3><p>Size: ${fmtSize(t.size)}<br>Hash: ${escapeHtml(t.hash)}<br>Path: ${escapeHtml(t.save_path || 'N/A')}</p>`;
+        }
+    }
+
+    const filesTab = document.getElementById('files-tab');
+    if (filesTab?.classList.contains('active')) {
+        await updateFilesDetails();
+    }
 }
 
 async function doAction(action, deleteFiles = false, actionLabel = null) {
