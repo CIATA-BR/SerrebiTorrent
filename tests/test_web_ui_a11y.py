@@ -924,3 +924,144 @@ def test_web_ui_files_tab_ignores_stale_response_after_selection_changes(page, w
 
     assert page.locator("#details-files tbody td").first.inner_text() == "current.txt"
     assert page.locator("#details-files").inner_text().find("stale.txt") == -1
+
+
+def test_web_ui_peers_tab_loads_selected_torrent_peers(page, web_ui_server):
+    _login(page, web_ui_server)
+
+    page.route(
+        "**/api/v2/torrents/peers?hash=*",
+        lambda route: route.fulfill(
+            status=200,
+            content_type="application/json",
+            body='['
+                 '{"address":"203.0.113.10:51413","client":"ExampleClient","progress":0.75,"down_rate":2048,"up_rate":1024}'
+                 ']',
+        ),
+    )
+
+    page.wait_for_function(
+        "() => document.activeElement && document.activeElement.matches('tr[data-hash]')"
+    )
+    page.keyboard.press("Space")
+
+    page.evaluate(
+        """() => {
+            const tab = document.getElementById('peers-tab');
+            tab.classList.add('active');
+            tab.dispatchEvent(new Event('shown.bs.tab'));
+        }"""
+    )
+
+    page.wait_for_selector('#details-peers table[aria-label="Peers do torrent"]')
+    row = page.locator("#details-peers tbody tr").first
+    cells = row.locator("td")
+    assert cells.nth(0).inner_text() == "203.0.113.10:51413"
+    assert cells.nth(1).inner_text() == "ExampleClient"
+    assert cells.nth(2).inner_text() == "75%"
+    assert cells.nth(3).inner_text() == "2 KB/s"
+    assert cells.nth(4).inner_text() == "1 KB/s"
+    headers = page.locator("#details-peers thead th")
+    assert headers.all_inner_texts() == [
+        "Endereço",
+        "Cliente",
+        "Progresso",
+        "Velocidade de download",
+        "Velocidade de upload",
+    ]
+
+
+def test_web_ui_peers_tab_reports_load_errors(page, web_ui_server):
+    _login(page, web_ui_server)
+
+    page.route(
+        "**/api/v2/torrents/peers?hash=*",
+        lambda route: route.fulfill(
+            status=500,
+            content_type="text/plain",
+            body="Failed",
+        ),
+    )
+
+    page.wait_for_function(
+        "() => document.activeElement && document.activeElement.matches('tr[data-hash]')"
+    )
+    page.keyboard.press("Space")
+
+    page.evaluate(
+        """() => {
+            const tab = document.getElementById('peers-tab');
+            tab.classList.add('active');
+            tab.dispatchEvent(new Event('shown.bs.tab'));
+        }"""
+    )
+
+    error = page.locator("#details-peers [role=alert]")
+    error.wait_for()
+    assert error.inner_text() == "Falha ao carregar os peers do torrent."
+
+
+def test_web_ui_peers_tab_ignores_stale_response_after_selection_changes(page, web_ui_server):
+    _login(page, web_ui_server)
+
+    page.evaluate(
+        """() => {
+            window.__peerCalls = 0;
+            window.__releaseStalePeers = null;
+            const originalFetch = window.fetch.bind(window);
+            window.fetch = (...args) => {
+                const url = String(args[0]);
+                if (!url.startsWith('/api/v2/torrents/peers?hash=')) {
+                    return originalFetch(...args);
+                }
+                window.__peerCalls += 1;
+                if (window.__peerCalls === 1) {
+                    return new Promise((resolve) => {
+                        window.__releaseStalePeers = () => resolve(new Response(
+                            JSON.stringify([
+                                {address:'stale:1',client:'Old',progress:1,down_rate:0,up_rate:0}
+                            ]),
+                            {status:200,headers:{'Content-Type':'application/json'}}
+                        ));
+                    });
+                }
+                return Promise.resolve(new Response(
+                    JSON.stringify([
+                        {address:'current:2',client:'Current',progress:1,down_rate:0,up_rate:0}
+                    ]),
+                    {status:200,headers:{'Content-Type':'application/json'}}
+                ));
+            };
+        }"""
+    )
+
+    page.wait_for_function("() => torrentsMap.size >= 2")
+    page.evaluate(
+        """() => {
+            const hashes = Array.from(torrentsMap.keys());
+            selectedHashes.clear();
+            selectedHashes.add(hashes[0]);
+            const tab = document.getElementById('peers-tab');
+            tab.classList.add('active');
+            void updatePeersDetails();
+        }"""
+    )
+    page.wait_for_function("() => window.__peerCalls === 1")
+
+    page.evaluate(
+        """() => {
+            const hashes = Array.from(torrentsMap.keys());
+            selectedHashes.clear();
+            selectedHashes.add(hashes[1]);
+            void updatePeersDetails();
+        }"""
+    )
+
+    page.wait_for_function(
+        "() => document.querySelector('#details-peers tbody td')?.textContent === 'current:2'"
+    )
+    page.evaluate("window.__releaseStalePeers()")
+    page.wait_for_timeout(100)
+
+    assert page.locator("#details-peers tbody td").first.inner_text() == "current:2"
+    assert "stale:1" not in page.locator("#details-peers").inner_text()
