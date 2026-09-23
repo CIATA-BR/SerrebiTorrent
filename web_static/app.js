@@ -714,7 +714,11 @@ function updateSelectionVisuals() {
 function updateSidebarStats(stats, trackers) {
     if (!stats) return;
     const trackerList = document.getElementById('trackerList');
-    if (trackerList && trackers) {
+    // Rebuild only on change: this runs every refresh, and re-focusing a rebuilt
+    // item makes screen readers announce it again each time.
+    const trackerSignature = trackers ? JSON.stringify([currentFilter, trackers]) : null;
+    if (trackerList && trackers && trackerList.dataset.signature !== trackerSignature) {
+        trackerList.dataset.signature = trackerSignature;
         const focusedTracker = trackerList.contains(document.activeElement)
             ? document.activeElement.dataset.filter
             : null;
@@ -778,6 +782,9 @@ window.fetchProfiles = async function() {
         const data = await res.json();
         const list = document.getElementById('profileList');
         if (!list) return;
+        const profileSignature = JSON.stringify(data);
+        if (list.dataset.signature === profileSignature) return;
+        list.dataset.signature = profileSignature;
         const focusedProfile = list.contains(document.activeElement)
             ? document.activeElement.dataset.profileId
             : null;

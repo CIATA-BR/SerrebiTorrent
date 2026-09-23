@@ -614,7 +614,7 @@ def test_web_ui_tracker_refresh_preserves_roving_focus(page, web_ui_server):
     page.evaluate(
         """() => updateSidebarStats(
             {all: 2},
-            {'tracker.one': 1, 'tracker.two': 1}
+            {'tracker.one': 2, 'tracker.two': 1}
         )"""
     )
 
@@ -629,17 +629,19 @@ def test_web_ui_tracker_refresh_preserves_roving_focus(page, web_ui_server):
 def test_web_ui_profile_refresh_preserves_roving_focus(page, web_ui_server):
     _login(page, web_ui_server)
 
-    page.route(
-        "**/api/v2/profiles",
-        lambda route: route.fulfill(
-            status=200,
-            content_type="application/json",
-            body='{"profiles":{'
-                 '"local":{"name":"Local","type":"local","url":"C:\\Downloads","user":"","password":""},'
+    calls = {"n": 0}
+
+    def profiles(route):
+        # The second response differs, so the list is really rebuilt.
+        calls["n"] += 1
+        body = ('{"profiles":{'
+                 '"local":{"name":"Local","type":"local","url":"C:\\\\Downloads","user":"","password":""},'
                  '"remote":{"name":"Remote","type":"qbittorrent","url":"https://example.invalid","user":"","password":""}'
-                 '},"current_id":"local"}',
-        ),
-    )
+                 '},"current_id":"local"}')
+        route.fulfill(status=200, content_type="application/json",
+                      body=body.replace('"Local"', '"Local %d"' % calls["n"]))
+
+    page.route("**/api/v2/profiles", profiles)
 
     page.evaluate("fetchProfiles()")
     page.wait_for_selector('#profileList .sidebar-link[data-profile-id="remote"]')
@@ -655,3 +657,24 @@ def test_web_ui_profile_refresh_preserves_roving_focus(page, web_ui_server):
     refreshed = page.locator('#profileList .sidebar-link[data-profile-id="remote"]')
     assert refreshed.get_attribute("tabindex") == "0"
     assert refreshed.get_attribute("aria-selected") == "false"
+
+
+def test_web_ui_unchanged_refresh_keeps_the_same_focused_tracker_node(page, web_ui_server):
+    # Re-focusing a rebuilt node makes screen readers announce it again every refresh.
+    _login(page, web_ui_server)
+    page.wait_for_function("document.activeElement && document.activeElement.matches('tr[data-hash]')")
+    page.evaluate(
+        """() => {
+            const link = document.querySelector('#trackerList .sidebar-link');
+            link.focus();
+            window.__focusedTrackerNode = link;
+        }"""
+    )
+
+    page.evaluate("refreshData(true)")
+    page.wait_for_timeout(300)
+    page.evaluate("refreshData(true)")
+    page.wait_for_timeout(300)
+
+    assert page.evaluate("document.activeElement === window.__focusedTrackerNode")
+    assert page.evaluate("window.__focusedTrackerNode.isConnected")
