@@ -214,30 +214,7 @@ def _validate_add_url(u):
         return
     if scheme not in ('http', 'https'):
         raise ValueError("unsupported URL scheme")
-
-    current = u
-    for _ in range(_ADD_URL_MAX_REDIRECTS + 1):
-        _validate_public_add_http_url(current)
-        try:
-            response = requests.get(
-                current,
-                allow_redirects=False,
-                headers={'Range': 'bytes=0-0'},
-                stream=True,
-                timeout=_ADD_URL_TIMEOUT,
-            )
-        except requests.RequestException as exc:
-            raise ValueError("could not inspect URL redirects") from exc
-        try:
-            if response.status_code not in _REDIRECT_STATUSES:
-                return
-            location = response.headers.get('Location')
-            if not location:
-                raise ValueError("redirect response missing Location header")
-            current = urljoin(current, location)
-        finally:
-            response.close()
-    raise ValueError("too many redirects")
+    _validate_public_add_http_url(u)
 
 
 def _allowed_add_url(u):
