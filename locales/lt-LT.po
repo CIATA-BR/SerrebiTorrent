@@ -1609,8 +1609,6 @@ msgstr "Per daug nepavykusių bandymų. Bandykite vėliau."
 msgid "Torrent Actions"
 msgstr "Torrento veiksmai"
 
-msgid "Torrent actions"
-msgstr "Torrento veiksmai"
 
 msgid "Torrent added"
 msgstr "Torrentas pridėtas"
