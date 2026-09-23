@@ -123,6 +123,13 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const trackersTab = document.getElementById('trackers-tab');
+    if (trackersTab) {
+        trackersTab.addEventListener('shown.bs.tab', () => {
+            void updateTrackersDetails();
+        });
+    }
+
     // Initial fetch
     refreshData(true);
     if (window.fetchProfiles) window.fetchProfiles(); 
@@ -1101,6 +1108,101 @@ async function updatePeersDetails() {
     }
 }
 
+
+async function updateTrackersDetails() {
+    const pane = document.getElementById('details-trackers');
+    if (!pane) return;
+
+    const translate = window.SerrebiI18n?.t || ((value) => value);
+    pane.replaceChildren();
+
+    if (selectedHashes.size === 0) {
+        const message = document.createElement('p');
+        message.textContent = translate('Select a torrent.');
+        pane.appendChild(message);
+        return;
+    }
+    if (selectedHashes.size > 1) {
+        const message = document.createElement('p');
+        message.textContent = translate('Select one torrent to view trackers.');
+        pane.appendChild(message);
+        return;
+    }
+
+    const hash = Array.from(selectedHashes)[0];
+    const selectionIsCurrent = () =>
+        selectedHashes.size === 1 && selectedHashes.has(hash);
+
+    const loading = document.createElement('p');
+    loading.className = 'text-muted';
+    loading.setAttribute('role', 'status');
+    loading.textContent = translate('Loading trackers...');
+    pane.appendChild(loading);
+
+    try {
+        const res = await fetch(`/api/v2/torrents/trackers?hash=${encodeURIComponent(hash)}`);
+        if (!selectionIsCurrent()) return;
+        if (await redirectIfSessionExpired(res)) return;
+        if (!selectionIsCurrent()) return;
+        if (!res.ok) {
+            throw new Error(await res.text() || 'Failed to load trackers.');
+        }
+        const trackers = await res.json();
+        if (!selectionIsCurrent()) return;
+
+        pane.replaceChildren();
+        if (!Array.isArray(trackers) || trackers.length === 0) {
+            const message = document.createElement('p');
+            message.textContent = translate('No trackers available.');
+            pane.appendChild(message);
+            return;
+        }
+
+        const table = document.createElement('table');
+        table.className = 'table table-sm';
+        table.setAttribute('aria-label', translate('Torrent Trackers'));
+
+        const thead = document.createElement('thead');
+        const headerRow = document.createElement('tr');
+        for (const label of ['Tracker URL', 'Status', 'Peers', 'Message']) {
+            const th = document.createElement('th');
+            th.scope = 'col';
+            th.textContent = translate(label);
+            headerRow.appendChild(th);
+        }
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        const tbody = document.createElement('tbody');
+        for (const tracker of trackers) {
+            const row = document.createElement('tr');
+            const values = [
+                tracker?.url || '',
+                tracker?.status || '',
+                String(Number(tracker?.peers) || 0),
+                tracker?.message || '',
+            ];
+            for (const value of values) {
+                const td = document.createElement('td');
+                td.textContent = value;
+                row.appendChild(td);
+            }
+            tbody.appendChild(row);
+        }
+        table.appendChild(tbody);
+        pane.appendChild(table);
+    } catch (error) {
+        if (!selectionIsCurrent()) return;
+        pane.replaceChildren();
+        const message = document.createElement('p');
+        message.className = 'alert alert-danger';
+        message.setAttribute('role', 'alert');
+        message.textContent = translate('Failed to load torrent trackers.');
+        pane.appendChild(message);
+        console.error('Load torrent trackers failed:', error);
+    }
+}
+
 async function updateDetails() {
     const detailPane = document.getElementById('details-general');
     if (selectedHashes.size === 0) {
@@ -1124,6 +1226,11 @@ async function updateDetails() {
     const peersTab = document.getElementById('peers-tab');
     if (peersTab?.classList.contains('active')) {
         await updatePeersDetails();
+    }
+
+    const trackersTab = document.getElementById('trackers-tab');
+    if (trackersTab?.classList.contains('active')) {
+        await updateTrackersDetails();
     }
 }
 
