@@ -341,9 +341,14 @@ class TestLocalClientConnection:
     def test_download_torrent_url_enforces_size_cap(self, monkeypatch):
         import clients
 
+        class FakeSocket:
+            def getpeername(self):
+                return ("93.184.216.34", 443)
+
         class FakeResponse:
             status_code = 200
             headers = {}
+            raw = SimpleNamespace(_connection=SimpleNamespace(sock=FakeSocket()))
 
             def __enter__(self):
                 return self
@@ -366,9 +371,14 @@ class TestLocalClientConnection:
     def test_download_torrent_url_rejects_private_redirect(self, monkeypatch):
         import clients
 
+        class FakeSocket:
+            def getpeername(self):
+                return ("93.184.216.34", 80)
+
         class RedirectResponse:
             status_code = 302
             headers = {"Location": "http://127.0.0.1/private.torrent"}
+            raw = SimpleNamespace(_connection=SimpleNamespace(sock=FakeSocket()))
 
             def __enter__(self):
                 return self
@@ -387,6 +397,40 @@ class TestLocalClientConnection:
 
         with pytest.raises(ValueError, match="Private|Localhost|local network"):
             clients.download_torrent_url("http://example.com/test.torrent")
+
+    def test_download_torrent_url_rejects_dns_rebinding_peer(self, monkeypatch):
+        import clients
+
+        class FakeSocket:
+            def getpeername(self):
+                return ("127.0.0.1", 443)
+
+        class FakeResponse:
+            status_code = 200
+            headers = {}
+            raw = SimpleNamespace(_connection=SimpleNamespace(sock=FakeSocket()))
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, exc_type, exc, tb):
+                return False
+
+            def raise_for_status(self):
+                return None
+
+            def iter_content(self, chunk_size):
+                yield b"should-not-be-read"
+
+        monkeypatch.setattr(
+            clients.socket,
+            "getaddrinfo",
+            lambda *args, **kwargs: [(None, None, None, None, ("93.184.216.34", 443))],
+        )
+        monkeypatch.setattr(clients.requests, "get", lambda *args, **kwargs: FakeResponse())
+
+        with pytest.raises(ValueError, match="private or local network"):
+            clients.download_torrent_url("https://example.com/test.torrent")
 
     def test_local_client_accepts_uppercase_magnet_scheme(self):
         from clients import LocalClient
