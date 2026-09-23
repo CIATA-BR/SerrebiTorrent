@@ -471,6 +471,22 @@ def torrents_files():
         return jsonify(client.get_files(hash))
     return jsonify([])
 
+
+@app.route('/api/v2/torrents/peers')
+@login_required
+def torrents_peers():
+    torrent_hash = (request.args.get('hash') or '').strip()
+    client = WEB_CONFIG['client']
+    if not client:
+        return "No torrent client is connected.", 503
+    if not torrent_hash:
+        return "Torrent hash is required.", 400
+    try:
+        return jsonify(client.get_peers(torrent_hash))
+    except Exception:
+        return "Failed to load torrent peers.", 500
+
+
 def _requested_torrent_hashes():
     return [h for h in (request.form.get('hashes') or '').split('|') if h]
 

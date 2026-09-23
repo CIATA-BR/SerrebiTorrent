@@ -476,3 +476,57 @@ def test_profile_add_reports_persistence_failure(auth_client):
     assert rv.status_code == 500
     assert b"Failed to create profile." in rv.data
     assert b"disk full" not in rv.data
+
+
+def test_torrents_peers_returns_client_data(auth_client):
+    mock_client = MagicMock()
+    mock_client.get_peers.return_value = [
+        {
+            'address': '203.0.113.10:51413',
+            'client': 'ExampleClient',
+            'progress': 0.75,
+            'down_rate': 2048,
+            'up_rate': 1024,
+        }
+    ]
+    web_server.WEB_CONFIG['client'] = mock_client
+
+    rv = auth_client.get('/api/v2/torrents/peers?hash=abc123')
+
+    assert rv.status_code == 200
+    assert rv.get_json() == mock_client.get_peers.return_value
+    mock_client.get_peers.assert_called_once_with('abc123')
+
+
+def test_torrents_peers_requires_connected_client(auth_client):
+    original = web_server.WEB_CONFIG.copy()
+    try:
+        web_server.WEB_CONFIG['client'] = None
+
+        rv = auth_client.get('/api/v2/torrents/peers?hash=abc123')
+
+        assert rv.status_code == 503
+        assert b"No torrent client is connected." in rv.data
+    finally:
+        web_server.WEB_CONFIG.update(original)
+
+
+def test_torrents_peers_requires_hash(auth_client):
+    web_server.WEB_CONFIG['client'] = MagicMock()
+
+    rv = auth_client.get('/api/v2/torrents/peers')
+
+    assert rv.status_code == 400
+    assert b"Torrent hash is required." in rv.data
+
+
+def test_torrents_peers_hides_backend_errors(auth_client):
+    mock_client = MagicMock()
+    mock_client.get_peers.side_effect = RuntimeError("secret backend detail")
+    web_server.WEB_CONFIG['client'] = mock_client
+
+    rv = auth_client.get('/api/v2/torrents/peers?hash=abc123')
+
+    assert rv.status_code == 500
+    assert b"Failed to load torrent peers." in rv.data
+    assert b"secret backend detail" not in rv.data
