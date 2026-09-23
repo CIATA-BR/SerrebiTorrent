@@ -900,54 +900,61 @@ async function updateFilesDetails() {
     const pane = document.getElementById('details-files');
     if (!pane) return;
 
+    const translate = window.SerrebiI18n?.t || ((value) => value);
     pane.replaceChildren();
 
     if (selectedHashes.size === 0) {
         const message = document.createElement('p');
-        message.textContent = 'Select a torrent.';
+        message.textContent = translate('Select a torrent.');
         pane.appendChild(message);
         return;
     }
     if (selectedHashes.size > 1) {
         const message = document.createElement('p');
-        message.textContent = 'Select one torrent to view files.';
+        message.textContent = translate('Select one torrent to view files.');
         pane.appendChild(message);
         return;
     }
 
     const hash = Array.from(selectedHashes)[0];
+    const selectionIsCurrent = () =>
+        selectedHashes.size === 1 && selectedHashes.has(hash);
+
     const loading = document.createElement('p');
     loading.className = 'text-muted';
     loading.setAttribute('role', 'status');
-    loading.textContent = 'Loading files...';
+    loading.textContent = translate('Loading files...');
     pane.appendChild(loading);
 
     try {
         const res = await fetch(`/api/v2/torrents/files?hash=${encodeURIComponent(hash)}`);
+        if (!selectionIsCurrent()) return;
         if (await redirectIfSessionExpired(res)) return;
+        if (!selectionIsCurrent()) return;
         if (!res.ok) {
             throw new Error(await res.text() || 'Failed to load files.');
         }
         const files = await res.json();
+        if (!selectionIsCurrent()) return;
 
         pane.replaceChildren();
         if (!Array.isArray(files) || files.length === 0) {
             const message = document.createElement('p');
-            message.textContent = 'No files available.';
+            message.textContent = translate('No files available.');
             pane.appendChild(message);
             return;
         }
 
         const table = document.createElement('table');
         table.className = 'table table-sm';
-        table.setAttribute('aria-label', 'Torrent files');
+        table.setAttribute('aria-label', translate('Torrent Files'));
 
         const thead = document.createElement('thead');
         const headerRow = document.createElement('tr');
         for (const label of ['Name', 'Size', 'Progress', 'Priority']) {
             const th = document.createElement('th');
             th.scope = 'col';
-            th.textContent = label;
+            th.textContent = translate(label);
             headerRow.appendChild(th);
         }
         thead.appendChild(headerRow);
@@ -956,12 +963,16 @@ async function updateFilesDetails() {
         const tbody = document.createElement('tbody');
         for (const file of files) {
             const row = document.createElement('tr');
-            const priorityLabels = ['Do not download', 'Normal', 'High'];
+            const priorityLabels = [
+                translate('Do not download'),
+                translate('Normal'),
+                translate('High'),
+            ];
             const values = [
                 file?.name || '',
                 fmtSize(Number(file?.size) || 0),
                 `${Math.round(Math.max(0, Math.min(1, Number(file?.progress) || 0)) * 100)}%`,
-                priorityLabels[Number(file?.priority)] || 'Normal',
+                priorityLabels[Number(file?.priority)] || translate('Normal'),
             ];
             for (const value of values) {
                 const td = document.createElement('td');
@@ -973,11 +984,12 @@ async function updateFilesDetails() {
         table.appendChild(tbody);
         pane.appendChild(table);
     } catch (error) {
+        if (!selectionIsCurrent()) return;
         pane.replaceChildren();
         const message = document.createElement('p');
         message.className = 'alert alert-danger';
         message.setAttribute('role', 'alert');
-        message.textContent = 'Failed to load torrent files.';
+        message.textContent = translate('Failed to load torrent files.');
         pane.appendChild(message);
         console.error('Load torrent files failed:', error);
     }
