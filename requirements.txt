@@ -1,0 +1,7 @@
+wxPython
+requests
+qbittorrent-api
+transmission-rpc
+PyYAML
+Flask
+defusedxml

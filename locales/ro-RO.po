@@ -1,0 +1,1787 @@
+# SerrebiTorrent translation catalog.
+# SPDX-License-Identifier: MIT
+msgid ""
+msgstr ""
+"Project-Id-Version: SerrebiTorrent\\nLanguage: ro-RO\\nX-Language-Name: Română\\nMIME-Version: 1.0\\nContent-Type: text/plain; charset=UTF-8\\nContent-Transfer-Encoding: 8bit\\n"
+
+msgid "&About SerrebiTorrent"
+msgstr "&Despre SerrebiTorrent"
+
+msgid "&Actions"
+msgstr "&Actions"
+
+msgid "&Add selected"
+msgstr "&Add selectat"
+
+msgid "&Add Torrent File...\tCtrl+O"
+msgstr "&Add Torrent...\tCtrl+O"
+
+msgid "&Add..."
+msgstr "&Add..."
+
+msgid "&Close"
+msgstr "&Închide"
+
+msgid "&Connect"
+msgstr "&Connect"
+
+msgid "&Connect...\tCtrl+Shift+C"
+msgstr "&Connect...\tCtrl+Shift+C"
+
+msgid "&Edit..."
+msgstr "&Edit..."
+
+msgid "&File"
+msgstr "&File"
+
+msgid "&Help"
+msgstr "&Help"
+
+msgid "&Indexers to search:"
+msgstr "&Indexers pentru a căuta:"
+
+msgid "&Indexers:"
+msgstr "&Indexers:"
+
+msgid "&Name:"
+msgstr "&Name:"
+
+msgid "&Pause\tCtrl+P"
+msgstr "&Pause\tCtrl+P"
+
+msgid "&Remove"
+msgstr "&REMOVE"
+
+msgid "&Remove\tDel"
+msgstr "&Elimină\tDel"
+
+msgid "&Resume\tCtrl+R"
+msgstr "&Resume\tCtrl+R"
+
+msgid "&Search for Torrents...\tCtrl+F"
+msgstr "&Search for Torrents...\tCtrl+F"
+
+msgid "&Search for:"
+msgstr "&Caută pentru:"
+
+msgid "&Start\tCtrl+S"
+msgstr "&Start\tCtrl+S"
+
+msgid "&Tools"
+msgstr "&Instrumente"
+
+msgid "&URL:"
+msgstr "&URL:"
+
+msgid "1 feed"
+msgstr "1 furaj"
+
+msgid "A Torznab or Newznab search endpoint. Prowlarr: {prowlarr}. Jackett, all trackers at once: {jackett}"
+msgstr "Un obiectiv de căutare Torznab sau Newznab. {prowlarr}. Jackett, toate trackere dintr-o dată: {jackett}"
+
+msgid "A Windows desktop torrent manager designed for keyboard-first use and screen readers."
+msgstr "Un manager de torrent Windows proiectat pentru prima utilizare a tastaturii și pentru cititorii ecranului."
+
+msgid "About this application"
+msgstr "Despre această aplicație"
+
+msgid "Accept"
+msgstr "Acceptă"
+
+msgid "Action menu opened. Use arrow keys to navigate."
+msgstr "Meniu de acțiune deschis. Utilizați tastele săgeată pentru a naviga."
+
+msgid "Active"
+msgstr "Activ"
+
+msgid "Add"
+msgstr "Adaugă"
+
+msgid "Add &URL/Magnet...\tCtrl+U"
+msgstr "Adaugă &URL/Magnet...\tCtrl+U"
+
+msgid "Add a torrent from a local file"
+msgstr "Adaugă un torent dintr-un fișier local"
+
+msgid "Add a torrent from a URL or Magnet link"
+msgstr "Adaugă un torent dintr-un URL sau link Magnet"
+
+msgid "Add Connection Profile"
+msgstr "Adaugă profil de conexiune"
+
+msgid "Add created torrent to the currently connected client"
+msgstr "Adaugă torent creat la clientul curent conectat"
+
+msgid "Add Feed"
+msgstr "Adaugă hrană"
+
+msgid "Add indexer"
+msgstr "Adaugă indexer"
+
+msgid "Add Profile"
+msgstr "Adaugă profil"
+
+msgid "Add RSS Rule"
+msgstr "Adaugă regulă RSS"
+
+msgid "Add Rule"
+msgstr "Adaugă regulă"
+
+msgid "Add Torrent"
+msgstr "Adaugă torent"
+
+msgid "Add Torrent: {name}"
+msgstr "Adaugă torent: {name}"
+
+msgid "Add Tracker"
+msgstr "Adaugă tracker"
+
+msgid "Add/edit/delete profiles and connect"
+msgstr "Adaugă/editează/șterge profilurile și conectează"
+
+msgid "Added from RSS: {title}"
+msgstr "Adăugat din RSS: {title}"
+
+msgid "Added your blindDL indexer: {names}."
+msgstr "Adaugat indexer blindDL: {names}."
+
+msgid "Added your blindDL indexers: {names}."
+msgstr "Added your blindDL indexers: {names}."
+
+msgid "Added {title}"
+msgstr "Adăugat {title}"
+
+msgid "Adding created torrent..."
+msgstr "Adăugare torent creat..."
+
+msgid "Adding magnet link from CLI..."
+msgstr "Adăugare link magnet de la CLI..."
+
+msgid "Adding magnet link..."
+msgstr "Adăugare conexiune magnet..."
+
+msgid "Adding torrent file from CLI..."
+msgstr "Adăugare fișier torrent de la CLI..."
+
+msgid "Adding torrent..."
+msgstr "Adăugare torent..."
+
+msgid "Adding torrent: {title}..."
+msgstr "Adăugare torent: {title}..."
+
+msgid "Adding {count} torrent..."
+msgstr "Adăugare torent {count}..."
+
+msgid "Adding {count} torrents..."
+msgstr "Adăugare torente {count}..."
+
+msgid "After Creation"
+msgstr "După creaţie"
+
+msgid "Age"
+msgstr "Vârsta"
+
+msgid "All"
+msgstr "Toate"
+
+msgid "An indexer needs both a name and a URL."
+msgstr "Un indexer are nevoie atât de un nume, cât și de un URL."
+
+msgid "An update check or install is already in progress."
+msgstr "O verificare sau instalare actualizată este deja în curs de desfășurare."
+
+msgid "An update is already in progress."
+msgstr "O actualizare este deja în curs de desfășurare."
+
+msgid "Announce IP (reported to trackers, blank = auto):"
+msgstr "Anunţă IP (raportat la trackere, gol = auto):"
+
+msgid "Another indexer is already called {name}. Choose a different name."
+msgstr "Un alt indexer este deja numit {name}. Alege alt nume."
+
+msgid "Another instance of SerrebiTorrent is already running."
+msgstr "Un alt exemplu de SerrebiTorrent este deja difuzate."
+
+msgid "Anti-leech"
+msgstr "Anti- lipitoare"
+
+msgid "API &key:"
+msgstr "API &Y:"
+
+msgid "API key"
+msgstr "Cheia API"
+
+msgid "Application"
+msgstr "Aplicare"
+
+msgid "Apply to Feeds (Uncheck all for Global):"
+msgstr "Aplicați la Feed-uri (Debifați toate pentru Global):"
+
+msgid "Applying update..."
+msgstr "Aplic actualizarea..."
+
+msgid "Are you sure you want to clear ALL RSS feeds and rules?"
+msgstr "Sigur doriți să ștergeți TOATE RSS feed-uri și reguli?"
+
+msgid "Associate .torrent and magnet links with this app"
+msgstr "Asociați .torent și legături magnet cu această aplicație"
+
+msgid "Association is only supported on Windows for now."
+msgstr "Asociația este susținută doar pe Windows pentru moment."
+
+msgid "Associations registered successfully!"
+msgstr "Asociațiile înregistrate cu succes!"
+
+msgid "Authentication (if required):"
+msgstr "Autentificare (dacă este necesar):"
+
+msgid "Auto"
+msgstr "Automat"
+
+msgid "Auto-added from RSS: {title}"
+msgstr "Auto-added from RSS: {title}"
+
+msgid "Auto-start failed: {error}"
+msgstr "Pornirea automată a eșuat: {error}"
+
+msgid "Auto-started new torrent(s)"
+msgstr "Torent nou pornit automat (s)"
+
+msgid "Auto-update is not available for this build."
+msgstr "Actualizarea automată nu este disponibilă pentru această clădire."
+
+msgid "Automatically add trackers from URL"
+msgstr "Adaugă automat trackere din URL"
+
+msgid "Automatically start torrents"
+msgstr "Porniți automat torentele"
+
+msgid "Availability"
+msgstr "Disponibilitate"
+
+msgid "Best match"
+msgstr "Cel mai bun meci"
+
+msgid "Bind Host:"
+msgstr "Gazdă de legare:"
+
+msgid "BitTorrent"
+msgstr "BitTorrentComment"
+
+msgid "Browse..."
+msgstr "Răsfoieşte..."
+
+msgid "Cancel"
+msgstr "Renunță"
+
+msgid "Categories"
+msgstr "Categorii"
+
+msgid "Category"
+msgstr "Categorie"
+
+msgid "Check"
+msgstr "Verificat"
+
+msgid "Check All"
+msgstr "Verificați toate"
+
+msgid "Check for &Updates...\tF5"
+msgstr "Verificați pentru &Updates...\tF5"
+
+msgid "Check for Updates"
+msgstr "Verificați actualizările"
+
+msgid "Check for updates"
+msgstr "Verificați actualizările"
+
+msgid "Check for updates automatically on startup"
+msgstr "Verificați automat actualizările la pornire"
+
+msgid "Checking"
+msgstr "Verificarea"
+
+msgid "Checking for updates..."
+msgstr "Verificarea actualizărilor..."
+
+msgid "Choose a profile, then connect or manage it with the buttons below."
+msgstr "Alegeți un profil, apoi conectați sau gestionați-l cu butoanele de mai jos."
+
+msgid "Choose Download Directory"
+msgstr "Alegeți directorul de descărcare"
+
+msgid "Choose Download Folder"
+msgstr "Alegeți dosarul de descărcare"
+
+msgid "Client"
+msgstr "Client"
+
+msgid "Client Type"
+msgstr "Tip client"
+
+msgid "Client Type:"
+msgstr "Tip client:"
+
+msgid "Close"
+msgstr "Închide"
+
+msgid "Close to System Tray"
+msgstr "Aproape de Tava Sistemului"
+
+msgid "Comment:"
+msgstr "Comentariu"
+
+msgid "Configure local session and application settings"
+msgstr "Configurează setările de sesiune locală și aplicații"
+
+msgid "Confirm"
+msgstr "Confirmă"
+
+msgid "Confirm Reset"
+msgstr "Confirmă resetarea"
+
+msgid "Connect"
+msgstr "Conectează"
+
+msgid "Connect or switch profile"
+msgstr "Conectează sau schimbă profilul"
+
+msgid "Connect to a client before adding torrents."
+msgstr "Conectați-vă la un client înainte de adăugarea torentelor."
+
+msgid "Connect to this profile"
+msgstr "Conectează-te la acest profil"
+
+msgid "Connected to {name}"
+msgstr "Conectat la {name}"
+
+msgid "Connecting..."
+msgstr "Conectare..."
+
+msgid "Connection"
+msgstr "Conexiune"
+
+msgid "Connection Failed"
+msgstr "Conexiune eșuată"
+
+msgid "Connection Manager"
+msgstr "Administrator conexiune"
+
+msgid "Connection Manager..."
+msgstr "Manager conexiune..."
+
+msgid "Connection Manager...\tCtrl+Shift+C"
+msgstr "Manager conexiune...\tCtrl+Shift+C"
+
+msgid "Connection profiles"
+msgstr "Profile în conexiune"
+
+msgid "Context / validation:"
+msgstr "Context / validare:"
+
+msgid "Copied to clipboard"
+msgstr "Copiat în clipboard"
+
+msgid "Copied {count} magnet link."
+msgstr "Copiat link-ul magnet {count}."
+
+msgid "Copied {count} magnet links."
+msgstr "Copiat link-uri magnet {count}."
+
+msgid "Copy &Info Hash\tCtrl+I"
+msgstr "Copiază &info hash\tCtrl+I"
+
+msgid "Copy &Magnet Link\tCtrl+M"
+msgstr "Copie &Magnet Link\tCtrl+M"
+
+msgid "Copy a magnet link for selected torrents"
+msgstr "Copiază un link magnet pentru torentele selectate"
+
+msgid "Copy Info Hash"
+msgstr "Copiază informații hash"
+
+msgid "Copy it from Prowlarr or Jackett's own settings. Leave it empty if the endpoint needs no key."
+msgstr "Copiază-l de la Prowlarr sau de la Jackett. Lăsaţi-l gol dacă obiectivul final nu are nevoie de cheie."
+
+msgid "Copy Magnet Link"
+msgstr "Copiază legătura magnetului"
+
+msgid "Copy magnet link to clipboard"
+msgstr "Copiază linkul magnet în clipboard"
+
+msgid "Copy the info hash for selected torrents"
+msgstr "Copiați hashul de informații pentru torentele selectate"
+
+msgid "Create &Torrent...\tCtrl+N"
+msgstr "Creează &Torrent...\tCtrl+N"
+
+msgid "Create a .torrent file from a file or folder"
+msgstr "Creează un fișier .torrent dintr-un fișier sau dosar"
+
+msgid "Create Profile"
+msgstr "Creează profil"
+
+msgid "Create Torrent"
+msgstr "Creează torent"
+
+msgid "Created by:"
+msgstr "Creat de:"
+
+msgid "Created torrent added"
+msgstr "Torent creat adăugat"
+
+msgid "Created torrent, but failed to add to client: {error}"
+msgstr "Torent creat, dar nu a reușit să adauge clientului: {error}"
+
+msgid "Current"
+msgstr "Curent"
+
+msgid "Dark (Night)"
+msgstr "Întuneric (noapte)"
+
+msgid "Default"
+msgstr "Implicit"
+
+msgid "Default Download Path:"
+msgstr "Calea de descărcare implicită:"
+
+msgid "Delete"
+msgstr "Șterge"
+
+msgid "Delete this profile?"
+msgstr "Şterge acest profil?"
+
+msgid "Deselect All"
+msgstr "Deselectează toate"
+
+msgid "Disconnected"
+msgstr "Deconectat"
+
+msgid "Down Speed"
+msgstr "Viteza în jos"
+
+msgid "Download folder not available."
+msgstr "Descărcaţi dosarul nu este disponibil."
+
+msgid "Download Path"
+msgstr "Descarcă calea"
+
+msgid "Download Path:"
+msgstr "Calea de descărcare:"
+
+msgid "Download Rate (bytes/s):"
+msgstr "Rata de descărcare (bytes/s):"
+
+msgid "Downloaded update failed SHA-256 verification."
+msgstr "Actualizare descărcată a eșuat verificarea SHA-256."
+
+msgid "Downloaded: {percent:.1f}%"
+msgstr "Descărcat: {percent:.1f}%"
+
+msgid "Downloading"
+msgstr "Descărcare"
+
+msgid "Downloading torrent file..."
+msgstr "Descărcare fișier torrent..."
+
+msgid "Downloading update..."
+msgstr "Descărcare actualizare..."
+
+msgid "Downloads"
+msgstr "Descărcări"
+
+msgid "E&xit"
+msgstr "E&XIT"
+
+msgid "Edit"
+msgstr "Editare"
+
+msgid "Edit connected qBittorrent settings"
+msgstr "Editează setările qBittorrent conectate"
+
+msgid "Edit connected rTorrent settings"
+msgstr "Editează setările rTorrent conectate"
+
+msgid "Edit connected Transmission settings"
+msgstr "Editează setările de transmisie conectate"
+
+msgid "Edit indexer"
+msgstr "Editează indexul"
+
+msgid "Edit Profile"
+msgstr "Editează profilul"
+
+msgid "Edit RSS Rule"
+msgstr "Editează regula RSS"
+
+msgid "Edit Rule"
+msgstr "Editează regula"
+
+msgid "Enable DHT"
+msgstr "Activează DHT"
+
+msgid "Enable Local Service Discovery (LSD)"
+msgstr "Activează descoperirea serviciului local (LSD)"
+
+msgid "Enable NAT-PMP Port Mapping"
+msgstr "Activează Mapping Port NAT-PMP"
+
+msgid "Enable UPnP Port Mapping"
+msgstr "Activează cartografierea portului UPnP"
+
+msgid "Enable Web UI"
+msgstr "Activează UI web"
+
+msgid "Enabled"
+msgstr "Activat"
+
+msgid "English"
+msgstr "Engleză"
+
+msgid "Enter a JSON object (e.g. {\"/watched\": \"/home/user\"})."
+msgstr "Introduceți un obiect JSON (de exemplu, {\"/watched\": \"/home/user\"})."
+
+msgid "Enter adds the selected torrents. Control C copies the magnet link."
+msgstr "Introduceți adaugă torentele selectate. Controlul C copiază legătura magnetului."
+
+msgid "Enter edits the selected indexer. Delete removes it."
+msgstr "Introduceți editează indexerul selectat. Şterge-l."
+
+msgid "Enter Magnet Link or URL:"
+msgstr "Introduceți Magnet Link sau URL:"
+
+msgid "Enter RSS Feed URL:"
+msgstr "Introduceți URL- ul RSS Feed:"
+
+msgid "Error"
+msgstr "Eroare"
+
+msgid "Error adding file: {error}"
+msgstr "Eroare la adăugarea fișierului: {error}"
+
+msgid "Error adding URL: {error}"
+msgstr "Eroare la adăugarea URL: {error}"
+
+msgid "Error fetching preferences"
+msgstr "Eroare la obținerea preferințelor"
+
+msgid "Error saving remote settings."
+msgstr "Eroare la salvarea setărilor la distanță."
+
+msgid "Error saving settings."
+msgstr "Eroare la salvarea setărilor."
+
+msgid "Every day"
+msgstr "În fiecare zi"
+
+msgid "Every Friday"
+msgstr "În fiecare vineri"
+
+msgid "Every Monday"
+msgstr "În fiecare luni"
+
+msgid "Every Saturday"
+msgstr "În fiecare sâmbătă"
+
+msgid "Every Sunday"
+msgstr "În fiecare duminică"
+
+msgid "Every Thursday"
+msgstr "În fiecare joi"
+
+msgid "Every Tuesday"
+msgstr "În fiecare marţi"
+
+msgid "Every Wednesday"
+msgstr "În fiecare miercuri"
+
+msgid "Every weekday"
+msgstr "În fiecare zi lucrătoare"
+
+msgid "Every weekend"
+msgstr "În fiecare weekend"
+
+msgid "Exit"
+msgstr "Exit"
+
+msgid "Exit application"
+msgstr "Aplicație de ieșire"
+
+msgid "Export PO..."
+msgstr "Exportă PO..."
+
+msgid "Extracted update does not contain application files."
+msgstr "Actualizarea extrasă nu conține fișiere de aplicație."
+
+msgid "Extracting update..."
+msgstr "Extragerea actualizării..."
+
+msgid "Failed"
+msgstr "Eșuat"
+
+msgid "Failed to access clipboard."
+msgstr "A eșuat accesul la clipboard."
+
+msgid "Failed to add from RSS: {error}"
+msgstr "A eșuat adăugarea din RSS: {error}"
+
+msgid "Failed to add magnet: {error}"
+msgstr "A eșuat adăugarea magnetului: {error}"
+
+msgid "Failed to add torrent: {error}"
+msgstr "Eșec la adăugarea torentului: {error}"
+
+msgid "Failed to add torrents."
+msgstr "A eșuat adăugarea de torente."
+
+msgid "Failed to apply settings: {error}"
+msgstr "Nu s-a aplicat setările: {error}"
+
+msgid "Failed to download torrent from URL: {error}"
+msgstr "Eșec la descărcarea torentului din URL: {error}"
+
+msgid "Failed to fetch preferences"
+msgstr "Nu a reușit să obțină preferințe"
+
+msgid "Failed to fetch remote preferences: {error}"
+msgstr "Nu a reușit să aducă preferințe la distanță: {error}"
+
+msgid "Failed to fetch {title}: {error}"
+msgstr "Nu a reușit să aducă {title}: {error}"
+
+msgid "Failed to load settings."
+msgstr "Setări de încărcare eșuate."
+
+msgid "Failed to read torrent file: {error}"
+msgstr "Eroare la citirea fișierului torrent: {error}"
+
+msgid "Failed to register associations: {error}"
+msgstr "Înregistrarea asociațiilor a eșuat: {error}"
+
+msgid "Failed to retrieve preferences from remote client."
+msgstr "Nu a reușit să recupereze preferințele de la clientul de la distanță."
+
+msgid "Failed to retrieve preferences from remote client. The client might not support this feature or there is a connection issue."
+msgstr "Nu a reușit să recupereze preferințele de la clientul de la distanță. Clientul s-ar putea să nu sprijine această caracteristică sau există o problemă de conexiune."
+
+msgid "Failed to update remote preferences: {error}"
+msgstr "Nu s-a putut actualiza preferințele la distanță: {error}"
+
+msgid "Failed to {action} torrent: {error}"
+msgstr "Eșec la {action} torrent: {error}"
+
+msgid "Failed to {action}: {error}"
+msgstr "Eșec la {action}: {error}"
+
+msgid "Fastest upload"
+msgstr "Cea mai rapidă încărcare"
+
+msgid "Fetching {name} preferences..."
+msgstr "Preferinţe {name}..."
+
+msgid "File list not available (Magnet link)."
+msgstr "Lista de fișiere nu este disponibilă (legătură Magnet)."
+
+msgid "File..."
+msgstr "Fișier..."
+
+msgid "Files"
+msgstr "Fișiere"
+
+msgid "Files:"
+msgstr "Fișiere:"
+
+msgid "Filter:"
+msgstr "Filtru:"
+
+msgid "Finished"
+msgstr "Terminat"
+
+msgid "Fixed slots"
+msgstr "sloturi fixe"
+
+msgid "Folder..."
+msgstr "Dosar..."
+
+msgid "Force a recheck/verification (if supported)"
+msgstr "Forţează o reverificare/verificare (dacă este acceptată)"
+
+msgid "Force an immediate tracker announce (if supported)"
+msgstr "Forțează un tracker imediat anunță (dacă este acceptat)"
+
+msgid "Force encryption off"
+msgstr "Criptarea forței"
+
+msgid "Force encryption on"
+msgstr "Criptare forță pe"
+
+msgid "Force Re&check"
+msgstr "Force RE&check"
+
+msgid "Force Reannoun&ce"
+msgstr "Force Reannoun&CE"
+
+msgid "Force Reannounce"
+msgstr "Force Reanunce"
+
+msgid "Force Recheck"
+msgstr "Reverifică forța"
+
+msgid "General"
+msgstr "Generale"
+
+msgid "Global"
+msgstr "Global"
+
+msgid "Global DL Limit (B/s)"
+msgstr "Limita globală a DL (B/s)"
+
+msgid "Global Limits (0 or -1 for unlimited):"
+msgstr "Limite globale (0 sau -1 pentru nelimitat):"
+
+msgid "Global UL Limit (B/s)"
+msgstr "Limita UL globală (B/s)"
+
+msgid "Hash"
+msgstr "Hash"
+
+msgid "Hashing pieces and generating torrent metadata..."
+msgstr "Hashing piese și generarea de metadate torent..."
+
+msgid "High"
+msgstr "Ridicat"
+
+msgid "Host:"
+msgstr "Gazda:"
+
+msgid "HTTP (no auth)"
+msgstr "HTTP (fără auth)"
+
+msgid "HTTP (with auth)"
+msgstr "HTTP (cu aut)"
+
+msgid "Import Complete"
+msgstr "Importă complet"
+
+msgid "Import Failed: {error}"
+msgstr "Import eșuat: {error}"
+
+msgid "Import FlexGet"
+msgstr "Importă FlexGet"
+
+msgid "Import FlexGet Config"
+msgstr "Importă configurare FlexGet"
+
+msgid "Import PO..."
+msgstr "Import PO..."
+
+msgid "Imported {feeds} feeds and {rules} rules."
+msgstr "{feeds} importate feed-uri și {rules} reguli."
+
+msgid "Included trackers (one per line):"
+msgstr "Trackere incluse (unul per linie):"
+
+msgid "Indexer"
+msgstr "Indexer"
+
+msgid "Indexer name"
+msgstr "Denumirea indicelui"
+
+msgid "Indexer URL"
+msgstr "URL indexer"
+
+msgid "Indexers to search"
+msgstr "Indexeri de căutat"
+
+msgid "Info"
+msgstr "Informații"
+
+msgid "Info hash copied to clipboard."
+msgstr "Info hash copiat în clipboard."
+
+msgid "Info Hash: {hash}"
+msgstr "Informatii Hash: {hash}"
+
+msgid "Install directory not found."
+msgstr "Instalează directorul care nu a fost găsit."
+
+msgid "Invalid argument: {arg}"
+msgstr "Argument nevalabil: {arg}"
+
+msgid "Invalid credentials."
+msgstr "Acreditări nevalabile."
+
+msgid "Invalid integer for {label}: {error}"
+msgstr "Număr întreg nevalid pentru {label}: {error}"
+
+msgid "Invalid JSON for {label}: {error}"
+msgstr "JSON nevalidă pentru {label}: {error}"
+
+msgid "Invalid number for {label}: {error}"
+msgstr "Număr nevalabil de {label}: {error}"
+
+msgid "Invalid torrent URL."
+msgstr "URL- ul torentului invalid."
+
+msgid "Language"
+msgstr "Limba"
+
+msgid "Language changes reload this page after saving."
+msgstr "Modificări lingvistice reîncărcați această pagină după economisire."
+
+msgid "Language code:"
+msgstr "Codul lingvistic:"
+
+msgid "Language name:"
+msgstr "Nume limbă:"
+
+msgid "Language:"
+msgstr "Limba:"
+
+msgid "Largest"
+msgstr "Cel mai mare"
+
+msgid "Leave blank to retain the current password."
+msgstr "Lăsați gol pentru a păstra parola curentă."
+
+msgid "Leechers"
+msgstr "Lăptuci"
+
+msgid "libtorrent is not available. Torrent creation requires python-libtorrent."
+msgstr "libtorrent nu este disponibil. Crearea Torrent necesită python-libtorrent."
+
+msgid "Light (Classic)"
+msgstr "Lumină (Classic)"
+
+msgid "Limits"
+msgstr "Limite"
+
+msgid "Link"
+msgstr "Legătură"
+
+msgid "Listening Port:"
+msgstr "Portul de ascultare:"
+
+msgid "Loading remote settings..."
+msgstr "Se încarcă setările la distanță..."
+
+msgid "Loading..."
+msgstr "Se încarcă..."
+
+msgid "Local libtorrent"
+msgstr "Libtorent local"
+
+msgid "Local Session &Settings...\tCtrl+,"
+msgstr "Sesiunea locală &Settings...\tCtrl+,"
+
+msgid "Local session active"
+msgstr "Sesiunea locală activă"
+
+msgid "Local Session Settings"
+msgstr "Configurări sesiuni locale"
+
+msgid "Local Session Settings..."
+msgstr "Configurări sesiuni locale..."
+
+msgid "Login"
+msgstr "Autentificare"
+
+msgid "Login - SerrebiTorrent"
+msgstr "Login - SerrebiTorrent"
+
+msgid "Logout"
+msgstr "Deconectare"
+
+msgid "Magnet copied to clipboard."
+msgstr "Magnet copiat în clipboard."
+
+msgid "Magnet Link"
+msgstr "Legătură Magnet"
+
+msgid "Magnet link added"
+msgstr "Legătură Magnet adăugată"
+
+msgid "Magnet link added from CLI"
+msgstr "Link Magnet adăugat de la CLI"
+
+msgid "Magnet link(s) copied to clipboard."
+msgstr "Link Magnet (s) copiat în clipboard."
+
+msgid "Magnet: {magnet}"
+msgstr "Magnet: {magnet}"
+
+msgid "Manage Profiles & Connect"
+msgstr "Gestionați profilurile & Connect"
+
+msgid "Max Connections:"
+msgstr "Conexiuni maxime:"
+
+msgid "Max Upload Slots:"
+msgstr "Sloturi Max de încărcare:"
+
+msgid "Menu closed"
+msgstr "Meniu închis"
+
+msgid "Menu opened"
+msgstr "Meniu deschis"
+
+msgid "Message"
+msgstr "Mesaj"
+
+msgid "Metadata (optional)"
+msgstr "Metadate (opțional)"
+
+msgid "Minimize to System Tray"
+msgstr "Minimizează la tava de sistem"
+
+msgid "Minimize to Tray"
+msgstr "Minimizează la tavă"
+
+msgid "Most seeders"
+msgstr "Majoritatea semănătorilor"
+
+msgid "My &indexers..."
+msgstr "Meu &indexers..."
+
+msgid "My indexers..."
+msgstr "Indexerii mei..."
+
+msgid "My Remote Server"
+msgstr "Serverul meu de la distanță"
+
+msgid "My torrent indexers"
+msgstr "Indexatorii mei de torente"
+
+msgid "N/A"
+msgstr "N/A"
+
+msgid "Name"
+msgstr "Nume"
+
+msgid "Navigation"
+msgstr "Navigare"
+
+msgid "Navigation Sidebar"
+msgstr "Bara laterală de navigare"
+
+msgid "Needs review"
+msgstr "Necesită revizuire"
+
+msgid "Network"
+msgstr "Rețea"
+
+msgid "Newest"
+msgstr "Cel mai nou"
+
+msgid "Next"
+msgstr "Înainte"
+
+msgid "No"
+msgstr "Nu."
+
+msgid "No client connected."
+msgstr "Niciun client conectat."
+
+msgid "No indexers are switched on. Use Search sites."
+msgstr "Nu sunt pornite indexerele. Utilizați site-uri de căutare."
+
+msgid "No regular files found to include in torrent."
+msgstr "Nu există fișiere regulate găsite pentru a include în torent."
+
+msgid "No remote settings available (or Local client active)."
+msgstr "Nu sunt disponibile setări la distanță (sau client local activ)."
+
+msgid "No torrent selected."
+msgstr "Niciun torent selectat."
+
+msgid "No torrents selected to {action}."
+msgstr "Niciun torent selectat pentru {action}."
+
+msgid "No torrents selected."
+msgstr "Nu sunt selectate torente."
+
+msgid "No torrents to start."
+msgstr "Nici un torent pentru a începe."
+
+msgid "No torrents to stop."
+msgstr "Fără torrente de oprit."
+
+msgid "No updates available."
+msgstr "Nu există actualizări disponibile."
+
+msgid "None"
+msgstr "Niciuna"
+
+msgid "None (No feeds)"
+msgstr "Niciuna (fără furaje)"
+
+msgid "Normal"
+msgstr "Normal"
+
+msgid "Not connected to any client."
+msgstr "Nu are legătură cu niciun client."
+
+msgid "Nothing found. Try fewer words, or switch on more indexers in Search sites."
+msgstr "N-am găsit nimic. Încercați mai puține cuvinte, sau porniți mai mulți indexeri în site-uri de căutare."
+
+msgid "Notifications"
+msgstr "Notificări"
+
+msgid "Off"
+msgstr "Off"
+
+msgid "OK"
+msgstr "Bine."
+
+msgid "On"
+msgstr "On"
+
+msgid "One URL per line (HTTP/HTTPS)."
+msgstr "Un URL pe linie (HTTP/HTTPS)."
+
+msgid "Open Download &Folder"
+msgstr "Descarcă &Folder"
+
+msgid "Open Download Folder"
+msgstr "Deschide dosarul de descărcare"
+
+msgid "Open online translation"
+msgstr "Deschide traducere online"
+
+msgid "Open the download folder (if available)"
+msgstr "Deschide dosarul de descărcare (dacă este disponibil)"
+
+msgid "Open Torrent File"
+msgstr "Deschide fișierul Torrent"
+
+msgid "Open {name}"
+msgstr "Deschide {name}"
+
+msgid "Opened download folder."
+msgstr "Deschide dosarul de descărcare."
+
+msgid "Other"
+msgstr "Altele"
+
+msgid "Output .torrent file:"
+msgstr "Ieșire fișier .torent:"
+
+msgid "Output .torrent path is required."
+msgstr "Calea de ieșire .torent este necesară."
+
+msgid "Password"
+msgstr "Parolă"
+
+msgid "Password:"
+msgstr "Parolă:"
+
+msgid "Path"
+msgstr "Cale"
+
+msgid "Pattern"
+msgstr "Model"
+
+msgid "Pause"
+msgstr "Pauză"
+
+msgid "Pause selected torrents"
+msgstr "Pauză torente selectate"
+
+msgid "Pause torrent"
+msgstr "Pauză torent"
+
+msgid "Paused"
+msgstr "Întrerupe"
+
+msgid "Pausing torrents..."
+msgstr "Oprind torentele..."
+
+msgid "Peer proportional"
+msgstr "Proporţional"
+
+msgid "Peers"
+msgstr "Pers"
+
+msgid "Piece size:"
+msgstr "Dimensiunea piesei:"
+
+msgid "Please select a profile to connect."
+msgstr "Alegeți un profil pentru conectare."
+
+msgid "Please select at least one torrent first."
+msgstr "Alegeți cel puțin un torent mai întâi."
+
+msgid "Port:"
+msgstr "Port:"
+
+msgid "Portuguese (Brazil)"
+msgstr "Portugheză (Brazilia)"
+
+msgid "Prefer encryption"
+msgstr "Preferă criptarea"
+
+msgid "Prefer TCP"
+msgstr "Preferă TCP"
+
+msgid "Preferences"
+msgstr "Preferințe"
+
+msgid "Preparing restart..."
+msgstr "Pregătirea repornire..."
+
+msgid "Previous"
+msgstr "Precedent"
+
+msgid "Priority"
+msgstr "Prioritate"
+
+msgid "Private torrent (disables DHT/PEX/LSD in most clients)"
+msgstr "Torrent privat (dezactivări DHT/PEX/LSD la majoritatea clienților)"
+
+msgid "Private trackers work through Prowlarr or Jackett, which\nkeep your tracker logins. SerrebiTorrent stores only this\nURL and key."
+msgstr "Trackere private de lucru prin Prowlarr sau Jackett, care\nPăstrați login-uri tracker. SerrebiTorrent stochează doar acest\nURL şi cheie."
+
+msgid "Profile"
+msgstr "Profil"
+
+msgid "Profile Name"
+msgstr "Denumirea profilului"
+
+msgid "Profile Name:"
+msgstr "Nume profil:"
+
+msgid "PROFILES"
+msgstr "PROFILE"
+
+msgid "Profiles"
+msgstr "Profile"
+
+msgid "Progress"
+msgstr "Progrese"
+
+msgid "Proxy"
+msgstr "Proxy"
+
+msgid "Proxy disabled"
+msgstr "Proxy dezactivată"
+
+msgid "Proxy Type:"
+msgstr "Tip proxy:"
+
+msgid "Public tracker list (press Enter to add to Included trackers)."
+msgstr "Lista de trackere publice (presează Enter pentru a adăuga la trackere incluse)."
+
+msgid "qBittorrent Remote &Settings..."
+msgstr "qBittorrent Remote &Settings..."
+
+msgid "qBittorrent Remote Settings..."
+msgstr "QBittorrent Remote Setări..."
+
+msgid "Queue"
+msgstr "Coadă"
+
+msgid "Ratio"
+msgstr "Raport"
+
+msgid "Reannounce not supported by this client."
+msgstr "Reanunță nu este susținută de acest client."
+
+msgid "Reannouncing torrents..."
+msgstr "Reannouncing torrents..."
+
+msgid "Recheck not supported by this client."
+msgstr "Reverificati nesustinut de acest client."
+
+msgid "Rechecking torrents..."
+msgstr "Reverific torentele..."
+
+msgid "Refresh"
+msgstr "Reîmprospătează"
+
+msgid "Refresh All"
+msgstr "Reîmprospătează toate"
+
+msgid "Regex Pattern:"
+msgstr "Model Regex:"
+
+msgid "Register &Associations"
+msgstr "Înregistrează &Asociații"
+
+msgid "Reject"
+msgstr "Respinge"
+
+msgid "Remote Client"
+msgstr "Client la distanță"
+
+msgid "Remote client did not return any recognized preferences."
+msgstr "Clientul de la distanţă nu a returnat nici o preferinţă recunoscută."
+
+msgid "Remote settings saved."
+msgstr "Setări la distanță salvate."
+
+msgid "Remove"
+msgstr "Elimină"
+
+msgid "Remove Feed"
+msgstr "Elimină alimentarea"
+
+msgid "Remove feed {url}?"
+msgstr "Eliminați feed {url}?"
+
+msgid "Remove Selected"
+msgstr "Elimină selectat"
+
+msgid "Remove selected torrents"
+msgstr "Elimină torentele selectate"
+
+msgid "Remove selected torrents and data"
+msgstr "Elimină torentele și datele selectate"
+
+msgid "Remove torrent"
+msgstr "Elimină torentul"
+
+msgid "Remove with &Data\tShift+Del"
+msgstr "Elimină cu &date\tShift+Del"
+
+msgid "Remove with Data"
+msgstr "Elimină cu date"
+
+msgid "Removed {name}."
+msgstr "Eliminat {name}."
+
+msgid "Reset failed: {error}"
+msgstr "Resetare eșuată: {error}"
+
+msgid "Reset RSS (Clear all feeds and rules)"
+msgstr "Resetarea RSS (curățați toate furajele și regulile)"
+
+msgid "Results"
+msgstr "Rezultate"
+
+msgid "Results, {count} result"
+msgstr "Rezultate, rezultat {count}"
+
+msgid "Results, {count} results"
+msgstr "Rezultate, rezultate {count}"
+
+msgid "Resume"
+msgstr "Reia"
+
+msgid "Resume selected torrents"
+msgstr "Reia torentele selectate"
+
+msgid "Resuming torrents..."
+msgstr "Reluarea torentelor..."
+
+msgid "Round-robin"
+msgstr "Robină rotundă"
+
+msgid "RSS Articles"
+msgstr "Articolele RSS"
+
+msgid "RSS data reset successfully."
+msgstr "Date RSS resetate cu succes."
+
+msgid "RSS Downloader"
+msgstr "RSS Downloader"
+
+msgid "RSS Feeds"
+msgstr "Fluxuri RSS"
+
+msgid "RSS Rules Manager"
+msgstr "Administrator de reguli RSS"
+
+msgid "RSS Update Interval (s)"
+msgstr "Interval (e) de actualizare RSS"
+
+msgid "RSS Update Interval (seconds):"
+msgstr "Interval de actualizare RSS (secunde):"
+
+msgid "rTorrent Remote &Settings..."
+msgstr "RTorrent Remote &Settings..."
+
+msgid "rTorrent Remote Settings..."
+msgstr "Configurări la distanță rTorrent..."
+
+msgid "Rule Type:"
+msgstr "Tipul de regulă:"
+
+msgid "Rules"
+msgstr "Reguli"
+
+msgid "Save App Settings"
+msgstr "Salvează configurările aplicației"
+
+msgid "Save As..."
+msgstr "Salvează ca..."
+
+msgid "Save entry"
+msgstr "Salvează intrarea"
+
+msgid "Save Path"
+msgstr "Salvează calea"
+
+msgid "Save Path (Optional)"
+msgstr "Salvează calea (opțional)"
+
+msgid "Save Path:"
+msgstr "Salvează calea:"
+
+msgid "Save Remote Settings"
+msgstr "Salvează configurările la distanță"
+
+msgid "Save Torrent As"
+msgstr "Salvează torentul ca"
+
+msgid "Scheduler"
+msgstr "Programator"
+
+msgid "Scheduling"
+msgstr "Scheduling"
+
+msgid "Scope"
+msgstr "Domeniul de aplicare"
+
+msgid "Scripts"
+msgstr "Scripturi"
+
+msgid "Sea&rch"
+msgstr "Sea&rch"
+
+msgid "Search"
+msgstr "Caută"
+
+msgid "Search failed: {error}"
+msgstr "Căutare eșuată: {error}"
+
+msgid "Search for"
+msgstr "Caută"
+
+msgid "Search for Torrents"
+msgstr "Caută torente"
+
+msgid "Search si&tes..."
+msgstr "Caută si&turi..."
+
+msgid "Search sites"
+msgstr "Locuri de căutare"
+
+msgid "Search sites..."
+msgstr "Site-uri de căutare..."
+
+msgid "Search torrent indexers and add what you find"
+msgstr "Caută indexeri torent și adaugă ceea ce găsești"
+
+msgid "Searching {count} indexer..."
+msgstr "Căutare indexer {count}..."
+
+msgid "Searching {count} indexers..."
+msgstr "Căutare indexeri {count}..."
+
+msgid "Seeding"
+msgstr "Însămânțare"
+
+msgid "Seeds"
+msgstr "Semințe"
+
+msgid "Select"
+msgstr "Alegeți"
+
+msgid "Select &all"
+msgstr "Alegeți &ALL"
+
+msgid "Select &All\tCtrl+A"
+msgstr "Selectaţi &ALL\tCtrl+A"
+
+msgid "Select &none"
+msgstr "Selectaţi &ONĂ"
+
+msgid "Select a result first."
+msgstr "Alege un rezultat mai întâi."
+
+msgid "Select a torrent."
+msgstr "Selectaţi un torent."
+
+msgid "Select All"
+msgstr "Selectează tot"
+
+msgid "Select all torrents"
+msgstr "Alegeți toate torentele"
+
+msgid "Select File"
+msgstr "Alegeți fișierul"
+
+msgid "Select Folder"
+msgstr "Alegeți dosarul"
+
+msgid "Select {name}"
+msgstr "Selectați {name}"
+
+msgid "Selection cleared"
+msgstr "Selecţie închisă"
+
+msgid "Set"
+msgstr "Stabilește"
+
+msgid "Set Default"
+msgstr "Stabilește implicit"
+
+msgid "Settings"
+msgstr "Configurări"
+
+msgid "Settings saved."
+msgstr "Configurări salvate."
+
+msgid "Size"
+msgstr "Dimensiune"
+
+msgid "Skip"
+msgstr "Sari"
+
+msgid "Skip to torrent list"
+msgstr "Sari la lista torentului"
+
+msgid "SOCKS4 (no auth)"
+msgstr "SOCKS4 (fără aut)"
+
+msgid "SOCKS5 (no auth)"
+msgstr "SOCKS5 (fără aut)"
+
+msgid "SOCKS5 (with auth)"
+msgstr "SOCKS5 (cu aut)"
+
+msgid "Sort &by:"
+msgstr "Sortare &BY:"
+
+msgid "Sort by"
+msgstr "Sortează după"
+
+msgid "Sorted by {label}."
+msgstr "Sortat de {label}."
+
+msgid "Source (file or folder):"
+msgstr "Sursă (dosar sau dosar):"
+
+msgid "Source (written into info dict as 'source'):"
+msgstr "Sursa (scrisă în info dict ca \"sursă\":"
+
+msgid "Source path is required."
+msgstr "Calea sursă este necesară."
+
+msgid "Source path must not be a symlink or Windows reparse point."
+msgstr "Calea sursei nu trebuie să fie un simlink sau un punct de recuperare Windows."
+
+msgid "Source text"
+msgstr "Text sursă"
+
+msgid "Source text:"
+msgstr "Text sursă:"
+
+msgid "Speed"
+msgstr "Viteza"
+
+msgid "Start"
+msgstr "Start"
+
+msgid "Start All"
+msgstr "Pornește tot"
+
+msgid "Start selected torrents"
+msgstr "Pornește torentele selectate"
+
+msgid "Starting all torrents..."
+msgstr "Pornind toate torentele..."
+
+msgid "Starting torrents..."
+msgstr "Încep torrenţii..."
+
+msgid "Status"
+msgstr "Stare"
+
+msgid "Status Filters"
+msgstr "Filtre de stare"
+
+msgid "Stop All"
+msgstr "Oprește toate"
+
+msgid "Stopped"
+msgstr "Oprit"
+
+msgid "Stopping all torrents..."
+msgstr "Oprirea tuturor torentelor..."
+
+msgid "Stopping torrents..."
+msgstr "Oprirea torentelor..."
+
+msgid "Success"
+msgstr "Succes"
+
+msgid "Switch Profile"
+msgstr "Comută profilul"
+
+msgid "Switching client profile..."
+msgstr "Schimb profilul clientului..."
+
+msgid "System"
+msgstr "Sistem"
+
+msgid "System default"
+msgstr "Implicit sistem"
+
+msgid "TCP and uTP"
+msgstr "TCP și UTP"
+
+msgid "Theme"
+msgstr "Tematică"
+
+msgid "Those results carry a tracker file rather than a magnet link."
+msgstr "Aceste rezultate poartă un fişier tracker mai degrabă decât o legătură magnet."
+
+msgid "Time Left"
+msgstr "Timp rămas"
+
+msgid "Title"
+msgstr "Titlu"
+
+msgid "Toggle"
+msgstr "Comută"
+
+msgid "Too many failed attempts. Try again later."
+msgstr "Prea multe încercări eșuate. Încearcă din nou mai târziu."
+
+msgid "Torrent Actions"
+msgstr "Acțiuni torențiale"
+
+msgid "Torrent actions"
+msgstr "Acțiuni torențiale"
+
+msgid "Torrent added"
+msgstr "Torrent adăugat"
+
+msgid "Torrent created:\n{path}"
+msgstr "Torrent creat:\n{path}"
+
+msgid "Torrent Details"
+msgstr "Detalii Torrent"
+
+msgid "Torrent download finished after the active profile changed."
+msgstr "Descărcare Torrent terminat după schimbarea profilului activ."
+
+msgid "Torrent File"
+msgstr "Fișier Torrent"
+
+msgid "Torrent file added from CLI"
+msgstr "Fișier Torrent adăugat din CLI"
+
+msgid "Torrent Files"
+msgstr "Fișiere Torrent"
+
+msgid "Torrent files (*.torrent)|*.torrent"
+msgstr "Fișiere Torrent (*.torrent)"
+
+msgid "Torrent List"
+msgstr "Lista torentelor"
+
+msgid "Torrent Options"
+msgstr "Opțiuni torent"
+
+msgid "Torrents"
+msgstr "Torenți"
+
+msgid "torrents"
+msgstr "Torenți"
+
+msgid "Tracker List URL:"
+msgstr "URL- ul listei tracker:"
+
+msgid "Trackers"
+msgstr "Trackeri"
+
+msgid "Translated"
+msgstr "Tradus"
+
+msgid "Translation"
+msgstr "Traducere"
+
+msgid "Translation Center"
+msgstr "Centrul de Traduceri"
+
+msgid "Translation:"
+msgstr "Traducere:"
+
+msgid "Transmission Remote &Settings..."
+msgstr "Transmisie la distanţă &Settings..."
+
+msgid "Transmission Remote Settings..."
+msgstr "Setări distante transmisie..."
+
+msgid "Type"
+msgstr "Tip"
+
+msgid "Type what to look for first."
+msgstr "Scrie ce să cauţi mai întâi."
+
+msgid "Type what to look for."
+msgstr "Scrie ce să cauţi."
+
+msgid "UI Refresh Rate (ms)"
+msgstr "Rata de actualizare UI (ms)"
+
+msgid "Uncheck"
+msgstr "Debifează"
+
+msgid "Uncheck All"
+msgstr "Debifează toate"
+
+msgid "Unknown"
+msgstr "Necunoscut"
+
+msgid "Untranslated"
+msgstr "Netradus"
+
+msgid "Up Speed"
+msgstr "Viteză de sus"
+
+msgid "Update Available"
+msgstr "Actualizare disponibilă"
+
+msgid "Update canceled."
+msgstr "Actualizare anulată."
+
+msgid "Update Check Failed"
+msgstr "Actualizează verificarea eșuată"
+
+msgid "Update check failed."
+msgstr "Verificarea actualizării a eșuat."
+
+msgid "Update Failed"
+msgstr "Actualizare eșuată"
+
+msgid "Update failed."
+msgstr "Actualizarea a eșuat."
+
+msgid "Update helper script not found."
+msgstr "Actualizare script ajutor nu a fost găsit."
+
+msgid "Update postponed."
+msgstr "Actualizare amânată."
+
+msgid "Update prepared. Closing to install..."
+msgstr "Actualizare pregătită. Se apropie de instalare..."
+
+msgid "Update prepared. The app will restart after it exits."
+msgstr "Actualizare pregătită. Aplicația va reporni după ce iese."
+
+msgid "Updated executable not found."
+msgstr "Executabil actualizat nu a fost găsit."
+
+msgid "Updates"
+msgstr "Actualizări"
+
+msgid "Updates are only available in the packaged app."
+msgstr "Actualizările sunt disponibile doar în aplicația ambalată."
+
+msgid "Updating SerrebiTorrent"
+msgstr "Actualizare SerrebiTorrent"
+
+msgid "Updating..."
+msgstr "Actualizare..."
+
+msgid "Upload Rate (bytes/s):"
+msgstr "Rata de încărcare (bytes/s):"
+
+msgid "Upload-rate based"
+msgstr "Rata de încărcare"
+
+msgid "URL (e.g. scgi://... or http://...):"
+msgstr "URL (ex. scgi://... sau http://...):"
+
+msgid "URL / Path"
+msgstr "URL / Cale"
+
+msgid "URL or download path"
+msgstr "URL sau cale de descărcare"
+
+msgid "URL:Magnet Link"
+msgstr "URL: Magnet Link"
+
+msgid "URLs / Magnets (one per line)"
+msgstr "URL-uri / Magneți (unul per linie)"
+
+msgid "Use DyDNS"
+msgstr "Folosește DyDNS"
+
+msgid "Use NOIP"
+msgstr "Folosește NOIP"
+
+msgid "Username"
+msgstr "Nume utilizator"
+
+msgid "Username:"
+msgstr "Nume utilizator:"
+
+msgid "Verifying download..."
+msgstr "Verific descărcarea..."
+
+msgid "Verifying signature..."
+msgstr "Verificarea semnăturii..."
+
+msgid "Warning"
+msgstr "Avertisment"
+
+msgid "Web Seeds (optional)"
+msgstr "Semințe web (opțional)"
+
+msgid "Web UI"
+msgstr "Web UI"
+
+msgid "YAML files (*.yml;*.yaml)|*.yml;*.yaml"
+msgstr "Fișiere YAML (*.yml;*.yaml)"
+
+msgid "Yes"
+msgstr "Da."
+
+msgid "You're already on the latest version."
+msgstr "Eşti deja pe ultima versiune."
+
+msgid "{action} complete"
+msgstr "{action} complet"
+
+msgid "{action} complete ({failed} failed). Last error: {error}"
+msgstr "{action} complet ({failed} a eșuat). Ultima eroare: {error}"
+
+msgid "{client} Remote Settings"
+msgstr "Configurări la distanță {client}"
+
+msgid "{count} feeds"
+msgstr "{count} feeds"
+
+msgid "{count} indexer switched on."
+msgstr "Indexer {count} pornit."
+
+msgid "{count} indexers switched on."
+msgstr "Indexerele {count} pornite."
+
+msgid "{count} of your own indexer configured."
+msgstr "{count} a propriului indexer configurat."
+
+msgid "{count} of your own indexers configured."
+msgstr "{count} a propriilor indexeri configurate."
+
+msgid "{count} result"
+msgstr "{count} rezultate"
+
+msgid "{count} result so far, {pending} still searching. Last: {source}."
+msgstr "{count} rezultat până în prezent, {pending} încă în căutarea. Ultima: {source}."
+
+msgid "{count} results"
+msgstr "Rezultate {count}"
+
+msgid "{count} results so far, {pending} still searching. Last: {source}."
+msgstr "{count} rezultate până în prezent, {pending} încă în căutarea. Ultima: {source}."
+
+msgid "{count} torrents"
+msgstr "Torenturi {count}"
+
+msgid "{name} preferences saved"
+msgstr "Preferințe {name} salvate"

@@ -1,0 +1,88 @@
+name: Linux CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  linux:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Install native Linux runtime
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            python3-venv \
+            python3-wxgtk4.0 \
+            python3-libtorrent \
+            xvfb \
+            libgtk-3-dev \
+            libtiff-dev \
+            libwebp-dev
+
+      - name: Create isolated test environment
+        run: |
+          python3 -m venv --system-site-packages .venv
+          grep -v -E '^(wxPython)$' requirements.txt > /tmp/requirements-linux.txt
+          .venv/bin/python -m pip install --disable-pip-version-check \
+            -r /tmp/requirements-linux.txt pytest hypothesis
+          .venv/bin/python -c 'import wx, libtorrent; print(wx.version()); print(libtorrent.__version__)'
+
+      - name: Validate Web UI scripts
+        run: |
+          node --check web_static/i18n.js
+          node --check web_static/app.js
+
+      - name: Validate translation tooling
+        run: |
+          .venv/bin/python tools/translation_tool.py template --output /tmp/serrebitorrent.pot
+          test -s /tmp/serrebitorrent.pot
+
+      - name: Import localized runtime
+        run: xvfb-run -a .venv/bin/python -c "import app_entry; print(app_entry.LocalizedMainFrame.__name__)"
+
+      - name: Run Linux compatibility tests
+        # Ubuntu 24.04 currently ships libtorrent 2.0.10, while SerrebiTorrent's
+        # official Linux package uses the project's maintained CPython 3.14
+        # libtorrent 2.1 wheel. Keep this distro gate focused on runtime/UI,
+        # localization and accessibility code that is valid on the distro
+        # runtime. Full libtorrent integration and packaging remain covered by
+        # tools/build_linux.sh with the maintained 2.1 wheel.
+        run: |
+          xvfb-run -a .venv/bin/python -m pytest -q \
+            tests/test_i18n.py \
+            tests/test_config_manager.py \
+            tests/test_accessible_virtual_list.py \
+            tests/test_connection_dialog.py \
+            tests/test_localized_entrypoint.py \
+            tests/test_main_ui_i18n.py \
+            tests/test_preferences_dialog.py \
+            tests/test_add_torrent_dialog.py \
+            tests/test_runtime_actions_i18n.py \
+            tests/test_runtime_components_i18n.py \
+            tests/test_runtime_messages_i18n.py \
+            tests/test_runtime_create_i18n.py \
+            tests/test_runtime_update_i18n.py \
+            tests/test_runtime_cli_i18n.py \
+            tests/test_rss_i18n.py \
+            tests/test_remote_preferences_i18n.py \
+            tests/test_torrent_list.py \
+            tests/test_ui_formatting.py \
+            tests/test_list_accessibility.py \
+            tests/test_main_helpers.py \
+            tests/test_web_i18n.py \
+            tests/test_web_ui_a11y.py \
+            tests/test_translation_catalog.py \
+            tests/test_translation_center.py \
+            tests/test_external_catalog_runtime.py \
+            tests/test_translation_inventory.py \
+            tests/test_translation_packaging.py \
+            tests/test_translation_tool.py

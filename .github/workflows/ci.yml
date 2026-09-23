@@ -1,0 +1,81 @@
+name: CI
+
+permissions:
+  contents: write
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  macos:
+    runs-on: macos-15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Install native runtime
+        run: brew install libtorrent-rasterbar
+
+      - name: Create isolated Python 3.14 environment
+        run: |
+          python="$(brew --prefix python@3.14)/bin/python3.14"
+          "$python" -m venv --system-site-packages .venv
+          .venv/bin/python -m pip install --disable-pip-version-check \
+            -r requirements.txt -r requirements-build.txt pytest hypothesis
+          .venv/bin/python -c \
+            'import libtorrent; print(libtorrent.__version__, libtorrent.__file__)'
+
+      - name: Run tests
+        run: .venv/bin/python -m pytest -q
+
+      - name: Build standalone macOS app
+        if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch'
+        run: |
+          .venv/bin/python -m PyInstaller SerrebiTorrent.spec --noconfirm
+          version="$($PWD/.venv/bin/python -c 'import libtorrent; print(libtorrent.__version__)')"
+          .venv/bin/python tools/audit_bundle.py dist/SerrebiTorrent.app
+          .venv/bin/python tools/verify_frozen.py \
+            dist/SerrebiTorrent.app/Contents/MacOS/SerrebiTorrent \
+            build/frozen-self-test.json \
+            --expected-libtorrent "$version"
+
+      - name: Package macOS app
+        if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch'
+        run: |
+          version="$($PWD/.venv/bin/python -c 'from app_version import APP_VERSION; print(APP_VERSION)')"
+          artifact="SerrebiTorrent-v${version}-macos-${RUNNER_ARCH}.zip"
+          ditto -c -k --sequesterRsrc --keepParent dist/SerrebiTorrent.app "dist/$artifact"
+          echo "artifact=$artifact" >> "$GITHUB_ENV"
+
+      - name: Upload workflow artifact
+        if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v7
+        with:
+          name: SerrebiTorrent-macos-${{ runner.arch }}
+          path: dist/SerrebiTorrent-v*-macos-*.zip
+          if-no-files-found: error
+
+      - name: Attach macOS package to tagged release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for attempt in {1..18}; do
+            if gh release upload "$GITHUB_REF_NAME" "dist/$artifact" --clobber; then
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "The tagged GitHub release was not available for the macOS upload." >&2
+          exit 1

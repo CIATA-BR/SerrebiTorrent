@@ -1,0 +1,12 @@
+SerrebiTorrent.exe
+__pycache__/
+*.pyc
+.hypothesis/
+.pytest_cache/
+.firecrawl/
+build/
+dist/
+release_notes.txt
+SerrebiTorrent_Data/
+.claude/
+torrents.json

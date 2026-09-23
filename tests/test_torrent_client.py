@@ -1,0 +1,1107 @@
+"""
+Comprehensive test suite for SerrebiTorrent torrent client functionality.
+
+Tests cover:
+- URL encoding for special characters
+- Torrent adding (file, URL, magnet)
+- Torrent state management (start, stop, pause, resume)
+- Torrent removal (with/without data)
+- Seeding/leeching status detection
+- Session persistence (save/load resume data)
+- LocalClient lifecycle
+"""
+
+import pytest
+import sys
+import os
+import tempfile
+import time
+from types import SimpleNamespace
+from unittest.mock import MagicMock, patch
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+
+# ============================================================================
+# URL Encoding Tests (Unit)
+# ============================================================================
+
+class TestSafeEncodeUrl:
+    """Test URL encoding for special characters like brackets."""
+    
+    def test_encode_brackets_in_path(self):
+        from clients import safe_encode_url
+        url = "https://example.com/torrent/Test[Group].torrent"
+        result = safe_encode_url(url)
+        assert "%5B" in result  # [ encoded
+        assert "%5D" in result  # ] encoded
+        assert "[" not in result
+        assert "]" not in result
+    
+    def test_preserve_scheme_and_host(self):
+        from clients import safe_encode_url
+        url = "https://zoink.ch/torrent/File[tag].torrent"
+        result = safe_encode_url(url)
+        assert result.startswith("https://zoink.ch/")
+    
+    def test_preserve_slashes(self):
+        from clients import safe_encode_url
+        url = "https://example.com/path/to/file[1].torrent"
+        result = safe_encode_url(url)
+        # Slashes should not be encoded
+        assert "/path/to/" in result
+    
+    def test_preserve_query_string(self):
+        from clients import safe_encode_url
+        url = "https://example.com/file[1].torrent?token=abc&id=123"
+        result = safe_encode_url(url)
+        assert "?token=abc&id=123" in result
+    
+    def test_no_change_for_clean_url(self):
+        from clients import safe_encode_url
+        url = "https://example.com/simple.torrent"
+        result = safe_encode_url(url)
+        assert result == url
+    
+    def test_real_eztv_url(self):
+        from clients import safe_encode_url
+        url = "https://zoink.ch/torrent/The.Weakest.Link.2021.S05E10.1080p.WEB.h264-CBFM[EZTVx.to].mkv.torrent"
+        result = safe_encode_url(url)
+        assert "%5BEZTVx.to%5D" in result
+        assert "zoink.ch" in result
+
+    def test_preserve_existing_percent_escapes(self):
+        from clients import safe_encode_url
+        url = "https://example.com/path/File%20Name[Group].torrent"
+        result = safe_encode_url(url)
+        assert "File%20Name%5BGroup%5D.torrent" in result
+        assert "%2520" not in result
+
+
+# ============================================================================
+# Session Manager Tests (Mocked)
+# ============================================================================
+
+@pytest.fixture
+def mock_lt():
+    """Create a comprehensive mock for libtorrent."""
+    mock = MagicMock()
+    
+    # Enums
+    mock.proxy_type_t = MagicMock()
+    mock.proxy_type_t.none = 0
+    mock.proxy_type_t.socks4 = 1
+    mock.proxy_type_t.socks5 = 2
+    mock.proxy_type_t.socks5_pw = 3
+    mock.proxy_type_t.http = 4
+    mock.proxy_type_t.http_pw = 5
+    
+    mock.alert = MagicMock()
+    mock.alert.category_t = MagicMock()
+    mock.alert.category_t.status_notification = 1
+    mock.alert.category_t.storage_notification = 2
+    mock.alert.category_t.error_notification = 4
+    
+    mock.resume_data_flags_t = MagicMock()
+    mock.resume_data_flags_t.flush_disk_cache = 1
+    mock.session.return_value.wait_for_alert.return_value = False
+    mock.session.return_value.pop_alerts.return_value = []
+    
+    mock.remove_flags_t = MagicMock()
+    mock.remove_flags_t.delete_files = 1
+    
+    # Torrent status states
+    mock.torrent_status = MagicMock()
+    mock.torrent_status.seeding = 5
+    mock.torrent_status.finished = 4
+    mock.torrent_status.downloading = 3
+    mock.torrent_status.checking_files = 1
+    mock.torrent_status.queued_for_checking = 0
+    
+    return mock
+
+
+@pytest.fixture
+def mock_session_env(mock_lt):
+    """Set up mocked libtorrent environment."""
+    original_lt = sys.modules.get('libtorrent')
+    original_sm = sys.modules.get('session_manager')
+    
+    sys.modules['libtorrent'] = mock_lt
+    if 'session_manager' in sys.modules:
+        del sys.modules['session_manager']
+    
+    yield mock_lt
+    
+    if original_lt:
+        sys.modules['libtorrent'] = original_lt
+    elif 'libtorrent' in sys.modules:
+        del sys.modules['libtorrent']
+    
+    if original_sm:
+        sys.modules['session_manager'] = original_sm
+    elif 'session_manager' in sys.modules:
+        del sys.modules['session_manager']
+
+
+@pytest.fixture
+def session_manager_instance(mock_session_env):
+    """Create a SessionManager instance with mocked dependencies."""
+    from session_manager import SessionManager
+    SessionManager._instance = None
+    
+    with patch('session_manager.get_state_dir', return_value=tempfile.gettempdir()):
+        with patch('os.path.exists', return_value=False):
+            with patch('session_manager.ConfigManager') as MockCM:
+                MockCM.return_value.get_preferences.return_value = {}
+                with patch('os.listdir', return_value=[]):
+                    sm = SessionManager.get_instance()
+                    sm.ses.reset_mock()
+                    yield sm
+                    sm.running = False
+                    sm.alert_thread.join(timeout=1)
+    
+    SessionManager._instance = None
+
+
+class TestSessionManagerAddTorrent:
+    """Test adding torrents via various methods."""
+    
+    def test_add_torrent_file_success(self, session_manager_instance, mock_session_env, tmp_path):
+        """Test adding a torrent from file content."""
+        mock_info = MagicMock()
+        mock_info.info_hash.return_value = "a" * 40
+        mock_info.info_hashes.return_value = MagicMock()
+        mock_session_env.torrent_info.return_value = mock_info
+        session_manager_instance.state_dir = str(tmp_path)
+        
+        with patch.object(session_manager_instance, '_find_handle', return_value=None):
+            session_manager_instance.add_torrent_file(b"torrent_content", "/downloads")
+        
+        session_manager_instance.ses.add_torrent.assert_called_once()
+    
+    def test_add_torrent_file_duplicate_rejected(self, session_manager_instance, mock_session_env):
+        """Test that duplicate torrents are rejected."""
+        mock_info = MagicMock()
+        mock_info.info_hash.return_value = "b" * 40
+        mock_session_env.torrent_info.return_value = mock_info
+        
+        with patch.object(session_manager_instance, '_find_handle', return_value=MagicMock()):
+            with pytest.raises(ValueError, match="already exists"):
+                session_manager_instance.add_torrent_file(b"content", "/downloads")
+    
+    def test_add_magnet_success(self, session_manager_instance, mock_session_env):
+        """Test adding a magnet link."""
+        mock_params = MagicMock()
+        mock_params.info_hashes.v1 = "c" * 40
+        mock_params.info_hashes.has_v1.return_value = True
+        mock_session_env.parse_magnet_uri.return_value = mock_params
+        
+        with patch.object(session_manager_instance, '_find_handle', return_value=None):
+            session_manager_instance.add_magnet("magnet:?xt=urn:btih:abc", "/downloads")
+        
+        session_manager_instance.ses.add_torrent.assert_called_once()
+    
+    def test_add_magnet_duplicate_rejected(self, session_manager_instance, mock_session_env):
+        """Test that duplicate magnets are rejected."""
+        mock_params = MagicMock()
+        mock_params.info_hashes.v1 = "d" * 40
+        mock_params.info_hashes.has_v1.return_value = True
+        mock_session_env.parse_magnet_uri.return_value = mock_params
+        
+        with patch.object(session_manager_instance, '_find_handle', return_value=MagicMock()):
+            with pytest.raises(ValueError, match="already exists"):
+                session_manager_instance.add_magnet("magnet:?xt=urn:btih:def", "/downloads")
+
+
+class TestSessionManagerRemove:
+    """Test torrent removal functionality."""
+    
+    def test_remove_torrent_without_data(self, session_manager_instance, mock_session_env):
+        """Test removing a torrent without deleting files."""
+        info_hash = "e" * 40
+        session_manager_instance.torrents_db[info_hash] = {'save_path': '/tmp'}
+        
+        mock_handle = MagicMock()
+        with patch.object(session_manager_instance, '_find_handle', return_value=mock_handle):
+            with patch('os.path.exists', return_value=False):
+                session_manager_instance.remove_torrent(info_hash, delete_files=False)
+        
+        session_manager_instance.ses.remove_torrent.assert_called_once()
+        # Called with handle and flags=0
+        call_args = session_manager_instance.ses.remove_torrent.call_args
+        assert call_args[0][1] == 0  # delete_files=False -> flags=0
+    
+    def test_remove_torrent_with_data(self, session_manager_instance, mock_session_env):
+        """Test removing a torrent with file deletion."""
+        info_hash = "f" * 40
+        session_manager_instance.torrents_db[info_hash] = {'save_path': '/tmp'}
+        
+        mock_handle = MagicMock()
+        with patch.object(session_manager_instance, '_find_handle', return_value=mock_handle):
+            with patch('os.path.exists', return_value=False):
+                session_manager_instance.remove_torrent(info_hash, delete_files=True)
+        
+        session_manager_instance.ses.remove_torrent.assert_called_once()
+        # Called with delete flag
+        call_args = session_manager_instance.ses.remove_torrent.call_args
+        assert call_args[0][1] != 0  # delete_files=True -> non-zero flags
+    
+    def test_remove_cleans_up_db(self, session_manager_instance, mock_session_env):
+        """Test that removal cleans up the torrents database."""
+        info_hash = "1" * 40
+        session_manager_instance.torrents_db[info_hash] = {'save_path': '/tmp'}
+        
+        mock_handle = MagicMock()
+        with patch.object(session_manager_instance, '_find_handle', return_value=mock_handle):
+            with patch('os.path.exists', return_value=False):
+                session_manager_instance.remove_torrent(info_hash)
+        
+        assert info_hash not in session_manager_instance.torrents_db
+
+
+class TestSessionManagerState:
+    """Test session state persistence."""
+    
+    def test_save_state_triggers_resume_data(self, session_manager_instance, mock_session_env):
+        """Test that save_state triggers resume data save for all torrents."""
+        mock_handle1 = MagicMock()
+        mock_handle1.is_valid.return_value = True
+        mock_handle2 = MagicMock()
+        mock_handle2.is_valid.return_value = True
+        
+        session_manager_instance.ses.get_torrents.return_value = [mock_handle1, mock_handle2]
+        session_manager_instance.pending_saves = set()
+        
+        with patch.object(session_manager_instance, '_handle_hash_key', return_value=""):
+            session_manager_instance.save_state()
+        
+        mock_handle1.save_resume_data.assert_called_once()
+        mock_handle2.save_resume_data.assert_called_once()
+    
+    def test_save_state_skips_invalid_handles(self, session_manager_instance, mock_session_env):
+        """Test that save_state skips invalid handles."""
+        mock_handle = MagicMock()
+        mock_handle.is_valid.return_value = False
+        
+        session_manager_instance.ses.get_torrents.return_value = [mock_handle]
+        session_manager_instance.pending_saves = set()
+        
+        session_manager_instance.save_state()
+        
+        mock_handle.save_resume_data.assert_not_called()
+
+
+# ============================================================================
+# LocalClient Tests (using real imports where possible)
+# ============================================================================
+
+class TestLocalClientUrlEncoding:
+    """Test LocalClient URL encoding - these don't require mocking SessionManager."""
+    
+    def test_safe_downloader_used_in_add_torrent_url(self):
+        """Verify that LocalClient uses the capped HTTP(S) downloader."""
+        # Read the source code and verify
+        import inspect
+        from clients import LocalClient
+        source = inspect.getsource(LocalClient.add_torrent_url)
+        assert "download_torrent_url" in source
+    
+    def test_url_encoding_function_exists(self):
+        """Test that safe_encode_url is exported from clients."""
+        from clients import safe_encode_url
+        assert callable(safe_encode_url)
+        
+        # Test it works
+        url = "https://example.com/file[1].torrent"
+        encoded = safe_encode_url(url)
+        assert "%5B" in encoded
+        assert "%5D" in encoded
+
+    def test_download_torrent_url_rejects_non_http_scheme(self):
+        from clients import download_torrent_url
+        with pytest.raises(ValueError):
+            download_torrent_url("file:///C:/secret.torrent")
+
+
+class TestLocalClientConnection:
+    """test_connection runs against the real libtorrent the build ships."""
+
+    def test_reports_version_of_the_installed_libtorrent(self):
+        libtorrent = pytest.importorskip("libtorrent")
+        from clients import LocalClient
+
+        # libtorrent 2.1 removed lt.version, which made this raise
+        # AttributeError and surface as "Connection failed" on startup.
+        result = LocalClient.test_connection(LocalClient.__new__(LocalClient))
+
+        assert result == f"libtorrent {libtorrent.__version__}"
+        assert "unknown" not in result
+
+    def test_download_torrent_url_enforces_size_cap(self, monkeypatch):
+        import clients
+
+        class FakeSocket:
+            def getpeername(self):
+                return ("93.184.216.34", 443)
+
+        class FakeResponse:
+            status_code = 200
+            headers = {}
+            raw = SimpleNamespace(_connection=SimpleNamespace(sock=FakeSocket()))
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, exc_type, exc, tb):
+                return False
+
+            def raise_for_status(self):
+                return None
+
+            def iter_content(self, chunk_size):
+                yield b"a" * (clients.MAX_TORRENT_DOWNLOAD_BYTES + 1)
+
+        monkeypatch.setattr(clients.socket, "getaddrinfo", lambda *args, **kwargs: [(None, None, None, None, ("93.184.216.34", 443))])
+        monkeypatch.setattr(clients.requests, "get", lambda *args, **kwargs: FakeResponse())
+
+        with pytest.raises(ValueError):
+            clients.download_torrent_url("https://example.com/test.torrent")
+
+    def test_download_torrent_url_rejects_private_redirect(self, monkeypatch):
+        import clients
+
+        class FakeSocket:
+            def getpeername(self):
+                return ("93.184.216.34", 80)
+
+        class RedirectResponse:
+            status_code = 302
+            headers = {"Location": "http://127.0.0.1/private.torrent"}
+            raw = SimpleNamespace(_connection=SimpleNamespace(sock=FakeSocket()))
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, exc_type, exc, tb):
+                return False
+
+            def raise_for_status(self):
+                return None
+
+            def iter_content(self, chunk_size):
+                return iter(())
+
+        monkeypatch.setattr(clients.socket, "getaddrinfo", lambda *args, **kwargs: [(None, None, None, None, ("93.184.216.34", 80))])
+        monkeypatch.setattr(clients.requests, "get", lambda *args, **kwargs: RedirectResponse())
+
+        with pytest.raises(ValueError, match="Private|Localhost|local network"):
+            clients.download_torrent_url("http://example.com/test.torrent")
+
+    def test_download_torrent_url_rejects_dns_rebinding_peer(self, monkeypatch):
+        import clients
+
+        class FakeSocket:
+            def getpeername(self):
+                return ("127.0.0.1", 443)
+
+        class FakeResponse:
+            status_code = 200
+            headers = {}
+            raw = SimpleNamespace(_connection=SimpleNamespace(sock=FakeSocket()))
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, exc_type, exc, tb):
+                return False
+
+            def raise_for_status(self):
+                return None
+
+            def iter_content(self, chunk_size):
+                yield b"should-not-be-read"
+
+        monkeypatch.setattr(
+            clients.socket,
+            "getaddrinfo",
+            lambda *args, **kwargs: [(None, None, None, None, ("93.184.216.34", 443))],
+        )
+        monkeypatch.setattr(clients.requests, "get", lambda *args, **kwargs: FakeResponse())
+
+        with pytest.raises(ValueError, match="private or local network"):
+            clients.download_torrent_url("https://example.com/test.torrent")
+
+    def test_local_client_accepts_uppercase_magnet_scheme(self):
+        from clients import LocalClient
+
+        class FakeManager:
+            def __init__(self):
+                self.magnets = []
+
+            def add_magnet(self, url, save_path):
+                self.magnets.append((url, save_path))
+
+        client = LocalClient.__new__(LocalClient)
+        client.m = FakeManager()
+        client._edp = lambda: "C:\\Downloads"
+
+        client.add_torrent_url("MAGNET:?xt=urn:btih:abc")
+
+        assert client.m.magnets == [("MAGNET:?xt=urn:btih:abc", "C:\\Downloads")]
+
+
+class TestLocalClientTorrentStatus:
+    """Test LocalClient torrent status detection - simplified unit tests."""
+    
+    def test_seeding_state_value(self):
+        """Test that seeding state detection logic is correct."""
+        # Test the logic used in get_torrents_full
+        # state = 0 if (paused and not auto_managed) else 1
+        
+        # Seeding, not paused
+        paused, auto_managed = False, True
+        state = 0 if (paused and not auto_managed) else 1
+        assert state == 1  # Active
+        
+        # Paused manually
+        paused, auto_managed = True, False
+        state = 0 if (paused and not auto_managed) else 1
+        assert state == 0  # Stopped
+        
+        # Paused but auto-managed (queued)
+        paused, auto_managed = True, True
+        state = 0 if (paused and not auto_managed) else 1
+        assert state == 1  # Still shows as active (queued)
+    
+    def test_ratio_calculation(self):
+        """Test ratio calculation logic."""
+        # ratio = (upload / download * 1000) if download > 0 else 0
+        
+        # Normal case
+        upload, download = 500, 1000
+        ratio = (upload / download * 1000) if download > 0 else 0
+        assert ratio == 500
+        
+        # No download yet
+        upload, download = 100, 0
+        ratio = (upload / download * 1000) if download > 0 else 0
+        assert ratio == 0
+    
+    def test_eta_calculation(self):
+        """Test ETA calculation logic."""
+        # eta = (remaining / rate) if rate > 0 else -1
+        
+        # Downloading
+        total_wanted, done, rate = 1000, 500, 100
+        remaining = total_wanted - done
+        eta = int(remaining / rate) if rate > 0 else -1
+        assert eta == 5
+        
+        # No download speed
+        rate = 0
+        eta = int(remaining / rate) if rate > 0 else -1
+        assert eta == -1
+
+
+class TestLocalClientStatusHelpers:
+    """Status helpers must keep working on libtorrent 2.0 and 2.1 (issue #1)."""
+
+    def test_paused_flag_falls_back_to_flags_bitmask(self):
+        lt = pytest.importorskip("libtorrent")
+        from clients import _torrent_status_flag
+
+        paused = int(lt.torrent_flags.paused)
+        auto_managed = int(lt.torrent_flags.auto_managed)
+
+        # libtorrent 2.1-style status: only .flags, no paused/auto_managed attrs.
+        running = SimpleNamespace(flags=auto_managed)
+        assert _torrent_status_flag(running, "paused") is False
+        assert _torrent_status_flag(running, "auto_managed") is True
+
+        manually_paused = SimpleNamespace(flags=paused)
+        assert _torrent_status_flag(manually_paused, "paused") is True
+        assert _torrent_status_flag(manually_paused, "auto_managed") is False
+
+        queued = SimpleNamespace(flags=paused | auto_managed)
+        assert _torrent_status_flag(queued, "paused") is True
+        assert _torrent_status_flag(queued, "auto_managed") is True
+
+    def test_paused_flag_prefers_legacy_attributes(self):
+        from clients import _torrent_status_flag
+
+        # libtorrent 2.0-style status with direct attributes.
+        running = SimpleNamespace(paused=False, auto_managed=True)
+        assert _torrent_status_flag(running, "paused") is False
+        assert _torrent_status_flag(running, "auto_managed") is True
+
+        stopped = SimpleNamespace(paused=True, auto_managed=False)
+        assert _torrent_status_flag(stopped, "paused") is True
+        assert _torrent_status_flag(stopped, "auto_managed") is False
+
+    def test_state_value_resolves_on_2_1_style_enum(self):
+        lt = pytest.importorskip("libtorrent")
+        from clients import _torrent_state_value
+
+        assert _torrent_state_value("checking_files") == int(lt.torrent_status.states.checking_files)
+        # queued_for_checking merged into checking_resume_data on 2.1; the
+        # resolver must not raise on either version.
+        queued = _torrent_state_value("queued_for_checking")
+        assert queued is None or isinstance(queued, int)
+
+    def test_stopped_state_matches_original_semantics(self):
+        lt = pytest.importorskip("libtorrent")
+        from clients import _torrent_status_flag
+
+        paused = int(lt.torrent_flags.paused)
+        auto_managed = int(lt.torrent_flags.auto_managed)
+
+        for flags in (auto_managed, 0):
+            status = SimpleNamespace(flags=flags)
+            sv = 0 if (_torrent_status_flag(status, "paused") and not _torrent_status_flag(status, "auto_managed")) else 1
+            assert sv == 1  # running/queued torrents are active
+
+        status = SimpleNamespace(flags=paused)
+        sv = 0 if (_torrent_status_flag(status, "paused") and not _torrent_status_flag(status, "auto_managed")) else 1
+        assert sv == 0  # manually paused is Stopped
+
+
+class TestLocalClientDetailHelpers:
+    """Handle-level helpers must work on libtorrent 2.0 and 2.1 (issue #1)."""
+
+    class LegacyHandle:
+        """libtorrent 2.0-style handle: has_metadata/get_torrent_info/file_priorities."""
+
+        def __init__(self, metadata=True):
+            self._metadata = metadata
+
+        def has_metadata(self):
+            return self._metadata
+
+        def get_torrent_info(self):
+            return "torrent-info-legacy"
+
+        def file_priorities(self):
+            return [4, 0]
+
+    class V21Handle:
+        """libtorrent 2.1-style handle: no has_metadata/get_torrent_info/file_priorities."""
+
+        def __init__(self, metadata=True):
+            self._metadata = metadata
+
+        def status(self):
+            return SimpleNamespace(has_metadata=self._metadata)
+
+        def torrent_file(self):
+            return "torrent-info-v21"
+
+        def get_file_priorities(self):
+            return [4, 0]
+
+    def test_handle_has_metadata_on_legacy_and_21(self):
+        from clients import _handle_has_metadata
+
+        assert _handle_has_metadata(self.LegacyHandle(True)) is True
+        assert _handle_has_metadata(self.LegacyHandle(False)) is False
+        assert _handle_has_metadata(self.V21Handle(True)) is True
+        assert _handle_has_metadata(self.V21Handle(False)) is False
+
+    def test_handle_torrent_info_on_legacy_and_21(self):
+        from clients import _handle_torrent_info
+
+        assert _handle_torrent_info(self.LegacyHandle()) == "torrent-info-legacy"
+        assert _handle_torrent_info(self.V21Handle()) == "torrent-info-v21"
+
+    def test_handle_file_priorities_on_legacy_and_21(self):
+        from clients import _handle_file_priorities
+
+        assert _handle_file_priorities(self.LegacyHandle()) == [4, 0]
+        assert _handle_file_priorities(self.V21Handle()) == [4, 0]
+
+
+class TestLocalClientStopStart:
+    """Stop must clear auto-management so the pause sticks and the GUI shows
+    Stopped (the reported 'can't pause' bug)."""
+
+    def _client_with(self, handle):
+        from clients import LocalClient
+
+        class FakeMgr:
+            def _find_handle(self, hash_value):
+                return handle
+
+        client = LocalClient.__new__(LocalClient)
+        client.m = FakeMgr()
+        return client
+
+    def test_stop_clears_auto_managed_before_pausing(self):
+        calls = []
+
+        class LegacyHandle:
+            def auto_managed(self, enabled):
+                calls.append(("auto_managed", enabled))
+
+            def pause(self):
+                calls.append(("pause",))
+
+        self._client_with(LegacyHandle()).stop_torrent("hash")
+
+        assert calls == [("auto_managed", False), ("pause",)]
+
+    def test_stop_clears_auto_managed_via_flags_on_21(self):
+        lt = pytest.importorskip("libtorrent")
+        calls = []
+
+        class V21Handle:
+            def unset_flags(self, flags):
+                calls.append(("unset_flags", flags))
+
+            def pause(self):
+                calls.append(("pause",))
+
+        self._client_with(V21Handle()).stop_torrent("hash")
+
+        assert calls == [("unset_flags", int(lt.torrent_flags.auto_managed)), ("pause",)]
+
+    def test_start_paused_flags_clears_auto_managed(self):
+        """Start-paused add flags keep the paused bit and drop auto-management."""
+        lt = pytest.importorskip("libtorrent")
+        from session_manager import _start_paused_flags
+
+        flags = _start_paused_flags()
+        assert flags is not None
+        assert not (flags & int(lt.torrent_flags.auto_managed))
+        assert flags & int(lt.torrent_flags.paused)  # starts paused
+
+
+# ============================================================================
+# Integration Tests (Real libtorrent, if available)
+# ============================================================================
+
+@pytest.fixture
+def real_libtorrent():
+    """Skip if libtorrent is not available."""
+    try:
+        from libtorrent_env import prepare_libtorrent_dlls
+        prepare_libtorrent_dlls()
+        import libtorrent as lt
+        return lt
+    except ImportError:
+        pytest.skip("libtorrent not available for integration tests")
+
+
+@pytest.fixture
+def temp_dirs():
+    """Create temporary directories for testing."""
+    import tempfile
+    import shutil
+    
+    state_dir = tempfile.mkdtemp(prefix="serrebi_test_state_")
+    download_dir = tempfile.mkdtemp(prefix="serrebi_test_dl_")
+    
+    yield {'state': state_dir, 'download': download_dir}
+    
+    shutil.rmtree(state_dir, ignore_errors=True)
+    shutil.rmtree(download_dir, ignore_errors=True)
+
+
+@pytest.fixture
+def local_torrent_env(real_libtorrent, temp_dirs):
+    """A real SessionManager + LocalClient with one added torrent.
+
+    Everything lives under temp_dirs so no real user data is touched. The
+    fixture yields a SimpleNamespace with the libtorrent module, session
+    manager, client, the torrent's v1 hash, and the temp paths.
+    """
+    from clients import LocalClient
+    from session_manager import SessionManager
+
+    lt = real_libtorrent
+    SessionManager._instance = None
+    with patch('session_manager.get_state_dir', return_value=temp_dirs['state']), \
+            patch('session_manager.ConfigManager') as MockCM:
+        MockCM.return_value.get_preferences.return_value = {
+            'enable_dht': False,
+            'enable_lsd': False,
+            'enable_upnp': False,
+            'enable_natpmp': False,
+            'listen_port': 16881,
+        }
+        sm = SessionManager.get_instance()
+        try:
+            payload = os.path.join(temp_dirs['download'], "payload.txt")
+            with open(payload, 'w') as fh:
+                fh.write("detail tab regression payload " * 100)
+            files = lt.list_files(payload)
+            ct = lt.create_torrent(files)
+            lt.set_piece_hashes(ct, temp_dirs['download'])
+            data = lt.bencode(ct.generate())
+            info = lt.torrent_info(data)
+            v1 = str(info.info_hashes().v1)
+            sm.add_torrent_file(data, temp_dirs['download'])
+
+            # Let the session settle so status/metadata are populated.
+            deadline = time.time() + 3
+            while time.time() < deadline:
+                sm.ses.wait_for_alert(100)
+                sm.ses.pop_alerts()
+                time.sleep(0.05)
+
+            client = LocalClient(temp_dirs['download'])
+            yield SimpleNamespace(
+                lt=lt,
+                sm=sm,
+                client=client,
+                v1=v1,
+                download_dir=temp_dirs['download'],
+                state_dir=temp_dirs['state'],
+            )
+        finally:
+            sm.running = False
+            sm.alert_thread.join(timeout=1)
+            SessionManager._instance = None
+
+
+class TestIntegrationTorrentCreation:
+    """Integration tests using real libtorrent."""
+    
+    def test_create_and_parse_torrent(self, real_libtorrent, temp_dirs):
+        """Test creating a torrent file and parsing it back."""
+        lt = real_libtorrent
+        
+        # Create a test file
+        test_file = os.path.join(temp_dirs['download'], "test_file.txt")
+        with open(test_file, 'w') as f:
+            f.write("Test content for torrent")
+        
+        # Create torrent
+        files = lt.list_files(test_file)
+        ct = lt.create_torrent(files)
+        ct.set_creator("SerrebiTorrent Test")
+        lt.set_piece_hashes(ct, temp_dirs['download'])
+        
+        torrent_data = lt.bencode(ct.generate())
+        
+        # Parse it back
+        info = lt.torrent_info(torrent_data)
+        
+        assert info.name() == "test_file.txt"
+        assert info.num_files() == 1
+
+    def test_create_multi_file_folder_torrent(self, real_libtorrent, temp_dirs):
+        """Folder torrents must hash and parse on libtorrent 2.1.
+
+        2.1's ``list_files`` returns paths relative to the parent directory,
+        so hashing against the wrong base aborts with a system:995 I/O error;
+        torrent_creator must keep using the parent base.
+        """
+        from torrent_creator import create_torrent_bytes
+
+        folder = os.path.join(temp_dirs['download'], "media")
+        os.makedirs(os.path.join(folder, "nested"))
+        with open(os.path.join(folder, "a.txt"), "w") as fh:
+            fh.write("x" * 20000)
+        with open(os.path.join(folder, "nested", "b.bin"), "wb") as fh:
+            fh.write(b"y" * 10000)
+
+        data, magnet, ih = create_torrent_bytes(folder, trackers=[])
+
+        assert ih
+        assert magnet.startswith("magnet:")
+        info = real_libtorrent.torrent_info(data)
+        assert str(info.info_hashes().v1) == ih
+        from torrent_parsing import torrent_file_storage
+        files = torrent_file_storage(info)
+        paths = [files.file_path(i) for i in range(info.num_files())]
+        assert any(path.endswith("a.txt") for path in paths)
+        assert any(path.endswith("b.bin") for path in paths)
+    
+    def test_url_encoding_with_real_request(self, real_libtorrent):
+        """Test that encoded URLs work with real requests library."""
+        from clients import safe_encode_url
+        
+        # Test encoding
+        url = "https://example.com/test[1].torrent"
+        encoded = safe_encode_url(url)
+        
+        assert "%5B" in encoded
+        assert "%5D" in encoded
+        
+        # Note: We don't actually fetch this URL as it doesn't exist
+        # This just verifies the encoding is correct
+
+
+class TestIntegrationSessionLifecycle:
+    """Integration tests for session lifecycle."""
+    
+    def test_session_manager_creates_session(self, real_libtorrent, temp_dirs):
+        """Test that SessionManager can create a real session."""
+        # Reset singleton
+        from session_manager import SessionManager
+        SessionManager._instance = None
+        
+        with patch('session_manager.get_state_dir', return_value=temp_dirs['state']):
+            with patch('session_manager.ConfigManager') as MockCM:
+                MockCM.return_value.get_preferences.return_value = {
+                    'enable_dht': False,  # Disable for testing
+                    'enable_lsd': False,
+                    'enable_upnp': False,
+                    'enable_natpmp': False,
+                }
+                sm = SessionManager.get_instance()
+                
+                assert sm.ses is not None
+                assert isinstance(sm.ses, real_libtorrent.session)
+                
+                # Cleanup
+                sm.running = False
+                SessionManager._instance = None
+
+
+class TestIntegrationAddedTorrentAppearsInList:
+    """Regression for issue #1: added torrents must show up in the GUI list.
+
+    On libtorrent 2.1, ``LocalClient.get_torrents_full`` raised AttributeError
+    on every row (``torrent_status.paused`` was removed) and the row loop
+    silently skipped them all, so the list stayed empty while files still
+    downloaded.
+    """
+
+    def test_added_torrent_shows_up_in_get_torrents_full(self, real_libtorrent, temp_dirs):
+        import time
+
+        lt = real_libtorrent
+        from clients import LocalClient
+        from session_manager import SessionManager
+
+        SessionManager._instance = None
+        with patch('session_manager.get_state_dir', return_value=temp_dirs['state']):
+            with patch('session_manager.ConfigManager') as MockCM:
+                MockCM.return_value.get_preferences.return_value = {
+                    'enable_dht': False,
+                    'enable_lsd': False,
+                    'enable_upnp': False,
+                    'enable_natpmp': False,
+                }
+                sm = SessionManager.get_instance()
+                try:
+                    test_file = os.path.join(temp_dirs['download'], "payload.txt")
+                    with open(test_file, 'w') as f:
+                        f.write("issue #1 regression payload " * 100)
+
+                    files = lt.list_files(test_file)
+                    ct = lt.create_torrent(files)
+                    lt.set_piece_hashes(ct, temp_dirs['download'])
+                    torrent_bytes = lt.bencode(ct.generate())
+                    info = lt.torrent_info(torrent_bytes)
+                    v1 = str(info.info_hashes().v1)
+
+                    sm.add_torrent_file(torrent_bytes, temp_dirs['download'])
+
+                    # Let the session settle so status is populated.
+                    deadline = time.time() + 3
+                    while time.time() < deadline:
+                        sm.ses.wait_for_alert(100)
+                        sm.ses.pop_alerts()
+                        time.sleep(0.05)
+
+                    client = LocalClient(temp_dirs['download'])
+                    rows = client.get_torrents_full()
+                    hashes = [str(r.get("hash", "")) for r in rows]
+
+                    assert v1 in hashes, f"added torrent missing from list: {hashes}"
+                finally:
+                    sm.running = False
+                    sm.alert_thread.join(timeout=1)
+                    SessionManager._instance = None
+
+
+class TestIntegrationDetailTabs:
+    """Real-libtorrent coverage for the Files/Peers/Trackers tabs and session
+    persistence. These regress the libtorrent 2.1 handle API renames that made
+    the Files tab show nothing (issue #1 family).
+    """
+
+    def test_files_tab_lists_torrent_files(self, local_torrent_env):
+        env = local_torrent_env
+        files = env.client.get_files(env.v1)
+        assert isinstance(files, list) and files
+        row = files[0]
+        assert row["index"] == 0
+        assert row["name"]
+        assert row["size"] > 0
+        assert "progress" in row
+        assert "priority" in row
+
+    def test_set_file_priority_changes_file_row(self, local_torrent_env):
+        env = local_torrent_env
+        before = env.client.get_files(env.v1)[0]
+        env.client.set_file_priority(env.v1, 0, 0)
+        after = env.client.get_files(env.v1)[0]
+        assert before["priority"] != 0
+        assert after["priority"] == 0
+
+    def test_peers_trackers_and_save_path_return_values(self, local_torrent_env):
+        env = local_torrent_env
+        assert isinstance(env.client.get_peers(env.v1), list)
+        assert isinstance(env.client.get_trackers(env.v1), list)
+        assert env.client.get_torrent_save_path(env.v1)
+
+    def test_torrent_row_carries_a_magnet(self, local_torrent_env):
+        env = local_torrent_env
+        rows = env.client.get_torrents_full()
+        row = next(r for r in rows if r.get("hash") == env.v1)
+        magnet = str(row.get("magnet", ""))
+        assert magnet.startswith("magnet:")
+        assert env.v1 in magnet
+
+    def test_resume_data_persists_through_alert_loop(self, local_torrent_env):
+        env = local_torrent_env
+        handle = env.sm._find_handle(env.v1)
+        assert handle is not None
+        handle.save_resume_data()
+
+        resume_path = os.path.join(env.state_dir, env.v1 + ".resume")
+        deadline = time.time() + 8
+        while time.time() < deadline and not os.path.exists(resume_path):
+            time.sleep(0.2)
+        assert os.path.exists(resume_path), "resume data was not persisted"
+
+        with open(resume_path, "rb") as fp:
+            params = env.lt.read_resume_data(fp.read())
+        assert env.sm._info_hash_key(params.info_hashes) == env.v1
+
+    def test_magnet_without_metadata_reports_no_metadata(self, local_torrent_env):
+        from session_manager import _handle_has_metadata
+
+        env = local_torrent_env
+        fake_hash = "f" * 40
+        env.sm.add_magnet(f"magnet:?xt=urn:btih:{fake_hash}", env.download_dir)
+        handle = env.sm._find_handle(fake_hash)
+        assert handle is not None
+        assert _handle_has_metadata(handle) is False
+        assert env.client.get_files(fake_hash) == []
+
+    def test_pause_shows_stopped_and_resume_restarts(self, local_torrent_env):
+        """A manual pause must clear auto-management and show as Stopped."""
+        env = local_torrent_env
+
+        def state_of():
+            rows = env.client.get_torrents_full()
+            return next(r["state"] for r in rows if r["hash"] == env.v1)
+
+        assert state_of() == 1  # running after add
+        env.client.stop_torrent(env.v1)
+        time.sleep(0.5)
+
+        handle = env.sm._find_handle(env.v1)
+        assert not bool(handle.status().flags & env.lt.torrent_flags.auto_managed)
+        assert state_of() == 0  # Stopped
+
+        env.client.start_torrent(env.v1)
+        time.sleep(0.5)
+        assert state_of() == 1  # running again
+
+    def test_auto_start_off_adds_torrent_paused(self, real_libtorrent, temp_dirs):
+        """With 'Automatically start torrents' off, adds must start paused."""
+        from clients import LocalClient
+        from session_manager import SessionManager
+
+        lt = real_libtorrent
+        SessionManager._instance = None
+        with patch('session_manager.get_state_dir', return_value=temp_dirs['state']), \
+                patch('session_manager.ConfigManager') as MockCM:
+            MockCM.return_value.get_preferences.return_value = {
+                'enable_dht': False,
+                'enable_lsd': False,
+                'enable_upnp': False,
+                'enable_natpmp': False,
+                'listen_port': 16881,
+                'auto_start': False,
+            }
+            sm = SessionManager.get_instance()
+            try:
+                payload = os.path.join(temp_dirs['download'], "paused.txt")
+                with open(payload, 'w') as fh:
+                    fh.write("auto start off payload " * 100)
+                files = lt.list_files(payload)
+                ct = lt.create_torrent(files)
+                lt.set_piece_hashes(ct, temp_dirs['download'])
+                data = lt.bencode(ct.generate())
+                info = lt.torrent_info(data)
+                v1 = str(info.info_hashes().v1)
+
+                sm.add_torrent_file(data, temp_dirs['download'])
+                time.sleep(0.5)
+
+                handle = sm._find_handle(v1)
+                assert handle is not None
+                assert bool(handle.status().flags & lt.torrent_flags.paused)
+                assert not bool(handle.status().flags & lt.torrent_flags.auto_managed)
+
+                client = LocalClient(temp_dirs['download'])
+                rows = client.get_torrents_full()
+                assert next(r["state"] for r in rows if r["hash"] == v1) == 0
+            finally:
+                sm.running = False
+                sm.alert_thread.join(timeout=1)
+                SessionManager._instance = None
+
+
+# ============================================================================
+# Concurrent Operations Tests
+# ============================================================================
+
+class TestConcurrentOperations:
+    """Test thread safety of operations."""
+    
+    def test_torrents_db_thread_safety(self, mock_session_env):
+        """Test that torrents_db access is thread-safe."""
+        import threading
+        
+        from session_manager import SessionManager
+        SessionManager._instance = None
+        
+        with patch('session_manager.get_state_dir', return_value=tempfile.gettempdir()):
+            with patch('os.path.exists', return_value=False):
+                with patch('session_manager.ConfigManager') as MockCM:
+                    MockCM.return_value.get_preferences.return_value = {}
+                    with patch('os.listdir', return_value=[]):
+                        sm = SessionManager.get_instance()
+        
+        errors = []
+        
+        def writer():
+            try:
+                for i in range(100):
+                    with sm.lock:
+                        sm.torrents_db[f"hash_{i}"] = {'save_path': f'/path/{i}'}
+            except Exception as e:
+                errors.append(e)
+        
+        def reader():
+            try:
+                for _ in range(100):
+                    with sm.lock:
+                        _ = dict(sm.torrents_db)
+            except Exception as e:
+                errors.append(e)
+        
+        threads = [
+            threading.Thread(target=writer),
+            threading.Thread(target=reader),
+            threading.Thread(target=writer),
+            threading.Thread(target=reader),
+        ]
+        
+        for t in threads:
+            t.start()
+        for t in threads:
+            t.join()
+        
+        assert len(errors) == 0, f"Thread safety errors: {errors}"
+        
+        sm.running = False
+        sm.alert_thread.join(timeout=1)
+        SessionManager._instance = None
