@@ -583,3 +583,75 @@ def test_torrents_trackers_hides_backend_errors(auth_client):
     assert rv.status_code == 500
     assert b"Failed to load torrent trackers." in rv.data
     assert b"secret tracker detail" not in rv.data
+
+
+def test_app_prefs_save_persists_before_success(auth_client, monkeypatch):
+    mock_app = MagicMock()
+    web_server.WEB_CONFIG['app'] = mock_app
+    call_after = MagicMock()
+    monkeypatch.setattr("wx.CallAfter", call_after)
+
+    rv = auth_client.post(
+        '/api/v2/app/prefs',
+        json={'download_path': 'C:/Downloads'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 200
+    mock_app.config_manager.set_preferences.assert_called_once_with(
+        {'download_path': 'C:/Downloads'}
+    )
+    assert call_after.call_count == 2
+    call_after.assert_any_call(mock_app._update_client_default_save_path)
+    call_after.assert_any_call(mock_app._update_web_ui)
+
+
+def test_app_prefs_save_reports_persistence_failure(auth_client, monkeypatch):
+    mock_app = MagicMock()
+    mock_app.config_manager.set_preferences.side_effect = OSError("disk full")
+    web_server.WEB_CONFIG['app'] = mock_app
+    call_after = MagicMock()
+    monkeypatch.setattr("wx.CallAfter", call_after)
+
+    rv = auth_client.post(
+        '/api/v2/app/prefs',
+        json={'download_path': 'C:/Downloads'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 500
+    assert b"Failed to save settings." in rv.data
+    assert b"disk full" not in rv.data
+    call_after.assert_not_called()
+
+
+def test_app_prefs_save_rejects_non_object_json(auth_client):
+    mock_app = MagicMock()
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/app/prefs',
+        json=['not', 'an', 'object'],
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 400
+    assert b"Preferences object is required." in rv.data
+    mock_app.config_manager.set_preferences.assert_not_called()
+
+
+def test_app_prefs_save_requires_application_context(auth_client):
+    original = web_server.WEB_CONFIG.copy()
+    try:
+        web_server.WEB_CONFIG['app'] = None
+
+        rv = auth_client.post(
+            '/api/v2/app/prefs',
+            json={'download_path': 'C:/Downloads'},
+            headers=csrf_headers(auth_client),
+        )
+
+        assert rv.status_code == 503
+        assert b"Application context is unavailable." in rv.data
+    finally:
+        web_server.WEB_CONFIG.update(original)
