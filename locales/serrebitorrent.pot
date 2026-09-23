@@ -187,6 +187,9 @@ msgstr ""
 msgid "Adding {count} torrents..."
 msgstr ""
 
+msgid "Address"
+msgstr ""
+
 msgid "After Creation"
 msgstr ""
 
@@ -688,6 +691,9 @@ msgstr ""
 msgid "Failed to load torrent files."
 msgstr ""
 
+msgid "Failed to load torrent peers."
+msgstr ""
+
 msgid "Failed to open download folder."
 msgstr ""
 
@@ -922,6 +928,9 @@ msgstr ""
 msgid "Loading files..."
 msgstr ""
 
+msgid "Loading peers..."
+msgstr ""
+
 msgid "Loading remote settings..."
 msgstr ""
 
@@ -1046,6 +1055,9 @@ msgid "No files available."
 msgstr ""
 
 msgid "No indexers are switched on. Use Search sites."
+msgstr ""
+
+msgid "No peers available."
 msgstr ""
 
 msgid "No regular files found to include in torrent."
@@ -1501,6 +1513,9 @@ msgstr ""
 msgid "Select one torrent to view files."
 msgstr ""
 
+msgid "Select one torrent to view peers."
+msgstr ""
+
 msgid "Select {name}"
 msgstr ""
 
@@ -1682,6 +1697,9 @@ msgid "Torrent List"
 msgstr ""
 
 msgid "Torrent Options"
+msgstr ""
+
+msgid "Torrent Peers"
 msgstr ""
 
 msgid "Torrents"
