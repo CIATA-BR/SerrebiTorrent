@@ -530,3 +530,29 @@ def test_web_ui_non_auth_403_does_not_fake_session_expiry(page, web_ui_server):
     assert page.evaluate(
         "sessionStorage.getItem('serrebitorrent-session-expired')"
     ) is None
+
+
+def test_web_ui_sidebar_arrows_move_focus_without_activating_filter(page, web_ui_server):
+    _login(page, web_ui_server)
+
+    all_filter = page.locator('#filterList .sidebar-link[data-filter="All"]')
+    downloading_filter = page.locator('#filterList .sidebar-link[data-filter="Downloading"]')
+
+    all_filter.focus()
+    assert all_filter.get_attribute("aria-selected") == "true"
+
+    page.keyboard.press("ArrowDown")
+
+    assert page.evaluate(
+        "document.activeElement && document.activeElement.dataset.filter === 'Downloading'"
+    )
+    assert all_filter.get_attribute("aria-selected") == "true"
+    assert downloading_filter.get_attribute("aria-selected") == "false"
+
+    page.keyboard.press("Enter")
+    page.wait_for_function(
+        "() => document.querySelector('#filterList .sidebar-link[data-filter=\"Downloading\"]')?.getAttribute('aria-selected') === 'true'"
+    )
+    page.wait_for_function(
+        "() => document.activeElement && document.activeElement.matches('tr[data-hash]')"
+    )
