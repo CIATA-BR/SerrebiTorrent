@@ -92,12 +92,37 @@ def validate_public_torrent_url(url):
     return parsed
 
 
+def _connected_torrent_peer_ip(response):
+    raw = getattr(response, "raw", None)
+    connection = getattr(raw, "_connection", None)
+    sock = getattr(connection, "sock", None)
+    if sock is None:
+        original = getattr(raw, "_original_response", None)
+        fp = getattr(original, "fp", None)
+        raw_fp = getattr(fp, "raw", None)
+        sock = getattr(raw_fp, "_sock", None)
+    if sock is None:
+        raise ValueError("Torrent connection peer address could not be verified.")
+    try:
+        return ipaddress.ip_address(sock.getpeername()[0])
+    except (OSError, ValueError, IndexError, TypeError) as exc:
+        raise ValueError("Torrent connection peer address could not be verified.") from exc
+
+
+def _validate_connected_torrent_peer(response):
+    peer = _connected_torrent_peer_ip(response)
+    if _is_blocked_torrent_ip(peer):
+        raise ValueError("Torrent connection reached a private or local network address.")
+    return peer
+
+
 def download_torrent_url(url, timeout=30):
     current = url
     for _ in range(MAX_TORRENT_URL_REDIRECTS + 1):
         validate_public_torrent_url(current)
         content = b""
         with requests.get(safe_encode_url(current), timeout=timeout, stream=True, allow_redirects=False) as r:
+            _validate_connected_torrent_peer(r)
             if r.status_code in _REDIRECT_STATUSES:
                 location = r.headers.get("Location")
                 if not location:
