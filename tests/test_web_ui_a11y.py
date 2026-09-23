@@ -1065,3 +1065,137 @@ def test_web_ui_peers_tab_ignores_stale_response_after_selection_changes(page, w
 
     assert page.locator("#details-peers tbody td").first.inner_text() == "current:2"
     assert "stale:1" not in page.locator("#details-peers").inner_text()
+
+
+def test_web_ui_trackers_tab_loads_selected_torrent_trackers(page, web_ui_server):
+    _login(page, web_ui_server)
+
+    page.route(
+        "**/api/v2/torrents/trackers?hash=*",
+        lambda route: route.fulfill(
+            status=200,
+            content_type="application/json",
+            body='['
+                 '{"url":"https://tracker.example/announce","status":"Working","peers":42,"message":"OK"}'
+                 ']',
+        ),
+    )
+
+    page.wait_for_function(
+        "() => document.activeElement && document.activeElement.matches('tr[data-hash]')"
+    )
+    page.keyboard.press("Space")
+
+    page.evaluate(
+        """() => {
+            const tab = document.getElementById('trackers-tab');
+            tab.classList.add('active');
+            tab.dispatchEvent(new Event('shown.bs.tab'));
+        }"""
+    )
+
+    page.wait_for_selector('#details-trackers table[aria-label="Trackers do torrent"]')
+    row = page.locator("#details-trackers tbody tr").first
+    cells = row.locator("td")
+    assert cells.nth(0).inner_text() == "https://tracker.example/announce"
+    assert cells.nth(1).inner_text() == "Working"
+    assert cells.nth(2).inner_text() == "42"
+    assert cells.nth(3).inner_text() == "OK"
+    headers = page.locator("#details-trackers thead th")
+    assert headers.all_inner_texts() == ["URL do tracker", "Status", "Peers", "Mensagem"]
+
+
+def test_web_ui_trackers_tab_reports_load_errors(page, web_ui_server):
+    _login(page, web_ui_server)
+
+    page.route(
+        "**/api/v2/torrents/trackers?hash=*",
+        lambda route: route.fulfill(
+            status=500,
+            content_type="text/plain",
+            body="Failed",
+        ),
+    )
+
+    page.wait_for_function(
+        "() => document.activeElement && document.activeElement.matches('tr[data-hash]')"
+    )
+    page.keyboard.press("Space")
+
+    page.evaluate(
+        """() => {
+            const tab = document.getElementById('trackers-tab');
+            tab.classList.add('active');
+            tab.dispatchEvent(new Event('shown.bs.tab'));
+        }"""
+    )
+
+    error = page.locator("#details-trackers [role=alert]")
+    error.wait_for()
+    assert error.inner_text() == "Falha ao carregar os trackers do torrent."
+
+
+def test_web_ui_trackers_tab_ignores_stale_response_after_selection_changes(page, web_ui_server):
+    _login(page, web_ui_server)
+
+    page.evaluate(
+        """() => {
+            window.__trackerCalls = 0;
+            window.__releaseStaleTrackers = null;
+            const originalFetch = window.fetch.bind(window);
+            window.fetch = (...args) => {
+                const url = String(args[0]);
+                if (!url.startsWith('/api/v2/torrents/trackers?hash=')) {
+                    return originalFetch(...args);
+                }
+                window.__trackerCalls += 1;
+                if (window.__trackerCalls === 1) {
+                    return new Promise((resolve) => {
+                        window.__releaseStaleTrackers = () => resolve(new Response(
+                            JSON.stringify([
+                                {url:'https://stale.invalid/announce',status:'Old',peers:1,message:''}
+                            ]),
+                            {status:200,headers:{'Content-Type':'application/json'}}
+                        ));
+                    });
+                }
+                return Promise.resolve(new Response(
+                    JSON.stringify([
+                        {url:'https://current.example/announce',status:'Working',peers:2,message:''}
+                    ]),
+                    {status:200,headers:{'Content-Type':'application/json'}}
+                ));
+            };
+        }"""
+    )
+
+    page.wait_for_function("() => torrentsMap.size >= 2")
+    page.evaluate(
+        """() => {
+            const hashes = Array.from(torrentsMap.keys());
+            selectedHashes.clear();
+            selectedHashes.add(hashes[0]);
+            const tab = document.getElementById('trackers-tab');
+            tab.classList.add('active');
+            void updateTrackersDetails();
+        }"""
+    )
+    page.wait_for_function("() => window.__trackerCalls === 1")
+
+    page.evaluate(
+        """() => {
+            const hashes = Array.from(torrentsMap.keys());
+            selectedHashes.clear();
+            selectedHashes.add(hashes[1]);
+            void updateTrackersDetails();
+        }"""
+    )
+
+    page.wait_for_function(
+        "() => document.querySelector('#details-trackers tbody td')?.textContent === 'https://current.example/announce'"
+    )
+    page.evaluate("window.__releaseStaleTrackers()")
+    page.wait_for_timeout(100)
+
+    assert page.locator("#details-trackers tbody td").first.inner_text() == "https://current.example/announce"
+    assert "stale.invalid" not in page.locator("#details-trackers").inner_text()
