@@ -405,3 +405,50 @@ def test_web_ui_modal_escape_path_returns_focus_to_trigger(page, web_ui_server):
         "(selector) => document.activeElement === document.querySelector(selector)",
         arg=trigger_selector,
     )
+
+
+def test_web_ui_announces_material_torrent_list_changes(page, web_ui_server):
+    _login(page, web_ui_server)
+    page.wait_for_function("document.querySelectorAll('tr[data-hash]').length >= 2")
+
+    def three_torrents(route):
+        route.fulfill(
+            status=200,
+            content_type="application/json",
+            body='['
+                 '{"hash":"' + "a" * 40 + '","name":"Alpha","size":1000,"done":250,"state":1,"message":"","tracker_domain":"tracker.one","down_rate":0,"up_rate":0,"save_path":"C:\\Downloads"},'
+                 '{"hash":"' + "b" * 40 + '","name":"Beta","size":1000,"done":1000,"state":1,"message":"","tracker_domain":"tracker.two","down_rate":0,"up_rate":0,"save_path":"C:\\Downloads"},'
+                 '{"hash":"' + "c" * 40 + '","name":"Gamma","size":1000,"done":100,"state":1,"message":"","tracker_domain":"tracker.three","down_rate":0,"up_rate":0,"save_path":"C:\\Downloads"}'
+                 ']',
+        )
+
+    page.route("**/api/v2/torrents/all", three_torrents)
+    page.evaluate("refreshData(true)")
+    page.wait_for_function(
+        "() => document.getElementById('aria-announcer').textContent === '1 torrent added.'"
+    )
+
+    def swapped_torrents(route):
+        route.fulfill(
+            status=200,
+            content_type="application/json",
+            body='['
+                 '{"hash":"' + "a" * 40 + '","name":"Alpha","size":1000,"done":250,"state":1,"message":"","tracker_domain":"tracker.one","down_rate":0,"up_rate":0,"save_path":"C:\\Downloads"},'
+                 '{"hash":"' + "c" * 40 + '","name":"Gamma","size":1000,"done":100,"state":1,"message":"","tracker_domain":"tracker.three","down_rate":0,"up_rate":0,"save_path":"C:\\Downloads"},'
+                 '{"hash":"' + "d" * 40 + '","name":"Delta","size":1000,"done":100,"state":1,"message":"","tracker_domain":"tracker.four","down_rate":0,"up_rate":0,"save_path":"C:\\Downloads"}'
+                 ']',
+        )
+
+    page.unroute("**/api/v2/torrents/all")
+    page.route("**/api/v2/torrents/all", swapped_torrents)
+    page.evaluate("refreshData(true)")
+    page.wait_for_function(
+        "() => document.getElementById('aria-announcer').textContent === '1 torrent added. 1 torrent removed.'"
+    )
+
+
+def test_web_ui_initial_load_does_not_announce_list_population(page, web_ui_server):
+    _login(page, web_ui_server)
+    page.wait_for_function("document.querySelectorAll('tr[data-hash]').length >= 2")
+
+    assert page.locator("#aria-announcer").inner_text() == ""
