@@ -438,13 +438,10 @@ function handleSidebarNavigation(e) {
     if (nextIndex !== -1) {
         e.preventDefault();
         const target = links[nextIndex];
-        // Roving tabindex
+        // Roving tabindex moves focus without changing the active filter/profile.
         links.forEach(l => l.setAttribute('tabindex', '-1'));
         target.setAttribute('tabindex', '0');
         target.focus();
-        
-        // Auto-activate on arrow navigation for better UX (like desktop)
-        activateSidebarLink(target, e);
     }
 }
 
