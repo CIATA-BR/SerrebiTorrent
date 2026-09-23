@@ -783,17 +783,21 @@ def get_app_prefs():
 def set_app_prefs():
     app_ref = WEB_CONFIG['app']
     if not app_ref:
-        return "Error", 500
-    new_prefs = request.json
-    if new_prefs:
-        import wx
-        def apply():
-            app_ref.config_manager.set_preferences(new_prefs)
-            app_ref._update_client_default_save_path()
-            app_ref._update_web_ui()
-        wx.CallAfter(apply)
-        return "Ok."
-    return "No data", 400
+        return "Application context is unavailable.", 503
+
+    new_prefs = request.get_json(silent=True)
+    if not isinstance(new_prefs, dict) or not new_prefs:
+        return "Preferences object is required.", 400
+
+    try:
+        app_ref.config_manager.set_preferences(new_prefs)
+    except Exception:
+        return "Failed to save settings.", 500
+
+    import wx
+    wx.CallAfter(app_ref._update_client_default_save_path)
+    wx.CallAfter(app_ref._update_web_ui)
+    return "Ok."
 
 @app.route('/api/v2/app/remote_prefs')
 @login_required
