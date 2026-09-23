@@ -92,8 +92,14 @@ jobs:
           sudo apt-get update
           sudo DEBIAN_FRONTEND=noninteractive apt-get install -y libgtk-3-dev libtiff-dev libwebp-dev
 
-      - name: Download the maintained libtorrent wheel
-        run: gh release download libtorrent-wheels --repo "$GITHUB_REPOSITORY" --pattern '*manylinux*x86_64.whl' --dir "$RUNNER_TEMP/wheels"
+      - name: Download and verify the maintained libtorrent wheel
+        run: |
+          gh release download libtorrent-wheels --repo "$GITHUB_REPOSITORY" --pattern '*manylinux*x86_64.whl' --dir "$RUNNER_TEMP/wheels"
+          gh release download libtorrent-wheels --repo "$GITHUB_REPOSITORY" --pattern 'SHA256SUMS.txt' --dir "$RUNNER_TEMP/wheels"
+          cd "$RUNNER_TEMP/wheels"
+          sha256sum --check --ignore-missing SHA256SUMS.txt
+          wheel_count="$(find . -maxdepth 1 -type f -name '*manylinux*x86_64.whl' | wc -l)"
+          [ "$wheel_count" -eq 1 ] || { echo "::error::Expected exactly one Linux libtorrent wheel, found $wheel_count"; exit 1; }
 
       - name: Build
         env:
@@ -140,6 +146,92 @@ jobs:
           $wheels = Join-Path $env:RUNNER_TEMP "wheels"
           gh release download libtorrent-wheels --repo $env:GITHUB_REPOSITORY --pattern '*win_amd64.whl' --dir $wheels
           if ($LASTEXITCODE -ne 0) { throw "wheel download failed" }
+          gh release download libtorrent-wheels --repo $env:GITHUB_REPOSITORY --pattern 'SHA256SUMS.txt' --dir $wheels
+          if ($LASTEXITCODE -ne 0) { throw "checksum download failed" }
+          $wheelFiles = @(Get-ChildItem $wheels -Filter '*win_amd64.whl')
+          if ($wheelFiles.Count -ne 1) { throw "Expected exactly one Windows libtorrent wheel, found $($wheelFiles.Count)" }
+          $sumFile = Join-Path $wheels "SHA256SUMS.txt"
+          $sumLine = Get-Content $sumFile | Where-Object { $_ -match [regex]::Escape($wheelFiles[0].Name) } | Select-Object -First 1
+          if (-not $sumLine -or $sumLine -notmatch '^([0-9a-fA-F]{64})\s+\*?(.+)          $tar = Get-ChildItem (Join-Path $env:RUNNER_TEMP "linux") -Filter *.tar.gz | Select-Object -First 1
+          "SERREBITORRENT_LINUX_TARBALL=$($tar.FullName)" >> $env:GITHUB_ENV
+          if (-not $env:PFX_BASE64) { throw "WINDOWS_CODESIGN_PFX secret is missing" }
+          $pfx = Join-Path $env:RUNNER_TEMP "codesign.pfx"
+          [IO.File]::WriteAllBytes($pfx, [Convert]::FromBase64String($env:PFX_BASE64))
+          $cert = Import-PfxCertificate -FilePath $pfx -CertStoreLocation Cert:\CurrentUser\My -Password (ConvertTo-SecureString $env:PFX_PASSWORD -AsPlainText -Force)
+          Remove-Item $pfx -Force
+          "SIGN_CERT_THUMBPRINT=$($cert.Thumbprint)" >> $env:GITHUB_ENV
+          $tool = Get-ChildItem "${env:ProgramFiles(x86)}\Windows Kits\10\bin" -Recurse -Filter signtool.exe |
+            Where-Object { $_.FullName -match '\\x64\\signtool\.exe$' } | Sort-Object FullName -Descending | Select-Object -First 1
+          if (-not $tool) { throw "signtool.exe not found" }
+          "SIGNTOOL_PATH=$($tool.FullName)" >> $env:GITHUB_ENV
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Dry run
+        if: ${{ inputs.dry_run }}
+        shell: cmd
+        run: |
+          call build_exe.bat dry-run || exit /b 1
+          call build_exe.bat build
+
+      - name: Release
+        if: ${{ !inputs.dry_run }}
+        shell: cmd
+        run: call build_exe.bat release
+
+      # The updater trusts this certificate's thumbprint; never ship another.
+      - name: Verify Authenticode signature
+        run: |
+          $sig = Get-AuthenticodeSignature dist\SerrebiTorrent\SerrebiTorrent.exe
+          if ($sig.SignerCertificate.Thumbprint -ne $env:SIGN_CERT_THUMBPRINT) { throw "SerrebiTorrent.exe is not signed by the release certificate ($($sig.Status))" }
+          if ("$($sig.Status)" -notin @("Valid", "UnknownError", "NotTrusted")) { throw "Signature is $($sig.Status)" }
+          if ("${{ inputs.dry_run }}" -ne "true") {
+            $tag = git describe --tags --exact-match HEAD
+            if ($tag -ne "v${{ needs.plan.outputs.version }}") { throw "Released $tag, planned v${{ needs.plan.outputs.version }}" }
+          }
+          "Signed: $($sig.Status)"
+
+      - uses: actions/upload-artifact@v6
+        with:
+          name: SerrebiTorrent-windows
+          path: |
+            dist/SerrebiTorrent-v*.zip
+            dist/SerrebiTorrent-update.json
+          if-no-files-found: error
+
+  macos:
+    needs: [plan, windows]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - name: Run ci.yml (macOS build) and wait
+        run: |
+          set -euo pipefail
+          if [ "${{ inputs.dry_run }}" = "true" ]; then ref=main; else ref="v${{ needs.plan.outputs.version }}"; fi
+          gh workflow run ci.yml --repo "$GITHUB_REPOSITORY" --ref "$ref"
+          sleep 15
+          id="$(gh run list --repo "$GITHUB_REPOSITORY" --workflow ci.yml --event workflow_dispatch --limit 1 --json databaseId --jq '.[0].databaseId')"
+          echo "ci.yml on $ref -> https://github.com/$GITHUB_REPOSITORY/actions/runs/$id"
+          gh run watch "$id" --repo "$GITHUB_REPOSITORY" --exit-status --interval 30
+
+      - name: Verify every platform is on the release
+        if: ${{ !inputs.dry_run }}
+        run: |
+          v="${{ needs.plan.outputs.version }}"
+          have="$(gh release view "v$v" --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[].name')"
+          missing=0
+          for want in "SerrebiTorrent-v$v.zip" SerrebiTorrent-update.json "SerrebiTorrent-v$v-linux-x86_64.tar.gz" "SerrebiTorrent-v$v-macos-ARM64.zip"; do
+            grep -qxF "$want" <<<"$have" || { echo "::error::Missing asset $want"; missing=1; }
+          done
+          [ "$missing" = 0 ]
+          latest="$(gh api "repos/$GITHUB_REPOSITORY/releases/latest" --jq .tag_name)"
+          [ "$latest" = "v$v" ] || { echo "::error::/releases/latest is $latest"; exit 1; }
+) { throw "No valid SHA-256 entry for $($wheelFiles[0].Name)" }
+          $expected = $Matches[1].ToLowerInvariant()
+          $actual = (Get-FileHash $wheelFiles[0].FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($actual -ne $expected) { throw "libtorrent wheel SHA-256 mismatch" }
           "LIBTORRENT_WHEEL_DIR=$wheels" >> $env:GITHUB_ENV
           $tar = Get-ChildItem (Join-Path $env:RUNNER_TEMP "linux") -Filter *.tar.gz | Select-Object -First 1
           "SERREBITORRENT_LINUX_TARBALL=$($tar.FullName)" >> $env:GITHUB_ENV
