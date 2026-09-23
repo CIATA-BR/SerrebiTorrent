@@ -436,7 +436,10 @@ async function refreshData(force = false) {
             } else {
                 lastFocusedHash = null;
                 const table = els.table();
-                if (table) table.tabIndex = 0;
+                if (table) {
+                    table.tabIndex = 0;
+                    table.focus();
+                }
                 announceToSR("Focused torrent is no longer available. The torrent list is empty.", true);
             }
         } else if (lastFocusedHash && torrentsMap.has(lastFocusedHash)) {
