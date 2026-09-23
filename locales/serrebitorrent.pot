@@ -145,9 +145,6 @@ msgstr ""
 msgid "Added from RSS: {name}"
 msgstr ""
 
-msgid "Address"
-msgstr ""
-
 msgid "Added from RSS: {title}"
 msgstr ""
 
@@ -188,6 +185,9 @@ msgid "Adding {count} torrent..."
 msgstr ""
 
 msgid "Adding {count} torrents..."
+msgstr ""
+
+msgid "Address"
 msgstr ""
 
 msgid "After Creation"
@@ -1054,10 +1054,10 @@ msgstr ""
 msgid "No files available."
 msgstr ""
 
-msgid "No peers available."
+msgid "No indexers are switched on. Use Search sites."
 msgstr ""
 
-msgid "No indexers are switched on. Use Search sites."
+msgid "No peers available."
 msgstr ""
 
 msgid "No regular files found to include in torrent."
@@ -1696,10 +1696,10 @@ msgstr ""
 msgid "Torrent List"
 msgstr ""
 
-msgid "Torrent Peers"
+msgid "Torrent Options"
 msgstr ""
 
-msgid "Torrent Options"
+msgid "Torrent Peers"
 msgstr ""
 
 msgid "Torrents"
