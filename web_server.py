@@ -392,8 +392,10 @@ def add_profile():
     if client_type not in supported_types:
         return "Unsupported profile type.", 400
 
-    import wx
-    wx.CallAfter(app_ref.config_manager.add_profile, name, client_type, url, user, pw)
+    try:
+        app_ref.config_manager.add_profile(name, client_type, url, user, pw)
+    except Exception:
+        return "Failed to create profile.", 500
     return "Ok."
 
 @app.route('/api/v2/torrents/info')
