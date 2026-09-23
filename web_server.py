@@ -487,6 +487,21 @@ def torrents_peers():
         return "Failed to load torrent peers.", 500
 
 
+@app.route('/api/v2/torrents/trackers')
+@login_required
+def torrents_trackers():
+    torrent_hash = (request.args.get('hash') or '').strip()
+    client = WEB_CONFIG['client']
+    if not client:
+        return "No torrent client is connected.", 503
+    if not torrent_hash:
+        return "Torrent hash is required.", 400
+    try:
+        return jsonify(client.get_trackers(torrent_hash))
+    except Exception:
+        return "Failed to load torrent trackers.", 500
+
+
 def _requested_torrent_hashes():
     return [h for h in (request.form.get('hashes') or '').split('|') if h]
 
