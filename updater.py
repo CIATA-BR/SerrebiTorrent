@@ -210,7 +210,7 @@ def fetch_latest_release() -> Dict[str, Any]:
         response = requests.get(url, headers=headers, timeout=API_TIMEOUT)
     except requests.RequestException as exc:
         raise UpdateError(f"Network error while contacting GitHub: {exc}") from exc
-    if response.status_code == 403 and response.headers.get("X-RateLimit-Remaining") == "0":
+    if response.status_code == 429 or (response.status_code == 403 and response.headers.get("X-RateLimit-Remaining") == "0"):
         raise RateLimitError(_rate_limit_message(response.headers))
     if response.status_code != 200:
         raise UpdateError(f"GitHub API error: {response.status_code} {response.reason}")
@@ -234,7 +234,11 @@ def download_manifest(release: Dict[str, Any]) -> Dict[str, Any]:
     url = asset.get("browser_download_url")
     if not url:
         raise UpdateError("Update manifest asset is missing a download URL.")
-    _validate_download_url(str(url))
+    return _download_manifest_url(str(url))
+
+
+def _download_manifest_url(url: str) -> Dict[str, Any]:
+    _validate_download_url(url)
     try:
         response = requests.get(url, timeout=API_TIMEOUT, stream=True)
     except requests.RequestException as exc:
@@ -263,6 +267,28 @@ def download_manifest(release: Dict[str, Any]) -> Dict[str, Any]:
             raise UpdateError(f"Update manifest is not valid JSON: {exc}") from exc
     finally:
         response.close()
+
+
+def _release_from_latest_manifest() -> Tuple[Dict[str, Any], Dict[str, Any]]:
+    """Rebuild the release from the manifest when the API is rate limited.
+
+    github.com/.../releases/latest/download/ is not counted against the API
+    limit, which many apps behind one IP share unauthenticated.
+    """
+    base = f"https://github.com/{GITHUB_OWNER}/{GITHUB_REPO}/releases"
+    manifest = _download_manifest_url(f"{base}/latest/download/{UPDATE_MANIFEST_ASSET}")
+    version = parse_semver(str(manifest.get("version", "")))
+    asset_name = str(manifest.get("asset_filename", ""))
+    if not version:
+        raise UpdateError("Update manifest version is not a semver version.")
+    if not asset_name or any(c in asset_name for c in "/\\?#") or ".." in asset_name:
+        raise UpdateError("Update manifest has an invalid asset filename.")
+    tag = f"v{format_version(version)}"
+    release = {
+        "tag_name": tag,
+        "assets": [{"name": asset_name, "browser_download_url": f"{base}/download/{tag}/{asset_name}"}],
+    }
+    return release, manifest
 
 
 def validate_manifest(manifest: Dict[str, Any], release: Dict[str, Any]) -> Dict[str, Any]:
@@ -318,7 +344,14 @@ def check_for_updates() -> UpdateCheckResult:
     if not current_tuple:
         return UpdateCheckResult("error", f"Current app version is not semver: {APP_VERSION}")
     try:
-        release = fetch_latest_release()
+        manifest = None
+        try:
+            release = fetch_latest_release()
+        except RateLimitError as exc:
+            try:
+                release, manifest = _release_from_latest_manifest()
+            except UpdateError:
+                raise exc
         tag = str(release.get("tag_name", "")).strip()
         latest_tuple = parse_semver(tag)
         if not latest_tuple:
@@ -326,7 +359,7 @@ def check_for_updates() -> UpdateCheckResult:
         if not is_newer_version(current_tuple, latest_tuple):
             return UpdateCheckResult("up_to_date", f"SerrebiTorrent is up to date (v{format_version(current_tuple)}).")
 
-        manifest = validate_manifest(download_manifest(release), release)
+        manifest = validate_manifest(manifest or download_manifest(release), release)
         latest_version = format_version(latest_tuple)
         info = UpdateInfo(
             current_version=APP_VERSION,

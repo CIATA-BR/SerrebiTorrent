@@ -787,3 +787,50 @@ def test_update_helper_only_clears_install_after_the_update_starts_applying():
     guard = rollback.index("if defined UPDATE_APPLYING (")
     assert guard < rollback.index("call :clear_install_runtime")
     assert 'set "RC=!ERRORLEVEL!"' in rollback
+
+
+@patch('updater._download_manifest_url')
+@patch('updater.fetch_latest_release')
+def test_rate_limited_check_falls_back_to_latest_manifest(mock_fetch, mock_manifest):
+    mock_fetch.side_effect = updater.RateLimitError("limited")
+    mock_manifest.return_value = {
+        "version": "99.99.99",
+        "asset_filename": "app.zip",
+        "download_url": "https://github.com/serrebidev/SerrebiTorrent/releases/download/v99.99.99/app.zip",
+        "sha256": "a" * 64,
+        "published_at": "2023-01-01",
+        "signing_thumbprint": SIGNING_THUMBPRINT,
+    }
+
+    result = check_for_updates()
+
+    assert result.status == "update_available"
+    assert result.info.latest_version == "99.99.99"
+    assert mock_manifest.call_args[0][0] == (
+        "https://github.com/serrebidev/SerrebiTorrent/releases/latest/download/SerrebiTorrent-update.json"
+    )
+
+
+@patch('updater._download_manifest_url')
+@patch('updater.fetch_latest_release')
+def test_rate_limited_fallback_rejects_foreign_download_url(mock_fetch, mock_manifest):
+    mock_fetch.side_effect = updater.RateLimitError("limited")
+    mock_manifest.return_value = {
+        "version": "99.99.99",
+        "asset_filename": "app.zip",
+        "download_url": "https://github.com/someone/else/releases/download/v99.99.99/app.zip",
+        "sha256": "a" * 64,
+        "published_at": "2023-01-01",
+        "signing_thumbprint": SIGNING_THUMBPRINT,
+    }
+
+    assert check_for_updates().status == "error"
+
+
+@patch('updater._download_manifest_url')
+@patch('updater.fetch_latest_release')
+def test_rate_limited_status_kept_when_fallback_fails(mock_fetch, mock_manifest):
+    mock_fetch.side_effect = updater.RateLimitError("limited")
+    mock_manifest.side_effect = updater.UpdateError("offline")
+
+    assert check_for_updates().status == "rate_limited"
