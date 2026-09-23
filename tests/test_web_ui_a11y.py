@@ -1199,3 +1199,34 @@ def test_web_ui_trackers_tab_ignores_stale_response_after_selection_changes(page
 
     assert page.locator("#details-trackers tbody td").first.inner_text() == "https://current.example/announce"
     assert "stale.invalid" not in page.locator("#details-trackers").inner_text()
+
+
+def test_web_ui_refresh_error_preserves_current_torrent_list(page, web_ui_server):
+    _login(page, web_ui_server)
+    page.wait_for_function("document.querySelectorAll('tr[data-hash]').length >= 2")
+
+    before_hashes = page.evaluate(
+        "() => Array.from(document.querySelectorAll('tr[data-hash]')).map(row => row.dataset.hash)"
+    )
+    focused = page.locator('tr[data-hash="' + before_hashes[0] + '"]')
+    focused.focus()
+    assert page.evaluate("document.activeElement.dataset.hash") == before_hashes[0]
+
+    page.route(
+        "**/api/v2/torrents/all",
+        lambda route: route.fulfill(
+            status=503,
+            content_type="text/plain",
+            body="No torrent client is connected.",
+        ),
+    )
+
+    page.evaluate("refreshData(true)")
+    page.wait_for_timeout(150)
+
+    after_hashes = page.evaluate(
+        "() => Array.from(document.querySelectorAll('tr[data-hash]')).map(row => row.dataset.hash)"
+    )
+    assert after_hashes == before_hashes
+    assert page.evaluate("document.activeElement.dataset.hash") == before_hashes[0]
+    assert "torrent removido" not in page.locator("#aria-announcer").inner_text()
