@@ -714,7 +714,14 @@ function updateSelectionVisuals() {
 function updateSidebarStats(stats, trackers) {
     if (!stats) return;
     const trackerList = document.getElementById('trackerList');
-    if (trackerList && trackers) {
+    // Rebuild only on change: this runs every refresh, and re-focusing a rebuilt
+    // item makes screen readers announce it again each time.
+    const trackerSignature = trackers ? JSON.stringify([currentFilter, trackers]) : null;
+    if (trackerList && trackers && trackerList.dataset.signature !== trackerSignature) {
+        trackerList.dataset.signature = trackerSignature;
+        const focusedTracker = trackerList.contains(document.activeElement)
+            ? document.activeElement.dataset.filter
+            : null;
         trackerList.innerHTML = '';
         Object.entries(trackers).sort((a,b)=>b[1]-a[1]).forEach(([domain, count]) => {
             const isActive = currentFilter === domain;
@@ -728,6 +735,15 @@ function updateSidebarStats(stats, trackers) {
             a.textContent = `${domain} (${count})`;
             trackerList.appendChild(a);
         });
+        if (focusedTracker) {
+            const target = Array.from(trackerList.querySelectorAll('.sidebar-link'))
+                .find(link => link.dataset.filter === focusedTracker);
+            if (target) {
+                trackerList.querySelectorAll('.sidebar-link').forEach(link => { link.tabIndex = -1; });
+                target.tabIndex = 0;
+                target.focus();
+            }
+        }
     }
 }
 
@@ -766,6 +782,12 @@ window.fetchProfiles = async function() {
         const data = await res.json();
         const list = document.getElementById('profileList');
         if (!list) return;
+        const profileSignature = JSON.stringify(data);
+        if (list.dataset.signature === profileSignature) return;
+        list.dataset.signature = profileSignature;
+        const focusedProfile = list.contains(document.activeElement)
+            ? document.activeElement.dataset.profileId
+            : null;
         list.innerHTML = '';
         currentProfileId = data.current_id;
         for (const id in data.profiles) {
@@ -780,6 +802,15 @@ window.fetchProfiles = async function() {
             a.tabIndex = isActive ? 0 : -1;
             a.textContent = `${p.name} (${p.type})`;
             list.appendChild(a);
+        }
+        if (focusedProfile) {
+            const target = Array.from(list.querySelectorAll('.sidebar-link'))
+                .find(link => link.dataset.profileId === focusedProfile);
+            if (target) {
+                list.querySelectorAll('.sidebar-link').forEach(link => { link.tabIndex = -1; });
+                target.tabIndex = 0;
+                target.focus();
+            }
         }
     } catch (e) {
         console.error("fetchProfiles failed:", e);
