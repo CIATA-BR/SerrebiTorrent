@@ -530,3 +530,56 @@ def test_torrents_peers_hides_backend_errors(auth_client):
     assert rv.status_code == 500
     assert b"Failed to load torrent peers." in rv.data
     assert b"secret backend detail" not in rv.data
+
+
+def test_torrents_trackers_returns_client_data(auth_client):
+    mock_client = MagicMock()
+    mock_client.get_trackers.return_value = [
+        {
+            'url': 'https://tracker.example/announce',
+            'status': 'Working',
+            'peers': 42,
+            'message': '',
+        }
+    ]
+    web_server.WEB_CONFIG['client'] = mock_client
+
+    rv = auth_client.get('/api/v2/torrents/trackers?hash=abc123')
+
+    assert rv.status_code == 200
+    assert rv.get_json() == mock_client.get_trackers.return_value
+    mock_client.get_trackers.assert_called_once_with('abc123')
+
+
+def test_torrents_trackers_requires_connected_client(auth_client):
+    original = web_server.WEB_CONFIG.copy()
+    try:
+        web_server.WEB_CONFIG['client'] = None
+
+        rv = auth_client.get('/api/v2/torrents/trackers?hash=abc123')
+
+        assert rv.status_code == 503
+        assert b"No torrent client is connected." in rv.data
+    finally:
+        web_server.WEB_CONFIG.update(original)
+
+
+def test_torrents_trackers_requires_hash(auth_client):
+    web_server.WEB_CONFIG['client'] = MagicMock()
+
+    rv = auth_client.get('/api/v2/torrents/trackers')
+
+    assert rv.status_code == 400
+    assert b"Torrent hash is required." in rv.data
+
+
+def test_torrents_trackers_hides_backend_errors(auth_client):
+    mock_client = MagicMock()
+    mock_client.get_trackers.side_effect = RuntimeError("secret tracker detail")
+    web_server.WEB_CONFIG['client'] = mock_client
+
+    rv = auth_client.get('/api/v2/torrents/trackers?hash=abc123')
+
+    assert rv.status_code == 500
+    assert b"Failed to load torrent trackers." in rv.data
+    assert b"secret tracker detail" not in rv.data
