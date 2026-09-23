@@ -1609,8 +1609,6 @@ msgstr "Забагато невдалих спроб. Повторіть піз�
 msgid "Torrent Actions"
 msgstr "Дії з торентами"
 
-msgid "Torrent actions"
-msgstr "Дії з торентами"
 
 msgid "Torrent added"
 msgstr "Торент додано"

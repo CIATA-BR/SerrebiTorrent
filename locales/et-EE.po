@@ -1609,8 +1609,6 @@ msgstr "Liiga palju nurjunud katseid. Proovi hiljem uuesti."
 msgid "Torrent Actions"
 msgstr "Torrenti toimingud"
 
-msgid "Torrent actions"
-msgstr "Torrenti toimingud"
 
 msgid "Torrent added"
 msgstr "Torrent lisati"

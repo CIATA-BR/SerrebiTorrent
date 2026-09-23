@@ -1447,6 +1447,21 @@ msgstr "Selecione primeiro um resultado."
 msgid "Select a torrent."
 msgstr "Selecione um torrent."
 
+msgid "Select one torrent to view files."
+msgstr "Selecione um torrent para ver os arquivos."
+
+msgid "Loading files..."
+msgstr "Carregando arquivos..."
+
+msgid "No files available."
+msgstr "Nenhum arquivo disponível."
+
+msgid "Failed to load torrent files."
+msgstr "Falha ao carregar os arquivos do torrent."
+
+msgid "Do not download"
+msgstr "Não baixar"
+
 msgid "Select All"
 msgstr "Selecionar tudo"
 
@@ -1609,8 +1624,6 @@ msgstr "Muitas tentativas com falha. Tente novamente mais tarde."
 msgid "Torrent Actions"
 msgstr "Ações do torrent"
 
-msgid "Torrent actions"
-msgstr "Ações do torrent"
 
 msgid "Torrent added"
 msgstr "Torrent adicionado"

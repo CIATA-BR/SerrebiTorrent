@@ -478,6 +478,9 @@ msgstr ""
 msgid "Disconnected"
 msgstr ""
 
+msgid "Do not download"
+msgstr ""
+
 msgid "Down Speed"
 msgstr ""
 
@@ -680,6 +683,9 @@ msgid "Failed to fetch {title}: {error}"
 msgstr ""
 
 msgid "Failed to load settings."
+msgstr ""
+
+msgid "Failed to load torrent files."
 msgstr ""
 
 msgid "Failed to open download folder."
@@ -913,6 +919,9 @@ msgstr ""
 msgid "Listening Port:"
 msgstr ""
 
+msgid "Loading files..."
+msgstr ""
+
 msgid "Loading remote settings..."
 msgstr ""
 
@@ -1031,6 +1040,9 @@ msgid "No"
 msgstr ""
 
 msgid "No client connected."
+msgstr ""
+
+msgid "No files available."
 msgstr ""
 
 msgid "No indexers are switched on. Use Search sites."
@@ -1486,6 +1498,9 @@ msgstr ""
 msgid "Select Folder"
 msgstr ""
 
+msgid "Select one torrent to view files."
+msgstr ""
+
 msgid "Select {name}"
 msgstr ""
 
@@ -1637,9 +1652,6 @@ msgid "Too many failed attempts. Try again later."
 msgstr ""
 
 msgid "Torrent Actions"
-msgstr ""
-
-msgid "Torrent actions"
 msgstr ""
 
 msgid "Torrent added"

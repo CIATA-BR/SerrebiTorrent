@@ -120,12 +120,12 @@
                             </li>
                         </ul>
                         <div class="tab-content h-100 overflow-auto" id="detailTabsContent">
-                            <div class="tab-pane fade show active p-3" id="details-general" role="tabpanel">
+                            <div class="tab-pane fade show active p-3" id="details-general" role="tabpanel" aria-labelledby="general-tab">
                                 <p>Select a torrent.</p>
                             </div>
-                            <div class="tab-pane fade p-3" id="details-files" role="tabpanel"></div>
-                            <div class="tab-pane fade p-3" id="details-peers" role="tabpanel"></div>
-                            <div class="tab-pane fade p-3" id="details-trackers" role="tabpanel"></div>
+                            <div class="tab-pane fade p-3" id="details-files" role="tabpanel" aria-labelledby="files-tab"></div>
+                            <div class="tab-pane fade p-3" id="details-peers" role="tabpanel" aria-labelledby="peers-tab"></div>
+                            <div class="tab-pane fade p-3" id="details-trackers" role="tabpanel" aria-labelledby="trackers-tab"></div>
                         </div>
                     </section>
 
@@ -133,7 +133,7 @@
                     <div class="footer-actions d-flex align-items-center">
                         <div class="dropup">
                             <button class="btn btn-sm btn-primary me-2 dropdown-toggle" id="torrentActionsBtn" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Torrent Actions</button>
-                            <ul class="dropdown-menu shadow" id="contextMenu" role="menu" aria-label="Torrent actions" tabindex="-1">
+                            <ul class="dropdown-menu shadow" id="contextMenu" role="menu" aria-label="Torrent Actions" tabindex="-1">
                                 <li role="presentation"><button class="dropdown-item" type="button" role="menuitem" onclick="doAction('resume', false, 'Start')">Start</button></li>
                                 <li role="presentation"><button class="dropdown-item" type="button" role="menuitem" onclick="doAction('pause', false, 'Pause')">Pause</button></li>
                                 <li role="presentation"><button class="dropdown-item" type="button" role="menuitem" onclick="doAction('resume', false, 'Resume')">Resume</button></li>

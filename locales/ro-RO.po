@@ -1609,8 +1609,6 @@ msgstr "Prea multe încercări eșuate. Încercați din nou mai târziu."
 msgid "Torrent Actions"
 msgstr "Acțiuni torrent"
 
-msgid "Torrent actions"
-msgstr "Acțiuni torrent"
 
 msgid "Torrent added"
 msgstr "Torrent adăugat"

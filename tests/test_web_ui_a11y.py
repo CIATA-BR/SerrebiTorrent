@@ -788,3 +788,139 @@ def test_web_ui_serializes_overlapping_refreshes(page, web_ui_server):
     page.evaluate("window.__releaseFirstRefresh()")
     page.wait_for_function("() => window.__refreshCalls === 2")
     page.wait_for_function("() => !refreshInFlight && !forcedRefreshPending")
+
+
+def test_web_ui_files_tab_loads_selected_torrent_files(page, web_ui_server):
+    _login(page, web_ui_server)
+
+    page.route(
+        "**/api/v2/torrents/files?hash=*",
+        lambda route: route.fulfill(
+            status=200,
+            content_type="application/json",
+            body='['
+                 '{"index":0,"name":"folder/example.txt","size":2048,"progress":0.5,"priority":1},'
+                 '{"index":1,"name":"movie.mkv","size":1048576,"progress":1.0,"priority":2}'
+                 ']',
+        ),
+    )
+
+    page.wait_for_function(
+        "() => document.activeElement && document.activeElement.matches('tr[data-hash]')"
+    )
+    page.keyboard.press("Space")
+
+    page.evaluate(
+        """() => {
+            const tab = document.getElementById('files-tab');
+            tab.classList.add('active');
+            tab.dispatchEvent(new Event('shown.bs.tab'));
+        }"""
+    )
+
+    page.wait_for_selector('#details-files table[aria-label="Arquivos torrent"]')
+    rows = page.locator("#details-files tbody tr")
+    assert rows.count() == 2
+    assert rows.nth(0).locator("td").nth(0).inner_text() == "folder/example.txt"
+    assert rows.nth(0).locator("td").nth(1).inner_text() == "2 KB"
+    assert rows.nth(0).locator("td").nth(2).inner_text() == "50%"
+    assert rows.nth(1).locator("td").nth(3).inner_text() == "Alta"
+    headers = page.locator("#details-files thead th")
+    assert headers.all_inner_texts() == ["Nome", "Tamanho", "Progresso", "Prioridade"]
+    assert page.locator("#details-files").get_attribute("aria-labelledby") == "files-tab"
+
+
+def test_web_ui_files_tab_reports_load_errors(page, web_ui_server):
+    _login(page, web_ui_server)
+
+    page.route(
+        "**/api/v2/torrents/files?hash=*",
+        lambda route: route.fulfill(
+            status=500,
+            content_type="text/plain",
+            body="Failed",
+        ),
+    )
+
+    page.wait_for_function(
+        "() => document.activeElement && document.activeElement.matches('tr[data-hash]')"
+    )
+    page.keyboard.press("Space")
+
+    page.evaluate(
+        """() => {
+            const tab = document.getElementById('files-tab');
+            tab.classList.add('active');
+            tab.dispatchEvent(new Event('shown.bs.tab'));
+        }"""
+    )
+
+    error = page.locator("#details-files [role=alert]")
+    error.wait_for()
+    assert error.inner_text() == "Falha ao carregar os arquivos do torrent."
+
+
+def test_web_ui_files_tab_ignores_stale_response_after_selection_changes(page, web_ui_server):
+    _login(page, web_ui_server)
+
+    page.evaluate(
+        """() => {
+            window.__filesCallCount = 0;
+            window.__releaseStaleFiles = null;
+            const originalFetch = window.fetch.bind(window);
+            window.fetch = (...args) => {
+                const url = String(args[0]);
+                if (!url.startsWith('/api/v2/torrents/files?hash=')) {
+                    return originalFetch(...args);
+                }
+                window.__filesCallCount += 1;
+                if (window.__filesCallCount === 1) {
+                    return new Promise((resolve) => {
+                        window.__releaseStaleFiles = () => resolve(new Response(
+                            JSON.stringify([
+                                {index: 0, name: 'stale.txt', size: 1, progress: 1, priority: 1}
+                            ]),
+                            {status: 200, headers: {'Content-Type': 'application/json'}}
+                        ));
+                    });
+                }
+                return Promise.resolve(new Response(
+                    JSON.stringify([
+                        {index: 0, name: 'current.txt', size: 2, progress: 1, priority: 1}
+                    ]),
+                    {status: 200, headers: {'Content-Type': 'application/json'}}
+                ));
+            };
+        }"""
+    )
+
+    page.wait_for_function("() => torrentsMap.size >= 2")
+    page.evaluate(
+        """() => {
+            const hashes = Array.from(torrentsMap.keys());
+            selectedHashes.clear();
+            selectedHashes.add(hashes[0]);
+            const tab = document.getElementById('files-tab');
+            tab.classList.add('active');
+            void updateFilesDetails();
+        }"""
+    )
+    page.wait_for_function("() => window.__filesCallCount === 1")
+
+    page.evaluate(
+        """() => {
+            const hashes = Array.from(torrentsMap.keys());
+            selectedHashes.clear();
+            selectedHashes.add(hashes[1]);
+            void updateFilesDetails();
+        }"""
+    )
+
+    page.wait_for_function(
+        "() => document.querySelector('#details-files tbody td')?.textContent === 'current.txt'"
+    )
+    page.evaluate("window.__releaseStaleFiles()")
+    page.wait_for_timeout(100)
+
+    assert page.locator("#details-files tbody td").first.inner_text() == "current.txt"
+    assert page.locator("#details-files").inner_text().find("stale.txt") == -1

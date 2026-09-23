@@ -1609,8 +1609,6 @@ msgstr "失敗した試行が多すぎます。しばらくしてからもう一
 msgid "Torrent Actions"
 msgstr "トレント操作"
 
-msgid "Torrent actions"
-msgstr "トレント操作"
 
 msgid "Torrent added"
 msgstr "トレントを追加しました"

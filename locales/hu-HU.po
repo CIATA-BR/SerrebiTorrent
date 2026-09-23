@@ -1609,8 +1609,6 @@ msgstr "Túl sok sikertelen próbálkozás. Próbálja újra később."
 msgid "Torrent Actions"
 msgstr "Torrentműveletek"
 
-msgid "Torrent actions"
-msgstr "Torrentműveletek"
 
 msgid "Torrent added"
 msgstr "Torrent hozzáadva"
