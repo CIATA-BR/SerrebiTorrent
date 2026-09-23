@@ -435,3 +435,23 @@ def test_profile_add_normalizes_supported_type(auth_client):
         'user',
         'secret',
     )
+
+
+def test_profile_add_reports_persistence_failure(auth_client):
+    mock_app = MagicMock()
+    mock_app.config_manager.add_profile.side_effect = OSError("disk full")
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/profiles/add',
+        data={
+            'name': 'Remote',
+            'type': 'qbittorrent',
+            'url': 'http://127.0.0.1:8080',
+        },
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 500
+    assert b"Failed to create profile." in rv.data
+    assert b"disk full" not in rv.data
