@@ -396,6 +396,11 @@ async function refreshData(force = false) {
     
     try {
         const isFirstLoad = torrentsMap.size === 0;
+        const activeRow = document.activeElement?.closest?.('tr[data-hash]') || null;
+        const focusedHashBeforeRefresh = activeRow?.dataset?.hash || null;
+        const focusedIndexBeforeRefresh = focusedHashBeforeRefresh
+            ? visibleTorrents.findIndex(t => t.hash === focusedHashBeforeRefresh)
+            : -1;
         // Get the full list from the client directly, info only provides MainFrame's filtered list
         const res = await fetch('/api/v2/torrents/all');
         if (res.status === 403) { window.location.href = '/login.html'; return; }
@@ -419,8 +424,28 @@ async function refreshData(force = false) {
         if (isFirstLoad && visibleTorrents.length > 0) {
             // Focus the first torrent on very first load
             setTimeout(() => focusRow(visibleTorrents[0].hash, true), 100);
-        } else if (lastFocusedHash) {
+        } else if (focusedHashBeforeRefresh && !torrentsMap.has(focusedHashBeforeRefresh)) {
+            if (visibleTorrents.length > 0) {
+                const fallbackIndex = Math.min(
+                    Math.max(focusedIndexBeforeRefresh, 0),
+                    visibleTorrents.length - 1,
+                );
+                const fallback = visibleTorrents[fallbackIndex];
+                focusRow(fallback.hash, true);
+                announceToSR(`Focused torrent is no longer available. Focus moved to ${fallback.name}.`, true);
+            } else {
+                lastFocusedHash = null;
+                const table = els.table();
+                if (table) {
+                    table.tabIndex = 0;
+                    table.focus();
+                }
+                announceToSR("Focused torrent is no longer available. The torrent list is empty.", true);
+            }
+        } else if (lastFocusedHash && torrentsMap.has(lastFocusedHash)) {
             focusRow(lastFocusedHash, false);
+        } else if (lastFocusedHash) {
+            lastFocusedHash = null;
         }
     } catch (e) { console.error("Refresh error", e); }
 }
