@@ -796,3 +796,28 @@ def test_rss_remove_feed_reports_missing_feed(auth_client):
     assert rv.status_code == 404
     assert b"RSS feed not found." in rv.data
     manager.remove_feed.assert_not_called()
+
+
+def test_torrents_all_requires_connected_client(auth_client):
+    original = web_server.WEB_CONFIG.copy()
+    try:
+        web_server.WEB_CONFIG['client'] = None
+
+        rv = auth_client.get('/api/v2/torrents/all')
+
+        assert rv.status_code == 503
+        assert b"No torrent client is connected." in rv.data
+    finally:
+        web_server.WEB_CONFIG.update(original)
+
+
+def test_torrents_all_hides_backend_errors(auth_client):
+    mock_client = MagicMock()
+    mock_client.get_torrents_full.side_effect = RuntimeError("secret backend detail")
+    web_server.WEB_CONFIG['client'] = mock_client
+
+    rv = auth_client.get('/api/v2/torrents/all')
+
+    assert rv.status_code == 500
+    assert b"Failed to fetch torrents." in rv.data
+    assert b"secret backend detail" not in rv.data
