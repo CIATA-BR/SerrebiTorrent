@@ -585,6 +585,53 @@ def test_torrents_trackers_hides_backend_errors(auth_client):
     assert b"secret tracker detail" not in rv.data
 
 
+def test_torrents_files_returns_client_data(auth_client):
+    mock_client = MagicMock()
+    mock_client.get_files.return_value = [
+        {'index': 0, 'name': 'example.txt', 'size': 1024, 'progress': 1.0, 'priority': 1}
+    ]
+    web_server.WEB_CONFIG['client'] = mock_client
+
+    rv = auth_client.get('/api/v2/torrents/files?hash=abc123')
+
+    assert rv.status_code == 200
+    assert rv.get_json() == mock_client.get_files.return_value
+    mock_client.get_files.assert_called_once_with('abc123')
+
+
+def test_torrents_files_requires_connected_client(auth_client):
+    original = web_server.WEB_CONFIG.copy()
+    try:
+        web_server.WEB_CONFIG['client'] = None
+
+        rv = auth_client.get('/api/v2/torrents/files?hash=abc123')
+
+        assert rv.status_code == 503
+        assert b"No torrent client is connected." in rv.data
+    finally:
+        web_server.WEB_CONFIG.update(original)
+
+
+def test_torrents_files_requires_hash(auth_client):
+    web_server.WEB_CONFIG['client'] = MagicMock()
+
+    rv = auth_client.get('/api/v2/torrents/files')
+
+    assert rv.status_code == 400
+    assert b"Torrent hash is required." in rv.data
+
+
+def test_torrents_files_hides_backend_errors(auth_client):
+    mock_client = MagicMock()
+    mock_client.get_files.side_effect = RuntimeError("secret file detail")
+    web_server.WEB_CONFIG['client'] = mock_client
+
+    rv = auth_client.get('/api/v2/torrents/files?hash=abc123')
+
+    assert rv.status_code == 500
+    assert b"Failed to load torrent files." in rv.data
+    assert b"secret file detail" not in rv.data
+
 def test_app_prefs_save_persists_before_success(auth_client, monkeypatch):
     mock_app = MagicMock()
     web_server.WEB_CONFIG['app'] = mock_app
