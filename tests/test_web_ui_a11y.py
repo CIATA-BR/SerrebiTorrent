@@ -699,3 +699,25 @@ def test_web_ui_sidebar_roving_focus_stays_within_current_listbox(page, web_ui_s
     )
     assert all_filter.get_attribute("tabindex") == "0"
     assert active_profile.get_attribute("tabindex") == "0"
+
+
+def test_web_ui_every_sidebar_listbox_keeps_a_tab_stop(page, web_ui_server):
+    # Arrows no longer cross listboxes, so each one must stay reachable with Tab.
+    _login(page, web_ui_server)
+    page.wait_for_selector("#trackerList .sidebar-link")
+    page.wait_for_selector("#profileList .sidebar-link")
+
+    def tab_stops():
+        return page.evaluate(
+            """() => ['profileList', 'filterList', 'trackerList'].map(id =>
+                document.querySelectorAll('#' + id + ' .sidebar-link[tabindex="0"]').length)"""
+        )
+
+    assert tab_stops() == [1, 1, 1]
+
+    page.evaluate("setFilter('tracker.one')")
+    assert tab_stops() == [1, 1, 1]
+    assert page.locator('#filterList .sidebar-link[tabindex="0"]').get_attribute("data-filter") == "All"
+
+    page.evaluate("setFilter('Seeding')")
+    assert tab_stops() == [1, 1, 1]

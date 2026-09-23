@@ -409,6 +409,19 @@ function startRefreshLoop() {
     refreshIntervalId = setInterval(() => refreshData(), rate);
 }
 
+// Arrows stay inside one listbox, so each listbox needs its own Tab stop:
+// the selected option, else the first one.
+function ensureSidebarTabStops() {
+    ['profileList', 'filterList', 'trackerList'].forEach(id => {
+        const listbox = document.getElementById(id);
+        if (!listbox) return;
+        const links = Array.from(listbox.querySelectorAll('.sidebar-link'));
+        if (links.length === 0 || links.some(l => l.tabIndex === 0)) return;
+        const target = links.find(l => l.getAttribute('aria-selected') === 'true') || links[0];
+        target.tabIndex = 0;
+    });
+}
+
 function handleSidebarNavigation(e) {
     const listbox = document.activeElement.closest('[role="listbox"]');
     if (!listbox) return;
@@ -747,6 +760,7 @@ function updateSidebarStats(stats, trackers) {
                 target.focus();
             }
         }
+        ensureSidebarTabStops();
     }
 }
 
@@ -770,6 +784,7 @@ function setFilter(f, event) {
         l.setAttribute('aria-selected', isActive);
         l.tabIndex = isActive ? 0 : -1;
     });
+    ensureSidebarTabStops();
 
     updateFilteredList();
     const container = els.container();
@@ -815,6 +830,7 @@ window.fetchProfiles = async function() {
                 target.focus();
             }
         }
+        ensureSidebarTabStops();
     } catch (e) {
         console.error("fetchProfiles failed:", e);
     }
