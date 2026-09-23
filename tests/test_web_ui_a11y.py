@@ -332,6 +332,9 @@ def test_web_ui_action_menu_returns_focus_to_originating_row(page, web_ui_server
 
 def test_web_ui_action_menu_returns_focus_to_actions_button(page, web_ui_server):
     _login(page, web_ui_server)
+    page.wait_for_function("document.activeElement && document.activeElement.matches('tr[data-hash]')")
+    focused_hash = page.evaluate("document.activeElement.dataset.hash")
+    page.evaluate("(hash) => selectByHash(hash)", focused_hash)
 
     button = page.locator("#torrentActionsBtn")
     button.focus()
