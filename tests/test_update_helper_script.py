@@ -75,7 +75,7 @@ def test_update_helper_relaunches_app_visible():
 
     assert 'Start-Process -FilePath ([string]$env:APP_PATH) -PassThru' in text
     assert 'Start-Process -FilePath ([string]$env:APP_PATH) | Out-Null' in text
-    assert '-WindowStyle Hidden' not in text[text.index(':launch_and_verify_app'):text.index(':launch_app_once')]
+    assert 'Start-Process -FilePath ([string]$env:APP_PATH) -WindowStyle Hidden' not in text
 
 
 def test_update_helper_accepts_and_cleans_temp_root():
