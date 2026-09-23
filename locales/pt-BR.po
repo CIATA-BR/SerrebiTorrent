@@ -1685,6 +1685,27 @@ msgstr "URL da lista de trackers:"
 msgid "Trackers"
 msgstr "Trackers"
 
+msgid "Tracker URL"
+msgstr "URL do tracker"
+
+msgid "Torrent Trackers"
+msgstr "Trackers do torrent"
+
+msgid "Select one torrent to view trackers."
+msgstr "Selecione um torrent para ver os trackers."
+
+msgid "Loading trackers..."
+msgstr "Carregando trackers..."
+
+msgid "No trackers available."
+msgstr "Nenhum tracker disponível."
+
+msgid "Failed to load torrent trackers."
+msgstr "Falha ao carregar os trackers do torrent."
+
+msgid "Message"
+msgstr "Mensagem"
+
 msgid "Translated"
 msgstr "Traduzido"
 
