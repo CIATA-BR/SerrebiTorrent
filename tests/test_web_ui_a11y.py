@@ -275,3 +275,75 @@ def test_web_ui_space_toggles_focused_torrent_selection(page, web_ui_server):
         "(message) => document.getElementById('aria-announcer').textContent === message",
         arg=f"Deselected {focused_name}",
     )
+
+
+def test_web_ui_modal_returns_focus_to_trigger(page, web_ui_server):
+    _login(page, web_ui_server)
+
+    trigger = page.locator('[data-bs-target="#addTorrentModal"]')
+    trigger.focus()
+    assert page.evaluate("document.activeElement === document.querySelector('[data-bs-target=\"#addTorrentModal\"]')")
+
+    page.evaluate(
+        """() => {
+            const trigger = document.querySelector('[data-bs-target="#addTorrentModal"]');
+            const modal = document.getElementById('addTorrentModal');
+            const showEvent = new Event('show.bs.modal');
+            Object.defineProperty(showEvent, 'relatedTarget', { value: trigger });
+            modal.dispatchEvent(showEvent);
+            modal.dispatchEvent(new Event('hidden.bs.modal'));
+        }"""
+    )
+
+    page.wait_for_function(
+        "document.activeElement === document.querySelector('[data-bs-target=\"#addTorrentModal\"]')"
+    )
+
+
+def test_web_ui_action_menu_returns_focus_to_originating_row(page, web_ui_server):
+    _login(page, web_ui_server)
+    page.wait_for_function("document.activeElement && document.activeElement.matches('tr[data-hash]')")
+
+    focused_hash = page.evaluate("document.activeElement.dataset.hash")
+    page.evaluate(
+        """() => {
+            window.bootstrap = {
+                Dropdown: {
+                    getOrCreateInstance: () => ({ show() {} }),
+                    getInstance: () => ({ hide() {} }),
+                },
+            };
+        }"""
+    )
+    page.evaluate(
+        """(hash) => {
+            const row = document.querySelector(`tr[data-hash="${hash}"]`);
+            showContextMenu({ target: row }, row);
+            document.getElementById('torrentActionsBtn').dispatchEvent(new Event('hidden.bs.dropdown'));
+        }""",
+        focused_hash,
+    )
+
+    page.wait_for_function(
+        "(hash) => document.activeElement && document.activeElement.dataset && document.activeElement.dataset.hash === hash",
+        arg=focused_hash,
+    )
+
+
+def test_web_ui_action_menu_returns_focus_to_actions_button(page, web_ui_server):
+    _login(page, web_ui_server)
+    page.wait_for_function("document.activeElement && document.activeElement.matches('tr[data-hash]')")
+    focused_hash = page.evaluate("document.activeElement.dataset.hash")
+    page.evaluate("(hash) => selectByHash(hash)", focused_hash)
+
+    button = page.locator("#torrentActionsBtn")
+    button.focus()
+    page.evaluate(
+        """() => {
+            const button = document.getElementById('torrentActionsBtn');
+            button.dispatchEvent(new Event('show.bs.dropdown'));
+            button.dispatchEvent(new Event('hidden.bs.dropdown'));
+        }"""
+    )
+
+    page.wait_for_function("document.activeElement && document.activeElement.id === 'torrentActionsBtn'")
