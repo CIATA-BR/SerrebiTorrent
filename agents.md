@@ -27,7 +27,7 @@
 
 ## Build commands
 - Install deps (only if new environment): `python -m pip install -r requirements.txt`.
-- Windows: run `build_exe.bat build` locally on this machine. Do not use a GitHub-hosted Windows runner.
+- Windows: run `build_exe.bat build` locally on this machine. GitHub-hosted Windows runners are for cloud agents only (below).
 - Linux: run `powershell -File tools\\build_linux_remote.ps1 -Version X.Y.Z`; it must build through SSH on `root@serrebiradio.com`.
 - macOS: `.github/workflows/ci.yml` builds natively on GitHub's macOS runner using Homebrew's libtorrent.
 - The `.spec` file uses PyInstaller's import analysis rather than collecting every dependency submodule. It explicitly requires the libtorrent extension so PyInstaller follows only its referenced native dependencies.
@@ -35,6 +35,8 @@
 - `icon.ico` is conditionally included in the build only if it exists in the root directory.
 - Release: run `build_exe.bat release` from a clean tree with `SIGN_CERT_THUMBPRINT=FB99DDCECA07B170E0A950F0C780AD899D28D770` exported, so the manifest keeps `signing_thumbprint` and the updater keeps trusting the build.
 - A release that dies after the version bump leaves `app_version.py` modified, and every retry then aborts with "Working tree has uncommitted tracked changes" — run `git checkout -- app_version.py` and retry. The same guard fires when `app_version.py` is already ahead of the newest tag: `release_tools.ps1` finds no tag to diff against, falls back to the full history, and publishes release notes for every commit ever made.
+- Cloud agents ONLY (never on this host, never while `build_exe.bat release` runs; both bump from the latest tag): `.github/workflows/cloud-release.yml` builds every platform on GitHub runners. `plan` computes the version with `tools/release_tools.ps1`; `linux` runs `tools/build_linux.sh` on ubuntu-24.04 with the wheel from the `libtorrent-wheels` pre-release (uv cache keeps the wxPython source build); `windows` runs the same `build_exe.bat release`, signed from the `WINDOWS_CODESIGN_PFX`/`WINDOWS_CODESIGN_PASSWORD` secrets, with `SERREBITORRENT_LINUX_TARBALL` replacing the SSH build; `macos` dispatches `ci.yml` on the new tag (a GITHUB_TOKEN tag push starts nothing) and then checks all four assets and `/releases/latest`. `gh workflow run cloud-release.yml -f dry_run=true` builds everything as artifacts and publishes nothing; `-f dry_run=false` is real. Watch: `gh run watch <id> --exit-status`.
+- `libtorrent-wheels` is a pre-release holding the maintained CPython 3.14 wheels (Windows from `%USERPROFILE%\libtorrent-build\wheels`, Linux from `/root/libtorrent-build/wheels` on the VPS). It is never Latest and not a `v*` tag, so the updater and version logic ignore it. After the weekly wheel build, refresh it: `gh release upload libtorrent-wheels <new .whl> --clobber` (the newest stamp wins).
 - A tag push runs `ci.yml`, which builds the macOS app and attaches `SerrebiTorrent-vX.Y.Z-macos-ARM64.zip` to the release, retrying for a few minutes until the release exists. That job also runs the suite, so `main` must be green before tagging.
 
 ## Packaging

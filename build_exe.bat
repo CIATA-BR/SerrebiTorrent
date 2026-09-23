@@ -170,9 +170,16 @@ powershell -NoProfile -Command "Compress-Archive -Path 'dist\%APP_NAME%' -Destin
 if errorlevel 1 goto :error
 
 if /I "%MODE%"=="release" (
-    echo Building Linux release on root@serrebiradio.com...
-    powershell -NoProfile -File "tools\build_linux_remote.ps1" -Ref HEAD -Version "!NEXT_VERSION!" -OutputDirectory "dist"
-    if errorlevel 1 goto :error
+    if defined SERREBITORRENT_LINUX_TARBALL (
+        rem cloud-release.yml already built Linux on a GitHub runner.
+        echo Using prebuilt Linux package "!SERREBITORRENT_LINUX_TARBALL!"...
+        copy /Y "!SERREBITORRENT_LINUX_TARBALL!" "dist\%APP_NAME%-v!NEXT_VERSION!-linux-x86_64.tar.gz" >nul
+        if errorlevel 1 goto :error
+    ) else (
+        echo Building Linux release on root@serrebiradio.com...
+        powershell -NoProfile -File "tools\build_linux_remote.ps1" -Ref HEAD -Version "!NEXT_VERSION!" -OutputDirectory "dist"
+        if errorlevel 1 goto :error
+    )
     call :create_manifest || goto :error
     call :git_commit_tag_push || goto :error
     call :gh_release || goto :error
