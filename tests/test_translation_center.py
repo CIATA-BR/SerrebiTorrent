@@ -61,6 +61,13 @@ def test_ciata_translation_portal_is_the_default_online_endpoint():
     assert translation_center.ONLINE_TRANSLATION_URL
 
 
+def test_translation_center_validates_language_code_before_export():
+    source = inspect.getsource(translation_center.TranslationCenterDialog._on_export)
+    assert "validate_catalog_code(code)" in source
+    assert "hyphenated BCP47-style subtags" in source
+    assert "self.language_code.SetFocus()" in source
+
+
 def test_center_seeds_from_the_shipped_catalog_before_the_local_draft():
     source = inspect.getsource(translation_center.TranslationCenterDialog._load_language)
 
