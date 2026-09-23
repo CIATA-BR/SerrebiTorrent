@@ -16,6 +16,8 @@ let visibleTorrents = [];
 let lastProfileFetch = 0;
 let detailsTimeout = null;
 let csrfToken = null;
+let actionMenuReturnFocus = null;
+const modalReturnFocus = new WeakMap();
 
 async function ensureCsrfToken() {
     if (csrfToken) return csrfToken;
@@ -69,8 +71,21 @@ window.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.modal').forEach((modal) => {
         modal.setAttribute('inert', '');
-        modal.addEventListener('show.bs.modal', () => modal.removeAttribute('inert'));
-        modal.addEventListener('hidden.bs.modal', () => modal.setAttribute('inert', ''));
+        modal.addEventListener('show.bs.modal', (e) => {
+            const origin = e.relatedTarget || document.activeElement;
+            if (origin instanceof HTMLElement && !modal.contains(origin)) {
+                modalReturnFocus.set(modal, origin);
+            }
+            modal.removeAttribute('inert');
+        });
+        modal.addEventListener('hidden.bs.modal', () => {
+            modal.setAttribute('inert', '');
+            const origin = modalReturnFocus.get(modal);
+            modalReturnFocus.delete(modal);
+            if (origin && origin.isConnected) {
+                setTimeout(() => origin.focus(), 0);
+            }
+        });
     });
 
     // Initial fetch
@@ -151,8 +166,14 @@ window.addEventListener('DOMContentLoaded', () => {
         });
         actionsBtn.addEventListener('hidden.bs.dropdown', () => {
             announceToSR("Menu closed");
-            if (lastFocusedHash) {
+            const origin = actionMenuReturnFocus;
+            actionMenuReturnFocus = null;
+            if (origin && origin.isConnected) {
+                setTimeout(() => origin.focus(), 10);
+            } else if (lastFocusedHash) {
                 setTimeout(() => focusRow(lastFocusedHash, true), 10);
+            } else {
+                setTimeout(() => actionsBtn.focus(), 10);
             }
         });
     }
@@ -838,6 +859,7 @@ function showContextMenu(e, anchorRow = null) {
 
     const btn = els.actionsBtn();
     if (btn) {
+        actionMenuReturnFocus = row || document.activeElement || btn;
         btn.focus();
         const dd = bootstrap.Dropdown.getOrCreateInstance(btn);
         dd.show();
