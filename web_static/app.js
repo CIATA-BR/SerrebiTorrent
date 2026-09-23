@@ -501,11 +501,17 @@ async function refreshData(force = false) {
         // Get the full list from the client directly, info only provides MainFrame's filtered list
         const res = await fetch('/api/v2/torrents/all');
         if (await redirectIfSessionExpired(res)) return;
+        if (!res.ok) {
+            throw new Error(await res.text() || 'Failed to refresh torrents.');
+        }
         const torrentsList = await res.json();
         
         // Also get stats from info
         const infoRes = await fetch('/api/v2/torrents/info');
         if (await redirectIfSessionExpired(infoRes)) return;
+        if (!infoRes.ok) {
+            throw new Error(await infoRes.text() || 'Failed to refresh torrent stats.');
+        }
         const infoData = await infoRes.json();
         
         const listChanges = syncTorrentsMap(Array.isArray(torrentsList) ? torrentsList : []);
