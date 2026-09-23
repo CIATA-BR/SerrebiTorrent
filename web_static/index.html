@@ -171,11 +171,11 @@
                 <div class="modal-body">
                     <form id="addProfileForm">
                         <div class="mb-3">
-                            <label class="form-label">Name</label>
+                            <label class="form-label" for="profName">Name</label>
                             <input type="text" class="form-control" id="profName" placeholder="My Remote Server" required>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Type</label>
+                            <label class="form-label" for="profType">Type</label>
                             <select class="form-select" id="profType">
                                 <option value="local">Local libtorrent</option>
                                 <option value="rtorrent" selected>rTorrent</option>
@@ -184,15 +184,15 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">URL / Path</label>
+                            <label class="form-label" for="profUrl">URL / Path</label>
                             <input type="text" class="form-control" id="profUrl" placeholder="http://1.2.3.4:8080" required>
                         </div>
                         <div class="mb-2">
-                            <label class="form-label">Username</label>
+                            <label class="form-label" for="profUser">Username</label>
                             <input type="text" class="form-control" id="profUser">
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Password</label>
+                            <label class="form-label" for="profPass">Password</label>
                             <input type="password" class="form-control" id="profPass">
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Create Profile</button>
@@ -203,25 +203,25 @@
     </div>
 
     <!-- Add Torrent Modal -->
-    <div class="modal fade" id="addTorrentModal" tabindex="-1" inert>
+    <div class="modal fade" id="addTorrentModal" tabindex="-1" aria-labelledby="addTorrentModalLabel" inert>
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add Torrent</h5>
+                    <h5 class="modal-title" id="addTorrentModalLabel">Add Torrent</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form id="addTorrentForm">
                         <div class="mb-3">
-                            <label class="form-label">URLs / Magnets (one per line)</label>
+                            <label class="form-label" for="torrentUrls">URLs / Magnets (one per line)</label>
                             <textarea class="form-control" id="torrentUrls" rows="3"></textarea>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Torrent Files</label>
+                            <label class="form-label" for="torrentFiles">Torrent Files</label>
                             <input type="file" class="form-control" id="torrentFiles" multiple>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Save Path (Optional)</label>
+                            <label class="form-label" for="torrentSavePath">Save Path (Optional)</label>
                             <input type="text" class="form-control" id="torrentSavePath">
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Add</button>
@@ -232,11 +232,11 @@
     </div>
 
     <!-- Settings Modal -->
-    <div class="modal fade" id="settingsModal" tabindex="-1" inert>
+    <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="settingsModalLabel" inert>
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Preferences</h5>
+                    <h5 class="modal-title" id="settingsModalLabel">Preferences</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-0">
@@ -257,22 +257,22 @@
                             <form id="settingsForm">
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
-                                        <label class="form-label">Download Path</label>
-                                        <input type="text" class="form-control" name="download_path">
+                                        <label class="form-label" for="settingsDownloadPath">Download Path</label>
+                                        <input type="text" class="form-control" id="settingsDownloadPath" name="download_path">
                                     </div>
                                     <div class="col-md-6 mb-3">
-                                        <label class="form-label">RSS Update Interval (s)</label>
-                                        <input type="number" class="form-control" name="rss_update_interval">
+                                        <label class="form-label" for="settingsRssInterval">RSS Update Interval (s)</label>
+                                        <input type="number" class="form-control" id="settingsRssInterval" name="rss_update_interval">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
-                                        <label class="form-label">Global DL Limit (B/s)</label>
-                                        <input type="number" class="form-control" name="dl_limit">
+                                        <label class="form-label" for="settingsDlLimit">Global DL Limit (B/s)</label>
+                                        <input type="number" class="form-control" id="settingsDlLimit" name="dl_limit">
                                     </div>
                                     <div class="col-md-6 mb-3">
-                                        <label class="form-label">Global UL Limit (B/s)</label>
-                                        <input type="number" class="form-control" name="ul_limit">
+                                        <label class="form-label" for="settingsUlLimit">Global UL Limit (B/s)</label>
+                                        <input type="number" class="form-control" id="settingsUlLimit" name="ul_limit">
                                     </div>
                                 </div>
                                 <div class="mb-3 form-check">
@@ -296,14 +296,14 @@
                         <div class="tab-pane fade" id="settings-web">
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">Theme</label>
+                                    <label class="form-label" for="webTheme">Theme</label>
                                     <select class="form-select" id="webTheme" onchange="applyTheme(this.value)">
                                         <option value="light">Light (Classic)</option>
                                         <option value="dark">Dark (Night)</option>
                                     </select>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <label class="form-label">UI Refresh Rate (ms)</label>
+                                    <label class="form-label" for="webRefreshRate">UI Refresh Rate (ms)</label>
                                     <input type="number" class="form-control" id="webRefreshRate" value="5000" step="500" min="1000">
                                 </div>
                             </div>
