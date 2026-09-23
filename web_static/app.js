@@ -263,6 +263,21 @@ window.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // Space toggles selection for the focused torrent row without moving focus.
+        if (e.key === ' ') {
+            const focusedRow = document.activeElement.closest('tr[data-hash]');
+            if (focusedRow) {
+                e.preventDefault();
+                const hash = focusedRow.dataset.hash;
+                const torrent = torrentsMap.get(hash);
+                const selecting = !selectedHashes.has(hash);
+                toggleSelection(hash);
+                focusRow(hash, true);
+                announceToSR(`${selecting ? 'Selected' : 'Deselected'} ${torrent?.name || 'torrent'}`);
+                return;
+            }
+        }
+
         // Ctrl+A Select All
         if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
             e.preventDefault();
