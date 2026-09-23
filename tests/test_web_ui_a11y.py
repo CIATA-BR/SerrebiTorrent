@@ -563,6 +563,7 @@ def test_web_ui_grid_shortcuts_do_not_capture_actions_button_keys(page, web_ui_s
     page.keyboard.press("Control+A")
     assert page.locator('tr[data-hash][aria-selected="true"]').count() == 0
 
+
 def test_web_ui_arrow_from_focused_grid_enters_first_row(page, web_ui_server):
     # The grid itself takes focus when the list empties; arrows must still reach the rows.
     _login(page, web_ui_server)
@@ -573,4 +574,30 @@ def test_web_ui_arrow_from_focused_grid_enters_first_row(page, web_ui_server):
 
     page.wait_for_function(
         "() => document.activeElement && document.activeElement.matches('tr[data-hash]') && document.activeElement === document.querySelector('tr[data-hash]')"
+    )
+
+
+def test_web_ui_sidebar_arrows_move_focus_without_activating_filter(page, web_ui_server):
+    _login(page, web_ui_server)
+
+    all_filter = page.locator('#filterList .sidebar-link[data-filter="All"]')
+    downloading_filter = page.locator('#filterList .sidebar-link[data-filter="Downloading"]')
+
+    all_filter.focus()
+    assert all_filter.get_attribute("aria-selected") == "true"
+
+    page.keyboard.press("ArrowDown")
+
+    assert page.evaluate(
+        "document.activeElement && document.activeElement.dataset.filter === 'Downloading'"
+    )
+    assert all_filter.get_attribute("aria-selected") == "true"
+    assert downloading_filter.get_attribute("aria-selected") == "false"
+
+    page.keyboard.press("Enter")
+    page.wait_for_function(
+        "() => document.querySelector('#filterList .sidebar-link[data-filter=\"Downloading\"]')?.getAttribute('aria-selected') === 'true'"
+    )
+    page.wait_for_function(
+        "() => document.activeElement && document.activeElement.matches('tr[data-hash]')"
     )
