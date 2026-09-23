@@ -683,24 +683,34 @@ def rss_feeds():
 @login_required
 def rss_add_feed():
     app_ref = WEB_CONFIG['app']
-    url = request.form.get('url')
+    url = (request.form.get('url') or '').strip()
     alias = request.form.get('alias', '')
-    if app_ref and url:
-        import wx
-        wx.CallAfter(app_ref.rss_panel.manager.add_feed, url, alias)
-        return "Ok."
-    return "Failed", 400
+    if not app_ref or not hasattr(app_ref, 'rss_panel'):
+        return "Application context is unavailable.", 503
+    if not url:
+        return "RSS feed URL is required.", 400
+    if not app_ref.rss_panel.manager.add_feed(url, alias):
+        if url in app_ref.rss_panel.manager.feeds:
+            return "RSS feed already exists.", 409
+        return "Failed to save RSS feed.", 500
+    return "Ok."
 
 @app.route('/api/v2/rss/remove_feed', methods=['POST'])
 @login_required
 def rss_remove_feed():
     app_ref = WEB_CONFIG['app']
-    url = request.form.get('url')
-    if app_ref and url:
-        import wx
-        wx.CallAfter(app_ref.rss_panel.manager.remove_feed, url)
-        return "Ok."
-    return "Failed", 400
+    url = (request.form.get('url') or '').strip()
+    if not app_ref or not hasattr(app_ref, 'rss_panel'):
+        return "Application context is unavailable.", 503
+    if not url:
+        return "RSS feed URL is required.", 400
+    manager = app_ref.rss_panel.manager
+    existed = url in manager.feeds
+    if not existed:
+        return "RSS feed not found.", 404
+    if not manager.remove_feed(url):
+        return "Failed to remove RSS feed.", 500
+    return "Ok."
 
 @app.route('/api/v2/rss/rules')
 @login_required
