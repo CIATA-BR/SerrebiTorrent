@@ -335,3 +335,39 @@ def test_torrents_delete_requires_selection(auth_client):
 
     assert rv.status_code == 400
     assert b"No torrents selected." in rv.data
+
+
+def test_profile_switch_rejects_unknown_profile(auth_client):
+    mock_app = MagicMock()
+    mock_app.config_manager.get_profiles.return_value = {
+        'local': {'name': 'Local', 'type': 'local'}
+    }
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/profiles/switch',
+        data={'id': 'missing'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 404
+    assert b"Profile not found." in rv.data
+    mock_app.connect_profile.assert_not_called()
+
+
+def test_profile_switch_requires_profile_id(auth_client):
+    mock_app = MagicMock()
+    mock_app.config_manager.get_profiles.return_value = {
+        'local': {'name': 'Local', 'type': 'local'}
+    }
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/profiles/switch',
+        data={'id': ''},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 400
+    assert b"Profile id is required." in rv.data
+    mock_app.connect_profile.assert_not_called()

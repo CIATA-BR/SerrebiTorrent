@@ -359,11 +359,18 @@ def get_profiles():
 def switch_profile():
     pid = request.form.get('id')
     app_ref = WEB_CONFIG['app']
-    if app_ref and pid:
-        import wx
-        wx.CallAfter(app_ref.connect_profile, pid)
-        return "Ok."
-    return "Failed.", 400
+    if not app_ref:
+        return "Application context is unavailable.", 503
+    if not pid:
+        return "Profile id is required.", 400
+
+    profiles = app_ref.config_manager.get_profiles()
+    if pid not in profiles:
+        return "Profile not found.", 404
+
+    import wx
+    wx.CallAfter(app_ref.connect_profile, pid)
+    return "Ok."
 
 @app.route('/api/v2/profiles/add', methods=['POST'])
 @login_required
