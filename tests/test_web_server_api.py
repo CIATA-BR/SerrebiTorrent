@@ -255,3 +255,52 @@ def test_api_responses_are_not_cached(client, auth_failures):
     )
 
     assert response.headers['Cache-Control'] == 'no-store'
+
+
+def test_torrent_action_requires_connected_client(auth_client):
+    original = web_server.WEB_CONFIG.copy()
+    try:
+        web_server.WEB_CONFIG['client'] = None
+
+        rv = auth_client.post(
+            '/api/v2/torrents/pause',
+            data={'hashes': 'h1'},
+            headers=csrf_headers(auth_client),
+        )
+
+        assert rv.status_code == 503
+        assert b"No torrent client is connected." in rv.data
+    finally:
+        web_server.WEB_CONFIG.update(original)
+
+
+def test_recheck_reports_partial_failures(auth_client):
+    mock_client = MagicMock()
+    mock_client.recheck_torrent.side_effect = [None, RuntimeError("boom")]
+    web_server.WEB_CONFIG['client'] = mock_client
+
+    rv = auth_client.post(
+        '/api/v2/torrents/recheck',
+        data={'hashes': 'h1|h2'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 500
+    assert b"Failed to recheck one or more torrents." in rv.data
+    assert mock_client.recheck_torrent.call_count == 2
+
+
+def test_openfolder_reports_missing_download_path(auth_client):
+    mock_client = MagicMock()
+    mock_client.get_torrent_save_path.return_value = ''
+    web_server.WEB_CONFIG['client'] = mock_client
+    web_server.WEB_CONFIG['app'] = MagicMock()
+
+    rv = auth_client.post(
+        '/api/v2/torrents/openfolder',
+        data={'hashes': 'h1'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 404
+    assert b"Download folder is unavailable." in rv.data

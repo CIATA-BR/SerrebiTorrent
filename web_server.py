@@ -454,67 +454,99 @@ def torrents_files():
         return jsonify(client.get_files(hash))
     return jsonify([])
 
+def _requested_torrent_hashes():
+    return [h for h in (request.form.get('hashes') or '').split('|') if h]
+
+
+def _torrent_action_context():
+    client = WEB_CONFIG['client']
+    hashes = _requested_torrent_hashes()
+    if not client:
+        return None, hashes, ("No torrent client is connected.", 503)
+    if not hashes:
+        return client, hashes, ("No torrents selected.", 400)
+    return client, hashes, None
+
+
 @app.route('/api/v2/torrents/resume', methods=['POST'])
 @login_required
 def torrents_resume():
-    hashes = request.form.get('hashes')
-    client = WEB_CONFIG['client']
-    if client and hashes:
-        for h in hashes.split('|'):
+    client, hashes, error = _torrent_action_context()
+    if error:
+        return error
+    try:
+        for h in hashes:
             client.start_torrent(h)
+    except Exception:
+        return "Failed to resume torrent(s).", 500
     return "Ok."
+
 
 @app.route('/api/v2/torrents/pause', methods=['POST'])
 @login_required
 def torrents_pause():
-    hashes = request.form.get('hashes')
-    client = WEB_CONFIG['client']
-    if client and hashes:
-        for h in hashes.split('|'):
+    client, hashes, error = _torrent_action_context()
+    if error:
+        return error
+    try:
+        for h in hashes:
             client.stop_torrent(h)
+    except Exception:
+        return "Failed to pause torrent(s).", 500
     return "Ok."
+
 
 @app.route('/api/v2/torrents/recheck', methods=['POST'])
 @login_required
 def torrents_recheck():
-    hashes = request.form.get('hashes')
-    client = WEB_CONFIG['client']
-    if client and hashes:
-        for h in hashes.split('|'):
-            try:
-                client.recheck_torrent(h)
-            except Exception:
-                continue
+    client, hashes, error = _torrent_action_context()
+    if error:
+        return error
+    failed = False
+    for h in hashes:
+        try:
+            client.recheck_torrent(h)
+        except Exception:
+            failed = True
+    if failed:
+        return "Failed to recheck one or more torrents.", 500
     return "Ok."
+
 
 @app.route('/api/v2/torrents/reannounce', methods=['POST'])
 @login_required
 def torrents_reannounce():
-    hashes = request.form.get('hashes')
-    client = WEB_CONFIG['client']
-    if client and hashes:
-        for h in hashes.split('|'):
-            try:
-                client.reannounce_torrent(h)
-            except Exception:
-                continue
+    client, hashes, error = _torrent_action_context()
+    if error:
+        return error
+    failed = False
+    for h in hashes:
+        try:
+            client.reannounce_torrent(h)
+        except Exception:
+            failed = True
+    if failed:
+        return "Failed to reannounce one or more torrents.", 500
     return "Ok."
+
 
 @app.route('/api/v2/torrents/openfolder', methods=['POST'])
 @login_required
 def torrents_openfolder():
-    hashes = request.form.get('hashes')
-    client = WEB_CONFIG['client']
+    client, hashes, error = _torrent_action_context()
+    if error:
+        return error
     app_ref = WEB_CONFIG['app']
-    if client and hashes:
-        h = hashes.split('|')[0]
-        try:
-            path = client.get_torrent_save_path(h)
-            if path and app_ref:
-                import wx
-                wx.CallAfter(app_ref._open_path, path)
-        except Exception:
-            pass
+    if not app_ref:
+        return "Failed to open download folder.", 500
+    try:
+        path = client.get_torrent_save_path(hashes[0])
+        if not path:
+            return "Download folder is unavailable.", 404
+        import wx
+        wx.CallAfter(app_ref._open_path, path)
+    except Exception:
+        return "Failed to open download folder.", 500
     return "Ok."
 
 @app.route('/api/v2/torrents/delete', methods=['POST'])
