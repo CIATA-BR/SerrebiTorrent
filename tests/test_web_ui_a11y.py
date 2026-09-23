@@ -678,3 +678,24 @@ def test_web_ui_unchanged_refresh_keeps_the_same_focused_tracker_node(page, web_
 
     assert page.evaluate("document.activeElement === window.__focusedTrackerNode")
     assert page.evaluate("window.__focusedTrackerNode.isConnected")
+
+
+def test_web_ui_sidebar_roving_focus_stays_within_current_listbox(page, web_ui_server):
+    _login(page, web_ui_server)
+
+    rss = page.locator('#filterList .sidebar-link[data-filter="RSS"]')
+    all_filter = page.locator('#filterList .sidebar-link[data-filter="All"]')
+    active_profile = page.locator('#profileList .sidebar-link[aria-selected="true"]')
+
+    rss.focus()
+    assert page.evaluate(
+        "document.activeElement && document.activeElement.dataset.filter === 'RSS'"
+    )
+
+    page.keyboard.press("ArrowDown")
+
+    assert page.evaluate(
+        "document.activeElement && document.activeElement.dataset.filter === 'All'"
+    )
+    assert all_filter.get_attribute("tabindex") == "0"
+    assert active_profile.get_attribute("tabindex") == "0"
