@@ -405,3 +405,29 @@ def test_web_ui_modal_escape_path_returns_focus_to_trigger(page, web_ui_server):
         "(selector) => document.activeElement === document.querySelector(selector)",
         arg=trigger_selector,
     )
+
+
+def test_web_ui_background_refresh_pauses_while_modal_is_open(page, web_ui_server):
+    _login(page, web_ui_server)
+
+    calls = {"all": 0}
+
+    def torrents_all(route):
+        calls["all"] += 1
+        route.continue_()
+
+    page.route("**/api/v2/torrents/all", torrents_all)
+
+    page.evaluate(
+        """() => {
+            const modal = document.getElementById('addTorrentModal');
+            modal.classList.add('show');
+        }"""
+    )
+    page.evaluate("refreshData()")
+    page.wait_for_timeout(150)
+    assert calls["all"] == 0
+
+    page.evaluate("refreshData(true)")
+    page.wait_for_timeout(150)
+    assert calls["all"] >= 1
