@@ -1,6 +1,6 @@
 name: Cloud Release
 
-# Cloud agents ONLY. On the Windows release host run `build_exe.bat release`
+# Muse agent and cloud agents ONLY. On the Windows release host run `build_exe.bat release`
 # (Linux over SSH on root@serrebiradio.com, macOS from ci.yml on the tag).
 # Here every platform builds on GitHub runners:
 #   plan    - next version from tools/release_tools.ps1, same as build_exe.bat
