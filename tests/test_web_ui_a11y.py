@@ -193,3 +193,55 @@ def test_web_ui_loads_community_catalog_and_keeps_user_data(page, web_ui_server)
     # Torrent names are data, not localization source strings.
     assert page.locator("tr[data-hash] .col-name").first.inner_text() == "Alpha"
     assert page.locator("#appLanguage option[value='es-ES']").count() == 1
+
+
+def test_web_ui_refresh_moves_focus_when_focused_torrent_disappears(page, web_ui_server):
+    _login(page, web_ui_server)
+    page.wait_for_function("document.querySelectorAll('tr[data-hash]').length >= 2")
+
+    page.locator('tr[data-hash="' + "b" * 40 + '"]').focus()
+    assert page.evaluate("document.activeElement.dataset.hash") == "b" * 40
+
+    page.route(
+        "**/api/v2/torrents/all",
+        lambda route: route.fulfill(
+            status=200,
+            content_type="application/json",
+            body='[{"hash":"' + "a" * 40 + '","name":"Alpha","size":1000,"done":250,"state":1,"message":"","tracker_domain":"tracker.one","down_rate":0,"up_rate":0,"save_path":"C:\\\\Downloads"}]',
+        ),
+    )
+
+    page.evaluate("refreshData(true)")
+    page.wait_for_function(
+        "(hash) => document.activeElement && document.activeElement.dataset && document.activeElement.dataset.hash === hash",
+        arg="a" * 40,
+    )
+
+    assert page.locator("#aria-announcer").inner_text() == (
+        "Focused torrent is no longer available. Focus moved to Alpha."
+    )
+
+
+def test_web_ui_refresh_keeps_focus_in_grid_when_last_torrent_disappears(page, web_ui_server):
+    _login(page, web_ui_server)
+    page.wait_for_selector("tr[data-hash]")
+
+    page.locator('tr[data-hash="' + "a" * 40 + '"]').focus()
+    assert page.evaluate("document.activeElement.dataset.hash") == "a" * 40
+
+    page.route(
+        "**/api/v2/torrents/all",
+        lambda route: route.fulfill(
+            status=200,
+            content_type="application/json",
+            body="[]",
+        ),
+    )
+
+    page.evaluate("refreshData(true)")
+    page.wait_for_function("document.activeElement && document.activeElement.id === 'torrentTable'")
+
+    assert page.locator("#torrentTable").get_attribute("tabindex") == "0"
+    assert page.locator("#aria-announcer").inner_text() == (
+        "Focused torrent is no longer available. The torrent list is empty."
+    )
