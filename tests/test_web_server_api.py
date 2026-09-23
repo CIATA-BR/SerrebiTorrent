@@ -704,6 +704,25 @@ def test_app_prefs_save_requires_application_context(auth_client):
         web_server.WEB_CONFIG.update(original)
 
 
+def test_profile_switch_reports_async_start(auth_client, monkeypatch):
+    mock_app = MagicMock()
+    mock_app.config_manager.get_profiles.return_value = {
+        'remote': {'name': 'Remote', 'type': 'qbittorrent'}
+    }
+    web_server.WEB_CONFIG['app'] = mock_app
+    call_after = MagicMock()
+    monkeypatch.setattr("wx.CallAfter", call_after)
+
+    rv = auth_client.post(
+        '/api/v2/profiles/switch',
+        data={'id': 'remote'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 202
+    assert b"Profile switch started." in rv.data
+    call_after.assert_called_once_with(mock_app.connect_profile, 'remote')
+
 def test_rss_add_feed_reports_persistence_failure(auth_client):
     manager = MagicMock()
     manager.feeds = {}

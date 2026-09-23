@@ -373,7 +373,7 @@ def switch_profile():
 
     import wx
     wx.CallAfter(app_ref.connect_profile, pid)
-    return "Ok."
+    return "Profile switch started.", 202
 
 @app.route('/api/v2/profiles/add', methods=['POST'])
 @login_required
