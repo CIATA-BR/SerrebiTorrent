@@ -143,6 +143,7 @@ class ConfigManager:
 
     def load_config(self) -> Dict[str, Any]:
         cfg = None
+        current_config_unreadable = False
 
         # Prefer the new path.
         if os.path.exists(CONFIG_FILE):
@@ -150,16 +151,19 @@ class ConfigManager:
                 cfg = self._normalize(_read_json(CONFIG_FILE))
             except Exception:
                 cfg = None  # Fallback
+                current_config_unreadable = True
 
         # Migrate legacy config.json if present and no new config
         if not cfg and os.path.exists(LEGACY_CONFIG_FILE):
             try:
                 cfg = self._normalize(_read_json(LEGACY_CONFIG_FILE))
-                # Save to the new location. Keep the legacy file untouched.
-                try:
-                    _write_json(CONFIG_FILE, cfg)
-                except Exception:
-                    pass
+                # Save to the new location only when there is no unreadable
+                # current config to preserve for recovery.
+                if not current_config_unreadable:
+                    try:
+                        _write_json(CONFIG_FILE, cfg)
+                    except Exception:
+                        pass
             except Exception:
                 cfg = None
 
@@ -189,11 +193,13 @@ class ConfigManager:
             }
             cfg["default_profile"] = pid
 
-            # Save immediately if it was a fresh creation
-            try:
-                _write_json(CONFIG_FILE, cfg)
-            except Exception:
-                pass
+            # Save immediately only on a true first run. If an existing
+            # config could not be read, keep it intact for recovery.
+            if not current_config_unreadable:
+                try:
+                    _write_json(CONFIG_FILE, cfg)
+                except Exception:
+                    pass
 
         return cfg
 
