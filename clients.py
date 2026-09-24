@@ -323,13 +323,19 @@ class BaseClient(abc.ABC):
         if not hashes:
             return
         delete_files = self._normalize_delete_files(df)
+        failed = False
         for h in hashes:
             if not h:
                 continue
-            if delete_files:
-                self.remove_torrent_with_data(h)
-            else:
-                self.remove_torrent(h)
+            try:
+                if delete_files:
+                    self.remove_torrent_with_data(h)
+                else:
+                    self.remove_torrent(h)
+            except Exception:
+                failed = True
+        if failed:
+            raise RuntimeError("Failed to remove one or more torrents.")
 
     def _normalize_hashes(self, hs):
         if hs is None:
@@ -978,8 +984,14 @@ class TransmissionClient(BaseClient):
     def remove_torrent_with_data(self, h): self.c.remove_torrent(self._normalize_torrent_id(h), delete_data=True)
     def remove_torrents(self, hs, df=False):
         delete_data = self._normalize_delete_files(df)
+        failed = False
         for h in self._normalize_torrent_ids(hs):
-            self.c.remove_torrent(h, delete_data=delete_data)
+            try:
+                self.c.remove_torrent(h, delete_data=delete_data)
+            except Exception:
+                failed = True
+        if failed:
+            raise RuntimeError("Failed to remove one or more torrents.")
     def add_torrent_url(self, u, sp=None): self.c.add_torrent(u, download_dir=sp)
     def add_torrent_file(self, c, sp=None, p=None):
         # Pass raw .torrent bytes; transmission_rpc base64-encodes them into metainfo.
