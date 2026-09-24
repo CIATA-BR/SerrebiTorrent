@@ -207,8 +207,13 @@ class ConfigManager:
 
     def set_preferences(self, prefs: Dict[str, Any]) -> None:
         with self.lock:
-            self.config["preferences"] = dict(prefs)
-            self.save_config()
+            previous = copy.deepcopy(self.config)
+            try:
+                self.config["preferences"] = dict(prefs)
+                self.save_config()
+            except Exception:
+                self.config = previous
+                raise
 
     def get_profiles(self) -> Dict[str, Any]:
         with self.lock:
