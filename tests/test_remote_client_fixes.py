@@ -146,6 +146,30 @@ def test_base_client_batch_delete_continues_after_failure():
         def remove_torrent_with_data(self, h):
             self.remove_torrent(h)
 
+        def add_torrent_url(self, u, sp=None):
+            pass
+
+        def add_torrent_file(self, c, sp=None, p=None):
+            pass
+
+        def get_global_stats(self):
+            return 0, 0
+
+        def get_torrent_save_path(self, h):
+            return None
+
+        def get_files(self, h):
+            return []
+
+        def set_file_priority(self, h, i, p):
+            pass
+
+        def get_peers(self, h):
+            return []
+
+        def get_trackers(self, h):
+            return []
+
     client = FakeClient()
 
     with pytest.raises(RuntimeError, match="one or more torrents"):
