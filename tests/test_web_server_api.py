@@ -1117,3 +1117,22 @@ def test_remote_prefs_write_persists_valid_object(auth_client):
 
     assert rv.status_code == 200
     mock_client.set_app_preferences.assert_called_once_with({'max_downloads': 3})
+
+def test_rss_feeds_requires_application_context(auth_client):
+    mock_app = MagicMock(spec=[])
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.get('/api/v2/rss/feeds')
+
+    assert rv.status_code == 503
+    assert b"Application context is unavailable." in rv.data
+
+
+def test_rss_rules_requires_application_context(auth_client):
+    mock_app = MagicMock(spec=[])
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.get('/api/v2/rss/rules')
+
+    assert rv.status_code == 503
+    assert b"Application context is unavailable." in rv.data

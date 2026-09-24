@@ -681,7 +681,7 @@ def torrents_add():
 def rss_feeds():
     app_ref = WEB_CONFIG['app']
     if not app_ref or not hasattr(app_ref, 'rss_panel'):
-        return jsonify({})
+        return "Application context is unavailable.", 503
     return jsonify(app_ref.rss_panel.manager.feeds)
 
 @app.route('/api/v2/rss/add_feed', methods=['POST'])
@@ -722,7 +722,7 @@ def rss_remove_feed():
 def rss_rules():
     app_ref = WEB_CONFIG['app']
     if not app_ref or not hasattr(app_ref, 'rss_panel'):
-        return jsonify([])
+        return "Application context is unavailable.", 503
     return jsonify(app_ref.rss_panel.manager.rules)
 
 @app.route('/api/v2/rss/set_rule', methods=['POST'])
