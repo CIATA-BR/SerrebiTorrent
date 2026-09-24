@@ -797,11 +797,7 @@ class QBittorrentClient(BaseClient):
         i = self.c.transfer_info()
         return i.dl_info_speed, i.up_info_speed
     def get_app_preferences(self):
-        try:
-            return dict(self.c.app_preferences())
-        except Exception as e:
-            print(f"qBittorrent prefs error: {e}")
-            return None
+        return dict(self.c.app_preferences())
     def get_default_save_path(self):
         prefs = self.get_app_preferences()
         return prefs.get('save_path') if prefs else None
@@ -999,11 +995,7 @@ class TransmissionClient(BaseClient):
         except Exception:
             return None
     def get_app_preferences(self):
-        try:
-            session = self.c.get_session()
-        except Exception as e:
-            print(f"Transmission prefs error: {e}")
-            return None
+        session = self.c.get_session()
         keys = [
             "speed_limit_down_enabled", "speed_limit_down", "speed_limit_up_enabled", "speed_limit_up",
             "alt_speed_enabled", "alt_speed_down", "alt_speed_up", "alt_speed_time_enabled",
