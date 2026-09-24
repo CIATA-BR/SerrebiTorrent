@@ -155,3 +155,15 @@ def test_transmission_snapshot_failure_is_not_reported_as_empty_list():
 
     with pytest.raises(RuntimeError, match="rpc unavailable"):
         client.get_torrents_full()
+
+
+def test_local_snapshot_failure_is_not_reported_as_empty_list():
+    client = clients.LocalClient.__new__(clients.LocalClient)
+    client.m = type(
+        "FailingSessionManager",
+        (),
+        {"get_torrents": lambda self: (_ for _ in ()).throw(RuntimeError("session unavailable"))},
+    )()
+
+    with pytest.raises(RuntimeError, match="session unavailable"):
+        client.get_torrents_full()
