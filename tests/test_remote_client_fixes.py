@@ -287,3 +287,23 @@ def test_rtorrent_detail_failure_is_not_reported_as_empty_list(detail):
 
     with pytest.raises(RuntimeError, match="rpc unavailable"):
         method("a" * 40)
+
+
+
+@pytest.mark.parametrize(
+    ("method_name", "args"),
+    [
+        ("start_torrent", ("missing",)),
+        ("stop_torrent", ("missing",)),
+        ("recheck_torrent", ("missing",)),
+        ("reannounce_torrent", ("missing",)),
+        ("set_file_priority", ("missing", 0, 1)),
+    ],
+)
+def test_local_mutating_actions_fail_when_torrent_is_missing(method_name, args):
+    client = clients.LocalClient.__new__(clients.LocalClient)
+    client.m = MagicMock()
+    client.m._find_handle.return_value = None
+
+    with pytest.raises(LookupError, match="Torrent not found"):
+        getattr(client, method_name)(*args)
