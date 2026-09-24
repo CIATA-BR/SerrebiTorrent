@@ -630,7 +630,7 @@ def torrents_delete():
 def torrents_add():
     client = WEB_CONFIG['client']
     if not client:
-        return "No client", 500
+        return "No torrent client is connected.", 503
     
     urls = request.form.get('urls')
     save_path = request.form.get('savepath')
