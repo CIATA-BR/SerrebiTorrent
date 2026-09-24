@@ -127,6 +127,23 @@ def test_delete_default_profile_selects_remaining_profile(tmp_path, monkeypatch)
     assert cm.get_default_profile_id() == "p2"
 
 
+def test_set_preferences_rolls_back_on_save_failure(tmp_path, monkeypatch):
+    _configure_paths(tmp_path, monkeypatch)
+    cm = config_manager.ConfigManager()
+    before = cm.get_preferences()
+
+    monkeypatch.setattr(cm, "save_config", lambda: (_ for _ in ()).throw(OSError("disk full")))
+
+    try:
+        cm.set_preferences({"download_path": "C:\\Broken", "language": "pt-BR"})
+    except OSError:
+        pass
+    else:
+        raise AssertionError("Expected set_preferences to propagate persistence failure")
+
+    assert cm.get_preferences() == before
+
+
 def test_add_profile_rolls_back_on_save_failure(tmp_path, monkeypatch):
     _configure_paths(tmp_path, monkeypatch)
     cm = config_manager.ConfigManager()

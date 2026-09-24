@@ -580,7 +580,7 @@ class RTorrentClient(BaseClient):
             return res
         except Exception as e:
             print(f"RTorrent error: {e}")
-            return []
+            raise
 
     def start_torrent(self, h):
         h = self._normalize_hash(h)
@@ -748,7 +748,7 @@ class QBittorrentClient(BaseClient):
             return res
         except Exception as e:
             print(f"qBittorrent error: {e}")
-            return []
+            raise
     def start_torrent(self, h): self._torrent_action("torrents_start", "torrents_resume", h)
     def stop_torrent(self, h): self._torrent_action("torrents_stop", "torrents_pause", h)
     def remove_torrent(self, h): self.remove_torrents([h], df=False)
@@ -957,7 +957,7 @@ class TransmissionClient(BaseClient):
             return res
         except Exception as e:
             print(f"Transmission error: {e}")
-            return []
+            raise
 
     def _normalize_torrent_id(self, h):
         if isinstance(h, int) and not isinstance(h, bool):
@@ -1161,7 +1161,7 @@ class LocalClient(BaseClient):
         try:
             hs = self.m.get_torrents()
         except Exception:
-            return []
+            raise
         res = []
         for h in hs:
             try:

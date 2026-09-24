@@ -123,9 +123,6 @@ def test_rtorrent_set_preferences_propagates_rpc_errors():
 
 def test_base_client_batch_delete_continues_after_failure():
     class FakeClient(clients.BaseClient):
-        def __init__(self):
-            self.calls = []
-
         def test_connection(self):
             return True
 
@@ -170,7 +167,8 @@ def test_base_client_batch_delete_continues_after_failure():
         def get_trackers(self, h):
             return []
 
-    client = FakeClient()
+    client = FakeClient.__new__(FakeClient)
+    client.calls = []
 
     with pytest.raises(RuntimeError, match="one or more torrents"):
         client.remove_torrents(["first", "bad", "last"])
@@ -195,3 +193,51 @@ def test_transmission_batch_delete_continues_after_failure():
         client.remove_torrents([1, 2, 3], df=True)
 
     assert client.c.calls == [(1, True), (2, True), (3, True)]
+
+
+def test_rtorrent_snapshot_failure_is_not_reported_as_empty_list():
+    class FailingD:
+        def multicall2(self, *args):
+            raise RuntimeError("rpc unavailable")
+
+    client = clients.RTorrentClient("http://localhost/RPC2")
+    client.srv = type("Server", (), {"d": FailingD()})()
+
+    with pytest.raises(RuntimeError, match="rpc unavailable"):
+        client.get_torrents_full()
+
+
+def test_qbittorrent_snapshot_failure_is_not_reported_as_empty_list():
+    client = clients.QBittorrentClient.__new__(clients.QBittorrentClient)
+    client.c = type(
+        "FailingQbit",
+        (),
+        {"torrents_info": lambda self, *args, **kwargs: (_ for _ in ()).throw(RuntimeError("api unavailable"))},
+    )()
+
+    with pytest.raises(RuntimeError, match="api unavailable"):
+        client.get_torrents_full()
+
+
+def test_transmission_snapshot_failure_is_not_reported_as_empty_list():
+    client = clients.TransmissionClient.__new__(clients.TransmissionClient)
+    client.c = type(
+        "FailingTransmission",
+        (),
+        {"get_torrents": lambda self: (_ for _ in ()).throw(RuntimeError("rpc unavailable"))},
+    )()
+
+    with pytest.raises(RuntimeError, match="rpc unavailable"):
+        client.get_torrents_full()
+
+
+def test_local_snapshot_failure_is_not_reported_as_empty_list():
+    client = clients.LocalClient.__new__(clients.LocalClient)
+    client.m = type(
+        "FailingSessionManager",
+        (),
+        {"get_torrents": lambda self: (_ for _ in ()).throw(RuntimeError("session unavailable"))},
+    )()
+
+    with pytest.raises(RuntimeError, match="session unavailable"):
+        client.get_torrents_full()
