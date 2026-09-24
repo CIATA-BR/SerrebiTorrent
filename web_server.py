@@ -424,7 +424,7 @@ def torrents_info():
             torrents = list(app_ref.all_torrents)
     except Exception:
         return "Failed to load torrent stats.", 500
-    if not isinstance(torrents, list):
+    if not _valid_torrent_snapshot(torrents):
         return "Failed to load torrent stats.", 500
 
     stats = {"All": 0, "Downloading": 0, "Finished": 0, "Seeding": 0, "Stopped": 0, "Failed": 0}
@@ -473,7 +473,7 @@ def torrents_all():
     except Exception as e:
         print(f"torrents/all error: {e}")
         return "Failed to fetch torrents.", 500
-    if not isinstance(torrents, list):
+    if not _valid_torrent_snapshot(torrents):
         return "Failed to fetch torrents.", 500
     return jsonify(torrents)
 
@@ -529,6 +529,16 @@ def torrents_trackers():
     if not isinstance(trackers, list):
         return "Failed to load torrent trackers.", 500
     return jsonify(trackers)
+
+
+def _valid_torrent_snapshot(torrents):
+    if not isinstance(torrents, list):
+        return False
+    return all(
+        isinstance(torrent, dict)
+        and bool(str(torrent.get('hash') or '').strip())
+        for torrent in torrents
+    )
 
 
 def _requested_torrent_hashes():
@@ -935,7 +945,7 @@ def sync_maindata():
         torrents = client.get_torrents_full()
     except Exception:
         return "Failed to load torrent sync data.", 500
-    if not isinstance(torrents, list):
+    if not _valid_torrent_snapshot(torrents):
         return "Failed to load torrent sync data.", 500
 
     # qBit sync format is a dict indexed by hash
