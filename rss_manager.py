@@ -140,9 +140,15 @@ class RSSManager:
 
     def reset_all(self):
         with self.lock:
+            previous_feeds = self.feeds
+            previous_rules = self.rules
             self.feeds = {}
             self.rules = []
-            self.save()
+            if self.save():
+                return
+            self.feeds = previous_feeds
+            self.rules = previous_rules
+            raise OSError("Failed to save reset RSS data.")
 
     def is_downloaded(self, url, uid):
         """True if `uid` from feed `url` has already been auto-downloaded."""
