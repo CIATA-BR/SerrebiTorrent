@@ -1273,3 +1273,35 @@ def test_web_ui_remote_settings_reports_http_failure(page, web_ui_server):
     container = page.locator("#remoteSettingsFields")
     assert "Failed to load settings." in container.inner_text()
     assert container.locator("input").count() == 0
+
+
+def test_web_ui_profile_refresh_error_preserves_sidebar(page, web_ui_server):
+    _login(page, web_ui_server)
+    page.wait_for_function(
+        "() => document.querySelectorAll('#profileList .sidebar-link[data-profile-id]').length > 0"
+    )
+
+    before = page.evaluate(
+        "() => Array.from(document.querySelectorAll('#profileList .sidebar-link[data-profile-id]')).map(link => [link.dataset.profileId, link.textContent])"
+    )
+    first = page.locator('#profileList .sidebar-link[data-profile-id]').first
+    first.focus()
+    focused_id = first.get_attribute("data-profile-id")
+
+    page.route(
+        "**/api/v2/profiles",
+        lambda route: route.fulfill(
+            status=503,
+            content_type="text/plain",
+            body="Application context is unavailable.",
+        ),
+    )
+
+    page.evaluate("fetchProfiles()")
+    page.wait_for_timeout(150)
+
+    after = page.evaluate(
+        "() => Array.from(document.querySelectorAll('#profileList .sidebar-link[data-profile-id]')).map(link => [link.dataset.profileId, link.textContent])"
+    )
+    assert after == before
+    assert page.evaluate("document.activeElement.dataset.profileId") == focused_id
