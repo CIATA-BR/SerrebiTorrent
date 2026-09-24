@@ -1222,3 +1222,35 @@ def test_openfolder_reports_async_start(auth_client, monkeypatch):
     assert rv.status_code == 202
     assert b"Open folder request started." in rv.data
     call_after.assert_called_once_with(mock_app._open_path, r"C:\Downloads")
+
+
+def test_resume_attempts_all_torrents_after_partial_failure(auth_client):
+    mock_client = MagicMock()
+    mock_client.start_torrent.side_effect = [RuntimeError("boom"), None]
+    web_server.WEB_CONFIG['client'] = mock_client
+
+    rv = auth_client.post(
+        '/api/v2/torrents/resume',
+        data={'hashes': 'h1|h2'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 500
+    assert b"Failed to resume one or more torrents." in rv.data
+    assert mock_client.start_torrent.call_count == 2
+
+
+def test_pause_attempts_all_torrents_after_partial_failure(auth_client):
+    mock_client = MagicMock()
+    mock_client.stop_torrent.side_effect = [RuntimeError("boom"), None]
+    web_server.WEB_CONFIG['client'] = mock_client
+
+    rv = auth_client.post(
+        '/api/v2/torrents/pause',
+        data={'hashes': 'h1|h2'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 500
+    assert b"Failed to pause one or more torrents." in rv.data
+    assert mock_client.stop_torrent.call_count == 2
