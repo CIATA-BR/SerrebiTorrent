@@ -3,6 +3,7 @@ import pytest
 import sys
 import os
 import json
+import io
 import time
 import hashlib
 from unittest.mock import MagicMock, patch
@@ -978,3 +979,79 @@ def test_remote_prefs_hides_backend_errors(auth_client):
     assert rv.status_code == 500
     assert b"Failed to load remote preferences." in rv.data
     assert b"secret backend detail" not in rv.data
+
+
+def test_rss_import_flexget_returns_completed_counts(auth_client):
+    manager = MagicMock()
+    manager.import_flexget_config.return_value = (2, 3)
+    mock_app = MagicMock()
+    mock_app.rss_panel.manager = manager
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/rss/import_flexget',
+        data={'config': (io.BytesIO(b'tasks: {}\n'), 'flexget.yml')},
+        headers=csrf_headers(auth_client),
+        content_type='multipart/form-data',
+    )
+
+    assert rv.status_code == 200
+    assert rv.get_json() == {
+        'status': 'Import complete',
+        'feeds': 2,
+        'rules': 3,
+    }
+    manager.import_flexget_config.assert_called_once()
+
+
+def test_rss_import_flexget_rejects_invalid_config(auth_client):
+    manager = MagicMock()
+    manager.import_flexget_config.side_effect = ValueError("parse detail")
+    mock_app = MagicMock()
+    mock_app.rss_panel.manager = manager
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/rss/import_flexget',
+        data={'config': (io.BytesIO(b'not: valid'), 'flexget.yml')},
+        headers=csrf_headers(auth_client),
+        content_type='multipart/form-data',
+    )
+
+    assert rv.status_code == 400
+    assert b"Invalid FlexGet configuration." in rv.data
+    assert b"parse detail" not in rv.data
+
+
+def test_rss_import_flexget_reports_import_failure(auth_client):
+    manager = MagicMock()
+    manager.import_flexget_config.side_effect = OSError("disk full")
+    mock_app = MagicMock()
+    mock_app.rss_panel.manager = manager
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/rss/import_flexget',
+        data={'config': (io.BytesIO(b'tasks: {}\n'), 'flexget.yml')},
+        headers=csrf_headers(auth_client),
+        content_type='multipart/form-data',
+    )
+
+    assert rv.status_code == 500
+    assert b"Failed to import FlexGet configuration." in rv.data
+    assert b"disk full" not in rv.data
+
+
+def test_rss_import_flexget_requires_rss_context(auth_client):
+    mock_app = MagicMock(spec=[])
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/rss/import_flexget',
+        data={'config': (io.BytesIO(b'tasks: {}\n'), 'flexget.yml')},
+        headers=csrf_headers(auth_client),
+        content_type='multipart/form-data',
+    )
+
+    assert rv.status_code == 503
+    assert b"Application context is unavailable." in rv.data
