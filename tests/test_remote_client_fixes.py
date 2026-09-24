@@ -119,3 +119,39 @@ def test_rtorrent_set_preferences_propagates_rpc_errors():
 
     with pytest.raises(RuntimeError, match="rpc failed"):
         client.set_app_preferences({"dl_limit": 100})
+
+
+def test_rtorrent_snapshot_failure_is_not_reported_as_empty_list():
+    class FailingD:
+        def multicall2(self, *args):
+            raise RuntimeError("rpc unavailable")
+
+    client = clients.RTorrentClient("http://localhost/RPC2")
+    client.srv = type("Server", (), {"d": FailingD()})()
+
+    with pytest.raises(RuntimeError, match="rpc unavailable"):
+        client.get_torrents_full()
+
+
+def test_qbittorrent_snapshot_failure_is_not_reported_as_empty_list():
+    client = clients.QBittorrentClient.__new__(clients.QBittorrentClient)
+    client.c = type(
+        "FailingQbit",
+        (),
+        {"torrents_info": lambda self, *args, **kwargs: (_ for _ in ()).throw(RuntimeError("api unavailable"))},
+    )()
+
+    with pytest.raises(RuntimeError, match="api unavailable"):
+        client.get_torrents_full()
+
+
+def test_transmission_snapshot_failure_is_not_reported_as_empty_list():
+    client = clients.TransmissionClient.__new__(clients.TransmissionClient)
+    client.c = type(
+        "FailingTransmission",
+        (),
+        {"get_torrents": lambda self: (_ for _ in ()).throw(RuntimeError("rpc unavailable"))},
+    )()
+
+    with pytest.raises(RuntimeError, match="rpc unavailable"):
+        client.get_torrents_full()
