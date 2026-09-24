@@ -1399,6 +1399,9 @@ async function loadRemoteSettings() {
     try {
         const res = await fetch('/api/v2/app/remote_prefs');
         if (await redirectIfSessionExpired(res)) return;
+        if (!res.ok) {
+            throw new Error(await res.text() || 'Failed to load remote settings.');
+        }
         const data = await res.json();
         
         if (!data.prefs) {

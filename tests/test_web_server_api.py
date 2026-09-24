@@ -953,3 +953,28 @@ def test_app_prefs_get_hides_backend_errors(auth_client):
     assert rv.status_code == 500
     assert b"Failed to load settings." in rv.data
     assert b"secret config detail" not in rv.data
+
+
+def test_remote_prefs_requires_connected_client(auth_client):
+    original = web_server.WEB_CONFIG.copy()
+    try:
+        web_server.WEB_CONFIG['client'] = None
+
+        rv = auth_client.get('/api/v2/app/remote_prefs')
+
+        assert rv.status_code == 503
+        assert b"No torrent client is connected." in rv.data
+    finally:
+        web_server.WEB_CONFIG.update(original)
+
+
+def test_remote_prefs_hides_backend_errors(auth_client):
+    mock_client = MagicMock()
+    mock_client.get_app_preferences.side_effect = RuntimeError("secret backend detail")
+    web_server.WEB_CONFIG['client'] = mock_client
+
+    rv = auth_client.get('/api/v2/app/remote_prefs')
+
+    assert rv.status_code == 500
+    assert b"Failed to load remote preferences." in rv.data
+    assert b"secret backend detail" not in rv.data

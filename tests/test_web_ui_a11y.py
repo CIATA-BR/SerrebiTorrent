@@ -1251,3 +1251,25 @@ def test_web_ui_app_settings_load_error_preserves_form_state(page, web_ui_server
     page.wait_for_timeout(150)
 
     assert refresh_input.input_value() == "4321"
+
+
+def test_web_ui_remote_settings_reports_http_failure(page, web_ui_server):
+    _login(page, web_ui_server)
+
+    page.route(
+        "**/api/v2/app/remote_prefs",
+        lambda route: route.fulfill(
+            status=503,
+            content_type="text/plain",
+            body="No torrent client is connected.",
+        ),
+    )
+
+    page.evaluate("loadRemoteSettings()")
+    page.wait_for_function(
+        "() => document.getElementById('remoteSettingsFields').textContent.includes('Failed to load settings.')"
+    )
+
+    container = page.locator("#remoteSettingsFields")
+    assert "Failed to load settings." in container.inner_text()
+    assert container.locator("input").count() == 0
