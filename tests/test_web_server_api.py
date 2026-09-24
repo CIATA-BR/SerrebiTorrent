@@ -1075,3 +1075,28 @@ def test_rss_rules_requires_application_context(auth_client):
 
     assert rv.status_code == 503
     assert b"Application context is unavailable." in rv.data
+
+
+def test_profiles_get_requires_application_context(auth_client):
+    original = web_server.WEB_CONFIG.copy()
+    try:
+        web_server.WEB_CONFIG['app'] = None
+
+        rv = auth_client.get('/api/v2/profiles')
+
+        assert rv.status_code == 503
+        assert b"Application context is unavailable." in rv.data
+    finally:
+        web_server.WEB_CONFIG.update(original)
+
+
+def test_profiles_get_hides_backend_errors(auth_client):
+    mock_app = MagicMock()
+    mock_app.config_manager.get_profiles.side_effect = RuntimeError("secret profile detail")
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.get('/api/v2/profiles')
+
+    assert rv.status_code == 500
+    assert b"Failed to load profiles." in rv.data
+    assert b"secret profile detail" not in rv.data
