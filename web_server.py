@@ -536,11 +536,14 @@ def torrents_resume():
     client, hashes, error = _torrent_action_context()
     if error:
         return error
-    try:
-        for h in hashes:
+    failed = False
+    for h in hashes:
+        try:
             client.start_torrent(h)
-    except Exception:
-        return "Failed to resume torrent(s).", 500
+        except Exception:
+            failed = True
+    if failed:
+        return "Failed to resume one or more torrents.", 500
     return "Ok."
 
 
@@ -550,11 +553,14 @@ def torrents_pause():
     client, hashes, error = _torrent_action_context()
     if error:
         return error
-    try:
-        for h in hashes:
+    failed = False
+    for h in hashes:
+        try:
             client.stop_torrent(h)
-    except Exception:
-        return "Failed to pause torrent(s).", 500
+        except Exception:
+            failed = True
+    if failed:
+        return "Failed to pause one or more torrents.", 500
     return "Ok."
 
 
