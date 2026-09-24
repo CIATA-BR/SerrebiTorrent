@@ -906,9 +906,13 @@ def set_remote_prefs():
 def sync_maindata():
     client = WEB_CONFIG['client']
     if not client:
-        return jsonify({'torrents': {}})
-    
-    torrents = client.get_torrents_full()
+        return "No torrent client is connected.", 503
+
+    try:
+        torrents = client.get_torrents_full()
+    except Exception:
+        return "Failed to load torrent sync data.", 500
+
     # qBit sync format is a dict indexed by hash
     t_dict = {t['hash']: t for t in torrents}
     return jsonify({
