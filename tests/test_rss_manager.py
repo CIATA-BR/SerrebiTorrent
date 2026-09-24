@@ -87,8 +87,8 @@ def test_get_matches_with_scope(rss_manager):
     # No match for feed2 (rule not applicable)
     assert len(rss_manager.get_matches(articles, feed_url="feed2")) == 0
 
-@patch('requests.get')
-def test_fetch_feed(mock_get, rss_manager):
+@patch('rss_manager._public_torrent_session')
+def test_fetch_feed(mock_session_factory, rss_manager):
     rss_content = """
     <rss version="2.0">
     <channel>
@@ -99,24 +99,54 @@ def test_fetch_feed(mock_get, rss_manager):
     </channel>
     </rss>
     """
-    mock_get.return_value.status_code = 200
-    mock_get.return_value.content = rss_content.encode('utf-8')
-    # fetch_feed streams the body with a size cap, so feed iter_content the bytes.
-    mock_get.return_value.iter_content = lambda chunk_size=8192: iter([rss_content.encode('utf-8')])
+    session = MagicMock()
+    response = MagicMock()
+    response.status_code = 200
+    response.headers = {}
+    response.iter_content = lambda chunk_size=8192: iter([rss_content.encode('utf-8')])
+    mock_session_factory.return_value.__enter__.return_value = session
+    session.get.return_value.__enter__.return_value = response
 
-    rss_manager.add_feed("http://feed.com")
-    articles = rss_manager.fetch_feed("http://feed.com")
-    
+    url = "http://93.184.216.34/feed.xml"
+    rss_manager.add_feed(url)
+    articles = rss_manager.fetch_feed(url)
+
     assert len(articles) == 1
     assert articles[0]['title'] == "Test Torrent"
     assert articles[0]['link'] == "http://test.com/torrent.torrent"
-    
-    # Check if feed updated
-    assert len(rss_manager.feeds["http://feed.com"]['articles']) == 1
+    assert len(rss_manager.feeds[url]['articles']) == 1
+    session.get.assert_called_once_with(
+        url, timeout=10, stream=True, allow_redirects=False
+    )
 
 
 def test_fetch_feed_rejects_non_http_scheme(rss_manager):
     assert rss_manager.fetch_feed("file:///C:/secret.xml") == []
+
+
+@patch('rss_manager._public_torrent_session')
+def test_fetch_feed_rejects_private_network_target(mock_session_factory, rss_manager):
+    url = "http://127.0.0.1/feed.xml"
+    rss_manager.add_feed(url)
+
+    assert rss_manager.fetch_feed(url) == []
+    mock_session_factory.assert_not_called()
+
+
+@patch('rss_manager._public_torrent_session')
+def test_fetch_feed_rejects_redirect_to_private_network(mock_session_factory, rss_manager):
+    session = MagicMock()
+    response = MagicMock()
+    response.status_code = 302
+    response.headers = {'Location': 'http://127.0.0.1/private.xml'}
+    mock_session_factory.return_value.__enter__.return_value = session
+    session.get.return_value.__enter__.return_value = response
+
+    url = "http://93.184.216.34/feed.xml"
+    rss_manager.add_feed(url)
+
+    assert rss_manager.fetch_feed(url) == []
+    assert session.get.call_count == 1
 
 
 def test_add_feed_rolls_back_when_save_fails(rss_manager):
