@@ -161,3 +161,18 @@ def test_mnemonics_do_not_collide_within_a_dialog():
         for labels in dialogs:
             keys = [_mnemonic(i18n.translate(label, language)) for label in labels]
             assert len(keys) == len(set(keys)), (language, labels, keys)
+
+
+
+def test_system_language_prefers_windows_ui_language(monkeypatch):
+    monkeypatch.setattr(i18n, "_windows_ui_language", lambda: "pt-BR")
+    monkeypatch.setattr(i18n.os, "environ", {"LANG": "en_US.UTF-8"})
+
+    assert i18n.system_language() == "pt-BR"
+
+
+def test_system_language_falls_back_when_windows_ui_language_unavailable(monkeypatch):
+    monkeypatch.setattr(i18n, "_windows_ui_language", lambda: None)
+    monkeypatch.setattr(i18n.os, "environ", {"LANG": "pt_BR.UTF-8"})
+
+    assert i18n.system_language() == "pt-BR"
