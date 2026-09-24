@@ -241,3 +241,21 @@ def test_local_snapshot_failure_is_not_reported_as_empty_list():
 
     with pytest.raises(RuntimeError, match="session unavailable"):
         client.get_torrents_full()
+
+
+def test_qbittorrent_preference_read_failure_is_not_reported_as_none():
+    client = object.__new__(clients.QBittorrentClient)
+    client.c = MagicMock()
+    client.c.app_preferences.side_effect = RuntimeError("qbit unavailable")
+
+    with pytest.raises(RuntimeError, match="qbit unavailable"):
+        client.get_app_preferences()
+
+
+def test_transmission_preference_read_failure_is_not_reported_as_none():
+    client = object.__new__(clients.TransmissionClient)
+    client.c = MagicMock()
+    client.c.get_session.side_effect = RuntimeError("transmission unavailable")
+
+    with pytest.raises(RuntimeError, match="transmission unavailable"):
+        client.get_app_preferences()
