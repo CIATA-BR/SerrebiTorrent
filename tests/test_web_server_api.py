@@ -1222,3 +1222,28 @@ def test_openfolder_reports_async_start(auth_client, monkeypatch):
     assert rv.status_code == 202
     assert b"Open folder request started." in rv.data
     call_after.assert_called_once_with(mock_app._open_path, r"C:\Downloads")
+
+
+def test_sync_maindata_requires_connected_client(auth_client):
+    original = web_server.WEB_CONFIG.copy()
+    try:
+        web_server.WEB_CONFIG['client'] = None
+
+        rv = auth_client.get('/api/v2/sync/maindata')
+
+        assert rv.status_code == 503
+        assert b"No torrent client is connected." in rv.data
+    finally:
+        web_server.WEB_CONFIG.update(original)
+
+
+def test_sync_maindata_hides_backend_errors(auth_client):
+    mock_client = MagicMock()
+    mock_client.get_torrents_full.side_effect = RuntimeError("secret sync detail")
+    web_server.WEB_CONFIG['client'] = mock_client
+
+    rv = auth_client.get('/api/v2/sync/maindata')
+
+    assert rv.status_code == 500
+    assert b"Failed to load torrent sync data." in rv.data
+    assert b"secret sync detail" not in rv.data
