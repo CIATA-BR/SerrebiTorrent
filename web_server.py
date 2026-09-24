@@ -370,7 +370,10 @@ def switch_profile():
     if not pid:
         return "Profile id is required.", 400
 
-    profiles = app_ref.config_manager.get_profiles()
+    try:
+        profiles = app_ref.config_manager.get_profiles()
+    except Exception:
+        return "Failed to load profiles.", 500
     if pid not in profiles:
         return "Profile not found.", 404
 
