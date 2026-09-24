@@ -138,7 +138,7 @@ Everything stays reachable by keyboard:
 - `Ctrl+F` — Search for torrents
 - `Tab` — Toggle focus between the sidebar and torrent list; double-clicking the tray icon restores the window.
 
-Logs live under `SerrebiTorrent_Data\logs`, next to the EXE/script in portable mode (or in per-user app data in installed mode).
+Local libtorrent errors, state changes, and recheck completion are recorded in `SerrebiTorrent_Data\logs\session.log` (or the per-user app data folder in installed mode). The log keeps two rotated backups. If a torrent stays incomplete after Force Recheck, compare its save path and files with the errors in this log.
 
 ## Contributing
 

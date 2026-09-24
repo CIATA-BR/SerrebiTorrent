@@ -4,6 +4,8 @@ import os
 import threading
 import time
 import json
+import logging
+from logging.handlers import RotatingFileHandler
 
 from libtorrent_env import prepare_libtorrent_dlls
 
@@ -14,7 +16,7 @@ try:
 except ImportError:
     lt = None
 
-from app_paths import get_state_dir
+from app_paths import get_log_path, get_state_dir
 from config_manager import ConfigManager
 from torrent_parsing import normalize_info_hash
 
@@ -477,6 +479,7 @@ class SessionManager:
                 if self.ses.wait_for_alert(1000):
                     alerts = self.ses.pop_alerts()
                     for alert in alerts:
+                        self._log_diagnostic_alert(alert)
                         if isinstance(alert, lt.save_resume_data_alert):
                             self._handle_save_resume(alert)
                         elif isinstance(alert, lt.save_resume_data_failed_alert):
@@ -489,6 +492,28 @@ class SessionManager:
                 print(f"Session alert loop error: {e}")
                 time.sleep(1)
                 continue
+
+    def _log_diagnostic_alert(self, alert):
+        kind = type(alert).__name__
+        if kind not in {
+            "file_error_alert", "torrent_error_alert", "fastresume_rejected_alert",
+            "save_resume_data_failed_alert", "torrent_checked_alert", "state_changed_alert",
+        }:
+            return
+        logger = logging.getLogger("SerrebiTorrent.session")
+        if not logger.handlers:
+            try:
+                handler = RotatingFileHandler(get_log_path("session.log"), maxBytes=1_000_000,
+                                              backupCount=2, encoding="utf-8")
+            except OSError as exc:
+                print(f"Could not open local session log: {exc}")
+                logger.addHandler(logging.NullHandler())
+                return
+            handler.setFormatter(logging.Formatter("%(asctime)s %(message)s"))
+            logger.addHandler(handler)
+            logger.setLevel(logging.INFO)
+            logger.propagate = False
+        logger.info("%s: %s", kind, alert.message())
 
     def _maybe_autosave(self):
         """Periodically flush resume data (ratio, totals, etc.) to disk.
@@ -857,6 +882,7 @@ class SessionManager:
                 if self.ses.wait_for_alert(500):  # 500ms timeout
                     alerts = self.ses.pop_alerts()
                     for alert in alerts:
+                        self._log_diagnostic_alert(alert)
                         if isinstance(alert, lt.save_resume_data_alert):
                             self._handle_save_resume(alert)
                         elif isinstance(alert, lt.save_resume_data_failed_alert):
