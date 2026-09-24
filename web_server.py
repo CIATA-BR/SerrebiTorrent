@@ -349,8 +349,11 @@ def api_logout():
 def get_profiles():
     app_ref = WEB_CONFIG['app']
     if not app_ref:
-        return jsonify({'profiles': {}, 'current_id': None})
-    profiles = app_ref.config_manager.get_profiles()
+        return "Application context is unavailable.", 503
+    try:
+        profiles = app_ref.config_manager.get_profiles()
+    except Exception:
+        return "Failed to load profiles.", 500
     current_id = app_ref.current_profile_id
     return jsonify({
         'profiles': profiles,

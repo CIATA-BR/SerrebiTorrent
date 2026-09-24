@@ -840,6 +840,9 @@ window.fetchProfiles = async function() {
     try {
         const res = await fetch('/api/v2/profiles');
         if (await redirectIfSessionExpired(res)) return;
+        if (!res.ok) {
+            throw new Error(await res.text() || 'Failed to load profiles.');
+        }
         const data = await res.json();
         const list = document.getElementById('profileList');
         if (!list) return;
