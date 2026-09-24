@@ -409,14 +409,17 @@ def add_profile():
 def torrents_info():
     app_ref = WEB_CONFIG['app']
     if not app_ref:
-        return jsonify({'torrents': [], 'stats': {}, 'trackers': {}})
-    
+        return "Application context is unavailable.", 503
+
     # Use all_torrents for stats but allow the info call to return what's actually there
     # Use thread-safe copy if available
-    if hasattr(app_ref, 'get_all_torrents_safe'):
-        torrents = app_ref.get_all_torrents_safe()
-    else:
-        torrents = list(app_ref.all_torrents)
+    try:
+        if hasattr(app_ref, 'get_all_torrents_safe'):
+            torrents = app_ref.get_all_torrents_safe()
+        else:
+            torrents = list(app_ref.all_torrents)
+    except Exception:
+        return "Failed to load torrent stats.", 500
 
     stats = {"All": 0, "Downloading": 0, "Finished": 0, "Seeding": 0, "Stopped": 0, "Failed": 0}
     tracker_counts = {}
