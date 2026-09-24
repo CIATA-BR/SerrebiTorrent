@@ -1,13 +1,47 @@
 import json
 import os
 import re
-import requests
 import threading
-from urllib.parse import urlparse
+from urllib.parse import urljoin, urlparse
 from defusedxml import ElementTree as ET
 from app_paths import get_data_dir
+from clients import _public_torrent_session, safe_encode_url, validate_public_torrent_url
 
 RSS_FILE = os.path.join(get_data_dir(), "rss.json")
+RSS_MAX_DOWNLOAD_BYTES = 10 * 1024 * 1024
+RSS_MAX_REDIRECTS = 5
+_RSS_REDIRECT_STATUSES = {301, 302, 303, 307, 308}
+
+
+def _fetch_public_feed(url):
+    current = url
+    for _ in range(RSS_MAX_REDIRECTS + 1):
+        try:
+            validate_public_torrent_url(current)
+        except ValueError as exc:
+            raise ValueError("RSS feed URL must use a public http/https address") from exc
+
+        content = b""
+        with _public_torrent_session() as session, session.get(
+            safe_encode_url(current), timeout=10, stream=True, allow_redirects=False
+        ) as response:
+            if response.status_code in _RSS_REDIRECT_STATUSES:
+                location = response.headers.get("Location")
+                if not location:
+                    raise ValueError("RSS feed redirect missing Location header")
+                current = urljoin(current, location)
+                continue
+
+            response.raise_for_status()
+            for chunk in response.iter_content(8192):
+                if not chunk:
+                    continue
+                content += chunk
+                if len(content) > RSS_MAX_DOWNLOAD_BYTES:
+                    raise ValueError("RSS feed exceeds 10 MB limit")
+        return content
+
+    raise ValueError("RSS feed redirected too many times")
 
 class RSSManager:
     def __init__(self):
@@ -142,14 +176,7 @@ class RSSManager:
             parsed = urlparse(url)
             if parsed.scheme.lower() not in ('http', 'https'):
                 raise ValueError("RSS feed URL must use http or https")
-            # Cap the response size to avoid memory exhaustion from a hostile/huge feed.
-            r = requests.get(url, timeout=10, stream=True)
-            r.raise_for_status()
-            content = b""
-            for chunk in r.iter_content(8192):
-                content += chunk
-                if len(content) > 10 * 1024 * 1024:  # 10 MB
-                    raise ValueError("RSS feed exceeds 10 MB limit")
+            content = _fetch_public_feed(url)
 
             # Simple RSS/Atom parser (defusedxml blocks XXE / entity expansion)
             root = ET.fromstring(content)
