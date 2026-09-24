@@ -1296,6 +1296,39 @@ def test_sync_maindata_hides_backend_errors(auth_client):
     assert b"secret sync detail" not in rv.data
 
 
+def test_torrents_all_rejects_invalid_snapshot_shape(auth_client):
+    mock_client = MagicMock()
+    mock_client.get_torrents_full.return_value = None
+    web_server.WEB_CONFIG['client'] = mock_client
+
+    rv = auth_client.get('/api/v2/torrents/all')
+
+    assert rv.status_code == 500
+    assert b"Failed to fetch torrents." in rv.data
+
+
+def test_torrent_stats_reject_invalid_snapshot_shape(auth_client):
+    mock_app = MagicMock()
+    mock_app.get_all_torrents_safe.return_value = None
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.get('/api/v2/torrents/info')
+
+    assert rv.status_code == 500
+    assert b"Failed to load torrent stats." in rv.data
+
+
+def test_torrent_sync_rejects_invalid_snapshot_shape(auth_client):
+    mock_client = MagicMock()
+    mock_client.get_torrents_full.return_value = None
+    web_server.WEB_CONFIG['client'] = mock_client
+
+    rv = auth_client.get('/api/v2/sync/maindata')
+
+    assert rv.status_code == 500
+    assert b"Failed to load torrent sync data." in rv.data
+
+
 @pytest.mark.parametrize(
     ("endpoint", "method_name", "message"),
     [

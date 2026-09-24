@@ -423,6 +423,8 @@ def torrents_info():
             torrents = list(app_ref.all_torrents)
     except Exception:
         return "Failed to load torrent stats.", 500
+    if not isinstance(torrents, list):
+        return "Failed to load torrent stats.", 500
 
     stats = {"All": 0, "Downloading": 0, "Finished": 0, "Seeding": 0, "Stopped": 0, "Failed": 0}
     tracker_counts = {}
@@ -466,10 +468,13 @@ def torrents_all():
     if not client:
         return "No torrent client is connected.", 503
     try:
-        return jsonify(client.get_torrents_full())
+        torrents = client.get_torrents_full()
     except Exception as e:
         print(f"torrents/all error: {e}")
         return "Failed to fetch torrents.", 500
+    if not isinstance(torrents, list):
+        return "Failed to fetch torrents.", 500
+    return jsonify(torrents)
 
 @app.route('/api/v2/torrents/files')
 @login_required
@@ -928,6 +933,8 @@ def sync_maindata():
     try:
         torrents = client.get_torrents_full()
     except Exception:
+        return "Failed to load torrent sync data.", 500
+    if not isinstance(torrents, list):
         return "Failed to load torrent sync data.", 500
 
     # qBit sync format is a dict indexed by hash
