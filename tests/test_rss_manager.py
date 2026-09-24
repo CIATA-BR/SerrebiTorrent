@@ -169,3 +169,72 @@ def test_add_rule_preserves_disabled_state(rss_manager):
 
     assert rss_manager.add_rule("ubuntu", "accept", enabled=False) is True
     assert rss_manager.rules[-1]["enabled"] is False
+
+
+def test_flexget_import_rolls_back_when_rss_save_fails(rss_manager, tmp_path):
+    config_path = tmp_path / "flexget.yml"
+    config_path.write_text(
+        """
+tasks:
+  example:
+    qbittorrent:
+      host: localhost
+      port: 8080
+      username: user
+      password: secret
+    rss: https://example.com/feed.xml
+    regexp:
+      accept:
+        - Ubuntu
+""",
+        encoding="utf-8",
+    )
+
+    rss_manager.feeds = {}
+    rss_manager.rules = []
+    rss_manager.save.return_value = False
+
+    mock_config = MagicMock()
+    mock_config.get_profiles.return_value = {}
+    mock_config.add_profile.return_value = "profile-1"
+
+    with patch("config_manager.ConfigManager", return_value=mock_config):
+        with pytest.raises(OSError):
+            rss_manager.import_flexget_config(str(config_path))
+
+    assert rss_manager.feeds == {}
+    assert rss_manager.rules == []
+    mock_config.delete_profile.assert_called_once_with("profile-1")
+
+
+def test_flexget_import_avoids_duplicate_profiles_within_same_file(rss_manager, tmp_path):
+    config_path = tmp_path / "flexget.yml"
+    config_path.write_text(
+        """
+tasks:
+  first:
+    qbittorrent:
+      host: localhost
+      port: 8080
+      username: user
+      password: secret
+  second:
+    qbittorrent:
+      host: localhost
+      port: 8080
+      username: user
+      password: secret
+""",
+        encoding="utf-8",
+    )
+
+    rss_manager.save.return_value = True
+
+    mock_config = MagicMock()
+    mock_config.get_profiles.return_value = {}
+    mock_config.add_profile.return_value = "profile-1"
+
+    with patch("config_manager.ConfigManager", return_value=mock_config):
+        rss_manager.import_flexget_config(str(config_path))
+
+    assert mock_config.add_profile.call_count == 1
