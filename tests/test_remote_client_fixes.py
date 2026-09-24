@@ -241,3 +241,30 @@ def test_local_snapshot_failure_is_not_reported_as_empty_list():
 
     with pytest.raises(RuntimeError, match="session unavailable"):
         client.get_torrents_full()
+
+
+@pytest.mark.parametrize("detail", ["files", "peers", "trackers"])
+def test_rtorrent_detail_failure_is_not_reported_as_empty_list(detail):
+    class FailingMulticall:
+        def multicall(self, *args):
+            raise RuntimeError("rpc unavailable")
+
+    client = clients.RTorrentClient("http://localhost/RPC2")
+    client.srv = type(
+        "Server",
+        (),
+        {
+            "f": FailingMulticall(),
+            "p": FailingMulticall(),
+            "t": FailingMulticall(),
+        },
+    )()
+
+    method = {
+        "files": client.get_files,
+        "peers": client.get_peers,
+        "trackers": client.get_trackers,
+    }[detail]
+
+    with pytest.raises(RuntimeError, match="rpc unavailable"):
+        method("a" * 40)
