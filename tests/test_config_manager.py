@@ -200,11 +200,22 @@ def test_default_profile_rolls_back_on_save_failure(tmp_path, monkeypatch):
     assert cm.get_default_profile_id() == original
 
 
-def test_set_preferences_rolls_back_on_save_failure(config_manager):
-    original = config_manager.get_preferences()
-    config_manager.save_config = MagicMock(side_effect=OSError("disk full"))
+def test_set_preferences_rolls_back_on_save_failure(tmp_path, monkeypatch):
+    _configure_paths(tmp_path, monkeypatch)
+    cm = config_manager.ConfigManager()
+    original = cm.get_preferences()
 
-    with pytest.raises(OSError):
-        config_manager.set_preferences({"download_path": "C:/broken"})
+    monkeypatch.setattr(
+        cm,
+        "save_config",
+        lambda: (_ for _ in ()).throw(OSError("disk full")),
+    )
 
-    assert config_manager.get_preferences() == original
+    try:
+        cm.set_preferences({"download_path": "C:/broken"})
+    except OSError:
+        pass
+    else:
+        raise AssertionError("Expected set_preferences to propagate persistence failure")
+
+    assert cm.get_preferences() == original
