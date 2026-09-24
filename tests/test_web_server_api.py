@@ -1055,3 +1055,65 @@ def test_rss_import_flexget_requires_rss_context(auth_client):
 
     assert rv.status_code == 503
     assert b"Application context is unavailable." in rv.data
+
+
+def test_remote_prefs_write_requires_connected_client(auth_client):
+    original = web_server.WEB_CONFIG.copy()
+    try:
+        web_server.WEB_CONFIG['client'] = None
+
+        rv = auth_client.post(
+            '/api/v2/app/remote_prefs',
+            json={'max_downloads': 3},
+            headers=csrf_headers(auth_client),
+        )
+
+        assert rv.status_code == 503
+        assert b"No torrent client is connected." in rv.data
+    finally:
+        web_server.WEB_CONFIG.update(original)
+
+
+def test_remote_prefs_write_requires_object_json(auth_client):
+    mock_client = MagicMock()
+    web_server.WEB_CONFIG['client'] = mock_client
+
+    rv = auth_client.post(
+        '/api/v2/app/remote_prefs',
+        json=['invalid'],
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 400
+    assert b"Remote preferences object is required." in rv.data
+    mock_client.set_app_preferences.assert_not_called()
+
+
+def test_remote_prefs_write_hides_backend_errors(auth_client):
+    mock_client = MagicMock()
+    mock_client.set_app_preferences.side_effect = RuntimeError("secret backend detail")
+    web_server.WEB_CONFIG['client'] = mock_client
+
+    rv = auth_client.post(
+        '/api/v2/app/remote_prefs',
+        json={'max_downloads': 3},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 500
+    assert b"Failed to update remote preferences." in rv.data
+    assert b"secret backend detail" not in rv.data
+
+
+def test_remote_prefs_write_persists_valid_object(auth_client):
+    mock_client = MagicMock()
+    web_server.WEB_CONFIG['client'] = mock_client
+
+    rv = auth_client.post(
+        '/api/v2/app/remote_prefs',
+        json={'max_downloads': 3},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 200
+    mock_client.set_app_preferences.assert_called_once_with({'max_downloads': 3})
