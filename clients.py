@@ -1198,18 +1198,20 @@ class LocalClient(BaseClient):
                 print(f"Skipping torrent row: {type(exc).__name__}: {exc}")
                 continue
         return res
+    def _require_handle(self, h):
+        handle = self._gh(h)
+        if not handle:
+            raise LookupError("Torrent not found.")
+        return handle
     def start_torrent(self, h):
-        x = self._gh(h)
-        if x:
-            x.resume()
+        self._require_handle(h).resume()
     def stop_torrent(self, h):
-        x = self._gh(h)
-        if x:
-            # A manual stop must take the torrent out of auto-management:
-            # the queue manager could otherwise restart it, and the GUI only
-            # shows a torrent as Stopped when paused and NOT auto-managed.
-            _handle_set_auto_managed(x, False)
-            x.pause()
+        x = self._require_handle(h)
+        # A manual stop must take the torrent out of auto-management:
+        # the queue manager could otherwise restart it, and the GUI only
+        # shows a torrent as Stopped when paused and NOT auto-managed.
+        _handle_set_auto_managed(x, False)
+        x.pause()
     def remove_torrent(self, h): self.m.remove_torrent(h, False)
     def remove_torrent_with_data(self, h): self.m.remove_torrent(h, True)
     def add_torrent_url(self, u, sp=None):
@@ -1225,13 +1227,9 @@ class LocalClient(BaseClient):
     def _gh(self, i):
         return self.m._find_handle(i)
     def recheck_torrent(self, h):
-        x = self._gh(h)
-        if x:
-            x.force_recheck()
+        self._require_handle(h).force_recheck()
     def reannounce_torrent(self, h):
-        x = self._gh(h)
-        if x:
-            x.force_reannounce()
+        self._require_handle(h).force_reannounce()
     def get_torrent_save_path(self, h):
         x = self._gh(h)
         return getattr(x.status(), 'save_path', None) if x else None
@@ -1247,10 +1245,9 @@ class LocalClient(BaseClient):
         prio = _handle_file_priorities(x)
         return [{"index": i, "name": fs.file_path(i), "size": fs.file_size(i), "progress": pr[i]/fs.file_size(i) if fs.file_size(i)>0 else 0, "priority": 1 if prio[i]==4 else (2 if prio[i]>4 else 0)} for i in range(ti.num_files())]
     def set_file_priority(self, h, i, p):
-        x = self._gh(h)
-        if x:
-            x.file_priority(i, 4 if p==1 else (7 if p==2 else 0))
-            self.m.update_priorities(self.m._handle_hash_key(x) or h, _handle_file_priorities(x))
+        x = self._require_handle(h)
+        x.file_priority(i, 4 if p==1 else (7 if p==2 else 0))
+        self.m.update_priorities(self.m._handle_hash_key(x) or h, _handle_file_priorities(x))
     def get_peers(self, h):
         x = self._gh(h)
         if not x:
