@@ -340,6 +340,7 @@ def api_csrf():
     return jsonify({'csrf_token': _csrf_token()})
 
 @app.route('/api/v2/auth/logout', methods=['POST'])
+@login_required
 def api_logout():
     _clear_web_session()
     return "Ok."
