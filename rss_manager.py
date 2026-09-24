@@ -243,7 +243,7 @@ class RSSManager:
             with open(path, 'r', encoding='utf-8') as f:
                 config = yaml.safe_load(f)
         except Exception as e:
-            raise Exception(f"Failed to parse YAML: {e}")
+            raise ValueError("Invalid FlexGet configuration.") from e
 
         if not config or 'tasks' not in config:
             return 0, 0
@@ -255,6 +255,9 @@ class RSSManager:
         tasks = config.get('tasks', {})
         count_feeds = 0
         count_rules = 0
+        previous_feeds = None
+        previous_rules = None
+        created_profile_ids = []
         
         # Helper to avoid dupes
         def profile_exists(url, user):
@@ -264,94 +267,110 @@ class RSSManager:
             return False
 
         with self.lock:
-            for task_name, task_config in tasks.items():
-                if not isinstance(task_config, dict):
-                    continue
+            previous_feeds = dict(self.feeds)
+            previous_rules = [dict(rule) for rule in self.rules]
+            try:
+                for task_name, task_config in tasks.items():
+                    if not isinstance(task_config, dict):
+                        continue
 
-                # 0. Profile (qBittorrent)
-                qbit = task_config.get('qbittorrent')
-                if qbit and isinstance(qbit, dict):
-                    host = qbit.get('host', 'localhost')
-                    port = qbit.get('port', 8080)
-                    user = qbit.get('username', '')
-                    pw = qbit.get('password', '')
-                    
-                    url = f"http://{host}:{port}"
-                    if not profile_exists(url, user):
-                        cm.add_profile(f"{task_name} qBit", "qbittorrent", url, user, pw)
-
-                # 1. RSS Feeds (Collect task URLs for scoping)
-                task_feed_urls = []
-                
-                rss_entry = task_config.get('rss')
-                if rss_entry:
-                    url = ""
-                    if isinstance(rss_entry, str):
-                        url = rss_entry
-                    elif isinstance(rss_entry, dict):
-                        url = rss_entry.get('url')
-                    
-                    if url:
-                        task_feed_urls.append(url)
-                        # Avoid nested lock if add_feed uses it.
-                        # Since we are holding lock, we should manually manipulate dict or make add_feed reentrant (RLock handles this).
-                        if url not in self.feeds:
-                            self.feeds[url] = {'alias': f"{task_name} RSS", 'last_update': 0, 'articles': []}
-                            count_feeds += 1
-                
-                inputs = task_config.get('inputs', [])
-                if isinstance(inputs, list):
-                    for inp in inputs:
-                        if isinstance(inp, dict) and 'rss' in inp:
-                            val = inp['rss']
-                            url = ""
-                            if isinstance(val, str):
-                                url = val
-                            elif isinstance(val, dict):
-                                url = val.get('url')
-                            
-                            if url:
-                                task_feed_urls.append(url)
-                                if url not in self.feeds:
-                                    self.feeds[url] = {'alias': f"{task_name} RSS", 'last_update': 0, 'articles': []}
-                                    count_feeds += 1
-
-                # 2. Rules (Regex) - Scope them to task_feed_urls
-                regexp = task_config.get('regexp', {})
-                if isinstance(regexp, dict):
-                    # Accept
-                    accept = regexp.get('accept', [])
-                    if isinstance(accept, list):
-                        for pattern in accept:
-                            self.rules.append({'pattern': str(pattern), 'enabled': True, 'type': 'accept', 'scope': task_feed_urls})
-                            count_rules += 1
-                    # Reject
-                    reject = regexp.get('reject', [])
-                    if isinstance(reject, list):
-                        for pattern in reject:
-                            self.rules.append({'pattern': str(pattern), 'enabled': True, 'type': 'reject', 'scope': task_feed_urls})
-                            count_rules += 1
-                
-                # 3. Series - Scope them to task_feed_urls
-                series = task_config.get('series', [])
-                if isinstance(series, list):
-                    for s in series:
-                        name = ""
-                        if isinstance(s, str):
-                            name = s
-                        elif isinstance(s, dict):
-                            name = list(s.keys())[0] if s else ""
+                    # 0. Profile (qBittorrent)
+                    qbit = task_config.get('qbittorrent')
+                    if qbit and isinstance(qbit, dict):
+                        host = qbit.get('host', 'localhost')
+                        port = qbit.get('port', 8080)
+                        user = qbit.get('username', '')
+                        pw = qbit.get('password', '')
                         
-                        if name:
-                            pattern = re.escape(name).replace(r"\ ", ".*")
-                            self.rules.append({'pattern': pattern, 'enabled': True, 'type': 'accept', 'scope': task_feed_urls})
-                            count_rules += 1
+                        url = f"http://{host}:{port}"
+                        if not profile_exists(url, user):
+                            created_profile_ids.append(
+                                cm.add_profile(f"{task_name} qBit", "qbittorrent", url, user, pw)
+                            )
+
+                    # 1. RSS Feeds (Collect task URLs for scoping)
+                    task_feed_urls = []
+                    
+                    rss_entry = task_config.get('rss')
+                    if rss_entry:
+                        url = ""
+                        if isinstance(rss_entry, str):
+                            url = rss_entry
+                        elif isinstance(rss_entry, dict):
+                            url = rss_entry.get('url')
+                        
+                        if url:
+                            task_feed_urls.append(url)
+                            # Avoid nested lock if add_feed uses it.
+                            # Since we are holding lock, we should manually manipulate dict or make add_feed reentrant (RLock handles this).
+                            if url not in self.feeds:
+                                self.feeds[url] = {'alias': f"{task_name} RSS", 'last_update': 0, 'articles': []}
+                                count_feeds += 1
+                    
+                    inputs = task_config.get('inputs', [])
+                    if isinstance(inputs, list):
+                        for inp in inputs:
+                            if isinstance(inp, dict) and 'rss' in inp:
+                                val = inp['rss']
+                                url = ""
+                                if isinstance(val, str):
+                                    url = val
+                                elif isinstance(val, dict):
+                                    url = val.get('url')
+                                
+                                if url:
+                                    task_feed_urls.append(url)
+                                    if url not in self.feeds:
+                                        self.feeds[url] = {'alias': f"{task_name} RSS", 'last_update': 0, 'articles': []}
+                                        count_feeds += 1
+
+                    # 2. Rules (Regex) - Scope them to task_feed_urls
+                    regexp = task_config.get('regexp', {})
+                    if isinstance(regexp, dict):
+                        # Accept
+                        accept = regexp.get('accept', [])
+                        if isinstance(accept, list):
+                            for pattern in accept:
+                                self.rules.append({'pattern': str(pattern), 'enabled': True, 'type': 'accept', 'scope': task_feed_urls})
+                                count_rules += 1
+                        # Reject
+                        reject = regexp.get('reject', [])
+                        if isinstance(reject, list):
+                            for pattern in reject:
+                                self.rules.append({'pattern': str(pattern), 'enabled': True, 'type': 'reject', 'scope': task_feed_urls})
+                                count_rules += 1
+                    
+                    # 3. Series - Scope them to task_feed_urls
+                    series = task_config.get('series', [])
+                    if isinstance(series, list):
+                        for s in series:
+                            name = ""
+                            if isinstance(s, str):
+                                name = s
+                            elif isinstance(s, dict):
+                                name = list(s.keys())[0] if s else ""
                             
-                # 4. Accept All - Scope them to task_feed_urls
-                if task_config.get('accept_all'):
-                     self.rules.append({'pattern': ".*", 'enabled': True, 'type': 'accept', 'scope': task_feed_urls})
-                     count_rules += 1
-            
-            self.save()
+                            if name:
+                                pattern = re.escape(name).replace(r"\ ", ".*")
+                                self.rules.append({'pattern': pattern, 'enabled': True, 'type': 'accept', 'scope': task_feed_urls})
+                                count_rules += 1
+                                
+                    # 4. Accept All - Scope them to task_feed_urls
+                    if task_config.get('accept_all'):
+                         self.rules.append({'pattern': ".*", 'enabled': True, 'type': 'accept', 'scope': task_feed_urls})
+                         count_rules += 1
+                
+
+                if not self.save():
+                    raise OSError("Failed to save imported RSS data.")
+            except Exception:
+                self.feeds = previous_feeds
+                self.rules = previous_rules
+                for pid in reversed(created_profile_ids):
+                    try:
+                        cm.delete_profile(pid)
+                    except Exception:
+                        pass
+                raise
         
         return count_feeds, count_rules
