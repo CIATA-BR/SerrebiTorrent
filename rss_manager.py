@@ -284,9 +284,17 @@ class RSSManager:
                         
                         url = f"http://{host}:{port}"
                         if not profile_exists(url, user):
-                            created_profile_ids.append(
-                                cm.add_profile(f"{task_name} qBit", "qbittorrent", url, user, pw)
+                            pid = cm.add_profile(
+                                f"{task_name} qBit", "qbittorrent", url, user, pw
                             )
+                            created_profile_ids.append(pid)
+                            existing_profiles[pid] = {
+                                'name': f"{task_name} qBit",
+                                'type': 'qbittorrent',
+                                'url': url,
+                                'user': user,
+                                'password': pw,
+                            }
 
                     # 1. RSS Feeds (Collect task URLs for scoping)
                     task_feed_urls = []
