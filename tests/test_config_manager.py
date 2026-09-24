@@ -198,3 +198,13 @@ def test_default_profile_rolls_back_on_save_failure(tmp_path, monkeypatch):
         raise AssertionError("Expected set_default_profile_id to propagate persistence failure")
 
     assert cm.get_default_profile_id() == original
+
+
+def test_set_preferences_rolls_back_on_save_failure(config_manager):
+    original = config_manager.get_preferences()
+    config_manager.save_config = MagicMock(side_effect=OSError("disk full"))
+
+    with pytest.raises(OSError):
+        config_manager.set_preferences({"download_path": "C:/broken"})
+
+    assert config_manager.get_preferences() == original
