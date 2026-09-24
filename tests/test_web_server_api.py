@@ -1294,3 +1294,24 @@ def test_sync_maindata_hides_backend_errors(auth_client):
     assert rv.status_code == 500
     assert b"Failed to load torrent sync data." in rv.data
     assert b"secret sync detail" not in rv.data
+
+
+@pytest.mark.parametrize(
+    ("endpoint", "method_name", "message"),
+    [
+        ("/api/v2/torrents/files", "get_files", b"Failed to load torrent files."),
+        ("/api/v2/torrents/peers", "get_peers", b"Failed to load torrent peers."),
+        ("/api/v2/torrents/trackers", "get_trackers", b"Failed to load torrent trackers."),
+    ],
+)
+def test_torrent_detail_reads_reject_invalid_result_shapes(
+    auth_client, endpoint, method_name, message
+):
+    mock_client = MagicMock()
+    getattr(mock_client, method_name).return_value = None
+    web_server.WEB_CONFIG['client'] = mock_client
+
+    rv = auth_client.get(endpoint + "?hash=" + "a" * 40)
+
+    assert rv.status_code == 500
+    assert message in rv.data
