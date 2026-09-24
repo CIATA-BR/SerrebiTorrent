@@ -70,6 +70,33 @@ def test_login(client):
     assert rv.status_code == 403
 
 
+def test_logout_requires_authenticated_session(client):
+    rv = client.post('/api/v2/auth/logout')
+
+    assert rv.status_code == 403
+
+
+def test_logout_requires_csrf(auth_client):
+    rv = auth_client.post('/api/v2/auth/logout')
+
+    assert rv.status_code == 403
+    with auth_client.session_transaction() as session:
+        assert session.get('logged_in') is True
+
+
+def test_logout_clears_authenticated_session(auth_client):
+    rv = auth_client.post(
+        '/api/v2/auth/logout',
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 200
+    with auth_client.session_transaction() as session:
+        assert 'logged_in' not in session
+        assert 'csrf_token' not in session
+        assert 'auth_fingerprint' not in session
+
+
 def test_session_invalidates_after_credentials_change(client):
     original = web_server.WEB_CONFIG.copy()
     try:
