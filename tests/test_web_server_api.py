@@ -1204,6 +1204,22 @@ def test_torrents_info_hides_snapshot_errors(auth_client):
     assert b"secret snapshot detail" not in rv.data
 
 
+def test_profile_switch_hides_profile_lookup_errors(auth_client):
+    mock_app = MagicMock()
+    mock_app.config_manager.get_profiles.side_effect = RuntimeError("secret profile detail")
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/profiles/switch',
+        data={'id': 'remote'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 500
+    assert b"Failed to load profiles." in rv.data
+    assert b"secret profile detail" not in rv.data
+    mock_app.connect_profile.assert_not_called()
+
 def test_openfolder_reports_async_start(auth_client, monkeypatch):
     mock_client = MagicMock()
     mock_client.get_torrent_save_path.return_value = r"C:\Downloads"
