@@ -778,29 +778,41 @@ def rss_remove_rule():
 @login_required
 def rss_import_flexget():
     app_ref = WEB_CONFIG['app']
-    if not app_ref:
-        return "Error", 500
+    if not app_ref or not hasattr(app_ref, 'rss_panel'):
+        return "Application context is unavailable.", 503
     if 'config' not in request.files:
-        return "No file", 400
-    
-    f = request.files['config']
-    # Save to temp and import
-    filename = secure_filename(f.filename or '') or 'flexget.yml'
-    temp_path = os.path.join(tempfile.gettempdir(), f"serrebitorrent_{os.getpid()}_{filename}")
-    f.save(temp_path)
-    
-    import wx
-    def do_import():
-        try:
-            app_ref.rss_panel.manager.import_flexget_config(temp_path)
-        except Exception as e:
-            print(f"Import error: {e}")
-        finally:
-            if os.path.exists(temp_path):
-                os.remove(temp_path)
+        return "FlexGet configuration file is required.", 400
 
-    wx.CallAfter(do_import)
-    return jsonify({'status': 'Import started in background'})
+    upload = request.files['config']
+    filename = secure_filename(upload.filename or '') or 'flexget.yml'
+    suffix = os.path.splitext(filename)[1] or '.yml'
+    temp_path = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            prefix="serrebitorrent_flexget_",
+            suffix=suffix,
+            delete=False,
+        ) as temp_file:
+            temp_path = temp_file.name
+        upload.save(temp_path)
+        feeds, rules = app_ref.rss_panel.manager.import_flexget_config(temp_path)
+    except ValueError:
+        return "Invalid FlexGet configuration.", 400
+    except Exception as e:
+        print(f"Import error: {e}")
+        return "Failed to import FlexGet configuration.", 500
+    finally:
+        if temp_path and os.path.exists(temp_path):
+            try:
+                os.remove(temp_path)
+            except OSError:
+                pass
+
+    return jsonify({
+        'status': 'Import complete',
+        'feeds': feeds,
+        'rules': rules,
+    })
 
 @app.route('/api/v2/app/prefs')
 @login_required
