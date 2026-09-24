@@ -370,7 +370,10 @@ def switch_profile():
     if not pid:
         return "Profile id is required.", 400
 
-    profiles = app_ref.config_manager.get_profiles()
+    try:
+        profiles = app_ref.config_manager.get_profiles()
+    except Exception:
+        return "Failed to load profiles.", 500
     if pid not in profiles:
         return "Profile not found.", 404
 
@@ -909,9 +912,13 @@ def set_remote_prefs():
 def sync_maindata():
     client = WEB_CONFIG['client']
     if not client:
-        return jsonify({'torrents': {}})
-    
-    torrents = client.get_torrents_full()
+        return "No torrent client is connected.", 503
+
+    try:
+        torrents = client.get_torrents_full()
+    except Exception:
+        return "Failed to load torrent sync data.", 500
+
     # qBit sync format is a dict indexed by hash
     t_dict = {t['hash']: t for t in torrents}
     return jsonify({

@@ -1204,6 +1204,22 @@ def test_torrents_info_hides_snapshot_errors(auth_client):
     assert b"secret snapshot detail" not in rv.data
 
 
+def test_profile_switch_hides_profile_lookup_errors(auth_client):
+    mock_app = MagicMock()
+    mock_app.config_manager.get_profiles.side_effect = RuntimeError("secret profile detail")
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/profiles/switch',
+        data={'id': 'remote'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 500
+    assert b"Failed to load profiles." in rv.data
+    assert b"secret profile detail" not in rv.data
+    mock_app.connect_profile.assert_not_called()
+
 def test_openfolder_reports_async_start(auth_client, monkeypatch):
     mock_client = MagicMock()
     mock_client.get_torrent_save_path.return_value = r"C:\Downloads"
@@ -1254,3 +1270,27 @@ def test_pause_attempts_all_torrents_after_partial_failure(auth_client):
     assert rv.status_code == 500
     assert b"Failed to pause one or more torrents." in rv.data
     assert mock_client.stop_torrent.call_count == 2
+
+def test_sync_maindata_requires_connected_client(auth_client):
+    original = web_server.WEB_CONFIG.copy()
+    try:
+        web_server.WEB_CONFIG['client'] = None
+
+        rv = auth_client.get('/api/v2/sync/maindata')
+
+        assert rv.status_code == 503
+        assert b"No torrent client is connected." in rv.data
+    finally:
+        web_server.WEB_CONFIG.update(original)
+
+
+def test_sync_maindata_hides_backend_errors(auth_client):
+    mock_client = MagicMock()
+    mock_client.get_torrents_full.side_effect = RuntimeError("secret sync detail")
+    web_server.WEB_CONFIG['client'] = mock_client
+
+    rv = auth_client.get('/api/v2/sync/maindata')
+
+    assert rv.status_code == 500
+    assert b"Failed to load torrent sync data." in rv.data
+    assert b"secret sync detail" not in rv.data
