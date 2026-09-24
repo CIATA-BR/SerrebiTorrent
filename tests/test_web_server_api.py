@@ -1357,6 +1357,32 @@ def test_torrent_sync_rejects_invalid_snapshot_shape(auth_client):
 
 
 @pytest.mark.parametrize(
+    ("endpoint", "source", "message"),
+    [
+        ("/api/v2/torrents/all", "client", b"Failed to fetch torrents."),
+        ("/api/v2/torrents/info", "app", b"Failed to load torrent stats."),
+        ("/api/v2/sync/maindata", "client", b"Failed to load torrent sync data."),
+    ],
+)
+def test_torrent_snapshots_reject_malformed_entries(auth_client, endpoint, source, message):
+    malformed = [{"name": "missing hash"}, None]
+
+    if source == "client":
+        mock_client = MagicMock()
+        mock_client.get_torrents_full.return_value = malformed
+        web_server.WEB_CONFIG['client'] = mock_client
+    else:
+        mock_app = MagicMock()
+        mock_app.get_all_torrents_safe.return_value = malformed
+        web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.get(endpoint)
+
+    assert rv.status_code == 500
+    assert message in rv.data
+
+
+@pytest.mark.parametrize(
     ("endpoint", "method_name", "message"),
     [
         ("/api/v2/torrents/files", "get_files", b"Failed to load torrent files."),
