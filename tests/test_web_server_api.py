@@ -931,6 +931,31 @@ def test_rss_remove_rule_reports_missing_rule(auth_client):
     manager.remove_rule.assert_not_called()
 
 
+def test_app_prefs_get_requires_application_context(auth_client):
+    original = web_server.WEB_CONFIG.copy()
+    try:
+        web_server.WEB_CONFIG['app'] = None
+
+        rv = auth_client.get('/api/v2/app/prefs')
+
+        assert rv.status_code == 503
+        assert b"Application context is unavailable." in rv.data
+    finally:
+        web_server.WEB_CONFIG.update(original)
+
+
+def test_app_prefs_get_hides_backend_errors(auth_client):
+    mock_app = MagicMock()
+    mock_app.config_manager.get_preferences.side_effect = RuntimeError("secret config detail")
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.get('/api/v2/app/prefs')
+
+    assert rv.status_code == 500
+    assert b"Failed to load settings." in rv.data
+    assert b"secret config detail" not in rv.data
+
+
 def test_remote_prefs_requires_connected_client(auth_client):
     original = web_server.WEB_CONFIG.copy()
     try:

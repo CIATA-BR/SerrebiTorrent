@@ -819,8 +819,12 @@ def rss_import_flexget():
 def get_app_prefs():
     app_ref = WEB_CONFIG['app']
     if not app_ref:
-        return jsonify({})
-    return jsonify(app_ref.config_manager.get_preferences())
+        return "Application context is unavailable.", 503
+    try:
+        prefs = app_ref.config_manager.get_preferences()
+    except Exception:
+        return "Failed to load settings.", 500
+    return jsonify(prefs)
 
 @app.route('/api/v2/app/prefs', methods=['POST'])
 @login_required
