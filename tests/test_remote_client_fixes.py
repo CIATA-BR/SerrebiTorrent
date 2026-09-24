@@ -119,3 +119,55 @@ def test_rtorrent_set_preferences_propagates_rpc_errors():
 
     with pytest.raises(RuntimeError, match="rpc failed"):
         client.set_app_preferences({"dl_limit": 100})
+
+
+def test_base_client_batch_delete_continues_after_failure():
+    class FakeClient(clients.BaseClient):
+        def __init__(self):
+            self.calls = []
+
+        def test_connection(self):
+            return True
+
+        def get_torrents_full(self):
+            return []
+
+        def start_torrent(self, h):
+            pass
+
+        def stop_torrent(self, h):
+            pass
+
+        def remove_torrent(self, h):
+            self.calls.append(h)
+            if h == "bad":
+                raise RuntimeError("delete failed")
+
+        def remove_torrent_with_data(self, h):
+            self.remove_torrent(h)
+
+    client = FakeClient()
+
+    with pytest.raises(RuntimeError, match="one or more torrents"):
+        client.remove_torrents(["first", "bad", "last"])
+
+    assert client.calls == ["first", "bad", "last"]
+
+
+def test_transmission_batch_delete_continues_after_failure():
+    class FakeTransmissionRpc:
+        def __init__(self):
+            self.calls = []
+
+        def remove_torrent(self, h, delete_data=False):
+            self.calls.append((h, delete_data))
+            if h == 2:
+                raise RuntimeError("delete failed")
+
+    client = clients.TransmissionClient.__new__(clients.TransmissionClient)
+    client.c = FakeTransmissionRpc()
+
+    with pytest.raises(RuntimeError, match="one or more torrents"):
+        client.remove_torrents([1, 2, 3], df=True)
+
+    assert client.c.calls == [(1, True), (2, True), (3, True)]
