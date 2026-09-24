@@ -879,16 +879,18 @@ def get_remote_prefs():
 def set_remote_prefs():
     client = WEB_CONFIG['client']
     if not client:
-        return "No client", 500
-    new_prefs = request.json
-    if new_prefs:
-        try:
-            client.set_app_preferences(new_prefs)
-            return "Ok."
-        except Exception as e:
-            print(f"remote_prefs error: {e}")
-            return "Failed to update remote preferences.", 500
-    return "No data", 400
+        return "No torrent client is connected.", 503
+
+    new_prefs = request.get_json(silent=True)
+    if not isinstance(new_prefs, dict) or not new_prefs:
+        return "Remote preferences object is required.", 400
+
+    try:
+        client.set_app_preferences(new_prefs)
+    except Exception as e:
+        print(f"remote_prefs error: {e}")
+        return "Failed to update remote preferences.", 500
+    return "Ok."
 
 @app.route('/api/v2/sync/maindata')
 @login_required
