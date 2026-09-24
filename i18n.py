@@ -33,8 +33,49 @@ def normalize_language(value: str | None) -> str:
     return DEFAULT_LANGUAGE
 
 
+def _windows_ui_language() -> str | None:
+    """Return the first preferred Windows UI language tag, if available."""
+    if os.name != "nt":
+        return None
+    try:
+        import ctypes
+
+        MUI_LANGUAGE_NAME = 0x8
+        kernel32 = ctypes.windll.kernel32
+        count = ctypes.c_ulong(0)
+        size = ctypes.c_ulong(0)
+
+        if not kernel32.GetUserPreferredUILanguages(
+            MUI_LANGUAGE_NAME,
+            ctypes.byref(count),
+            None,
+            ctypes.byref(size),
+        ):
+            return None
+        if size.value <= 1:
+            return None
+
+        buffer = ctypes.create_unicode_buffer(size.value)
+        if not kernel32.GetUserPreferredUILanguages(
+            MUI_LANGUAGE_NAME,
+            ctypes.byref(count),
+            buffer,
+            ctypes.byref(size),
+        ):
+            return None
+
+        value = buffer.value.strip()
+        return value or None
+    except Exception:
+        return None
+
+
 def system_language() -> str:
     """Resolve the OS locale without changing the process locale."""
+    windows_language = _windows_ui_language()
+    if windows_language:
+        return normalize_language(windows_language)
+
     for env_name in ("LC_ALL", "LC_MESSAGES", "LANG"):
         value = os.environ.get(env_name)
         if value:
