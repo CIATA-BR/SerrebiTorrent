@@ -682,11 +682,8 @@ class RTorrentClient(BaseClient):
 
     def get_files(self, h):
         h = self._normalize_hash(h)
-        try:
-            r = self.srv.f.multicall(h, "", "f.get_path=", "f.get_size_bytes=", "f.get_priority=", "f.get_completed_chunks=", "f.get_size_chunks=")
-            return [{"index": i, "name": x[0], "size": x[1], "progress": x[3]/x[4] if x[4]>0 else 0, "priority": x[2]} for i, x in enumerate(r)]
-        except Exception:
-            return []
+        r = self.srv.f.multicall(h, "", "f.get_path=", "f.get_size_bytes=", "f.get_priority=", "f.get_completed_chunks=", "f.get_size_chunks=")
+        return [{"index": i, "name": x[0], "size": x[1], "progress": x[3]/x[4] if x[4]>0 else 0, "priority": x[2]} for i, x in enumerate(r)]
 
     def set_file_priority(self, h, i, p):
         h = self._normalize_hash(h)
@@ -695,19 +692,13 @@ class RTorrentClient(BaseClient):
 
     def get_peers(self, h):
         h = self._normalize_hash(h)
-        try:
-            r = self.srv.p.multicall(h, "", "p.address=", "p.client_version=", "p.completed_percent=", "p.down_rate=", "p.up_rate=")
-            return [{"address": str(x[0]), "client": str(x[1]), "progress": float(x[2])/100.0, "down_rate": int(x[3]), "up_rate": int(x[4])} for x in r]
-        except Exception:
-            return []
+        r = self.srv.p.multicall(h, "", "p.address=", "p.client_version=", "p.completed_percent=", "p.down_rate=", "p.up_rate=")
+        return [{"address": str(x[0]), "client": str(x[1]), "progress": float(x[2])/100.0, "down_rate": int(x[3]), "up_rate": int(x[4])} for x in r]
 
     def get_trackers(self, h):
         h = self._normalize_hash(h)
-        try:
-            r = self.srv.t.multicall(h, "", "t.url=", "t.is_enabled=", "t.scrape_complete=")
-            return [{"url": str(x[0]), "status": "Enabled" if x[1] else "Disabled", "peers": int(x[2]) if x[2] else 0, "message": ""} for x in r]
-        except Exception:
-            return []
+        r = self.srv.t.multicall(h, "", "t.url=", "t.is_enabled=", "t.scrape_complete=")
+        return [{"url": str(x[0]), "status": "Enabled" if x[1] else "Disabled", "peers": int(x[2]) if x[2] else 0, "message": ""} for x in r]
 
 # --- qBit ---
 import qbittorrentapi
