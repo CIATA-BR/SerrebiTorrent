@@ -836,7 +836,8 @@ def set_app_prefs():
 def get_remote_prefs():
     client = WEB_CONFIG['client']
     if not client:
-        return jsonify({})
+        return "No torrent client is connected.", 503
+
     # We also return the client name to determine schema on frontend
     name = "Other"
     from clients import QBittorrentClient, RTorrentClient, TransmissionClient
@@ -846,10 +847,15 @@ def get_remote_prefs():
         name = "rtorrent"
     elif isinstance(client, TransmissionClient):
         name = "transmission"
-    
+
+    try:
+        prefs = client.get_app_preferences()
+    except Exception:
+        return "Failed to load remote preferences.", 500
+
     return jsonify({
         'name': name,
-        'prefs': client.get_app_preferences()
+        'prefs': prefs
     })
 
 @app.route('/api/v2/app/remote_prefs', methods=['POST'])
