@@ -1294,3 +1294,14 @@ def test_sync_maindata_hides_backend_errors(auth_client):
     assert rv.status_code == 500
     assert b"Failed to load torrent sync data." in rv.data
     assert b"secret sync detail" not in rv.data
+
+
+def test_remote_prefs_rejects_null_backend_result(auth_client):
+    mock_client = MagicMock()
+    mock_client.get_app_preferences.return_value = None
+    web_server.WEB_CONFIG['client'] = mock_client
+
+    rv = auth_client.get('/api/v2/app/remote_prefs')
+
+    assert rv.status_code == 500
+    assert b"Failed to load remote preferences." in rv.data

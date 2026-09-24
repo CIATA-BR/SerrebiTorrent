@@ -883,6 +883,8 @@ def get_remote_prefs():
         prefs = client.get_app_preferences()
     except Exception:
         return "Failed to load remote preferences.", 500
+    if prefs is None:
+        return "Failed to load remote preferences.", 500
 
     return jsonify({
         'name': name,
