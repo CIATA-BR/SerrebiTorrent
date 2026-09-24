@@ -1161,3 +1161,20 @@ def test_profiles_get_hides_backend_errors(auth_client):
     assert rv.status_code == 500
     assert b"Failed to load profiles." in rv.data
     assert b"secret profile detail" not in rv.data
+
+
+def test_torrents_add_requires_connected_client(auth_client):
+    original = web_server.WEB_CONFIG.copy()
+    try:
+        web_server.WEB_CONFIG['client'] = None
+
+        rv = auth_client.post(
+            '/api/v2/torrents/add',
+            data={'urls': 'magnet:?xt=urn:btih:' + 'a' * 40},
+            headers=csrf_headers(auth_client),
+        )
+
+        assert rv.status_code == 503
+        assert b"No torrent client is connected." in rv.data
+    finally:
+        web_server.WEB_CONFIG.update(original)
