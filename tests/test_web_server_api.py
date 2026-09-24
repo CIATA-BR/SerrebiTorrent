@@ -1219,3 +1219,22 @@ def test_profile_switch_hides_profile_lookup_errors(auth_client):
     assert b"Failed to load profiles." in rv.data
     assert b"secret profile detail" not in rv.data
     mock_app.connect_profile.assert_not_called()
+
+def test_openfolder_reports_async_start(auth_client, monkeypatch):
+    mock_client = MagicMock()
+    mock_client.get_torrent_save_path.return_value = r"C:\Downloads"
+    mock_app = MagicMock()
+    web_server.WEB_CONFIG['client'] = mock_client
+    web_server.WEB_CONFIG['app'] = mock_app
+    call_after = MagicMock()
+    monkeypatch.setattr("wx.CallAfter", call_after)
+
+    rv = auth_client.post(
+        '/api/v2/torrents/openfolder',
+        data={'hashes': 'h1'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 202
+    assert b"Open folder request started." in rv.data
+    call_after.assert_called_once_with(mock_app._open_path, r"C:\Downloads")
