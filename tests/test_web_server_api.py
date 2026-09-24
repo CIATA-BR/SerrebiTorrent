@@ -1161,3 +1161,28 @@ def test_profiles_get_hides_backend_errors(auth_client):
     assert rv.status_code == 500
     assert b"Failed to load profiles." in rv.data
     assert b"secret profile detail" not in rv.data
+
+
+def test_torrents_info_requires_application_context(auth_client):
+    original = web_server.WEB_CONFIG.copy()
+    try:
+        web_server.WEB_CONFIG['app'] = None
+
+        rv = auth_client.get('/api/v2/torrents/info')
+
+        assert rv.status_code == 503
+        assert b"Application context is unavailable." in rv.data
+    finally:
+        web_server.WEB_CONFIG.update(original)
+
+
+def test_torrents_info_hides_snapshot_errors(auth_client):
+    mock_app = MagicMock()
+    mock_app.get_all_torrents_safe.side_effect = RuntimeError("secret snapshot detail")
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.get('/api/v2/torrents/info')
+
+    assert rv.status_code == 500
+    assert b"Failed to load torrent stats." in rv.data
+    assert b"secret snapshot detail" not in rv.data
