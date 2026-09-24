@@ -142,3 +142,76 @@ def test_set_preferences_rolls_back_on_save_failure(tmp_path, monkeypatch):
         raise AssertionError("Expected set_preferences to propagate persistence failure")
 
     assert cm.get_preferences() == before
+
+
+def test_add_profile_rolls_back_on_save_failure(tmp_path, monkeypatch):
+    _configure_paths(tmp_path, monkeypatch)
+    cm = config_manager.ConfigManager()
+    before = cm.get_profiles()
+
+    monkeypatch.setattr(cm, "save_config", lambda: (_ for _ in ()).throw(OSError("disk full")))
+
+    try:
+        cm.add_profile("Remote", "qbittorrent", "http://localhost:8080", "user", "secret")
+    except OSError:
+        pass
+    else:
+        raise AssertionError("Expected add_profile to propagate persistence failure")
+
+    assert cm.get_profiles() == before
+
+
+def test_update_profile_rolls_back_on_save_failure(tmp_path, monkeypatch):
+    _configure_paths(tmp_path, monkeypatch)
+    cm = config_manager.ConfigManager()
+    pid = cm.get_default_profile_id()
+    before = cm.get_profile(pid)
+
+    monkeypatch.setattr(cm, "save_config", lambda: (_ for _ in ()).throw(OSError("disk full")))
+
+    try:
+        cm.update_profile(pid, "Changed", "local", "C:\\Changed", "", "")
+    except OSError:
+        pass
+    else:
+        raise AssertionError("Expected update_profile to propagate persistence failure")
+
+    assert cm.get_profile(pid) == before
+
+
+def test_delete_profile_rolls_back_on_save_failure(tmp_path, monkeypatch):
+    _configure_paths(tmp_path, monkeypatch)
+    cm = config_manager.ConfigManager()
+    pid = cm.add_profile("Remote", "qbittorrent", "http://localhost:8080", "user", "secret")
+    before_profiles = cm.get_profiles()
+    before_default = cm.get_default_profile_id()
+
+    monkeypatch.setattr(cm, "save_config", lambda: (_ for _ in ()).throw(OSError("disk full")))
+
+    try:
+        cm.delete_profile(pid)
+    except OSError:
+        pass
+    else:
+        raise AssertionError("Expected delete_profile to propagate persistence failure")
+
+    assert cm.get_profiles() == before_profiles
+    assert cm.get_default_profile_id() == before_default
+
+
+def test_default_profile_rolls_back_on_save_failure(tmp_path, monkeypatch):
+    _configure_paths(tmp_path, monkeypatch)
+    cm = config_manager.ConfigManager()
+    original = cm.get_default_profile_id()
+    other = cm.add_profile("Remote", "qbittorrent", "http://localhost:8080", "user", "secret")
+
+    monkeypatch.setattr(cm, "save_config", lambda: (_ for _ in ()).throw(OSError("disk full")))
+
+    try:
+        cm.set_default_profile_id(other)
+    except OSError:
+        pass
+    else:
+        raise AssertionError("Expected set_default_profile_id to propagate persistence failure")
+
+    assert cm.get_default_profile_id() == original

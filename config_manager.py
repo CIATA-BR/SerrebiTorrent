@@ -225,37 +225,52 @@ class ConfigManager:
 
         pid = str(uuid.uuid4())
         with self.lock:
-            self.config.setdefault("profiles", {})[pid] = {
-                "name": name,
-                "type": client_type,
-                "url": url,
-                "user": user,
-                "password": password,
-            }
-            _ensure_valid_default_profile(self.config)
-            self.save_config()
+            previous = copy.deepcopy(self.config)
+            try:
+                self.config.setdefault("profiles", {})[pid] = {
+                    "name": name,
+                    "type": client_type,
+                    "url": url,
+                    "user": user,
+                    "password": password,
+                }
+                _ensure_valid_default_profile(self.config)
+                self.save_config()
+            except Exception:
+                self.config = previous
+                raise
         return pid
 
     def update_profile(self, pid: str, name: str, client_type: str, url: str, user: str, password: str) -> None:
         with self.lock:
             if pid in self.get_profiles():
-                self.config["profiles"][pid].update(
-                    {
-                        "name": name,
-                        "type": client_type,
-                        "url": url,
-                        "user": user,
-                        "password": password,
-                    }
-                )
-                self.save_config()
+                previous = copy.deepcopy(self.config)
+                try:
+                    self.config["profiles"][pid].update(
+                        {
+                            "name": name,
+                            "type": client_type,
+                            "url": url,
+                            "user": user,
+                            "password": password,
+                        }
+                    )
+                    self.save_config()
+                except Exception:
+                    self.config = previous
+                    raise
 
     def delete_profile(self, pid: str) -> None:
         with self.lock:
             if pid in self.get_profiles():
-                del self.config["profiles"][pid]
-                _ensure_valid_default_profile(self.config)
-                self.save_config()
+                previous = copy.deepcopy(self.config)
+                try:
+                    del self.config["profiles"][pid]
+                    _ensure_valid_default_profile(self.config)
+                    self.save_config()
+                except Exception:
+                    self.config = previous
+                    raise
 
     def get_default_profile_id(self) -> str:
         with self.lock:
@@ -263,9 +278,14 @@ class ConfigManager:
 
     def set_default_profile_id(self, pid: str) -> None:
         with self.lock:
-            self.config["default_profile"] = pid
-            _ensure_valid_default_profile(self.config)
-            self.save_config()
+            previous = copy.deepcopy(self.config)
+            try:
+                self.config["default_profile"] = pid
+                _ensure_valid_default_profile(self.config)
+                self.save_config()
+            except Exception:
+                self.config = previous
+                raise
 
     def get_profile(self, pid: str):
         with self.lock:
