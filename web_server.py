@@ -606,7 +606,7 @@ def torrents_openfolder():
         wx.CallAfter(app_ref._open_path, path)
     except Exception:
         return "Failed to open download folder.", 500
-    return "Ok."
+    return "Open folder request started.", 202
 
 @app.route('/api/v2/torrents/delete', methods=['POST'])
 @login_required
