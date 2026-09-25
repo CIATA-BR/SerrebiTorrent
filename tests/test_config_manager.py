@@ -246,3 +246,33 @@ def test_corrupt_current_config_is_not_overwritten_by_legacy_fallback(tmp_path, 
     config_path.unlink()
     cm.set_preferences({**cm.get_preferences(), "language": "en"})
     assert json.loads(config_path.read_text(encoding="utf-8"))["preferences"]["language"] == "en"
+
+
+
+def test_write_json_restricts_permissions_on_posix(tmp_path, monkeypatch):
+    import config_manager
+
+    path = tmp_path / "config.json"
+    monkeypatch.setattr(config_manager.os, "name", "posix", raising=False)
+    calls = []
+    monkeypatch.setattr(config_manager.os, "chmod", lambda p, mode: calls.append((p, mode)))
+
+    config_manager._write_json(str(path), {"password": "secret"})
+
+    assert calls == [(str(path), 0o600)]
+
+
+def test_write_json_ignores_chmod_failure_after_successful_replace(tmp_path, monkeypatch):
+    import config_manager
+
+    path = tmp_path / "config.json"
+    monkeypatch.setattr(config_manager.os, "name", "posix", raising=False)
+
+    def fail_chmod(*args, **kwargs):
+        raise OSError("no chmod")
+
+    monkeypatch.setattr(config_manager.os, "chmod", fail_chmod)
+
+    config_manager._write_json(str(path), {"ok": True})
+
+    assert json.loads(path.read_text(encoding="utf-8")) == {"ok": True}

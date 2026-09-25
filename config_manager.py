@@ -39,6 +39,11 @@ def _write_json(path: str, data: Dict[str, Any]) -> None:
             f.flush()
             os.fsync(f.fileno())
         os.replace(tmp, path)
+        if os.name != "nt":
+            try:
+                os.chmod(path, 0o600)
+            except OSError:
+                pass
     finally:
         try:
             if os.path.exists(tmp):
