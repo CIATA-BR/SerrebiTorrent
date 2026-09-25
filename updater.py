@@ -192,6 +192,13 @@ def _validate_download_url(url: str) -> None:
         raise UpdateError("Update download URL must be an HTTPS GitHub release asset.")
 
 
+def _validate_download_response_url(response) -> None:
+    final_url = str(getattr(response, "url", "") or "")
+    if not final_url:
+        raise UpdateError("Update download response is missing its final URL.")
+    _validate_download_url(final_url)
+
+
 def _rate_limit_message(headers: Mapping[str, str]) -> str:
     reset = headers.get("X-RateLimit-Reset")
     if reset and reset.isdigit():
@@ -244,6 +251,7 @@ def _download_manifest_url(url: str) -> Dict[str, Any]:
     except requests.RequestException as exc:
         raise UpdateError(f"Network error while downloading manifest: {exc}") from exc
     try:
+        _validate_download_response_url(response)
         if response.status_code != 200:
             raise UpdateError(f"Failed to download update manifest: {response.status_code}")
         content_length = response.headers.get("Content-Length")
@@ -391,6 +399,7 @@ def download_file(url: str, dest_path: str, progress_cb=None) -> None:
     _validate_download_url(url)
     try:
         with requests.get(url, stream=True, timeout=DOWNLOAD_TIMEOUT) as response:
+            _validate_download_response_url(response)
             if response.status_code != 200:
                 raise UpdateError(f"Download failed: {response.status_code} {response.reason}")
             expected_size = None
