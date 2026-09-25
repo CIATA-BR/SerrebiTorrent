@@ -662,6 +662,11 @@ def test_torrents_files_hides_backend_errors(auth_client):
 
 def test_app_prefs_save_persists_before_success(auth_client, monkeypatch):
     mock_app = MagicMock()
+    mock_app.config_manager.get_preferences.return_value = {
+        'download_path': 'C:/Old',
+        'language': 'pt-BR',
+        'web_ui_pass': 'secret',
+    }
     web_server.WEB_CONFIG['app'] = mock_app
     call_after = MagicMock()
     monkeypatch.setattr("wx.CallAfter", call_after)
@@ -674,7 +679,11 @@ def test_app_prefs_save_persists_before_success(auth_client, monkeypatch):
 
     assert rv.status_code == 200
     mock_app.config_manager.set_preferences.assert_called_once_with(
-        {'download_path': 'C:/Downloads'}
+        {
+            'download_path': 'C:/Downloads',
+            'language': 'pt-BR',
+            'web_ui_pass': 'secret',
+        }
     )
     assert call_after.call_count == 2
     call_after.assert_any_call(mock_app._update_client_default_save_path)
@@ -1412,3 +1421,32 @@ def test_remote_prefs_rejects_null_backend_result(auth_client):
 
     assert rv.status_code == 500
     assert b"Failed to load remote preferences." in rv.data
+
+
+
+def test_app_prefs_partial_save_preserves_unsubmitted_preferences(auth_client, monkeypatch):
+    mock_app = MagicMock()
+    mock_app.config_manager.get_preferences.return_value = {
+        'download_path': 'C:/Old',
+        'language': 'pt-BR',
+        'proxy_host': 'proxy.internal',
+        'proxy_password': 'secret',
+        'torznab_feeds': [{'name': 'Indexer', 'url': 'https://example.com', 'api_key': 'token'}],
+    }
+    web_server.WEB_CONFIG['app'] = mock_app
+    monkeypatch.setattr("wx.CallAfter", MagicMock())
+
+    rv = auth_client.post(
+        '/api/v2/app/prefs',
+        json={'download_path': 'D:/Downloads', 'rss_update_interval': 600},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 200
+    saved = mock_app.config_manager.set_preferences.call_args.args[0]
+    assert saved['download_path'] == 'D:/Downloads'
+    assert saved['rss_update_interval'] == 600
+    assert saved['language'] == 'pt-BR'
+    assert saved['proxy_host'] == 'proxy.internal'
+    assert saved['proxy_password'] == 'secret'
+    assert saved['torznab_feeds'][0]['api_key'] == 'token'
