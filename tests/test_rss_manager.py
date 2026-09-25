@@ -358,3 +358,61 @@ def test_mark_downloaded_restores_evicted_items_when_save_fails(rss_manager):
         rss_manager.mark_downloaded(url, "uid-new")
 
     assert rss_manager.feeds[url]["downloaded"] == original
+
+
+
+def test_load_preserves_corrupt_rss_file(tmp_path, monkeypatch):
+    import rss_manager as rss_module
+
+    rss_path = tmp_path / "rss.json"
+    corrupt = "{broken json"
+    rss_path.write_text(corrupt, encoding="utf-8")
+    monkeypatch.setattr(rss_module, "RSS_FILE", str(rss_path))
+
+    manager = RSSManager()
+
+    assert manager.feeds == {}
+    assert manager.rules == []
+    assert rss_path.read_text(encoding="utf-8") == corrupt
+    assert (tmp_path / "rss.json.corrupt").read_text(encoding="utf-8") == corrupt
+
+
+def test_load_rejects_invalid_rss_structure(tmp_path, monkeypatch):
+    import rss_manager as rss_module
+
+    rss_path = tmp_path / "rss.json"
+    rss_path.write_text(
+        json.dumps({"feeds": [], "rules": {}}),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(rss_module, "RSS_FILE", str(rss_path))
+
+    manager = RSSManager()
+
+    assert manager.feeds == {}
+    assert manager.rules == []
+    assert (tmp_path / "rss.json.corrupt").exists()
+
+
+def test_load_reads_utf8_rss_aliases(tmp_path, monkeypatch):
+    import rss_manager as rss_module
+
+    rss_path = tmp_path / "rss.json"
+    rss_path.write_text(
+        json.dumps({
+            "feeds": {
+                "https://example.com/feed.xml": {
+                    "alias": "Notícias",
+                    "last_update": 0,
+                    "articles": [],
+                }
+            },
+            "rules": [],
+        }, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(rss_module, "RSS_FILE", str(rss_path))
+
+    manager = RSSManager()
+
+    assert manager.feeds["https://example.com/feed.xml"]["alias"] == "Notícias"
