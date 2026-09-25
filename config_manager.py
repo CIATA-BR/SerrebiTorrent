@@ -123,6 +123,7 @@ def _ensure_valid_default_profile(cfg: Dict[str, Any]) -> None:
 class ConfigManager:
     def __init__(self) -> None:
         self.lock = threading.RLock()
+        self._current_config_unreadable = False
         self.config: Dict[str, Any] = self.load_config()
 
     def _normalize(self, cfg: Dict[str, Any]) -> Dict[str, Any]:
@@ -152,6 +153,7 @@ class ConfigManager:
             except Exception:
                 cfg = None  # Fallback
                 current_config_unreadable = True
+                self._current_config_unreadable = True
 
         # Migrate legacy config.json if present and no new config
         if not cfg and os.path.exists(LEGACY_CONFIG_FILE):
@@ -205,7 +207,10 @@ class ConfigManager:
 
     def save_config(self) -> None:
         with self.lock:
+            if self._current_config_unreadable and os.path.exists(CONFIG_FILE):
+                raise OSError("The existing config is unreadable; repair or move it before saving settings.")
             _write_json(CONFIG_FILE, self.config)
+            self._current_config_unreadable = False
 
     def get_preferences(self) -> Dict[str, Any]:
         with self.lock:

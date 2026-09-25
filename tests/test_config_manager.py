@@ -1,4 +1,5 @@
 import json
+import pytest
 
 import config_manager
 
@@ -236,3 +237,12 @@ def test_corrupt_current_config_is_not_overwritten_by_legacy_fallback(tmp_path, 
 
     assert cm.get_preferences()["download_path"] == "C:\\Legacy"
     assert config_path.read_text(encoding="utf-8") == corrupt
+
+    # A later preference change must not silently replace the damaged file.
+    with pytest.raises(OSError, match="unreadable"):
+        cm.set_preferences({**cm.get_preferences(), "language": "en"})
+    assert config_path.read_text(encoding="utf-8") == corrupt
+
+    config_path.unlink()
+    cm.set_preferences({**cm.get_preferences(), "language": "en"})
+    assert json.loads(config_path.read_text(encoding="utf-8"))["preferences"]["language"] == "en"
