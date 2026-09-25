@@ -1,4 +1,5 @@
 import json
+import pytest
 
 import config_manager
 
@@ -13,12 +14,14 @@ def _configure_paths(tmp_path, monkeypatch):
 
 def test_load_config_handles_corrupt_json(tmp_path, monkeypatch):
     config_path, _ = _configure_paths(tmp_path, monkeypatch)
-    config_path.write_text("{bad json", encoding="utf-8")
+    corrupt = "{bad json"
+    config_path.write_text(corrupt, encoding="utf-8")
     cm = config_manager.ConfigManager()
     prefs = cm.get_preferences()
     assert "download_path" in prefs
     assert prefs["language"] == "system"
     assert cm.get_profiles()
+    assert config_path.read_text(encoding="utf-8") == corrupt
 
 
 def test_load_config_migrates_legacy(tmp_path, monkeypatch):
@@ -215,3 +218,31 @@ def test_default_profile_rolls_back_on_save_failure(tmp_path, monkeypatch):
         raise AssertionError("Expected set_default_profile_id to propagate persistence failure")
 
     assert cm.get_default_profile_id() == original
+
+
+
+def test_corrupt_current_config_is_not_overwritten_by_legacy_fallback(tmp_path, monkeypatch):
+    config_path, legacy_path = _configure_paths(tmp_path, monkeypatch)
+    corrupt = "{broken current"
+    config_path.write_text(corrupt, encoding="utf-8")
+    legacy_path.write_text(
+        json.dumps({
+            "preferences": {"download_path": "C:\\Legacy"},
+            "profiles": {},
+        }),
+        encoding="utf-8",
+    )
+
+    cm = config_manager.ConfigManager()
+
+    assert cm.get_preferences()["download_path"] == "C:\\Legacy"
+    assert config_path.read_text(encoding="utf-8") == corrupt
+
+    # A later preference change must not silently replace the damaged file.
+    with pytest.raises(OSError, match="unreadable"):
+        cm.set_preferences({**cm.get_preferences(), "language": "en"})
+    assert config_path.read_text(encoding="utf-8") == corrupt
+
+    config_path.unlink()
+    cm.set_preferences({**cm.get_preferences(), "language": "en"})
+    assert json.loads(config_path.read_text(encoding="utf-8"))["preferences"]["language"] == "en"
