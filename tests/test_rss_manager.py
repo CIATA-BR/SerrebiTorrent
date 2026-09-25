@@ -268,3 +268,26 @@ tasks:
         rss_manager.import_flexget_config(str(config_path))
 
     assert mock_config.add_profile.call_count == 1
+
+
+
+def test_reset_all_rolls_back_when_save_fails(rss_manager):
+    rss_manager.feeds = {
+        "https://example.com/feed.xml": {
+            "alias": "Example",
+            "last_update": 0,
+            "articles": [],
+        }
+    }
+    rss_manager.rules = [
+        {"pattern": "ubuntu", "enabled": True, "type": "accept", "scope": None}
+    ]
+    before_feeds = rss_manager.feeds
+    before_rules = rss_manager.rules
+    rss_manager.save.return_value = False
+
+    with pytest.raises(OSError, match="Failed to save reset RSS data"):
+        rss_manager.reset_all()
+
+    assert rss_manager.feeds is before_feeds
+    assert rss_manager.rules is before_rules
