@@ -49,6 +49,10 @@ def get_user_data_base_dir() -> str:
             return base
 
     if sys.platform == "darwin":
+        # Builds before 1.21.7 stored data under ~/.local/share; keep using it if present.
+        legacy = os.path.join(os.path.expanduser("~"), ".local", "share")
+        if os.path.isdir(os.path.join(legacy, APP_DIR_NAME)):
+            return legacy
         return os.path.join(os.path.expanduser("~"), "Library", "Application Support")
 
     xdg = os.environ.get("XDG_DATA_HOME")
