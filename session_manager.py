@@ -149,10 +149,11 @@ def _listen_port(value, default=6881):
 
 
 def _flush_resume_flag():
-    try:
-        return lt.save_resume_flags_t.flush_disk_cache
-    except AttributeError:
-        return lt.resume_data_flags_t.flush_disk_cache
+    # save_info_dict keeps the metadata in the .resume file; without it a
+    # restarted torrent has to refetch it from peers, and one with no peers
+    # sits at 0% forever while force_recheck silently does nothing (#83).
+    flags = getattr(lt, "save_resume_flags_t", None) or lt.resume_data_flags_t
+    return flags.flush_disk_cache | getattr(flags, "save_info_dict", 0)
 
 
 def _write_resume_data_bytes(params):
@@ -495,8 +496,12 @@ class SessionManager:
                         elif isinstance(alert, lt.save_resume_data_failed_alert):
                             self._handle_save_resume_failed(alert)
                         elif isinstance(alert, lt.metadata_received_alert):
-                            # ... handle metadata ...
-                            pass
+                            # Persist the new metadata now so a restart does
+                            # not have to fetch it from peers again.
+                            try:
+                                alert.handle.save_resume_data(_flush_resume_flag())
+                            except Exception as e:
+                                print(f"Error saving resume data after metadata: {e}")
                 self._maybe_autosave()
             except Exception as e:
                 print(f"Session alert loop error: {e}")
@@ -741,6 +746,12 @@ class SessionManager:
                                 params.save_path = stored_path
                         elif not params.save_path:
                              params.save_path = default_save_path
+                        # Resume files written before #83 lack the metadata;
+                        # take it from the .torrent kept next to them.
+                        if params.ti is None:
+                            torrent_file_path = os.path.join(self.state_dir, ih_from_resume + '.torrent')
+                            if os.path.exists(torrent_file_path):
+                                params.ti = lt.torrent_info(torrent_file_path)
 
                         self.ses.add_torrent(params)
                         loaded_hashes.update(resume_keys)
@@ -872,7 +883,7 @@ class SessionManager:
                 if callable(need_resume) and not need_resume():
                     continue
                 try:
-                    h.save_resume_data()
+                    h.save_resume_data(_flush_resume_flag())
                 except Exception as e:
                     print(f"Error requesting resume data for {ih}: {e}")
                     continue

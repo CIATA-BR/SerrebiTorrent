@@ -988,6 +988,42 @@ class TestIntegrationDetailTabs:
             params = env.lt.read_resume_data(fp.read())
         assert env.sm._info_hash_key(params.info_hashes) == env.v1
 
+    def test_resume_data_keeps_metadata_across_restart(self, local_torrent_env):
+        """Issue #83: .resume files lacked the info dict, so a restarted
+        torrent with no peers never got metadata and Force Recheck did nothing."""
+        from session_manager import _flush_resume_flag, _handle_has_metadata
+
+        env = local_torrent_env
+        env.sm._find_handle(env.v1).save_resume_data(_flush_resume_flag())
+        resume_path = os.path.join(env.state_dir, env.v1 + ".resume")
+        deadline = time.time() + 8
+        while time.time() < deadline and not os.path.exists(resume_path):
+            time.sleep(0.2)
+        with open(resume_path, "rb") as fp:
+            params = env.lt.read_resume_data(fp.read())
+        assert params.ti is not None
+
+        # A resume file written by an older build (no info dict) must still
+        # load with metadata from the .torrent kept in the state dir.
+        params.ti = None
+        with open(resume_path, "wb") as fp:
+            fp.write(env.lt.write_resume_data_buf(params))
+        env.sm.ses.remove_torrent(env.sm._find_handle(env.v1))
+        deadline = time.time() + 3
+        while time.time() < deadline and env.sm._find_handle(env.v1):
+            time.sleep(0.1)
+        env.sm.load_state()
+        handle = env.sm._find_handle(env.v1)
+        assert handle is not None and _handle_has_metadata(handle)
+        env.client.recheck_torrent(env.v1)
+
+    def test_recheck_without_metadata_reports_why(self, local_torrent_env):
+        env = local_torrent_env
+        fake_hash = "e" * 40
+        env.sm.add_magnet(f"magnet:?xt=urn:btih:{fake_hash}", env.download_dir)
+        with pytest.raises(RuntimeError, match="metadata"):
+            env.client.recheck_torrent(fake_hash)
+
     def test_magnet_without_metadata_reports_no_metadata(self, local_torrent_env):
         from session_manager import _handle_has_metadata
 

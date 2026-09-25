@@ -1227,7 +1227,11 @@ class LocalClient(BaseClient):
     def _gh(self, i):
         return self.m._find_handle(i)
     def recheck_torrent(self, h):
-        self._require_handle(h).force_recheck()
+        x = self._require_handle(h)
+        if not _handle_has_metadata(x):
+            # libtorrent ignores force_recheck without metadata; say so.
+            raise RuntimeError("Torrent metadata has not been received from peers yet, so its files cannot be checked.")
+        x.force_recheck()
     def reannounce_torrent(self, h):
         self._require_handle(h).force_reannounce()
     def get_torrent_save_path(self, h):
