@@ -204,7 +204,8 @@ class ConnectDialog(wx.Dialog):
 
     def _run_config_change(self, callback):
         try:
-            return callback()
+            result = callback()
+            return True if result is None else result
         except Exception as exc:
             wx.MessageBox(
                 str(exc),
