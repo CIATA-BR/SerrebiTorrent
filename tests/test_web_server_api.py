@@ -1491,3 +1491,19 @@ def test_web_secret_rotation_keeps_existing_key_if_atomic_replace_fails(tmp_path
     assert key != compromised
     assert key_path.read_bytes() == compromised
     assert list(tmp_path.glob('web_secret.key.*.tmp')) == []
+
+
+
+def test_web_secret_restricts_permissions_on_posix(tmp_path, monkeypatch):
+    import app_paths
+
+    monkeypatch.setattr(app_paths, 'get_data_dir', lambda: str(tmp_path))
+    monkeypatch.setattr(web_server.os, 'name', 'posix', raising=False)
+    calls = []
+    monkeypatch.setattr(web_server.os, 'chmod', lambda p, mode: calls.append((p, mode)))
+
+    key = web_server._load_or_create_secret_key()
+    key_path = tmp_path / 'web_secret.key'
+
+    assert key_path.read_bytes() == key
+    assert calls == [(str(key_path), 0o600)]
