@@ -254,10 +254,12 @@ def test_write_json_restricts_permissions_on_posix(tmp_path, monkeypatch):
 
     path = tmp_path / "config.json"
     monkeypatch.setattr(config_manager.os, "name", "posix", raising=False)
+    calls = []
+    monkeypatch.setattr(config_manager.os, "chmod", lambda p, mode: calls.append((p, mode)))
 
     config_manager._write_json(str(path), {"password": "secret"})
 
-    assert path.stat().st_mode & 0o777 == 0o600
+    assert calls == [(str(path), 0o600)]
 
 
 def test_write_json_ignores_chmod_failure_after_successful_replace(tmp_path, monkeypatch):
