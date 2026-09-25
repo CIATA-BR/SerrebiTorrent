@@ -1499,9 +1499,11 @@ def test_web_secret_restricts_permissions_on_posix(tmp_path, monkeypatch):
 
     monkeypatch.setattr(app_paths, 'get_data_dir', lambda: str(tmp_path))
     monkeypatch.setattr(web_server.os, 'name', 'posix', raising=False)
+    calls = []
+    monkeypatch.setattr(web_server.os, 'chmod', lambda p, mode: calls.append((p, mode)))
 
     key = web_server._load_or_create_secret_key()
     key_path = tmp_path / 'web_secret.key'
 
     assert key_path.read_bytes() == key
-    assert key_path.stat().st_mode & 0o777 == 0o600
+    assert calls == [(str(key_path), 0o600)]
