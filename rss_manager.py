@@ -1,6 +1,7 @@
 import json
 import os
 import re
+import shutil
 import threading
 from urllib.parse import urljoin, urlparse
 from defusedxml import ElementTree as ET
@@ -54,12 +55,24 @@ class RSSManager:
         with self.lock:
             if os.path.exists(RSS_FILE):
                 try:
-                    with open(RSS_FILE, 'r') as f:
+                    with open(RSS_FILE, 'r', encoding='utf-8') as f:
                         data = json.load(f)
-                        self.feeds = data.get('feeds', {})
-                        self.rules = data.get('rules', [])
-                except Exception:
-                    return
+                    if not isinstance(data, dict):
+                        raise ValueError("rss.json root must be an object")
+                    feeds = data.get('feeds', {})
+                    rules = data.get('rules', [])
+                    if not isinstance(feeds, dict) or not isinstance(rules, list):
+                        raise ValueError("rss.json has invalid feeds or rules")
+                    self.feeds = feeds
+                    self.rules = rules
+                except Exception as exc:
+                    print(f"Failed to load RSS data: {exc}")
+                    backup = RSS_FILE + ".corrupt"
+                    try:
+                        shutil.copy2(RSS_FILE, backup)
+                        print(f"Preserved unreadable rss.json as {backup}")
+                    except OSError as backup_error:
+                        print(f"Could not preserve unreadable rss.json: {backup_error}")
 
     def save(self):
         with self.lock:
