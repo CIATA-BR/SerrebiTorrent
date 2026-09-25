@@ -320,3 +320,41 @@ def test_add_feed_normalizes_surrounding_whitespace(rss_manager):
     assert rss_manager.add_feed("  https://example.com/feed.xml  ", "Example") is True
 
     assert "https://example.com/feed.xml" in rss_manager.feeds
+
+
+
+def test_mark_downloaded_rolls_back_when_save_fails(rss_manager):
+    url = "https://example.com/feed.xml"
+    rss_manager.feeds = {
+        url: {
+            "alias": "Example",
+            "last_update": 0,
+            "articles": [],
+            "downloaded": ["existing"],
+        }
+    }
+    rss_manager.save.return_value = False
+
+    with pytest.raises(OSError, match="Failed to save RSS download history"):
+        rss_manager.mark_downloaded(url, "new-item")
+
+    assert rss_manager.feeds[url]["downloaded"] == ["existing"]
+
+
+def test_mark_downloaded_restores_evicted_items_when_save_fails(rss_manager):
+    url = "https://example.com/feed.xml"
+    original = [f"uid-{i}" for i in range(1000)]
+    rss_manager.feeds = {
+        url: {
+            "alias": "Example",
+            "last_update": 0,
+            "articles": [],
+            "downloaded": list(original),
+        }
+    }
+    rss_manager.save.return_value = False
+
+    with pytest.raises(OSError):
+        rss_manager.mark_downloaded(url, "uid-new")
+
+    assert rss_manager.feeds[url]["downloaded"] == original
