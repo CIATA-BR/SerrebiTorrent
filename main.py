@@ -2520,8 +2520,10 @@ class RulesManagerDialog(wx.Dialog):
         sel = self.list.GetFirstSelected()
         if sel != -1:
             rule = self.manager.rules[sel]
-            rule['enabled'] = not rule.get('enabled', True)
-            self.manager.save()
+            enabled = not rule.get('enabled', True)
+            if not self.manager.update_rule(sel, {'enabled': enabled}):
+                wx.MessageBox("Failed to save RSS rule.", "Error", wx.OK | wx.ICON_ERROR)
+                return
             self.refresh_list()
 
 class RSSPanel(wx.Panel):
