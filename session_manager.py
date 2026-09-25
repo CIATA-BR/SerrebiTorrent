@@ -442,7 +442,7 @@ class SessionManager:
             'enable_natpmp': prefs.get('enable_natpmp', True),
             'listen_interfaces': f'0.0.0.0:{port},[::]:{port}',
             'max_retry_port_bind': 10,
-            'alert_mask': lt.alert.category_t.status_notification | lt.alert.category_t.storage_notification | lt.alert.category_t.error_notification,
+            'alert_mask': lt.alert.category_t.status_notification | lt.alert.category_t.storage_notification | lt.alert.category_t.error_notification | lt.alert.category_t.port_mapping_notification,
             
             # Limits
             'connections_limit': prefs.get('max_connections', -1),
@@ -513,6 +513,7 @@ class SessionManager:
         if kind not in {
             "file_error_alert", "torrent_error_alert", "fastresume_rejected_alert",
             "save_resume_data_failed_alert", "torrent_checked_alert", "state_changed_alert",
+            "portmap_alert", "portmap_error_alert", "listen_failed_alert", "listen_succeeded_alert",
         }:
             return
         logger = logging.getLogger("SerrebiTorrent.session")
