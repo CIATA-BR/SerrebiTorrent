@@ -432,3 +432,22 @@ def test_an_unknown_source_name_is_ignored():
 
     assert asked == []
     assert items == []
+
+
+
+def test_feeds_rejects_non_object_preferences():
+    import torrent_search
+
+    assert torrent_search.feeds([]) == []
+    assert torrent_search.feeds("broken") == []
+
+
+def test_blinddl_feeds_returns_empty_for_non_object_config(tmp_path, monkeypatch):
+    import json
+    import torrent_search
+
+    config_path = tmp_path / "config.json"
+    config_path.write_text(json.dumps(["unexpected"]), encoding="utf-8")
+    monkeypatch.setattr(torrent_search, "blinddl_config_path", lambda: str(config_path))
+
+    assert torrent_search.blinddl_feeds() == []
