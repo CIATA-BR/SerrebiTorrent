@@ -44,6 +44,11 @@ def _load_or_create_secret_key():
                 f.flush()
                 os.fsync(f.fileno())
             os.replace(tmp, key_path)
+            if os.name != "nt":
+                try:
+                    os.chmod(key_path, 0o600)
+                except OSError:
+                    pass
         except OSError:
             try:
                 if os.path.exists(tmp):
