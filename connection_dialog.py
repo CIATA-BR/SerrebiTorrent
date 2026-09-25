@@ -202,13 +202,28 @@ class ConnectDialog(wx.Dialog):
         finally:
             dlg.Destroy()
 
+    def _run_config_change(self, callback):
+        try:
+            return callback()
+        except Exception as exc:
+            wx.MessageBox(
+                str(exc),
+                "SerrebiTorrent",
+                wx.OK | wx.ICON_ERROR,
+                self,
+            )
+            return None
+
     def on_add(self, event):
         data = self._show_profile_dialog()
         if data:
-            pid = self.cm.add_profile(
-                data["name"], data["type"], data["url"], data["user"], data["password"]
+            pid = self._run_config_change(
+                lambda: self.cm.add_profile(
+                    data["name"], data["type"], data["url"], data["user"], data["password"]
+                )
             )
-            self.refresh_list(select_pid=pid)
+            if pid:
+                self.refresh_list(select_pid=pid)
 
     def on_edit(self, event):
         pid = self.get_selected_id()
@@ -216,15 +231,18 @@ class ConnectDialog(wx.Dialog):
             return
         data = self._show_profile_dialog(self.cm.get_profile(pid))
         if data:
-            self.cm.update_profile(
-                pid,
-                data["name"],
-                data["type"],
-                data["url"],
-                data["user"],
-                data["password"],
+            changed = self._run_config_change(
+                lambda: self.cm.update_profile(
+                    pid,
+                    data["name"],
+                    data["type"],
+                    data["url"],
+                    data["user"],
+                    data["password"],
+                )
             )
-            self.refresh_list(select_pid=pid)
+            if changed is not None:
+                self.refresh_list(select_pid=pid)
 
     def on_delete(self, event):
         pid = self.get_selected_id()
@@ -234,14 +252,14 @@ class ConnectDialog(wx.Dialog):
             wx.YES_NO | wx.ICON_WARNING,
             self,
         ) == wx.YES:
-            self.cm.delete_profile(pid)
-            self.refresh_list()
+            if self._run_config_change(lambda: self.cm.delete_profile(pid)) is not None:
+                self.refresh_list()
 
     def on_set_default(self, event):
         pid = self.get_selected_id()
         if pid:
-            self.cm.set_default_profile_id(pid)
-            self.refresh_list(select_pid=pid)
+            if self._run_config_change(lambda: self.cm.set_default_profile_id(pid)) is not None:
+                self.refresh_list(select_pid=pid)
 
     def on_connect(self, event):
         self.selected_profile_id = self.get_selected_id()
