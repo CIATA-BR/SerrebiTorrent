@@ -798,6 +798,24 @@ def test_rss_add_feed_rejects_duplicate(auth_client):
     assert b"RSS feed already exists." in rv.data
 
 
+def test_rss_add_feed_rejects_invalid_url(auth_client):
+    manager = MagicMock()
+    manager.feeds = {}
+    manager.add_feed.side_effect = ValueError("RSS feed URL must use http or https and include a host")
+    mock_app = MagicMock()
+    mock_app.rss_panel.manager = manager
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/rss/add_feed',
+        data={'url': 'file:///C:/feed.xml'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 400
+    assert b"RSS feed URL must use http or https" in rv.data
+
+
 def test_rss_remove_feed_reports_persistence_failure(auth_client):
     url = 'https://example.com/feed.xml'
     manager = MagicMock()

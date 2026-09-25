@@ -233,8 +233,17 @@ class LocalizedRSSPanel(legacy.RSSPanel):
         )
         try:
             if dlg.ShowModal() == wx.ID_OK:
-                url = dlg.GetValue()
-                if self.manager.add_feed(url):
+                url = dlg.GetValue().strip()
+                try:
+                    added = self.manager.add_feed(url)
+                except ValueError as exc:
+                    wx.MessageBox(
+                        tr_rss("Error adding URL: {error}", language).format(error=exc),
+                        tr_rss("Error", language),
+                        wx.OK | wx.ICON_ERROR,
+                    )
+                    return
+                if added:
                     self.refresh_feeds_list()
                     self._submit_feed_update(url)
         finally:

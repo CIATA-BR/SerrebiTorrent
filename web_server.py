@@ -734,7 +734,11 @@ def rss_add_feed():
         return "Application context is unavailable.", 503
     if not url:
         return "RSS feed URL is required.", 400
-    if not app_ref.rss_panel.manager.add_feed(url, alias):
+    try:
+        added = app_ref.rss_panel.manager.add_feed(url, alias)
+    except ValueError:
+        return "RSS feed URL must use http or https and include a host.", 400
+    if not added:
         if url in app_ref.rss_panel.manager.feeds:
             return "RSS feed already exists.", 409
         return "Failed to save RSS feed.", 500
