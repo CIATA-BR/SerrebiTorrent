@@ -34,3 +34,16 @@ def test_connection_dialog_strings_have_pt_br_translations():
     )
     for source in source_strings:
         assert i18n.translate(source, "pt-BR") != source
+
+
+
+def test_connection_manager_wraps_profile_mutations_in_ui_error_boundary():
+    from pathlib import Path
+
+    source = Path("connection_dialog.py").read_text(encoding="utf-8")
+    assert "def _run_config_change" in source
+    assert "self.cm.add_profile(" in source
+    assert "self.cm.update_profile(" in source
+    assert "self.cm.delete_profile(pid)" in source
+    assert "self.cm.set_default_profile_id(pid)" in source
+    assert source.count("_run_config_change(") >= 5
