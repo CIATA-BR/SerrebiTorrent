@@ -48,6 +48,9 @@ def get_user_data_base_dir() -> str:
         if base:
             return base
 
+    if sys.platform == "darwin":
+        return os.path.join(os.path.expanduser("~"), "Library", "Application Support")
+
     xdg = os.environ.get("XDG_DATA_HOME")
     if xdg:
         return xdg
