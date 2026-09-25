@@ -5,6 +5,7 @@ import threading
 import time
 import json
 import logging
+import shutil
 from logging.handlers import RotatingFileHandler
 
 from libtorrent_env import prepare_libtorrent_dlls
@@ -246,9 +247,18 @@ class SessionManager:
         if os.path.exists(self.torrents_db_path):
             try:
                 with open(self.torrents_db_path, 'r', encoding='utf-8') as f:
-                    return json.load(f)
+                    data = json.load(f)
+                if not isinstance(data, dict):
+                    raise ValueError("torrents.json root must be an object")
+                return data
             except Exception as e:
                 print(f"Error loading torrents.json: {e}")
+                backup = self.torrents_db_path + ".corrupt"
+                try:
+                    shutil.copy2(self.torrents_db_path, backup)
+                    print(f"Preserved unreadable torrents.json as {backup}")
+                except OSError as backup_error:
+                    print(f"Could not preserve unreadable torrents.json: {backup_error}")
         return {}
 
     def _save_torrents_db(self):

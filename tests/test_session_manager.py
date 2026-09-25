@@ -366,3 +366,32 @@ def test_get_status_falls_back_to_summed_rates_without_session_status(session_ma
 
     assert status.payload_download_rate == 2000
     assert status.payload_upload_rate == 1000
+
+
+
+def test_load_torrents_db_preserves_corrupt_file(tmp_path):
+    from session_manager import SessionManager
+
+    db_path = tmp_path / "torrents.json"
+    corrupt = "{broken json"
+    db_path.write_text(corrupt, encoding="utf-8")
+
+    manager = SessionManager.__new__(SessionManager)
+    manager.torrents_db_path = str(db_path)
+
+    assert manager._load_torrents_db() == {}
+    assert db_path.read_text(encoding="utf-8") == corrupt
+    assert (tmp_path / "torrents.json.corrupt").read_text(encoding="utf-8") == corrupt
+
+
+def test_load_torrents_db_rejects_non_object_root(tmp_path):
+    from session_manager import SessionManager
+
+    db_path = tmp_path / "torrents.json"
+    db_path.write_text('["unexpected"]', encoding="utf-8")
+
+    manager = SessionManager.__new__(SessionManager)
+    manager.torrents_db_path = str(db_path)
+
+    assert manager._load_torrents_db() == {}
+    assert (tmp_path / "torrents.json.corrupt").read_text(encoding="utf-8") == '["unexpected"]'
