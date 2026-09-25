@@ -195,9 +195,11 @@ def feeds(prefs):
     Anything without both a name and a URL is skipped rather than searched:
     a half-filled row would otherwise fail on every search.
     """
+    if not isinstance(prefs, dict):
+        return []
     rows = []
     seen = set()
-    for entry in (prefs or {}).get("torznab_feeds") or ():
+    for entry in prefs.get("torznab_feeds") or ():
         if not isinstance(entry, dict):
             continue
         name = str(entry.get("name") or "").strip()
