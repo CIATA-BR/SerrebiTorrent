@@ -37,11 +37,19 @@ def _load_or_create_secret_key():
             if len(data) >= 16 and hashlib.sha256(data).hexdigest() != _COMPROMISED_SECRET_KEY_SHA256:
                 return data
         key = os.urandom(32)
+        tmp = f"{key_path}.{os.getpid()}.tmp"
         try:
-            with open(key_path, 'wb') as f:
+            with open(tmp, 'wb') as f:
                 f.write(key)
+                f.flush()
+                os.fsync(f.fileno())
+            os.replace(tmp, key_path)
         except OSError:
-            pass
+            try:
+                if os.path.exists(tmp):
+                    os.remove(tmp)
+            except OSError:
+                pass
         return key
     except Exception:
         return os.urandom(32)
