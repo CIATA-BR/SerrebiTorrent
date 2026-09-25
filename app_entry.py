@@ -54,12 +54,16 @@ class LocalizedMainFrame(legacy.MainFrame):
         self.watch_timer.Start(watch_folder.SCAN_INTERVAL_SECONDS * 1000)
 
     def on_watch_timer(self, event):
-        folder = str(self.config_manager.get_preferences().get("watch_folder") or "").strip()
+        folder = watch_folder.clean_folder_path(self.config_manager.get_preferences().get("watch_folder"))
         if not folder or not self.client or self._watch_scan_busy or self._closing:
             return
         self._watch_scan_busy = True
-        self.thread_pool.submit(
-            self._watch_scan_background, self.client, self.client_generation, folder)
+        try:
+            self.thread_pool.submit(
+                self._watch_scan_background, self.client, self.client_generation, folder)
+        except RuntimeError:
+            # A busy flag left set here would stop every later scan.
+            self._watch_scan_busy = False
 
     def _watch_scan_background(self, client, generation, folder):
         hashes = []
