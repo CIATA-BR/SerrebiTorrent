@@ -1468,3 +1468,26 @@ def test_app_prefs_partial_save_preserves_unsubmitted_preferences(auth_client, m
     assert saved['proxy_host'] == 'proxy.internal'
     assert saved['proxy_password'] == 'secret'
     assert saved['torznab_feeds'][0]['api_key'] == 'token'
+
+
+
+def test_web_secret_rotation_keeps_existing_key_if_atomic_replace_fails(tmp_path, monkeypatch):
+    import app_paths
+
+    key_path = tmp_path / 'web_secret.key'
+    compromised = b'published session key'
+    key_path.write_bytes(compromised)
+    monkeypatch.setattr(app_paths, 'get_data_dir', lambda: str(tmp_path))
+    monkeypatch.setattr(
+        web_server,
+        '_COMPROMISED_SECRET_KEY_SHA256',
+        hashlib.sha256(compromised).hexdigest(),
+    )
+    monkeypatch.setattr(web_server.os, 'replace', MagicMock(side_effect=OSError('disk full')))
+
+    key = web_server._load_or_create_secret_key()
+
+    assert len(key) == 32
+    assert key != compromised
+    assert key_path.read_bytes() == compromised
+    assert list(tmp_path.glob('web_secret.key.*.tmp')) == []
