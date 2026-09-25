@@ -165,7 +165,10 @@ class TorrentSearchDialog(wx.Dialog):
             return
         if not added:
             return
-        self.config_manager.set_preferences(prefs)
+        try:
+            self.config_manager.set_preferences(prefs)
+        except Exception:  # noqa: BLE001 - optional import must not break the dialog
+            return
         names = ", ".join(feed["name"] for feed in added)
         key = "Added your blindDL indexer: {names}." if len(added) == 1 else "Added your blindDL indexers: {names}."
         self._say(_fmt(self._, key, names=names))
