@@ -878,7 +878,9 @@ def set_app_prefs():
         return "Preferences object is required.", 400
 
     try:
-        app_ref.config_manager.set_preferences(new_prefs)
+        prefs = app_ref.config_manager.get_preferences()
+        prefs.update(new_prefs)
+        app_ref.config_manager.set_preferences(prefs)
     except Exception:
         return "Failed to save settings.", 500
 
