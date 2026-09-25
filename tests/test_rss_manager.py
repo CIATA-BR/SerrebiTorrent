@@ -291,3 +291,32 @@ def test_reset_all_rolls_back_when_save_fails(rss_manager):
 
     assert rss_manager.feeds is before_feeds
     assert rss_manager.rules is before_rules
+
+
+
+@pytest.mark.parametrize(
+    "url",
+    [
+        "file:///C:/secret.xml",
+        "ftp://example.com/feed.xml",
+        "https:///missing-host.xml",
+        "not-a-url",
+        "",
+    ],
+)
+def test_add_feed_rejects_invalid_urls(rss_manager, url):
+    rss_manager.save.return_value = True
+
+    with pytest.raises(ValueError, match="RSS feed URL"):
+        rss_manager.add_feed(url, "Invalid")
+
+    assert rss_manager.feeds == {}
+    rss_manager.save.assert_not_called()
+
+
+def test_add_feed_normalizes_surrounding_whitespace(rss_manager):
+    rss_manager.save.return_value = True
+
+    assert rss_manager.add_feed("  https://example.com/feed.xml  ", "Example") is True
+
+    assert "https://example.com/feed.xml" in rss_manager.feeds
