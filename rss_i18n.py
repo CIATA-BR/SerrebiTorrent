@@ -29,6 +29,7 @@ _PT_BR = {
     "YAML files (*.yml;*.yaml)|*.yml;*.yaml": "Arquivos YAML (*.yml;*.yaml)|*.yml;*.yaml",
     "Imported {feeds} feeds and {rules} rules.": "Importados {feeds} feeds e {rules} regras.",
     "Import Complete": "Importação concluída",
+    "Failed to save RSS rule.": "Falha ao salvar a regra RSS.",
     "Import Failed: {error}": "Falha na importação: {error}",
     "Auto-added from RSS: {title}": "Adicionado automaticamente do RSS: {title}",
     "Adding torrent: {title}...": "Adicionando torrent: {title}...",
@@ -174,6 +175,13 @@ class LocalizedRulesManagerDialog(legacy.RulesManagerDialog):
                 if source in {"Add Rule", "Edit Rule", "Delete", "Toggle", "Close"}:
                     child.SetLabel(tr_rss(source, self._rss_language))
         self.refresh_list()
+
+    def _report_rule_save_failure(self):
+        wx.MessageBox(
+            tr_rss("Failed to save RSS rule.", self._rss_language),
+            tr_rss("Error", self._rss_language),
+            wx.OK | wx.ICON_ERROR,
+        )
 
     def refresh_list(self):
         self.list.DeleteAllItems()

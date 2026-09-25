@@ -1894,3 +1894,6 @@ msgstr "Überwachter Ordner: {added} hinzugefügt, {failed} fehlgeschlagen ({nam
 
 msgid "Watch folder: added {count} torrent(s)"
 msgstr "Überwachter Ordner: {count} Torrent(s) hinzugefügt"
+
+msgid "Failed to save RSS rule."
+msgstr "RSS-Regel konnte nicht gespeichert werden."

@@ -235,6 +235,7 @@
     "Failed to register associations: {error}": "Nem sikerült regisztrálni a társításokat: {error}",
     "Failed to retrieve preferences from remote client.": "Nem sikerült lekérni a beállításokat a távoli klienstől.",
     "Failed to retrieve preferences from remote client. The client might not support this feature or there is a connection issue.": "Nem sikerült lekérni a beállításokat a távoli klienstől. Lehet, hogy a kliens nem támogatja ezt a funkciót, vagy kapcsolati probléma van.",
+    "Failed to save RSS rule.": "Nem sikerült menteni az RSS-szabályt.",
     "Failed to update remote preferences: {error}": "Nem sikerült frissíteni a távoli beállításokat: {error}",
     "Failed to {action} torrent(s).": "A(z) {action} művelet nem sikerült a torrent(ek)en.",
     "Failed to {action} torrent(s): {error}": "A(z) {action} művelet nem sikerült a torrent(ek)en: {error}",

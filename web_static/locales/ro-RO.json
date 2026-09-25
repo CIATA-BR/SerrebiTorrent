@@ -235,6 +235,7 @@
     "Failed to register associations: {error}": "Înregistrarea asocierilor a eșuat: {error}",
     "Failed to retrieve preferences from remote client.": "Nu s-au putut obține preferințele de la clientul de la distanță.",
     "Failed to retrieve preferences from remote client. The client might not support this feature or there is a connection issue.": "Nu s-au putut obține preferințele de la clientul de la distanță. Clientul poate să nu accepte această funcție sau există o problemă de conexiune.",
+    "Failed to save RSS rule.": "Regula RSS nu a putut fi salvată.",
     "Failed to update remote preferences: {error}": "Actualizarea preferințelor de la distanță a eșuat: {error}",
     "Failed to {action} torrent(s).": "Acțiunea {action} a eșuat pentru torrent(e).",
     "Failed to {action} torrent(s): {error}": "Acțiunea {action} a eșuat pentru torrent(e): {error}",

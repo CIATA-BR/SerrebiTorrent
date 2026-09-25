@@ -1894,3 +1894,6 @@ msgstr "Obserwowany folder: dodano {added}, niepowodzenia: {failed} ({name}: {er
 
 msgid "Watch folder: added {count} torrent(s)"
 msgstr "Obserwowany folder: dodano torrentów: {count}"
+
+msgid "Failed to save RSS rule."
+msgstr "Nie udało się zapisać reguły RSS."

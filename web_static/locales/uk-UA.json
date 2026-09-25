@@ -235,6 +235,7 @@
     "Failed to register associations: {error}": "Не вдалося зареєструвати асоціації: {error}",
     "Failed to retrieve preferences from remote client.": "Не вдалося отримати налаштування віддаленого клієнта.",
     "Failed to retrieve preferences from remote client. The client might not support this feature or there is a connection issue.": "Не вдалося отримати налаштування віддаленого клієнта. Можливо, клієнт не підтримує цю функцію або є проблема з підключенням.",
+    "Failed to save RSS rule.": "Не вдалося зберегти правило RSS.",
     "Failed to update remote preferences: {error}": "Не вдалося оновити віддалені налаштування: {error}",
     "Failed to {action} torrent(s).": "Дію «{action}» для торентів не виконано.",
     "Failed to {action} torrent(s): {error}": "Дію «{action}» для торентів не виконано: {error}",

@@ -235,6 +235,7 @@
     "Failed to register associations: {error}": "Impossible d'enregistrer les associations : {error}",
     "Failed to retrieve preferences from remote client.": "Impossible de récupérer les préférences du client distant.",
     "Failed to retrieve preferences from remote client. The client might not support this feature or there is a connection issue.": "Impossible de récupérer les préférences du client distant. Le client ne prend peut-être pas en charge cette fonction, ou il y a un problème de connexion.",
+    "Failed to save RSS rule.": "Impossible d'enregistrer la règle RSS.",
     "Failed to update remote preferences: {error}": "Impossible de mettre à jour les préférences distantes : {error}",
     "Failed to {action} torrent(s).": "Échec de l'action {action} sur le(s) torrent(s).",
     "Failed to {action} torrent(s): {error}": "Échec de l'action {action} sur le(s) torrent(s) : {error}",

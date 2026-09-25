@@ -1894,3 +1894,6 @@ msgstr "Figyelt mappa: {added} hozzáadva, {failed} sikertelen ({name}: {error})
 
 msgid "Watch folder: added {count} torrent(s)"
 msgstr "Figyelt mappa: {count} torrent hozzáadva"
+
+msgid "Failed to save RSS rule."
+msgstr "Nem sikerült menteni az RSS-szabályt."

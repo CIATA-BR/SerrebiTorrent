@@ -235,6 +235,7 @@
     "Failed to register associations: {error}": "関連付けの登録に失敗しました: {error}",
     "Failed to retrieve preferences from remote client.": "リモート クライアントから設定を取得できませんでした。",
     "Failed to retrieve preferences from remote client. The client might not support this feature or there is a connection issue.": "リモート クライアントから設定を取得できませんでした。クライアントがこの機能に対応していないか、接続に問題がある可能性があります。",
+    "Failed to save RSS rule.": "RSS ルールを保存できませんでした。",
     "Failed to update remote preferences: {error}": "リモート設定の更新に失敗しました: {error}",
     "Failed to {action} torrent(s).": "トレントの {action} に失敗しました。",
     "Failed to {action} torrent(s): {error}": "トレントの {action} に失敗しました: {error}",

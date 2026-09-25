@@ -1894,3 +1894,6 @@ msgstr "Cartella monitorata: {added} aggiunti, {failed} non riusciti ({name}: {e
 
 msgid "Watch folder: added {count} torrent(s)"
 msgstr "Cartella monitorata: aggiunti {count} torrent"
+
+msgid "Failed to save RSS rule."
+msgstr "Impossibile salvare la regola RSS."

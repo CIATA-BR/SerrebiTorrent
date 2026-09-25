@@ -167,8 +167,8 @@ def test_update_install_uses_single_progress_dialog():
 
 
 def test_rss_rule_toggle_uses_transactional_update_path():
-    source = inspect.getsource(main.RSSRulesPanel.on_toggle)
+    source = inspect.getsource(main.RulesManagerDialog.on_toggle)
 
     assert "self.manager.update_rule" in source
     assert "self.manager.save()" not in source
-    assert "Failed to save RSS rule." in source
+    assert "self._report_rule_save_failure()" in source

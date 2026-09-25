@@ -1948,3 +1948,6 @@ msgstr "Pasta monitorada: {added} adicionados, {failed} com falha ({name}: {erro
 
 msgid "Watch folder: added {count} torrent(s)"
 msgstr "Pasta monitorada: {count} torrent(s) adicionado(s)"
+
+msgid "Failed to save RSS rule."
+msgstr "Falha ao salvar a regra RSS."

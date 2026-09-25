@@ -1894,3 +1894,6 @@ msgstr "監視フォルダー: {added} 件追加、{failed} 件失敗 ({name}: {
 
 msgid "Watch folder: added {count} torrent(s)"
 msgstr "監視フォルダー: {count} 件のトレントを追加しました"
+
+msgid "Failed to save RSS rule."
+msgstr "RSS ルールを保存できませんでした。"

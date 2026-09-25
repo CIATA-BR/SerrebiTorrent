@@ -1894,3 +1894,6 @@ msgstr "Dosar urmărit: {added} adăugate, {failed} eșuate ({name}: {error})"
 
 msgid "Watch folder: added {count} torrent(s)"
 msgstr "Dosar urmărit: {count} torent(e) adăugat(e)"
+
+msgid "Failed to save RSS rule."
+msgstr "Regula RSS nu a putut fi salvată."

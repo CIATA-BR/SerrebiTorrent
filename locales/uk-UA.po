@@ -1894,3 +1894,6 @@ msgstr "Тека для стеження: додано {added}, помилок {
 
 msgid "Watch folder: added {count} torrent(s)"
 msgstr "Тека для стеження: додано торентів: {count}"
+
+msgid "Failed to save RSS rule."
+msgstr "Не вдалося зберегти правило RSS."

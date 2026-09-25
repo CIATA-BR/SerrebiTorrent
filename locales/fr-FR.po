@@ -1894,3 +1894,6 @@ msgstr "Dossier surveillé : {added} ajoutés, {failed} en échec ({name} : {err
 
 msgid "Watch folder: added {count} torrent(s)"
 msgstr "Dossier surveillé : {count} torrent(s) ajouté(s)"
+
+msgid "Failed to save RSS rule."
+msgstr "Impossible d'enregistrer la règle RSS."

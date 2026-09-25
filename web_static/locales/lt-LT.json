@@ -235,6 +235,7 @@
     "Failed to register associations: {error}": "Nepavyko užregistruoti susiejimų: {error}",
     "Failed to retrieve preferences from remote client.": "Nepavyko gauti nuostatų iš nuotolinio kliento.",
     "Failed to retrieve preferences from remote client. The client might not support this feature or there is a connection issue.": "Nepavyko gauti nuostatų iš nuotolinio kliento. Klientas gali nepalaikyti šios funkcijos arba yra ryšio problema.",
+    "Failed to save RSS rule.": "Nepavyko išsaugoti RSS taisyklės.",
     "Failed to update remote preferences: {error}": "Nepavyko atnaujinti nuotolinių nuostatų: {error}",
     "Failed to {action} torrent(s).": "Veiksmas „{action}“ torrentams nepavyko.",
     "Failed to {action} torrent(s): {error}": "Veiksmas „{action}“ torrentams nepavyko: {error}",

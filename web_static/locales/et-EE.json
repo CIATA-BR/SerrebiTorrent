@@ -235,6 +235,7 @@
     "Failed to register associations: {error}": "Failiseoste registreerimine nurjus: {error}",
     "Failed to retrieve preferences from remote client.": "Kaugkliendilt eelistuste toomine nurjus.",
     "Failed to retrieve preferences from remote client. The client might not support this feature or there is a connection issue.": "Kaugkliendilt eelistuste toomine nurjus. Klient ei pruugi seda funktsiooni toetada või on ühendusega probleem.",
+    "Failed to save RSS rule.": "RSS-reeglit ei õnnestunud salvestada.",
     "Failed to update remote preferences: {error}": "Kaugeelistuste uuendamine nurjus: {error}",
     "Failed to {action} torrent(s).": "Toiming {action} torrentidele nurjus.",
     "Failed to {action} torrent(s): {error}": "Toiming {action} torrentidele nurjus: {error}",

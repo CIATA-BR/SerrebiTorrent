@@ -235,6 +235,7 @@
     "Failed to register associations: {error}": "Koppelingen registreren mislukt: {error}",
     "Failed to retrieve preferences from remote client.": "Voorkeuren ophalen van de externe client mislukt.",
     "Failed to retrieve preferences from remote client. The client might not support this feature or there is a connection issue.": "Voorkeuren ophalen van de externe client mislukt. De client ondersteunt deze functie mogelijk niet, of er is een verbindingsprobleem.",
+    "Failed to save RSS rule.": "Kan RSS-regel niet opslaan.",
     "Failed to update remote preferences: {error}": "Externe voorkeuren bijwerken mislukt: {error}",
     "Failed to {action} torrent(s).": "{action} van torrent(s) mislukt.",
     "Failed to {action} torrent(s): {error}": "{action} van torrent(s) mislukt: {error}",

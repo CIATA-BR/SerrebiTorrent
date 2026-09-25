@@ -1894,3 +1894,6 @@ msgstr "Jälgitav kaust: lisatud {added}, ebaõnnestus {failed} ({name}: {error}
 
 msgid "Watch folder: added {count} torrent(s)"
 msgstr "Jälgitav kaust: lisatud {count} torrentit"
+
+msgid "Failed to save RSS rule."
+msgstr "RSS-reeglit ei õnnestunud salvestada."

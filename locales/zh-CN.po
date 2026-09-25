@@ -1894,3 +1894,6 @@ msgstr "监视文件夹：已添加 {added} 个，失败 {failed} 个（{name}�
 
 msgid "Watch folder: added {count} torrent(s)"
 msgstr "监视文件夹：已添加 {count} 个种子"
+
+msgid "Failed to save RSS rule."
+msgstr "无法保存 RSS 规则。"
