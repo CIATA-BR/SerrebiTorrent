@@ -173,6 +173,7 @@ class RSSManager:
             feed = self.feeds.get(url)
             if feed is None:
                 return
+            previous = list(feed.get('downloaded', []))
             seen = feed.setdefault('downloaded', [])
             if uid in seen:
                 return
@@ -180,7 +181,10 @@ class RSSManager:
             # Bound growth: stale items drop out of the feed and never recur.
             if len(seen) > 1000:
                 del seen[:-1000]
-            self.save()
+            if self.save():
+                return
+            feed['downloaded'] = previous
+            raise OSError("Failed to save RSS download history.")
 
     def fetch_feed(self, url):
         try:
