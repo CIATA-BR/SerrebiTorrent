@@ -834,3 +834,35 @@ def test_rate_limited_status_kept_when_fallback_fails(mock_fetch, mock_manifest)
     mock_manifest.side_effect = updater.UpdateError("offline")
 
     assert check_for_updates().status == "rate_limited"
+
+
+
+def test_download_file_rejects_redirect_to_untrusted_host(tmp_path, monkeypatch):
+    response = MagicMock()
+    response.url = "https://evil.example/update.zip"
+    response.status_code = 200
+    response.__enter__.return_value = response
+    response.__exit__.return_value = False
+    monkeypatch.setattr(updater.requests, "get", MagicMock(return_value=response))
+
+    dest = tmp_path / "update.zip"
+
+    with pytest.raises(UpdateError, match="HTTPS GitHub release asset"):
+        download_file(ASSET_URL, str(dest))
+
+    assert not dest.exists()
+
+
+def test_manifest_download_rejects_redirect_to_untrusted_host(monkeypatch):
+    response = MagicMock()
+    response.url = "https://evil.example/manifest.json"
+    response.status_code = 200
+    response.close = MagicMock()
+    monkeypatch.setattr(updater.requests, "get", MagicMock(return_value=response))
+
+    with pytest.raises(UpdateError, match="HTTPS GitHub release asset"):
+        updater._download_manifest_url(
+            "https://github.com/serrebidev/SerrebiTorrent/releases/latest/download/SerrebiTorrent-update.json"
+        )
+
+    response.close.assert_called_once()
