@@ -451,3 +451,13 @@ def test_blinddl_feeds_returns_empty_for_non_object_config(tmp_path, monkeypatch
     monkeypatch.setattr(torrent_search, "blinddl_config_path", lambda: str(config_path))
 
     assert torrent_search.blinddl_feeds() == []
+
+
+
+def test_search_dialog_blinddl_import_treats_persistence_as_optional():
+    from pathlib import Path
+
+    source = Path("search_dialog.py").read_text(encoding="utf-8")
+    block = source[source.index("def _adopt_blinddl_feeds"):source.index("# -- searching")]
+    assert "self.config_manager.set_preferences(prefs)" in block
+    assert "except Exception" in block
