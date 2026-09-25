@@ -240,6 +240,7 @@
     "Failed to register associations: {error}": "Falha ao registrar associações: {error}",
     "Failed to retrieve preferences from remote client.": "Não foi possível obter as preferências do cliente remoto.",
     "Failed to retrieve preferences from remote client. The client might not support this feature or there is a connection issue.": "Não foi possível obter as preferências do cliente remoto. O cliente pode não oferecer suporte a esse recurso ou pode haver um problema de conexão.",
+    "Failed to save RSS rule.": "Falha ao salvar a regra RSS.",
     "Failed to update remote preferences: {error}": "Falha ao atualizar preferências remotas: {error}",
     "Failed to {action} torrent(s).": "Falha ao executar {action} no(s) torrent(s).",
     "Failed to {action} torrent(s): {error}": "Falha ao executar {action} no(s) torrent(s): {error}",

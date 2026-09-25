@@ -235,6 +235,7 @@
     "Failed to register associations: {error}": "Zuordnungen konnten nicht registriert werden: {error}",
     "Failed to retrieve preferences from remote client.": "Einstellungen konnten nicht vom Remote-Client abgerufen werden.",
     "Failed to retrieve preferences from remote client. The client might not support this feature or there is a connection issue.": "Einstellungen konnten nicht vom Remote-Client abgerufen werden. Der Client unterstützt diese Funktion möglicherweise nicht, oder es gibt ein Verbindungsproblem.",
+    "Failed to save RSS rule.": "RSS-Regel konnte nicht gespeichert werden.",
     "Failed to update remote preferences: {error}": "Remote-Einstellungen konnten nicht aktualisiert werden: {error}",
     "Failed to {action} torrent(s).": "{action} für Torrent(s) fehlgeschlagen.",
     "Failed to {action} torrent(s): {error}": "{action} für Torrent(s) fehlgeschlagen: {error}",

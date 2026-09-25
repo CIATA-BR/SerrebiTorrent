@@ -235,6 +235,7 @@
     "Failed to register associations: {error}": "注册文件关联失败：{error}",
     "Failed to retrieve preferences from remote client.": "无法从远程客户端获取首选项。",
     "Failed to retrieve preferences from remote client. The client might not support this feature or there is a connection issue.": "无法从远程客户端获取首选项。客户端可能不支持此功能，或存在连接问题。",
+    "Failed to save RSS rule.": "无法保存 RSS 规则。",
     "Failed to update remote preferences: {error}": "更新远程首选项失败：{error}",
     "Failed to {action} torrent(s).": "对种子执行 {action} 失败。",
     "Failed to {action} torrent(s): {error}": "对种子执行 {action} 失败：{error}",

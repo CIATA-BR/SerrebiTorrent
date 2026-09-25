@@ -718,6 +718,9 @@ msgstr ""
 msgid "Failed to retrieve preferences from remote client. The client might not support this feature or there is a connection issue."
 msgstr ""
 
+msgid "Failed to save RSS rule."
+msgstr ""
+
 msgid "Failed to update remote preferences: {error}"
 msgstr ""
 

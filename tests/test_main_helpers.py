@@ -163,3 +163,12 @@ def test_update_install_uses_single_progress_dialog():
     assert "progress_cb=self._update_progress_callback" in worker_source
     assert "wx.MessageBox" not in started_source
     assert "wx.CallLater(800, self.force_close)" in started_source
+
+
+
+def test_rss_rule_toggle_uses_transactional_update_path():
+    source = inspect.getsource(main.RulesManagerDialog.on_toggle)
+
+    assert "self.manager.update_rule" in source
+    assert "self.manager.save()" not in source
+    assert "self._report_rule_save_failure()" in source

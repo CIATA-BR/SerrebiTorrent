@@ -1894,3 +1894,6 @@ msgstr "Carpeta vigilada: {added} añadidos, {failed} con error ({name}: {error}
 
 msgid "Watch folder: added {count} torrent(s)"
 msgstr "Carpeta vigilada: se añadieron {count} torrent(s)"
+
+msgid "Failed to save RSS rule."
+msgstr "No se pudo guardar la regla RSS."

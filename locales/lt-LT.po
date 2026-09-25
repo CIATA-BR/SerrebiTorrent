@@ -1894,3 +1894,6 @@ msgstr "Stebimas aplankas: pridėta {added}, nepavyko {failed} ({name}: {error})
 
 msgid "Watch folder: added {count} torrent(s)"
 msgstr "Stebimas aplankas: pridėta torrentų: {count}"
+
+msgid "Failed to save RSS rule."
+msgstr "Nepavyko išsaugoti RSS taisyklės."

@@ -1894,3 +1894,6 @@ msgstr "Отслеживаемая папка: добавлено {added}, ош�
 
 msgid "Watch folder: added {count} torrent(s)"
 msgstr "Отслеживаемая папка: добавлено торрентов: {count}"
+
+msgid "Failed to save RSS rule."
+msgstr "Не удалось сохранить правило RSS."

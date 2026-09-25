@@ -1894,3 +1894,6 @@ msgstr "Gevolgde map: {added} toegevoegd, {failed} mislukt ({name}: {error})"
 
 msgid "Watch folder: added {count} torrent(s)"
 msgstr "Gevolgde map: {count} torrent(s) toegevoegd"
+
+msgid "Failed to save RSS rule."
+msgstr "Kan RSS-regel niet opslaan."
