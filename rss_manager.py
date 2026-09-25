@@ -86,6 +86,11 @@ class RSSManager:
             return True
 
     def add_feed(self, url, alias=""):
+        parsed = urlparse(str(url or "").strip())
+        if parsed.scheme.lower() not in ('http', 'https') or not parsed.hostname:
+            raise ValueError("RSS feed URL must use http or https and include a host")
+        url = parsed.geturl()
+
         with self.lock:
             if url in self.feeds:
                 return False
