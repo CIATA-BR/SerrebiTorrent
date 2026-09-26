@@ -554,3 +554,31 @@ def test_session_log_restricts_permissions_on_posix(session_manager, monkeypatch
     session_manager._log_diagnostic_alert(alert)
 
     chmod.assert_called_once_with("/tmp/session.log", 0o600)
+
+
+
+@pytest.mark.parametrize(
+    ("value", "expected"),
+    [
+        ("192.168.1.25", "192.168.1.25:6881"),
+        (" 192.168.1.25 ", "192.168.1.25:6881"),
+        ("2001:db8::25", "[2001:db8::25]:6881"),
+        ("[2001:db8::25]", "[2001:db8::25]:6881"),
+        ("", "0.0.0.0:6881,[::]:6881"),
+        ("not-an-ip", "0.0.0.0:6881,[::]:6881"),
+    ],
+)
+def test_listen_interfaces_validates_and_formats_addresses(value, expected):
+    import session_manager as sm
+
+    assert sm._listen_interfaces(value, 6881) == expected
+
+
+def test_apply_preferences_uses_safe_fallback_for_invalid_listen_interface(session_manager):
+    session_manager.apply_preferences({
+        'listen_interface': 'typo.invalid',
+        'listen_port': 51413,
+    })
+
+    settings = session_manager.ses.apply_settings.call_args[0][0]
+    assert settings['listen_interfaces'] == '0.0.0.0:51413,[::]:51413'

@@ -4,6 +4,7 @@ import os
 import threading
 import time
 import json
+import ipaddress
 import logging
 import shutil
 from logging.handlers import RotatingFileHandler
@@ -167,7 +168,20 @@ def _listen_interfaces(value, port):
     interface = str(value or "").strip()
     if not interface:
         return f"0.0.0.0:{port},[::]:{port}"
-    return f"{interface}:{port}"
+
+    # The preference is explicitly a local IP address, not a hostname. Validate
+    # it before handing it to libtorrent so a typo cannot break all incoming
+    # binds. Accept bracketed IPv6 copied from URLs, then emit libtorrent's
+    # required [address]:port form for IPv6 listeners.
+    candidate = interface[1:-1] if interface.startswith("[") and interface.endswith("]") else interface
+    try:
+        address = ipaddress.ip_address(candidate)
+    except ValueError:
+        return f"0.0.0.0:{port},[::]:{port}"
+
+    if address.version == 6:
+        return f"[{address}]:{port}"
+    return f"{address}:{port}"
 
 
 def _flush_resume_flag():
