@@ -524,6 +524,7 @@ def test_session_log_restricts_permissions_on_posix(session_manager, monkeypatch
 
     handler = MagicMock()
     handler.baseFilename = "/tmp/session.log"
+    handler.level = 0  # int: Logger.callHandlers compares record.levelno >= handler.level
     ctor = MagicMock(return_value=handler)
     monkeypatch.setattr(sm, "RotatingFileHandler", ctor)
     monkeypatch.setattr(sm.os, "name", "posix", raising=False)
