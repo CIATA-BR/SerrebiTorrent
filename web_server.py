@@ -928,7 +928,9 @@ def get_remote_prefs():
 
     # We also return the client name to determine schema on frontend
     name = "Other"
-    from clients import QBittorrentClient, RTorrentClient, TransmissionClient
+    from clients import LocalClient, QBittorrentClient, RTorrentClient, TransmissionClient
+    if isinstance(client, LocalClient):
+        return jsonify({'name': 'local', 'prefs': None})
     if isinstance(client, QBittorrentClient):
         name = "qbittorrent"
     elif isinstance(client, RTorrentClient):
@@ -954,6 +956,10 @@ def set_remote_prefs():
     client = WEB_CONFIG['client']
     if not client:
         return "No torrent client is connected.", 503
+
+    from clients import LocalClient
+    if isinstance(client, LocalClient):
+        return "Local client settings are managed as application preferences.", 400
 
     new_prefs = request.get_json(silent=True)
     if not isinstance(new_prefs, dict) or not new_prefs:
