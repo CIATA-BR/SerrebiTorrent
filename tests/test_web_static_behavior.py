@@ -84,3 +84,15 @@ def test_web_clipboard_failures_are_announced_and_visible():
     assert "announceToSR(message, true)" in block
     assert "alert(message)" in block
     assert "Failed to copy to clipboard." in block
+
+
+def test_web_settings_load_failures_are_announced_and_visible():
+    script = (ROOT / "web_static" / "app.js").read_text(encoding="utf-8")
+
+    start = script.index("async function loadAppSettings")
+    end = script.index("async function loadRemoteSettings", start)
+    block = script[start:end]
+
+    assert "Failed to load settings." in block
+    assert "announceToSR(message, true)" in block
+    assert "alert(message)" in block

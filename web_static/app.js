@@ -1406,7 +1406,13 @@ async function loadAppSettings() {
             if(cb) cb.checked = prefs.min_to_tray;
         }
         
-    } catch (e) { console.error("Load app settings error", e); }
+    } catch (e) {
+        console.error("Load app settings error", e);
+        const translate = window.SerrebiI18n?.t || ((value) => value);
+        const message = translate('Failed to load settings.');
+        announceToSR(message, true);
+        alert(message);
+    }
 }
 
 async function loadRemoteSettings() {
