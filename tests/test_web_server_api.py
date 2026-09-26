@@ -1568,3 +1568,31 @@ def test_app_preferences_endpoint_exposes_only_web_form_fields(auth_client):
     assert b'web-secret' not in rv.data
     assert b'proxy-secret' not in rv.data
     assert b'api-secret' not in rv.data
+
+
+
+def test_local_client_has_no_remote_preferences(auth_client):
+    from clients import LocalClient
+
+    client = object.__new__(LocalClient)
+    web_server.WEB_CONFIG['client'] = client
+
+    rv = auth_client.get('/api/v2/app/remote_prefs')
+
+    assert rv.status_code == 200
+    assert rv.get_json() == {'name': 'local', 'prefs': None}
+
+
+def test_local_client_rejects_remote_preferences_write(auth_client):
+    from clients import LocalClient
+
+    client = object.__new__(LocalClient)
+    web_server.WEB_CONFIG['client'] = client
+
+    rv = auth_client.post(
+        '/api/v2/app/remote_prefs',
+        json={'proxy_password': 'replacement'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 400
