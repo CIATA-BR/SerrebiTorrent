@@ -40,3 +40,23 @@ def test_future_mtime_file_is_ready_once_unchanged(tmp_path):
 
 def test_clean_folder_path_strips_copy_as_path_quotes():
     assert watch_folder.clean_folder_path(' "C:\Torrents" ') == "C:\Torrents"
+
+
+
+def test_watch_folder_rejects_oversized_torrent(tmp_path, monkeypatch):
+    path = tmp_path / "large.torrent"
+    path.write_bytes(b"123456789")
+    os.utime(path, (0, 0))
+    monkeypatch.setattr(watch_folder, "TORRENT_MAX_BYTES", 8)
+    added_payloads = []
+
+    added, failed = watch_folder.import_folder(
+        tmp_path,
+        added_payloads.append,
+        now=watch_folder.SETTLE_SECONDS + 1,
+    )
+
+    assert added == []
+    assert failed == [("large.torrent", "Torrent file exceeds the 16 MB limit.")]
+    assert added_payloads == []
+    assert (tmp_path / "large.torrent.failed").is_file()
