@@ -847,8 +847,12 @@ window.fetchProfiles = async function() {
         const list = document.getElementById('profileList');
         if (!list) return;
         const profileSignature = JSON.stringify(data);
-        if (list.dataset.signature === profileSignature) return;
+        if (list.dataset.signature === profileSignature) {
+            delete list.dataset.loadError;
+            return;
+        }
         list.dataset.signature = profileSignature;
+        delete list.dataset.loadError;
         const focusedProfile = list.contains(document.activeElement)
             ? document.activeElement.dataset.profileId
             : null;
@@ -879,6 +883,12 @@ window.fetchProfiles = async function() {
         ensureSidebarTabStops();
     } catch (e) {
         console.error("fetchProfiles failed:", e);
+        const list = document.getElementById('profileList');
+        if (list && list.dataset.loadError !== 'true') {
+            list.dataset.loadError = 'true';
+            const message = e?.message || 'Failed to load profiles.';
+            announceToSR(message, true);
+        }
     }
 }
 
