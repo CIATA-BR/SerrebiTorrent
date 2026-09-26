@@ -1507,3 +1507,29 @@ def test_web_secret_restricts_permissions_on_posix(tmp_path, monkeypatch):
 
     assert key_path.read_bytes() == key
     assert calls == [(str(key_path), 0o600)]
+
+
+
+def test_profiles_endpoint_redacts_remote_passwords(auth_client):
+    mock_app = MagicMock()
+    mock_app.config_manager.get_profiles.return_value = {
+        'p1': {
+            'name': 'Remote',
+            'type': 'qbittorrent',
+            'url': 'http://example.test:8080',
+            'user': 'alice',
+            'password': 'super-secret',
+        }
+    }
+    mock_app.current_profile_id = 'p1'
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.get('/api/v2/profiles')
+
+    assert rv.status_code == 200
+    profile = rv.get_json()['profiles']['p1']
+    assert profile['name'] == 'Remote'
+    assert profile['type'] == 'qbittorrent'
+    assert profile['user'] == 'alice'
+    assert 'password' not in profile
+    assert b'super-secret' not in rv.data
