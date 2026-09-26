@@ -233,9 +233,21 @@ class TorrentSearchDialog(wx.Dialog):
         if token != self._token or not self:
             return
         self._pending = max(0, self._pending - 1)
+        had_results = bool(self.results)
         if items:
             self.results.extend(items)
             self._repopulate()
+            # search() deliberately lets slow indexers report after its deadline.
+            # If _search_done() already ran with zero results, make a late first
+            # result usable without stealing keyboard focus back from the query.
+            if self.search_btn.IsEnabled():
+                self.add_btn.Enable(True)
+                count = len(self.results)
+                key = "Results, {count} result" if count == 1 else "Results, {count} results"
+                self.list.SetName(_fmt(self._, key, count=count))
+                if not had_results and self.list.GetItemCount():
+                    self.list.Select(0)
+                    self.list.Focus(0)
         count = len(self.results)
         if self._pending:
             key = ("{count} result so far, {pending} still searching. Last: {source}."
