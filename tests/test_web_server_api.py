@@ -1596,3 +1596,26 @@ def test_local_client_rejects_remote_preferences_write(auth_client):
     )
 
     assert rv.status_code == 400
+
+
+
+def test_remote_preferences_endpoint_redacts_reusable_secrets(auth_client):
+    mock_client = MagicMock()
+    mock_client.get_app_preferences.return_value = {
+        'save_path': '/downloads',
+        'proxy_password': 'proxy-secret',
+        'web_ui_password': 'web-secret',
+        'api_token': 'token-secret',
+        'apikey': 'api-secret',
+    }
+    web_server.WEB_CONFIG['client'] = mock_client
+
+    rv = auth_client.get('/api/v2/app/remote_prefs')
+
+    assert rv.status_code == 200
+    prefs = rv.get_json()['prefs']
+    assert prefs == {'save_path': '/downloads'}
+    assert b'proxy-secret' not in rv.data
+    assert b'web-secret' not in rv.data
+    assert b'token-secret' not in rv.data
+    assert b'api-secret' not in rv.data
