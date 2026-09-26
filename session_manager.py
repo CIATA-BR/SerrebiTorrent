@@ -270,6 +270,11 @@ class SessionManager:
                 backup = self.torrents_db_path + ".corrupt"
                 try:
                     shutil.copy2(self.torrents_db_path, backup)
+                    if os.name != "nt":
+                        try:
+                            os.chmod(backup, 0o600)
+                        except OSError:
+                            pass
                     print(f"Preserved unreadable torrents.json as {backup}")
                 except OSError as backup_error:
                     print(f"Could not preserve unreadable torrents.json: {backup_error}")
@@ -284,6 +289,11 @@ class SessionManager:
                 f.flush()
                 os.fsync(f.fileno())
             os.replace(tmp, self.torrents_db_path)
+            if os.name != "nt":
+                try:
+                    os.chmod(self.torrents_db_path, 0o600)
+                except OSError:
+                    pass
         except Exception as e:
             print(f"Error saving torrents.json: {e}")
         finally:
