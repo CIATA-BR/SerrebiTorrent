@@ -904,6 +904,16 @@ def get_app_prefs():
     }
     return jsonify({key: prefs[key] for key in web_fields if key in prefs})
 
+_WEB_APP_PREF_FIELDS = {
+    'download_path',
+    'rss_update_interval',
+    'dl_limit',
+    'ul_limit',
+    'min_to_tray',
+    'language',
+}
+
+
 @app.route('/api/v2/app/prefs', methods=['POST'])
 @login_required
 def set_app_prefs():
@@ -914,6 +924,10 @@ def set_app_prefs():
     new_prefs = request.get_json(silent=True)
     if not isinstance(new_prefs, dict) or not new_prefs:
         return "Preferences object is required.", 400
+
+    disallowed = set(new_prefs) - _WEB_APP_PREF_FIELDS
+    if disallowed:
+        return "Unsupported application preference field.", 400
 
     try:
         prefs = app_ref.config_manager.get_preferences()

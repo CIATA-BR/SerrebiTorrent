@@ -1637,3 +1637,20 @@ def test_torrent_upload_rejects_file_over_16_mb(auth_client, monkeypatch):
     assert rv.status_code == 413
     assert b"16 MB upload limit" in rv.data
     mock_client.add_torrent_file.assert_not_called()
+def test_web_app_preferences_reject_hidden_fields(auth_client):
+    mock_app = MagicMock()
+    mock_app.config_manager.get_preferences.return_value = {
+        'download_path': '/downloads',
+        'proxy_password': 'old-secret',
+    }
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/app/prefs',
+        json={'proxy_password': 'new-secret'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 400
+    assert b"Unsupported application preference field." in rv.data
+    mock_app.config_manager.set_preferences.assert_not_called()
