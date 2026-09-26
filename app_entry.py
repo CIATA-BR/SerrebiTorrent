@@ -354,7 +354,16 @@ class LocalizedMainFrame(legacy.MainFrame):
             if dlg.ShowModal() != wx.ID_OK:
                 return
             prefs = dlg.get_preferences()
-            self.config_manager.set_preferences(prefs)
+            try:
+                self.config_manager.set_preferences(prefs)
+            except Exception as exc:  # noqa: BLE001 - UI boundary
+                wx.MessageBox(
+                    self._("Failed to apply settings: {error}").format(error=exc),
+                    "SerrebiTorrent",
+                    wx.OK | wx.ICON_ERROR,
+                    self,
+                )
+                return
             try:
                 legacy.SessionManager.get_instance().apply_preferences(prefs)
             except Exception as exc:  # noqa: BLE001 - UI boundary
