@@ -407,7 +407,7 @@ def test_save_torrents_db_restricts_permissions_on_posix(tmp_path, monkeypatch):
     manager.torrents_db = {"abc": {"save_path": "/tmp"}}
     monkeypatch.setattr(sm.os, "name", "posix", raising=False)
     chmods = []
-    monkeypatch.setattr(sm.os, "chmod", lambda p, mode: chmods.append((str(p), mode)))
+    monkeypatch.setattr(sm.os, "chmod", lambda p, mode, **_kw: chmods.append((str(p), mode)))
 
     manager._save_torrents_db()
 
@@ -424,7 +424,7 @@ def test_corrupt_torrents_db_backup_restricts_permissions_on_posix(tmp_path, mon
     db_path.chmod(0o644)
     monkeypatch.setattr(sm.os, "name", "posix", raising=False)
     chmods = []
-    monkeypatch.setattr(sm.os, "chmod", lambda p, mode: chmods.append((str(p), mode)))
+    monkeypatch.setattr(sm.os, "chmod", lambda p, mode, **_kw: chmods.append((str(p), mode)))
 
     manager = SessionManager.__new__(SessionManager)
     manager.torrents_db_path = str(db_path)
