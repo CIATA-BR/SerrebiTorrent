@@ -490,7 +490,7 @@ def test_resume_state_file_restricts_permissions_on_posix(session_manager, tmp_p
         session_manager._handle_save_resume(alert)
 
     path = tmp_path / f"{info_hash}.resume"
-    assert path.exists()
+    assert path.stat().st_size > 0  # the fixture patches os.path.exists
     assert (str(path), 0o600) in chmods
 
 
@@ -514,5 +514,5 @@ def test_torrent_state_file_restricts_permissions_on_posix(
         session_manager.add_torrent_file(b"d4:infode", "/tmp")
 
     path = tmp_path / (("8" * 40) + ".torrent")
-    assert path.exists()
+    assert path.stat().st_size > 0  # the fixture patches os.path.exists
     assert (str(path), 0o600) in chmods
