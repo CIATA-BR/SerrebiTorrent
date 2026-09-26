@@ -1619,3 +1619,23 @@ def test_remote_preferences_endpoint_redacts_reusable_secrets(auth_client):
     assert b'web-secret' not in rv.data
     assert b'token-secret' not in rv.data
     assert b'api-secret' not in rv.data
+
+
+
+def test_web_app_preferences_reject_hidden_fields(auth_client):
+    mock_app = MagicMock()
+    mock_app.config_manager.get_preferences.return_value = {
+        'download_path': '/downloads',
+        'proxy_password': 'old-secret',
+    }
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/app/prefs',
+        json={'proxy_password': 'new-secret'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 400
+    assert b"Unsupported application preference field." in rv.data
+    mock_app.config_manager.set_preferences.assert_not_called()
