@@ -1145,6 +1145,7 @@ def test_remote_prefs_write_requires_object_json(auth_client):
 
 def test_remote_prefs_write_hides_backend_errors(auth_client):
     mock_client = MagicMock()
+    mock_client.get_app_preferences.return_value = {'max_downloads': 1}
     mock_client.set_app_preferences.side_effect = RuntimeError("secret backend detail")
     web_server.WEB_CONFIG['client'] = mock_client
 
@@ -1161,6 +1162,7 @@ def test_remote_prefs_write_hides_backend_errors(auth_client):
 
 def test_remote_prefs_write_persists_valid_object(auth_client):
     mock_client = MagicMock()
+    mock_client.get_app_preferences.return_value = {'max_downloads': 1}
     web_server.WEB_CONFIG['client'] = mock_client
 
     rv = auth_client.post(
