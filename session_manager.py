@@ -544,6 +544,11 @@ class SessionManager:
             try:
                 handler = RotatingFileHandler(get_log_path("session.log"), maxBytes=1_000_000,
                                               backupCount=2, encoding="utf-8")
+                if os.name != "nt":
+                    try:
+                        os.chmod(handler.baseFilename, 0o600)
+                    except OSError:
+                        pass
             except OSError as exc:
                 print(f"Could not open local session log: {exc}")
                 logger.addHandler(logging.NullHandler())

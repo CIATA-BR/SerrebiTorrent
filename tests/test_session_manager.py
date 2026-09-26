@@ -516,3 +516,27 @@ def test_torrent_state_file_restricts_permissions_on_posix(
     path = tmp_path / (("8" * 40) + ".torrent")
     assert path.stat().st_size > 0  # the fixture patches os.path.exists
     assert (str(path), 0o600) in chmods
+
+
+
+def test_session_log_restricts_permissions_on_posix(session_manager, monkeypatch):
+    import session_manager as sm
+
+    handler = MagicMock()
+    handler.baseFilename = "/tmp/session.log"
+    handler.level = 0  # int: Logger.callHandlers compares record.levelno >= handler.level
+    ctor = MagicMock(return_value=handler)
+    monkeypatch.setattr(sm, "RotatingFileHandler", ctor)
+    monkeypatch.setattr(sm.os, "name", "posix", raising=False)
+    chmod = MagicMock()
+    monkeypatch.setattr(sm.os, "chmod", chmod)
+
+    alert = MagicMock()
+    alert.message.return_value = "diagnostic"
+    alert.__class__.__name__ = "file_error_alert"
+
+    logger = sm.logging.getLogger("SerrebiTorrent.session")
+    logger.handlers.clear()
+    session_manager._log_diagnostic_alert(alert)
+
+    chmod.assert_called_once_with("/tmp/session.log", 0o600)
