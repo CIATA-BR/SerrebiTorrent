@@ -1253,8 +1253,14 @@ class LocalClient(BaseClient):
         return [{"index": i, "name": fs.file_path(i), "size": fs.file_size(i), "progress": pr[i]/fs.file_size(i) if fs.file_size(i)>0 else 0, "priority": 1 if prio[i]==4 else (2 if prio[i]>4 else 0)} for i in range(ti.num_files())]
     def set_file_priority(self, h, i, p):
         x = self._require_handle(h)
+        previous = list(_handle_file_priorities(x))
         x.file_priority(i, 4 if p==1 else (7 if p==2 else 0))
-        self.m.update_priorities(self.m._handle_hash_key(x) or h, _handle_file_priorities(x))
+        try:
+            self.m.update_priorities(self.m._handle_hash_key(x) or h, _handle_file_priorities(x))
+        except Exception:
+            if 0 <= i < len(previous):
+                x.file_priority(i, previous[i])
+            raise
     def get_peers(self, h):
         x = self._gh(h)
         if not x:
