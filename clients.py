@@ -463,6 +463,9 @@ class CookieTransport(xmlrpc.client.SafeTransport):
             cn.putheader("Cookie", "; ".join([f"{k}={v}" for k, v in self.cookies.items()]))
         super().send_user_agent(cn)
 
+SCGI_MAX_RESPONSE_BYTES = 64 * 1024 * 1024
+
+
 class SCGITransport(xmlrpc.client.Transport):
     def __init__(self, h, p):
         super().__init__()
@@ -481,12 +484,15 @@ class SCGITransport(xmlrpc.client.Transport):
         try:
             with socket.create_connection((self.sh, self.sp), timeout=10) as s:
                 s.sendall(p)
-                rd = b""
+                rd = bytearray()
                 while True:
                     ch = s.recv(4096)
                     if not ch:
                         break
-                    rd += ch
+                    rd.extend(ch)
+                    if len(rd) > SCGI_MAX_RESPONSE_BYTES:
+                        raise RuntimeError("SCGI response exceeds the 64 MB limit.")
+                rd = bytes(rd)
         except Exception as e:
             raise xmlrpc.client.ProtocolError(h+hn, 500, str(e), {})
 
