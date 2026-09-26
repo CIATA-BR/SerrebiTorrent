@@ -24,6 +24,7 @@
         "max_uploads": -1,
         "listen_port": 6881,
         "announce_ip": "",
+        "listen_interface": "",
         "enable_upnp": true,
         "enable_natpmp": true,
         "auto_start": true,

@@ -64,6 +64,7 @@ DEFAULT_PREFERENCES: Dict[str, Any] = {
     "max_uploads": -1,  # -1 = unlimited
     "listen_port": 6881,
     "announce_ip": "",  # IP reported to trackers (e.g. a public relay/VPS address); blank = auto
+    "listen_interface": "",  # Local IP to bind torrent traffic to (picks the NIC for UPnP); blank = all interfaces
     "enable_upnp": True,
     "enable_natpmp": True,
     "enable_dht": True,

@@ -46,6 +46,12 @@ def test_normalize_prefs_missing_keys(tmp_path, monkeypatch):
     assert prefs.get("language") == "system"
 
 
+def test_listen_interface_default_is_blank(tmp_path, monkeypatch):
+    config_path, _ = _configure_paths(tmp_path, monkeypatch)
+    cm = config_manager.ConfigManager()
+    assert cm.get_preferences().get("listen_interface") == ""
+
+
 def test_explicit_language_preference_is_preserved(tmp_path, monkeypatch):
     config_path, _ = _configure_paths(tmp_path, monkeypatch)
     config_path.write_text(

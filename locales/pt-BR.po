@@ -202,6 +202,9 @@ msgstr "Já existe uma atualização em andamento."
 msgid "Announce IP (reported to trackers, blank = auto):"
 msgstr "IP anunciado (informado aos trackers, em branco = automático):"
 
+msgid "Listen interface (local IP to bind, blank = all):"
+msgstr "Interface de escuta (IP local para vincular, em branco = todas):"
+
 msgid "Another indexer is already called {name}. Choose a different name."
 msgstr "Já existe outro indexador chamado {name}. Informe um nome diferente."
 

@@ -310,6 +310,7 @@
     "Light (Classic)": "Claro (clássico)",
     "Limits": "Limites",
     "Link": "Link",
+    "Listen interface (local IP to bind, blank = all):": "Interface de escuta (IP local para vincular, em branco = todas):",
     "Listening Port:": "Porta de escuta:",
     "Loading files...": "Carregando arquivos...",
     "Loading peers...": "Carregando peers...",

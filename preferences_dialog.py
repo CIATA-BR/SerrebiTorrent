@@ -189,6 +189,21 @@ class PreferencesDialog(wx.Dialog):
         ann_sizer.Add(self.announce_ip_input, 1, wx.EXPAND)
         conn_sizer.Add(ann_sizer, 0, wx.EXPAND | wx.ALL, 10)
 
+        listen_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        listen_sizer.Add(
+            wx.StaticText(
+                conn_panel,
+                label=self._("Listen interface (local IP to bind, blank = all):"),
+            ),
+            0,
+            wx.ALIGN_CENTER_VERTICAL | wx.RIGHT,
+            5,
+        )
+        self.listen_interface_input = wx.TextCtrl(
+            conn_panel, value=self.prefs.get("listen_interface", ""))
+        listen_sizer.Add(self.listen_interface_input, 1, wx.EXPAND)
+        conn_sizer.Add(listen_sizer, 0, wx.EXPAND | wx.ALL, 10)
+
         self.upnp_chk = wx.CheckBox(
             conn_panel, label=self._("Enable UPnP Port Mapping"))
         self.upnp_chk.SetValue(self.prefs.get("enable_upnp", True))
@@ -390,6 +405,7 @@ class PreferencesDialog(wx.Dialog):
             "max_uploads": self.max_slots.GetValue(),
             "listen_port": self.port_input.GetValue(),
             "announce_ip": self.announce_ip_input.GetValue().strip(),
+            "listen_interface": self.listen_interface_input.GetValue().strip(),
             "enable_upnp": self.upnp_chk.GetValue(),
             "enable_natpmp": self.natpmp_chk.GetValue(),
             "enable_dht": self.dht_chk.GetValue(),

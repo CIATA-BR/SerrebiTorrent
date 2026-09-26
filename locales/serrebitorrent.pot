@@ -928,6 +928,9 @@ msgstr ""
 msgid "Link"
 msgstr ""
 
+msgid "Listen interface (local IP to bind, blank = all):"
+msgstr ""
+
 msgid "Listening Port:"
 msgstr ""
 

@@ -1290,6 +1290,12 @@ class PreferencesDialog(wx.Dialog):
         ann_sizer.Add(self.announce_ip_input, 1, wx.EXPAND)
         conn_sizer.Add(ann_sizer, 0, wx.EXPAND | wx.ALL, 10)
 
+        listen_sizer = wx.BoxSizer(wx.HORIZONTAL)
+        listen_sizer.Add(wx.StaticText(conn_panel, label="Listen interface (local IP to bind, blank = all):"), 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
+        self.listen_interface_input = wx.TextCtrl(conn_panel, value=self.prefs.get('listen_interface', ''))
+        listen_sizer.Add(self.listen_interface_input, 1, wx.EXPAND)
+        conn_sizer.Add(listen_sizer, 0, wx.EXPAND | wx.ALL, 10)
+
         self.upnp_chk = wx.CheckBox(conn_panel, label="Enable UPnP Port Mapping")
         self.upnp_chk.SetValue(self.prefs.get('enable_upnp', True))
         conn_sizer.Add(self.upnp_chk, 0, wx.ALL, 5)
@@ -1457,6 +1463,7 @@ class PreferencesDialog(wx.Dialog):
             "max_uploads": self.max_slots.GetValue(),
             "listen_port": self.port_input.GetValue(),
             "announce_ip": self.announce_ip_input.GetValue().strip(),
+            "listen_interface": self.listen_interface_input.GetValue().strip(),
             "enable_upnp": self.upnp_chk.GetValue(),
             "enable_natpmp": self.natpmp_chk.GetValue(),
             "enable_dht": self.dht_chk.GetValue() if hasattr(self, "dht_chk") else self.prefs.get("enable_dht", True),
@@ -1663,7 +1670,7 @@ class RemotePreferencesDialog(wx.Dialog):
     # --- Local Schema ---
     LOCAL_CATEGORY_FIELDS = OrderedDict([
         ("General", ["download_path", "auto_start", "min_to_tray", "close_to_tray"]),
-        ("Connection", ["dl_limit", "ul_limit", "max_connections", "max_uploads", "listen_port", "enable_upnp", "enable_natpmp", "enable_dht", "enable_lsd"]),
+        ("Connection", ["dl_limit", "ul_limit", "max_connections", "max_uploads", "listen_port", "announce_ip", "listen_interface", "enable_upnp", "enable_natpmp", "enable_dht", "enable_lsd"]),
         ("Trackers", ["enable_trackers", "tracker_url"]),
         ("RSS", ["rss_update_interval"]),
         ("Web UI", ["web_ui_enabled", "web_ui_port", "web_ui_user", "web_ui_pass"]),

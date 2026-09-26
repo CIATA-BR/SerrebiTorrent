@@ -104,6 +104,20 @@ def test_apply_preferences(session_manager):
     assert call_args['listen_interfaces'] == '0.0.0.0:7001,[::]:7001'
 
 
+def test_apply_preferences_binds_listen_interface_when_set(session_manager):
+    session_manager.apply_preferences({'listen_port': 7001, 'listen_interface': '192.168.0.50'})
+
+    call_args = session_manager.ses.apply_settings.call_args[0][0]
+    assert call_args['listen_interfaces'] == '192.168.0.50:7001'
+
+
+def test_apply_preferences_blank_listen_interface_binds_all_interfaces(session_manager):
+    session_manager.apply_preferences({'listen_port': 7001, 'listen_interface': '  '})
+
+    call_args = session_manager.ses.apply_settings.call_args[0][0]
+    assert call_args['listen_interfaces'] == '0.0.0.0:7001,[::]:7001'
+
+
 def test_apply_preferences_maps_upload_slots_and_unlimited_limits(session_manager):
     prefs = {
         'dl_limit': -1,

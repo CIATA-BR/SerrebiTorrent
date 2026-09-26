@@ -161,6 +161,15 @@ def _listen_port(value, default=6881):
     return default
 
 
+def _listen_interfaces(value, port):
+    # Bind torrent traffic to one NIC so UPnP maps the port on that NIC's
+    # router instead of the first device that answers (issue #103).
+    interface = str(value or "").strip()
+    if not interface:
+        return f"0.0.0.0:{port},[::]:{port}"
+    return f"{interface}:{port}"
+
+
 def _flush_resume_flag():
     # save_info_dict keeps the metadata in the .resume file; without it a
     # restarted torrent has to refetch it from peers, and one with no peers
@@ -463,7 +472,7 @@ class SessionManager:
             'enable_lsd': prefs.get('enable_lsd', True),
             'enable_upnp': prefs.get('enable_upnp', True),
             'enable_natpmp': prefs.get('enable_natpmp', True),
-            'listen_interfaces': f'0.0.0.0:{port},[::]:{port}',
+            'listen_interfaces': _listen_interfaces(prefs.get('listen_interface', ''), port),
             'max_retry_port_bind': 10,
             'alert_mask': lt.alert.category_t.status_notification | lt.alert.category_t.storage_notification | lt.alert.category_t.error_notification | lt.alert.category_t.port_mapping_notification,
             
