@@ -27,10 +27,7 @@ def _is_writable_dir(path: str) -> bool:
         p.mkdir(parents=True, exist_ok=True)
         test_path = p / ".write_test"
         test_path.write_text("ok", encoding="utf-8")
-        try:
-            test_path.unlink()
-        except Exception:
-            pass
+        test_path.unlink()
         return True
     except Exception:
         return False
