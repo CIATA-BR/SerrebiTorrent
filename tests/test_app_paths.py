@@ -39,3 +39,26 @@ def test_writable_dir_rejects_paths_when_probe_cannot_be_removed(tmp_path, monke
     monkeypatch.setattr(app_paths.Path, "unlink", fail_probe_unlink)
 
     assert app_paths._is_writable_dir(str(tmp_path)) is False
+
+
+
+def test_restrict_dir_permissions_uses_owner_only_mode_on_posix(monkeypatch):
+    chmod = []
+    monkeypatch.setattr(app_paths.os, "name", "posix", raising=False)
+    monkeypatch.setattr(app_paths.os, "chmod", lambda path, mode: chmod.append((path, mode)))
+
+    app_paths._restrict_dir_permissions("/tmp/private")
+
+    assert chmod == [("/tmp/private", 0o700)]
+
+
+def test_ensure_dir_applies_private_permissions(tmp_path, monkeypatch):
+    calls = []
+    monkeypatch.setattr(app_paths, "_restrict_dir_permissions", lambda path: calls.append(path))
+    target = tmp_path / "state"
+
+    result = app_paths.ensure_dir(str(target))
+
+    assert result == str(target)
+    assert target.is_dir()
+    assert calls == [str(target)]
