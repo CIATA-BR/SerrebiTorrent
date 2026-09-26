@@ -21,6 +21,15 @@ PORTABLE_DATA_DIR_NAME = "SerrebiTorrent_Data"
 _CACHED_DATA_DIR: Optional[str] = None
 
 
+def _restrict_dir_permissions(path: str) -> None:
+    if os.name == "nt":
+        return
+    try:
+        os.chmod(path, 0o700)
+    except OSError:
+        pass
+
+
 def _is_writable_dir(path: str) -> bool:
     try:
         p = Path(path)
@@ -28,6 +37,7 @@ def _is_writable_dir(path: str) -> bool:
         test_path = p / ".write_test"
         test_path.write_text("ok", encoding="utf-8")
         test_path.unlink()
+        _restrict_dir_permissions(str(p))
         return True
     except Exception:
         return False
@@ -71,13 +81,14 @@ def get_data_dir() -> str:
         return _CACHED_DATA_DIR
 
     user_dir = os.path.join(get_user_data_base_dir(), APP_DIR_NAME)
-    Path(user_dir).mkdir(parents=True, exist_ok=True)
+    ensure_dir(user_dir)
     _CACHED_DATA_DIR = user_dir
     return _CACHED_DATA_DIR
 
 
 def ensure_dir(path: str) -> str:
     Path(path).mkdir(parents=True, exist_ok=True)
+    _restrict_dir_permissions(path)
     return path
 
 
