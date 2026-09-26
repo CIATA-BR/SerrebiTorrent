@@ -1741,3 +1741,21 @@ def test_remote_preferences_allow_visible_write_fields(auth_client):
 
     assert rv.status_code == 200
     mock_client.set_app_preferences.assert_called_once_with({'save_path': '/new'})
+
+
+
+def test_flexget_import_rejects_oversized_upload(auth_client, monkeypatch):
+    monkeypatch.setattr(web_server, "FLEXGET_CONFIG_MAX_BYTES", 8)
+    mock_app = MagicMock()
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/rss/import_flexget',
+        data={'config': (io.BytesIO(b'123456789'), 'flexget.yml')},
+        headers=csrf_headers(auth_client),
+        content_type='multipart/form-data',
+    )
+
+    assert rv.status_code == 413
+    assert b"2 MB upload limit" in rv.data
+    mock_app.rss_panel.manager.import_flexget_config.assert_not_called()
