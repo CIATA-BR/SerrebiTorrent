@@ -290,9 +290,9 @@ def sources_by_label(prefs=None):
 
 def enabled_sources(disabled, prefs=None):
     """The indexers to search, given the user's switched-off list."""
-    disabled = set(disabled or ())
+    disabled = {str(source).casefold() for source in (disabled or ())}
     return [source for source in all_sources(prefs)
-            if source not in disabled]
+            if source.casefold() not in disabled]
 
 
 def _int(value):
