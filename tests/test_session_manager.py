@@ -395,3 +395,37 @@ def test_load_torrents_db_rejects_non_object_root(tmp_path):
 
     assert manager._load_torrents_db() == {}
     assert (tmp_path / "torrents.json.corrupt").read_text(encoding="utf-8") == '["unexpected"]'
+
+
+
+def test_save_torrents_db_restricts_permissions_on_posix(tmp_path, monkeypatch):
+    from session_manager import SessionManager
+    import session_manager as sm
+
+    manager = SessionManager.__new__(SessionManager)
+    manager.torrents_db_path = str(tmp_path / "torrents.json")
+    manager.torrents_db = {"abc": {"save_path": "/tmp"}}
+    monkeypatch.setattr(sm.os, "name", "posix", raising=False)
+
+    manager._save_torrents_db()
+
+    db_path = tmp_path / "torrents.json"
+    assert db_path.stat().st_mode & 0o777 == 0o600
+
+
+def test_corrupt_torrents_db_backup_restricts_permissions_on_posix(tmp_path, monkeypatch):
+    from session_manager import SessionManager
+    import session_manager as sm
+
+    db_path = tmp_path / "torrents.json"
+    db_path.write_text("{broken json", encoding="utf-8")
+    db_path.chmod(0o644)
+    monkeypatch.setattr(sm.os, "name", "posix", raising=False)
+
+    manager = SessionManager.__new__(SessionManager)
+    manager.torrents_db_path = str(db_path)
+
+    assert manager._load_torrents_db() == {}
+    backup = tmp_path / "torrents.json.corrupt"
+    assert backup.exists()
+    assert backup.stat().st_mode & 0o777 == 0o600
