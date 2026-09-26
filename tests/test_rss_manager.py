@@ -426,7 +426,7 @@ def test_rss_save_restricts_permissions_on_posix(tmp_path, monkeypatch):
     monkeypatch.setattr(rss_module, "RSS_FILE", str(rss_path))
     monkeypatch.setattr(rss_module.os, "name", "posix", raising=False)
     chmods = []
-    monkeypatch.setattr(rss_module.os, "chmod", lambda p, mode: chmods.append((str(p), mode)))
+    monkeypatch.setattr(rss_module.os, "chmod", lambda p, mode, **_kw: chmods.append((str(p), mode)))
 
     manager = RSSManager()
     manager.feeds = {
@@ -450,7 +450,7 @@ def test_corrupt_rss_backup_restricts_permissions_on_posix(tmp_path, monkeypatch
     monkeypatch.setattr(rss_module, "RSS_FILE", str(rss_path))
     monkeypatch.setattr(rss_module.os, "name", "posix", raising=False)
     chmods = []
-    monkeypatch.setattr(rss_module.os, "chmod", lambda p, mode: chmods.append((str(p), mode)))
+    monkeypatch.setattr(rss_module.os, "chmod", lambda p, mode, **_kw: chmods.append((str(p), mode)))
 
     RSSManager()
 
