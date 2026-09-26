@@ -116,8 +116,8 @@ def test_remote_settings_load_failure_is_accessible():
     script = (ROOT / "web_static" / "app.js").read_text(encoding="utf-8")
 
     start = script.index("async function loadRemoteSettings")
-    end = script.index("function startRefreshLoop", start)
-    block = script[start:end]
+    # loadRemoteSettings is the last function in app.js; slice to end of file
+    block = script[start:]
 
     assert "alertBox.setAttribute('role', 'alert')" in block
     assert "announceToSR(message, true)" in block
