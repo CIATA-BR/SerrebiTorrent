@@ -21,6 +21,8 @@ def get_bundle_dir():
 static_dir = os.path.join(get_bundle_dir(), 'web_static')
 app = Flask(__name__, static_folder=static_dir)
 
+FLEXGET_CONFIG_MAX_BYTES = 2 * 1024 * 1024
+
 # v1.16.8 accidentally published this shared session key.
 _COMPROMISED_SECRET_KEY_SHA256 = "235913427a91431f02c54460026b545ee2e1ad7e1fac34591031eb38a4a45687"
 
@@ -861,13 +863,18 @@ def rss_import_flexget():
     suffix = os.path.splitext(filename)[1] or '.yml'
     temp_path = None
     try:
+        content = upload.stream.read(FLEXGET_CONFIG_MAX_BYTES + 1)
+        if len(content) > FLEXGET_CONFIG_MAX_BYTES:
+            return "FlexGet configuration exceeds the 2 MB upload limit.", 413
         with tempfile.NamedTemporaryFile(
             prefix="serrebitorrent_flexget_",
             suffix=suffix,
             delete=False,
         ) as temp_file:
             temp_path = temp_file.name
-        upload.save(temp_path)
+            temp_file.write(content)
+            temp_file.flush()
+            os.fsync(temp_file.fileno())
         feeds, rules = app_ref.rss_panel.manager.import_flexget_config(temp_path)
     except ValueError:
         return "Invalid FlexGet configuration.", 400
