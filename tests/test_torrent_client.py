@@ -1157,3 +1157,28 @@ class TestConcurrentOperations:
         sm.running = False
         sm.alert_thread.join(timeout=1)
         SessionManager._instance = None
+
+
+
+def test_local_file_priority_rolls_back_when_persistence_fails():
+    from clients import LocalClient
+
+    handle = MagicMock()
+    priorities = [4, 0]
+    handle.file_priorities.return_value = priorities
+
+    manager = MagicMock()
+    manager._find_handle.return_value = handle
+    manager._handle_hash_key.return_value = "a" * 40
+    manager.update_priorities.side_effect = OSError("disk full")
+
+    client = LocalClient.__new__(LocalClient)
+    client.m = manager
+
+    with pytest.raises(OSError, match="disk full"):
+        client.set_file_priority("a" * 40, 0, 0)
+
+    assert handle.file_priority.call_args_list == [
+        call(0, 0),
+        call(0, 4),
+    ]
