@@ -751,7 +751,9 @@ def rss_feeds():
     app_ref = WEB_CONFIG['app']
     if not app_ref or not hasattr(app_ref, 'rss_panel'):
         return "Application context is unavailable.", 503
-    return jsonify(app_ref.rss_panel.manager.feeds)
+    manager = app_ref.rss_panel.manager
+    with manager.lock:
+        return jsonify(manager.feeds)
 
 @app.route('/api/v2/rss/add_feed', methods=['POST'])
 @login_required
@@ -796,7 +798,9 @@ def rss_rules():
     app_ref = WEB_CONFIG['app']
     if not app_ref or not hasattr(app_ref, 'rss_panel'):
         return "Application context is unavailable.", 503
-    return jsonify(app_ref.rss_panel.manager.rules)
+    manager = app_ref.rss_panel.manager
+    with manager.lock:
+        return jsonify(manager.rules)
 
 @app.route('/api/v2/rss/set_rule', methods=['POST'])
 @login_required
