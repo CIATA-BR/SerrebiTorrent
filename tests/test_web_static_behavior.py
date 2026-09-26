@@ -70,3 +70,17 @@ def test_web_profile_switch_reports_http_and_network_failures():
     assert "announceToSR(message, true)" in block
     assert "alert(message)" in block
     assert "catch (err)" in block
+
+
+
+def test_web_profile_load_failure_is_announced_once_until_success():
+    script = (ROOT / "web_static" / "app.js").read_text(encoding="utf-8")
+
+    start = script.index("window.fetchProfiles = async function()")
+    end = script.index("async function switchProfile", start)
+    block = script[start:end]
+
+    assert "list.dataset.loadError !== 'true'" in block
+    assert "list.dataset.loadError = 'true'" in block
+    assert "delete list.dataset.loadError" in block
+    assert "announceToSR(message, true)" in block
