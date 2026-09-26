@@ -70,6 +70,11 @@ class RSSManager:
                     backup = RSS_FILE + ".corrupt"
                     try:
                         shutil.copy2(RSS_FILE, backup)
+                        if os.name != "nt":
+                            try:
+                                os.chmod(backup, 0o600)
+                            except OSError:
+                                pass
                         print(f"Preserved unreadable rss.json as {backup}")
                     except OSError as backup_error:
                         print(f"Could not preserve unreadable rss.json: {backup_error}")
@@ -87,6 +92,11 @@ class RSSManager:
                         f.flush()
                         os.fsync(f.fileno())
                     os.replace(tmp, RSS_FILE)
+                    if os.name != "nt":
+                        try:
+                            os.chmod(RSS_FILE, 0o600)
+                        except OSError:
+                            pass
                 finally:
                     if os.path.exists(tmp):
                         try:

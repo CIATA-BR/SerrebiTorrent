@@ -416,3 +416,44 @@ def test_load_reads_utf8_rss_aliases(tmp_path, monkeypatch):
     manager = RSSManager()
 
     assert manager.feeds["https://example.com/feed.xml"]["alias"] == "Notícias"
+
+
+
+def test_rss_save_restricts_permissions_on_posix(tmp_path, monkeypatch):
+    import rss_manager as rss_module
+
+    rss_path = tmp_path / "rss.json"
+    monkeypatch.setattr(rss_module, "RSS_FILE", str(rss_path))
+    monkeypatch.setattr(rss_module.os, "name", "posix", raising=False)
+    chmods = []
+    monkeypatch.setattr(rss_module.os, "chmod", lambda p, mode, **_kw: chmods.append((str(p), mode)))
+
+    manager = RSSManager()
+    manager.feeds = {
+        "https://example.com/feed.xml": {
+            "alias": "Example",
+            "last_update": 0,
+            "articles": [],
+        }
+    }
+
+    assert manager.save() is True
+    assert (str(rss_path), 0o600) in chmods
+
+
+def test_corrupt_rss_backup_restricts_permissions_on_posix(tmp_path, monkeypatch):
+    import rss_manager as rss_module
+
+    rss_path = tmp_path / "rss.json"
+    rss_path.write_text("{broken json", encoding="utf-8")
+    rss_path.chmod(0o644)
+    monkeypatch.setattr(rss_module, "RSS_FILE", str(rss_path))
+    monkeypatch.setattr(rss_module.os, "name", "posix", raising=False)
+    chmods = []
+    monkeypatch.setattr(rss_module.os, "chmod", lambda p, mode, **_kw: chmods.append((str(p), mode)))
+
+    RSSManager()
+
+    backup = tmp_path / "rss.json.corrupt"
+    assert backup.exists()
+    assert (str(backup), 0o600) in chmods
