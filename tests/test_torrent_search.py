@@ -514,3 +514,14 @@ def test_feed_names_are_deduplicated_case_insensitively():
     assert len(feeds) == 1
     assert feeds[0]["name"] == "Prowlarr"
     assert feeds[0]["url"] == "http://one"
+
+
+
+def test_switched_off_sources_are_case_insensitive():
+    prefs = {"torznab_feeds": [{"name": "My Prowlarr", "url": "http://x"}]}
+
+    enabled = ts.enabled_sources(["my prowlarr", ts.SOURCE_NYAA.lower()], prefs)
+
+    assert "My Prowlarr" not in enabled
+    assert ts.SOURCE_NYAA not in enabled
+    assert ts.SOURCE_KNABEN in enabled
