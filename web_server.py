@@ -371,7 +371,10 @@ def get_profiles():
     except Exception:
         return "Failed to load profiles.", 500
     safe_profiles = {
-        pid: {key: value for key, value in profile.items() if key != 'password'}
+        pid: {
+            'name': profile.get('name', ''),
+            'type': profile.get('type', ''),
+        }
         for pid, profile in profiles.items()
         if isinstance(profile, dict)
     }
