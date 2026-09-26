@@ -138,4 +138,7 @@ def collect_source_messages(root: Path | None = None, *, include_web: bool = Tru
     messages = python_source_messages(root)
     if include_web:
         messages.update(web_source_messages(root))
-    return sorted(messages, key=str.casefold)
+        # Total order: casefold ties (e.g. 'Check for updates' vs
+    # 'Check for Updates') must not depend on set iteration order,
+    # which varies per process (hash randomization).
+    return sorted(messages, key=lambda s: (s.casefold(), s))

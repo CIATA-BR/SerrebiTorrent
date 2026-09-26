@@ -51,7 +51,10 @@ def source_messages() -> list[str]:
             "Close",
         }
     )
-    return sorted(messages, key=str.casefold)
+        # Total order: casefold ties (e.g. 'Check for updates' vs
+    # 'Check for Updates') must not depend on set iteration order,
+    # which varies per process (hash randomization).
+    return sorted(messages, key=lambda s: (s.casefold(), s))
 
 
 def _data_dir() -> Path:

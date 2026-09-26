@@ -12,7 +12,7 @@ def test_source_messages_include_existing_catalog_and_contributor_strings():
     assert "Settings" in messages
     assert "Translation Center" in messages
     assert "Import PO..." in messages
-    assert messages == sorted(set(messages), key=str.casefold)
+    assert messages == sorted(set(messages), key=lambda s: (s.casefold(), s))
 
 
 def test_load_shipped_catalog_returns_the_reviewed_entries():
