@@ -457,3 +457,35 @@ def test_corrupt_rss_backup_restricts_permissions_on_posix(tmp_path, monkeypatch
     backup = tmp_path / "rss.json.corrupt"
     assert backup.exists()
     assert (str(backup), 0o600) in chmods
+
+
+
+@pytest.mark.parametrize("rss_value", [
+    "file:///tmp/feed.xml",
+    "ftp://example.com/feed.xml",
+    "http:///missing-host.xml",
+])
+def test_flexget_import_rejects_invalid_rss_urls(rss_manager, tmp_path, rss_value):
+    config_path = tmp_path / "flexget.yml"
+    config_path.write_text(
+        f"""
+tasks:
+  example:
+    rss: {rss_value}
+""",
+        encoding="utf-8",
+    )
+    rss_manager.feeds = {}
+    rss_manager.rules = []
+    rss_manager.save.return_value = True
+
+    mock_config = MagicMock()
+    mock_config.get_profiles.return_value = {}
+
+    with patch("config_manager.ConfigManager", return_value=mock_config):
+        with pytest.raises(ValueError, match="RSS feed URL"):
+            rss_manager.import_flexget_config(str(config_path))
+
+    assert rss_manager.feeds == {}
+    assert rss_manager.rules == []
+    rss_manager.save.assert_not_called()
