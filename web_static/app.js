@@ -223,6 +223,42 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const addProfileForm = document.getElementById('addProfileForm');
+    if (addProfileForm) {
+        addProfileForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append('name', document.getElementById('profName').value.trim());
+            formData.append('type', document.getElementById('profType').value);
+            formData.append('url', document.getElementById('profUrl').value.trim());
+            formData.append('user', document.getElementById('profUser').value);
+            formData.append('password', document.getElementById('profPass').value);
+
+            try {
+                const res = await apiFetch('/api/v2/profiles/add', {
+                    method: 'POST',
+                    body: formData
+                });
+                if (!res.ok) {
+                    const message = (await res.text()) || res.statusText || `HTTP ${res.status}`;
+                    announceToSR(message, true);
+                    alert(message);
+                    return;
+                }
+
+                const modal = bootstrap.Modal.getInstance(document.getElementById('addProfileModal'));
+                if (modal) modal.hide();
+                addProfileForm.reset();
+                announceToSR('Profile created.');
+                if (window.fetchProfiles) await window.fetchProfiles();
+            } catch (err) {
+                const message = `Failed to create profile: ${err?.message || err}`;
+                announceToSR(message, true);
+                alert(message);
+            }
+        };
+    }
+
     // Add Torrent Form Handler
     const addTorrentForm = document.getElementById('addTorrentForm');
     if (addTorrentForm) {
