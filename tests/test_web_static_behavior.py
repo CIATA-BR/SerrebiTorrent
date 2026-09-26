@@ -70,3 +70,16 @@ def test_web_profile_switch_reports_http_and_network_failures():
     assert "announceToSR(message, true)" in block
     assert "alert(message)" in block
     assert "catch (err)" in block
+
+
+
+def test_web_settings_load_failures_are_announced_and_visible():
+    script = (ROOT / "web_static" / "app.js").read_text(encoding="utf-8")
+
+    start = script.index("async function loadAppSettings")
+    end = script.index("async function loadRemoteSettings", start)
+    block = script[start:end]
+
+    assert "Failed to load settings." in block
+    assert "announceToSR(message, true)" in block
+    assert "alert(message)" in block
