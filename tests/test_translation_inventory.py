@@ -22,6 +22,6 @@ def test_inventory_collects_translation_center_import_label():
 
 def test_combined_inventory_is_unique_sorted_and_broad():
     messages = collect_source_messages()
-    assert messages == sorted(set(messages), key=str.casefold)
+    assert messages == sorted(set(messages), key=lambda s: (s.casefold(), s))
     # Guard against accidentally regressing to the small central catalog only.
     assert len(messages) > 200
