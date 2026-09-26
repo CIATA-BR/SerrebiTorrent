@@ -138,3 +138,19 @@ def test_web_form_actions_and_refresh_failures_are_announced():
     assert "let refreshErrorActive = false;" in script
     assert "if (!refreshErrorActive)" in script
     assert "refreshErrorActive = false;" in script
+
+
+
+def test_web_add_profile_form_posts_and_reports_failures():
+    script = (ROOT / "web_static" / "app.js").read_text(encoding="utf-8")
+
+    assert "document.getElementById('addProfileForm')" in script
+    assert "apiFetch('/api/v2/profiles/add'" in script
+    assert "formData.append('name'" in script
+    assert "formData.append('type'" in script
+    assert "formData.append('url'" in script
+    assert "formData.append('user'" in script
+    assert "formData.append('password'" in script
+    assert "announceToSR('Profile created.')" in script
+    assert "announceToSR(message, true)" in script
+    assert "if (window.fetchProfiles) await window.fetchProfiles()" in script
