@@ -919,6 +919,18 @@ def set_app_prefs():
     wx.CallAfter(app_ref._update_web_ui)
     return "Ok."
 
+def _is_sensitive_remote_pref_key(key):
+    normalized = str(key or '').strip().lower()
+    return any(token in normalized for token in (
+        'password',
+        'passwd',
+        'secret',
+        'token',
+        'api_key',
+        'apikey',
+    ))
+
+
 @app.route('/api/v2/app/remote_prefs')
 @login_required
 def get_remote_prefs():
@@ -944,6 +956,12 @@ def get_remote_prefs():
         return "Failed to load remote preferences.", 500
     if prefs is None:
         return "Failed to load remote preferences.", 500
+
+    if isinstance(prefs, dict):
+        prefs = {
+            key: value for key, value in prefs.items()
+            if not _is_sensitive_remote_pref_key(key)
+        }
 
     return jsonify({
         'name': name,
