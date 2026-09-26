@@ -1656,3 +1656,32 @@ def test_web_app_preferences_reject_hidden_fields(auth_client):
     assert rv.status_code == 400
     assert b"Unsupported application preference field." in rv.data
     mock_app.config_manager.set_preferences.assert_not_called()
+
+
+
+def test_rss_feeds_snapshot_uses_manager_lock(auth_client):
+    manager = MagicMock()
+    manager.feeds = {'https://example.com/feed.xml': {'alias': 'Example'}}
+    mock_app = MagicMock()
+    mock_app.rss_panel.manager = manager
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.get('/api/v2/rss/feeds')
+
+    assert rv.status_code == 200
+    manager.lock.__enter__.assert_called_once()
+    manager.lock.__exit__.assert_called_once()
+
+
+def test_rss_rules_snapshot_uses_manager_lock(auth_client):
+    manager = MagicMock()
+    manager.rules = [{'pattern': 'Ubuntu', 'type': 'accept', 'enabled': True}]
+    mock_app = MagicMock()
+    mock_app.rss_panel.manager = manager
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.get('/api/v2/rss/rules')
+
+    assert rv.status_code == 200
+    manager.lock.__enter__.assert_called_once()
+    manager.lock.__exit__.assert_called_once()
