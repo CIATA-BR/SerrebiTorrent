@@ -618,10 +618,7 @@ class RTorrentClient(BaseClient):
             self.srv.load.raw_start("", xmlrpc.client.Binary(c))
 
     def get_global_stats(self):
-        try:
-            return self.srv.throttle.global_down.rate(), self.srv.throttle.global_up.rate()
-        except Exception:
-            return 0, 0
+        return self.srv.throttle.global_down.rate(), self.srv.throttle.global_up.rate()
 
     def get_app_preferences(self):
         prefs = {

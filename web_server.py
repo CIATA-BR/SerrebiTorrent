@@ -753,7 +753,9 @@ def rss_feeds():
     app_ref = WEB_CONFIG['app']
     if not app_ref or not hasattr(app_ref, 'rss_panel'):
         return "Application context is unavailable.", 503
-    return jsonify(app_ref.rss_panel.manager.feeds)
+    manager = app_ref.rss_panel.manager
+    with manager.lock:
+        return jsonify(manager.feeds)
 
 @app.route('/api/v2/rss/add_feed', methods=['POST'])
 @login_required
@@ -798,7 +800,9 @@ def rss_rules():
     app_ref = WEB_CONFIG['app']
     if not app_ref or not hasattr(app_ref, 'rss_panel'):
         return "Application context is unavailable.", 503
-    return jsonify(app_ref.rss_panel.manager.rules)
+    manager = app_ref.rss_panel.manager
+    with manager.lock:
+        return jsonify(manager.rules)
 
 @app.route('/api/v2/rss/set_rule', methods=['POST'])
 @login_required
@@ -1014,6 +1018,20 @@ def set_remote_prefs():
     new_prefs = request.get_json(silent=True)
     if not isinstance(new_prefs, dict) or not new_prefs:
         return "Remote preferences object is required.", 400
+
+    try:
+        current_prefs = client.get_app_preferences()
+    except Exception:
+        return "Failed to load remote preferences.", 500
+    if not isinstance(current_prefs, dict):
+        return "Failed to load remote preferences.", 500
+
+    allowed_fields = {
+        key for key in current_prefs
+        if not _is_sensitive_remote_pref_key(key)
+    }
+    if set(new_prefs) - allowed_fields:
+        return "Unsupported remote preference field.", 400
 
     try:
         client.set_app_preferences(new_prefs)
