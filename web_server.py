@@ -368,9 +368,14 @@ def get_profiles():
         profiles = app_ref.config_manager.get_profiles()
     except Exception:
         return "Failed to load profiles.", 500
+    safe_profiles = {
+        pid: {key: value for key, value in profile.items() if key != 'password'}
+        for pid, profile in profiles.items()
+        if isinstance(profile, dict)
+    }
     current_id = app_ref.current_profile_id
     return jsonify({
-        'profiles': profiles,
+        'profiles': safe_profiles,
         'current_id': current_id
     })
 

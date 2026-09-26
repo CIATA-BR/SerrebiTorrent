@@ -1,5 +1,6 @@
 import pytest
 import sys
+import json
 import os
 from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
@@ -396,6 +397,42 @@ def test_load_torrents_db_rejects_non_object_root(tmp_path):
     assert manager._load_torrents_db() == {}
     assert (tmp_path / "torrents.json.corrupt").read_text(encoding="utf-8") == '["unexpected"]'
 
+
+
+def test_qbittorrent_version_cache_ignores_non_object_json(tmp_path):
+    import session_manager as sm
+
+    state_path = tmp_path / sm._VERSION_STATE_FILE
+    state_path.write_text('["unexpected"]', encoding="utf-8")
+
+    with patch.object(sm, 'get_state_dir', return_value=str(tmp_path)):
+        assert sm._read_version_state() == (None, 0.0)
+
+
+def test_qbittorrent_version_cache_ignores_invalid_checked_value(tmp_path):
+    import session_manager as sm
+
+    state_path = tmp_path / sm._VERSION_STATE_FILE
+    state_path.write_text(
+        json.dumps({"version": "9.9.9", "checked": "not-a-number"}),
+        encoding="utf-8",
+    )
+
+    with patch.object(sm, 'get_state_dir', return_value=str(tmp_path)):
+        assert sm._read_version_state() == (None, 0.0)
+
+
+def test_qbittorrent_version_cache_write_is_atomic(tmp_path):
+    import session_manager as sm
+
+    with patch.object(sm, 'get_state_dir', return_value=str(tmp_path)):
+        sm._write_version_state((9, 9, 9))
+
+    state_path = tmp_path / sm._VERSION_STATE_FILE
+    payload = json.loads(state_path.read_text(encoding="utf-8"))
+    assert payload["version"] == "9.9.9"
+    assert isinstance(payload["checked"], float)
+    assert list(tmp_path.glob("*.tmp")) == []
 
 
 def test_save_torrents_db_restricts_permissions_on_posix(tmp_path, monkeypatch):

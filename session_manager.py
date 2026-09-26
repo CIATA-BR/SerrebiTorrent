@@ -63,17 +63,30 @@ def _read_version_state():
     try:
         with open(_version_state_path(), "r", encoding="utf-8") as f:
             state = json.load(f)
-    except (OSError, ValueError):
+        if not isinstance(state, dict):
+            return None, 0.0
+        return _parse_version(state.get("version")), float(state.get("checked", 0) or 0)
+    except (OSError, TypeError, ValueError):
         return None, 0.0
-    return _parse_version(state.get("version")), float(state.get("checked", 0) or 0)
 
 
 def _write_version_state(version):
+    path = _version_state_path()
+    tmp = f"{path}.{os.getpid()}.tmp"
     try:
-        with open(_version_state_path(), "w", encoding="utf-8") as f:
+        with open(tmp, "w", encoding="utf-8") as f:
             json.dump({"version": "%d.%d.%d" % version, "checked": time.time()}, f)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp, path)
     except OSError:
         pass
+    finally:
+        try:
+            if os.path.exists(tmp):
+                os.remove(tmp)
+        except OSError:
+            pass
 
 
 def _fetch_latest_qbittorrent():
