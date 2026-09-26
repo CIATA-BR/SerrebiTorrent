@@ -13,6 +13,8 @@ from urllib.parse import urlparse
 
 from clients import download_torrent_url
 
+TORRENT_UPLOAD_MAX_BYTES = 16 * 1024 * 1024
+
 def get_bundle_dir():
     return getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
 
@@ -716,7 +718,11 @@ def torrents_add():
     if 'torrents' in request.files:
         files = request.files.getlist('torrents')
         for f in files:
-            content = f.read()
+            content = f.read(TORRENT_UPLOAD_MAX_BYTES + 1)
+            if len(content) > TORRENT_UPLOAD_MAX_BYTES:
+                errors.append("file-too-large")
+                print(f"Web add file rejected as too large: {f.filename!r}")
+                continue
             if content:
                 try:
                     attempted += 1
@@ -730,6 +736,8 @@ def torrents_add():
     if errors:
         if attempted == 0 and all(error == "rejected-url" for error in errors):
             return "Invalid torrent URL.", 400
+        if attempted == 0 and all(error == "file-too-large" for error in errors):
+            return "Torrent file exceeds the 16 MB upload limit.", 413
         # Detail is logged server-side; don't leak exception text to clients.
         return "Failed to add torrents.", 500
     return "Ok."
