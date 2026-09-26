@@ -500,3 +500,17 @@ def test_tracker_file_download_stops_when_stream_exceeds_limit(monkeypatch):
             get=MagicMock(return_value=response))):
         with pytest.raises(RuntimeError, match="download limit"):
             ts.fetch_torrent_bytes(item)
+
+
+
+def test_feed_names_are_deduplicated_case_insensitively():
+    prefs = {"torznab_feeds": [
+        {"name": "Prowlarr", "url": "http://one", "api_key": "a"},
+        {"name": "prowlarr", "url": "http://two", "api_key": "b"},
+    ]}
+
+    feeds = ts.feeds(prefs)
+
+    assert len(feeds) == 1
+    assert feeds[0]["name"] == "Prowlarr"
+    assert feeds[0]["url"] == "http://one"

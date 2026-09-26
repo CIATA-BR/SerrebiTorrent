@@ -205,9 +205,10 @@ def feeds(prefs):
             continue
         name = str(entry.get("name") or "").strip()
         url = str(entry.get("url") or "").strip()
-        if not name or not url or name in seen:
+        key = name.casefold()
+        if not name or not url or key in seen:
             continue
-        seen.add(name)
+        seen.add(key)
         rows.append({
             "name": name,
             "url": url,
