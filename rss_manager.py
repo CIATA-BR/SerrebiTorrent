@@ -44,6 +44,13 @@ def _fetch_public_feed(url):
 
     raise ValueError("RSS feed redirected too many times")
 
+def _normalize_feed_url(url):
+    parsed = urlparse(str(url or "").strip())
+    if parsed.scheme.lower() not in ('http', 'https') or not parsed.hostname:
+        raise ValueError("RSS feed URL must use http or https and include a host")
+    return parsed.geturl()
+
+
 class RSSManager:
     def __init__(self):
         self.lock = threading.RLock()
@@ -109,10 +116,7 @@ class RSSManager:
             return True
 
     def add_feed(self, url, alias=""):
-        parsed = urlparse(str(url or "").strip())
-        if parsed.scheme.lower() not in ('http', 'https') or not parsed.hostname:
-            raise ValueError("RSS feed URL must use http or https and include a host")
-        url = parsed.geturl()
+        url = _normalize_feed_url(url)
 
         with self.lock:
             if url in self.feeds:
@@ -373,6 +377,7 @@ class RSSManager:
                             url = rss_entry.get('url')
                         
                         if url:
+                            url = _normalize_feed_url(url)
                             task_feed_urls.append(url)
                             # Avoid nested lock if add_feed uses it.
                             # Since we are holding lock, we should manually manipulate dict or make add_feed reentrant (RLock handles this).
@@ -392,6 +397,7 @@ class RSSManager:
                                     url = val.get('url')
                                 
                                 if url:
+                                    url = _normalize_feed_url(url)
                                     task_feed_urls.append(url)
                                     if url not in self.feeds:
                                         self.feeds[url] = {'alias': f"{task_name} RSS", 'last_update': 0, 'articles': []}
