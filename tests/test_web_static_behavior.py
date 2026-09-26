@@ -55,3 +55,18 @@ def test_web_status_filters_use_single_delegated_activation_path():
     assert 'onclick="setFilter(' not in markup
     assert "const link = e.target.closest('.sidebar-link');" in script
     assert "activateSidebarLink(link, e);" in script
+
+
+
+def test_web_profile_switch_reports_http_and_network_failures():
+    script = (ROOT / "web_static" / "app.js").read_text(encoding="utf-8")
+
+    start = script.index("async function switchProfile")
+    end = script.index("function updateDetailsDebounced", start)
+    block = script[start:end]
+
+    assert "if (!res.ok)" in block
+    assert "await res.text()" in block
+    assert "announceToSR(message, true)" in block
+    assert "alert(message)" in block
+    assert "catch (err)" in block

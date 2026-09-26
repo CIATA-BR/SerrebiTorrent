@@ -887,17 +887,24 @@ async function switchProfile(id, event) {
     if (id === currentProfileId) return;
     announceToSR("Switching client profile...");
     const fd = new FormData(); fd.append('id', id);
-    const res = await apiFetch('/api/v2/profiles/switch', { method: 'POST', body: fd });
-    if (res.ok) { 
-        selectedHashes.clear(); 
-        lastFocusedHash = null; 
-        lastUserActivity = 0; 
-        currentProfileId = id; 
-        torrentsMap.clear(); 
+    try {
+        const res = await apiFetch('/api/v2/profiles/switch', { method: 'POST', body: fd });
+        if (!res.ok) {
+            const message = (await res.text()) || res.statusText || `HTTP ${res.status}`;
+            announceToSR(message, true);
+            alert(message);
+            return;
+        }
+
+        selectedHashes.clear();
+        lastFocusedHash = null;
+        lastUserActivity = 0;
+        currentProfileId = id;
+        torrentsMap.clear();
         domRows.forEach(tr => tr.remove());
         domRows.clear();
         visibleTorrents = [];
-        
+
         // Update Sidebar visual state immediately
         document.querySelectorAll('.sidebar-link[data-profile-id]').forEach(l => {
             const isActive = l.dataset.profileId === id;
@@ -908,8 +915,12 @@ async function switchProfile(id, event) {
 
         lastProfileFetch = 0; // Force re-fetch next cycle
         if (window.fetchProfiles) window.fetchProfiles(); // Or just call it now
-        
-        setTimeout(() => refreshData(true), 500); 
+
+        setTimeout(() => refreshData(true), 500);
+    } catch (err) {
+        const message = err?.message || String(err);
+        announceToSR(message, true);
+        alert(message);
     }
 }
 
