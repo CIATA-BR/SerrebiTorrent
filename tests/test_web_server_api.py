@@ -1656,3 +1656,21 @@ def test_web_app_preferences_reject_hidden_fields(auth_client):
     assert rv.status_code == 400
     assert b"Unsupported application preference field." in rv.data
     mock_app.config_manager.set_preferences.assert_not_called()
+
+
+
+def test_flexget_import_rejects_oversized_upload(auth_client, monkeypatch):
+    monkeypatch.setattr(web_server, "FLEXGET_CONFIG_MAX_BYTES", 8)
+    mock_app = MagicMock()
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/rss/import_flexget',
+        data={'config': (io.BytesIO(b'123456789'), 'flexget.yml')},
+        headers=csrf_headers(auth_client),
+        content_type='multipart/form-data',
+    )
+
+    assert rv.status_code == 413
+    assert b"2 MB upload limit" in rv.data
+    mock_app.rss_panel.manager.import_flexget_config.assert_not_called()
