@@ -19,7 +19,7 @@ def rss_manager():
             return manager
 
 def test_downloaded_dedup(rss_manager):
-    url = "http://feed.com/rss"
+    url = "http://93.184.216.34/rss"
     rss_manager.add_feed(url)
     uid = "http://test.com/a.torrent"
 
@@ -35,7 +35,7 @@ def test_downloaded_dedup(rss_manager):
     assert rss_manager.is_downloaded("http://other/rss", uid) is False
 
 def test_downloaded_list_is_bounded(rss_manager):
-    url = "http://feed.com/rss"
+    url = "http://93.184.216.34/rss"
     rss_manager.add_feed(url)
     for i in range(1200):
         rss_manager.mark_downloaded(url, f"uid-{i}")
@@ -46,15 +46,16 @@ def test_downloaded_list_is_bounded(rss_manager):
     assert "uid-0" not in seen
 
 def test_add_remove_feed(rss_manager):
-    assert rss_manager.add_feed("http://test.com/rss", "Test Feed") is True
-    assert "http://test.com/rss" in rss_manager.feeds
-    assert rss_manager.feeds["http://test.com/rss"]['alias'] == "Test Feed"
+    # Use a public IP literal so the suite never depends on live DNS.
+    assert rss_manager.add_feed("http://93.184.216.34/rss", "Test Feed") is True
+    assert "http://93.184.216.34/rss" in rss_manager.feeds
+    assert rss_manager.feeds["http://93.184.216.34/rss"]['alias'] == "Test Feed"
     
     # Duplicate add
-    assert rss_manager.add_feed("http://test.com/rss") is False
+    assert rss_manager.add_feed("http://93.184.216.34/rss") is False
     
-    rss_manager.remove_feed("http://test.com/rss")
-    assert "http://test.com/rss" not in rss_manager.feeds
+    rss_manager.remove_feed("http://93.184.216.34/rss")
+    assert "http://93.184.216.34/rss" not in rss_manager.feeds
 
 def test_add_rule(rss_manager):
     rss_manager.add_rule("test.*", "accept")
@@ -126,8 +127,9 @@ def test_fetch_feed_rejects_non_http_scheme(rss_manager):
 
 @patch('rss_manager._public_torrent_session')
 def test_fetch_feed_rejects_private_network_target(mock_session_factory, rss_manager):
+    # add_feed now rejects private targets outright; fetch_feed must also
+    # refuse to fetch one and never touch the session.
     url = "http://127.0.0.1/feed.xml"
-    rss_manager.add_feed(url)
 
     assert rss_manager.fetch_feed(url) == []
     mock_session_factory.assert_not_called()
@@ -488,4 +490,31 @@ tasks:
 
     assert rss_manager.feeds == {}
     assert rss_manager.rules == []
+    rss_manager.save.assert_not_called()
+
+
+
+@pytest.mark.parametrize(
+    "url",
+    [
+        "http://localhost/feed.xml",
+        "http://127.0.0.1/feed.xml",
+        "http://192.168.1.5/feed.xml",
+        "http://[::1]/feed.xml",
+        "https://user:secret@example.com/feed.xml",
+    ],
+)
+def test_add_feed_rejects_private_or_credentialed_urls(rss_manager, url, monkeypatch):
+    def fake_validate(value):
+        if "example.com" in value:
+            return None
+        raise ValueError("blocked")
+
+    monkeypatch.setattr("rss_manager.validate_public_torrent_url", fake_validate)
+    rss_manager.save.return_value = True
+
+    with pytest.raises(ValueError):
+        rss_manager.add_feed(url, "Blocked")
+
+    assert rss_manager.feeds == {}
     rss_manager.save.assert_not_called()

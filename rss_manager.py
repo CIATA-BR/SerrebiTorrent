@@ -45,9 +45,16 @@ def _fetch_public_feed(url):
     raise ValueError("RSS feed redirected too many times")
 
 def _normalize_feed_url(url):
-    parsed = urlparse(str(url or "").strip())
+    normalized = str(url or "").strip()
+    parsed = urlparse(normalized)
     if parsed.scheme.lower() not in ('http', 'https') or not parsed.hostname:
         raise ValueError("RSS feed URL must use http or https and include a host")
+    if parsed.username is not None or parsed.password is not None:
+        raise ValueError("RSS feed URL must not contain embedded credentials")
+    try:
+        validate_public_torrent_url(normalized)
+    except ValueError as exc:
+        raise ValueError("RSS feed URL must use a public http/https address") from exc
     return parsed.geturl()
 
 
