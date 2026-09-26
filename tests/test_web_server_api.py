@@ -1533,3 +1533,38 @@ def test_profiles_endpoint_redacts_remote_passwords(auth_client):
     assert profile['user'] == 'alice'
     assert 'password' not in profile
     assert b'super-secret' not in rv.data
+
+
+
+def test_app_preferences_endpoint_exposes_only_web_form_fields(auth_client):
+    mock_app = MagicMock()
+    mock_app.config_manager.get_preferences.return_value = {
+        'download_path': '/downloads',
+        'rss_update_interval': 300,
+        'dl_limit': 0,
+        'ul_limit': 0,
+        'min_to_tray': True,
+        'language': 'en',
+        'web_ui_pass': 'web-secret',
+        'proxy_password': 'proxy-secret',
+        'torznab_feeds': [
+            {'name': 'Private', 'url': 'https://indexer.example', 'api_key': 'api-secret'}
+        ],
+    }
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.get('/api/v2/app/prefs')
+
+    assert rv.status_code == 200
+    payload = rv.get_json()
+    assert payload == {
+        'download_path': '/downloads',
+        'rss_update_interval': 300,
+        'dl_limit': 0,
+        'ul_limit': 0,
+        'min_to_tray': True,
+        'language': 'en',
+    }
+    assert b'web-secret' not in rv.data
+    assert b'proxy-secret' not in rv.data
+    assert b'api-secret' not in rv.data
