@@ -483,13 +483,15 @@ def test_resume_state_file_restricts_permissions_on_posix(session_manager, tmp_p
         params=SimpleNamespace(info_hashes=info_hash, save_path="")
     )
     monkeypatch.setattr(sm.os, "name", "posix", raising=False)
+    chmods = []
+    monkeypatch.setattr(sm.os, "chmod", lambda p, mode, **_kw: chmods.append((str(p), mode)))
 
     with patch('session_manager._write_resume_data_bytes', return_value=b"resume-data"):
         session_manager._handle_save_resume(alert)
 
     path = tmp_path / f"{info_hash}.resume"
     assert path.exists()
-    assert path.stat().st_mode & 0o777 == 0o600
+    assert (str(path), 0o600) in chmods
 
 
 def test_torrent_state_file_restricts_permissions_on_posix(
@@ -499,6 +501,8 @@ def test_torrent_state_file_restricts_permissions_on_posix(
 
     session_manager.state_dir = str(tmp_path)
     monkeypatch.setattr(sm.os, "name", "posix", raising=False)
+    chmods = []
+    monkeypatch.setattr(sm.os, "chmod", lambda p, mode, **_kw: chmods.append((str(p), mode)))
 
     info = MagicMock()
     info.info_hashes.return_value = SimpleNamespace()
@@ -511,4 +515,4 @@ def test_torrent_state_file_restricts_permissions_on_posix(
 
     path = tmp_path / (("8" * 40) + ".torrent")
     assert path.exists()
-    assert path.stat().st_mode & 0o777 == 0o600
+    assert (str(path), 0o600) in chmods
