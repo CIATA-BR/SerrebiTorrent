@@ -1528,10 +1528,12 @@ def test_profiles_endpoint_redacts_remote_passwords(auth_client):
 
     assert rv.status_code == 200
     profile = rv.get_json()['profiles']['p1']
-    assert profile['name'] == 'Remote'
-    assert profile['type'] == 'qbittorrent'
-    assert profile['user'] == 'alice'
+    assert profile == {'name': 'Remote', 'type': 'qbittorrent'}
+    assert 'user' not in profile
+    assert 'url' not in profile
     assert 'password' not in profile
+    assert b'alice' not in rv.data
+    assert b'example.test' not in rv.data
     assert b'super-secret' not in rv.data
 
 
