@@ -53,6 +53,7 @@ import requests
 USER_AGENT = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) "
               "Gecko/20100101 Firefox/128.0")
 HEADERS = {"User-Agent": USER_AGENT}
+TORRENT_MAX_DOWNLOAD_BYTES = 16 * 1024 * 1024
 
 SOURCE_PIRATEBAY = "The Pirate Bay"
 SOURCE_EZTV = "EZTV"
@@ -428,9 +429,32 @@ def fetch_torrent_bytes(item, timeout=HTTP_TIMEOUT_S):
     url = str(item.get("download_url") or "").strip()
     if not url:
         raise RuntimeError("That result carries no torrent file to fetch.")
-    response = _http().get(url, timeout=timeout, allow_redirects=True)
-    response.raise_for_status()
-    body = response.content
+    response = _http().get(
+        url, timeout=timeout, allow_redirects=True, stream=True
+    )
+    try:
+        response.raise_for_status()
+        length = response.headers.get("Content-Length")
+        if length:
+            try:
+                if int(length) > TORRENT_MAX_DOWNLOAD_BYTES:
+                    raise RuntimeError("Torrent file exceeds the 16 MB download limit.")
+            except ValueError:
+                pass
+
+        body = bytearray()
+        for chunk in response.iter_content(64 * 1024):
+            if not chunk:
+                continue
+            body.extend(chunk)
+            if len(body) > TORRENT_MAX_DOWNLOAD_BYTES:
+                raise RuntimeError("Torrent file exceeds the 16 MB download limit.")
+        body = bytes(body)
+    finally:
+        close = getattr(response, "close", None)
+        if callable(close):
+            close()
+
     # Some trackers answer a spent or unauthorised link with an HTML page and
     # a 200. A torrent file is bencoded and always starts with a dictionary.
     if not body.startswith(b"d"):

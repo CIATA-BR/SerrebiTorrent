@@ -19,16 +19,24 @@ import torrent_search as ts
 
 
 class _Response:
-    def __init__(self, payload=None, text="", content=b""):
+    def __init__(self, payload=None, text="", content=b"", headers=None):
         self._payload = payload
         self.text = text
         self.content = content
+        self.headers = headers or {}
         self.status_code = 200
 
     def json(self):
         return self._payload
 
     def raise_for_status(self):
+        return None
+
+    def iter_content(self, chunk_size):
+        for offset in range(0, len(self.content), chunk_size):
+            yield self.content[offset:offset + chunk_size]
+
+    def close(self):
         return None
 
 
@@ -461,3 +469,34 @@ def test_search_dialog_blinddl_import_treats_persistence_as_optional():
     block = source[source.index("def _adopt_blinddl_feeds"):source.index("# -- searching")]
     assert "self.config_manager.set_preferences(prefs)" in block
     assert "except Exception" in block
+
+
+
+def test_tracker_file_download_rejects_oversized_content_length():
+    response = _Response(
+        content=b"d4:infod",
+        headers={"Content-Length": str(ts.TORRENT_MAX_DOWNLOAD_BYTES + 1)},
+    )
+    item = ts._item(
+        ts.SOURCE_KNABEN, "", "X",
+        download_url="https://tracker.example/dl",
+    )
+
+    with patch.object(ts, '_http', return_value=MagicMock(
+            get=MagicMock(return_value=response))):
+        with pytest.raises(RuntimeError, match="16 MB download limit"):
+            ts.fetch_torrent_bytes(item)
+
+
+def test_tracker_file_download_stops_when_stream_exceeds_limit(monkeypatch):
+    monkeypatch.setattr(ts, "TORRENT_MAX_DOWNLOAD_BYTES", 8)
+    response = _Response(content=b"d12345678")
+    item = ts._item(
+        ts.SOURCE_KNABEN, "", "X",
+        download_url="https://tracker.example/dl",
+    )
+
+    with patch.object(ts, '_http', return_value=MagicMock(
+            get=MagicMock(return_value=response))):
+        with pytest.raises(RuntimeError, match="download limit"):
+            ts.fetch_torrent_bytes(item)
