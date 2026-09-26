@@ -406,11 +406,13 @@ def test_save_torrents_db_restricts_permissions_on_posix(tmp_path, monkeypatch):
     manager.torrents_db_path = str(tmp_path / "torrents.json")
     manager.torrents_db = {"abc": {"save_path": "/tmp"}}
     monkeypatch.setattr(sm.os, "name", "posix", raising=False)
+    chmods = []
+    monkeypatch.setattr(sm.os, "chmod", lambda p, mode: chmods.append((str(p), mode)))
 
     manager._save_torrents_db()
 
     db_path = tmp_path / "torrents.json"
-    assert db_path.stat().st_mode & 0o777 == 0o600
+    assert (str(db_path), 0o600) in chmods
 
 
 def test_corrupt_torrents_db_backup_restricts_permissions_on_posix(tmp_path, monkeypatch):
@@ -421,6 +423,8 @@ def test_corrupt_torrents_db_backup_restricts_permissions_on_posix(tmp_path, mon
     db_path.write_text("{broken json", encoding="utf-8")
     db_path.chmod(0o644)
     monkeypatch.setattr(sm.os, "name", "posix", raising=False)
+    chmods = []
+    monkeypatch.setattr(sm.os, "chmod", lambda p, mode: chmods.append((str(p), mode)))
 
     manager = SessionManager.__new__(SessionManager)
     manager.torrents_db_path = str(db_path)
@@ -428,4 +432,4 @@ def test_corrupt_torrents_db_backup_restricts_permissions_on_posix(tmp_path, mon
     assert manager._load_torrents_db() == {}
     backup = tmp_path / "torrents.json.corrupt"
     assert backup.exists()
-    assert backup.stat().st_mode & 0o777 == 0o600
+    assert (str(backup), 0o600) in chmods
