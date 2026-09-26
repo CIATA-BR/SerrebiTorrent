@@ -425,6 +425,8 @@ def test_rss_save_restricts_permissions_on_posix(tmp_path, monkeypatch):
     rss_path = tmp_path / "rss.json"
     monkeypatch.setattr(rss_module, "RSS_FILE", str(rss_path))
     monkeypatch.setattr(rss_module.os, "name", "posix", raising=False)
+    chmods = []
+    monkeypatch.setattr(rss_module.os, "chmod", lambda p, mode: chmods.append((str(p), mode)))
 
     manager = RSSManager()
     manager.feeds = {
@@ -436,7 +438,7 @@ def test_rss_save_restricts_permissions_on_posix(tmp_path, monkeypatch):
     }
 
     assert manager.save() is True
-    assert rss_path.stat().st_mode & 0o777 == 0o600
+    assert (str(rss_path), 0o600) in chmods
 
 
 def test_corrupt_rss_backup_restricts_permissions_on_posix(tmp_path, monkeypatch):
@@ -447,9 +449,11 @@ def test_corrupt_rss_backup_restricts_permissions_on_posix(tmp_path, monkeypatch
     rss_path.chmod(0o644)
     monkeypatch.setattr(rss_module, "RSS_FILE", str(rss_path))
     monkeypatch.setattr(rss_module.os, "name", "posix", raising=False)
+    chmods = []
+    monkeypatch.setattr(rss_module.os, "chmod", lambda p, mode: chmods.append((str(p), mode)))
 
     RSSManager()
 
     backup = tmp_path / "rss.json.corrupt"
     assert backup.exists()
-    assert backup.stat().st_mode & 0o777 == 0o600
+    assert (str(backup), 0o600) in chmods
