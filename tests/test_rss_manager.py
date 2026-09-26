@@ -489,3 +489,30 @@ tasks:
     assert rss_manager.feeds == {}
     assert rss_manager.rules == []
     rss_manager.save.assert_not_called()
+
+
+
+@pytest.mark.parametrize(
+    "url",
+    [
+        "http://localhost/feed.xml",
+        "http://127.0.0.1/feed.xml",
+        "http://192.168.1.5/feed.xml",
+        "http://[::1]/feed.xml",
+        "https://user:secret@example.com/feed.xml",
+    ],
+)
+def test_add_feed_rejects_private_or_credentialed_urls(rss_manager, url, monkeypatch):
+    def fake_validate(value):
+        if "example.com" in value:
+            return None
+        raise ValueError("blocked")
+
+    monkeypatch.setattr("rss_manager.validate_public_torrent_url", fake_validate)
+    rss_manager.save.return_value = True
+
+    with pytest.raises(ValueError):
+        rss_manager.add_feed(url, "Blocked")
+
+    assert rss_manager.feeds == {}
+    rss_manager.save.assert_not_called()
