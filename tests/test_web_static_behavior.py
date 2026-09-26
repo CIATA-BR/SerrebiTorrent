@@ -109,3 +109,16 @@ def test_web_profile_load_failure_is_announced_once_until_success():
     assert "list.dataset.loadError = 'true'" in block
     assert "delete list.dataset.loadError" in block
     assert "announceToSR(message, true)" in block
+
+
+
+def test_remote_settings_load_failure_is_accessible():
+    script = (ROOT / "web_static" / "app.js").read_text(encoding="utf-8")
+
+    start = script.index("async function loadRemoteSettings")
+    end = script.index("function startRefreshLoop", start)
+    block = script[start:end]
+
+    assert "alertBox.setAttribute('role', 'alert')" in block
+    assert "announceToSR(message, true)" in block
+    assert "Failed to load settings." in block
