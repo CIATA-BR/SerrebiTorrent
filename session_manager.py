@@ -317,8 +317,10 @@ class SessionManager:
                     os.chmod(self.torrents_db_path, 0o600)
                 except OSError:
                     pass
+            return True
         except Exception as e:
             print(f"Error saving torrents.json: {e}")
+            return False
         finally:
             try:
                 if os.path.exists(tmp):
@@ -747,14 +749,22 @@ class SessionManager:
     def update_priorities(self, info_hash, priorities):
         with self.lock:
             state_key = self._state_key_for_hash(info_hash)
-            if state_key in self.torrents_db:
-                try:
-                    # Convert vector to list if needed
-                    p_list = list(priorities)
-                    self.torrents_db[state_key]['priorities'] = p_list
-                    self._save_torrents_db()
-                except Exception as e:
-                    print(f"Error updating priorities for {state_key}: {e}")
+            if state_key not in self.torrents_db:
+                return
+
+            entry = self.torrents_db[state_key]
+            had_previous = 'priorities' in entry
+            previous = list(entry.get('priorities', [])) if had_previous else None
+            entry['priorities'] = list(priorities)
+
+            if self._save_torrents_db():
+                return
+
+            if had_previous:
+                entry['priorities'] = previous
+            else:
+                entry.pop('priorities', None)
+            raise OSError(f"Failed to persist file priorities for {state_key}.")
 
     def add_magnet(self, url, save_path):
         params = lt.parse_magnet_uri(url)
