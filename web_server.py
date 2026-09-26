@@ -886,7 +886,15 @@ def get_app_prefs():
         prefs = app_ref.config_manager.get_preferences()
     except Exception:
         return "Failed to load settings.", 500
-    return jsonify(prefs)
+    web_fields = {
+        'download_path',
+        'rss_update_interval',
+        'dl_limit',
+        'ul_limit',
+        'min_to_tray',
+        'language',
+    }
+    return jsonify({key: prefs[key] for key in web_fields if key in prefs})
 
 @app.route('/api/v2/app/prefs', methods=['POST'])
 @login_required
