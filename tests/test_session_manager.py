@@ -553,7 +553,10 @@ def test_session_log_restricts_permissions_on_posix(session_manager, monkeypatch
     logger.handlers.clear()
     session_manager._log_diagnostic_alert(alert)
 
-    chmod.assert_called_once_with("/tmp/session.log", 0o600)
+    # app_paths.ensure_dir also chmods the data dir through the same mocked
+    # os.chmod during setup, so assert the log-file call happened instead of
+    # requiring it to be the only call.
+    chmod.assert_any_call("/tmp/session.log", 0o600)
 
 
 
