@@ -619,6 +619,11 @@ class SessionManager:
                     f.flush()
                     os.fsync(f.fileno())
                 os.replace(tmp, path)
+                if os.name != "nt":
+                    try:
+                        os.chmod(path, 0o600)
+                    except OSError:
+                        pass
                 self.pending_saves.discard(ih)
             finally:
                 try:
@@ -680,6 +685,11 @@ class SessionManager:
                     except (OSError, TypeError, ValueError):
                         pass
                 os.replace(tmp, tpath)
+                if os.name != "nt":
+                    try:
+                        os.chmod(tpath, 0o600)
+                    except OSError:
+                        pass
             finally:
                 try:
                     if os.path.exists(tmp):
