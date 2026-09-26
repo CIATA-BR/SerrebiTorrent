@@ -129,6 +129,44 @@ def _login(page, base_url, expected_language="pt-BR"):
         )
 
 
+def _show_details_tab(page, tab_id, pane_id):
+    # Bootstrap 5.3 keeps .tab-pane hidden until a real tab switch finishes;
+    # mirror the post-transition state, then fire the event the app listens to.
+    page.evaluate(
+        """([tabId, paneId]) => {
+            const tab = document.getElementById(tabId);
+            const pane = document.getElementById(paneId);
+            tab.closest('.nav')?.querySelectorAll('.nav-link').forEach((t) => t.classList.remove('active'));
+            pane.closest('.tab-content')?.querySelectorAll('.tab-pane').forEach((p) => p.classList.remove('active', 'show'));
+            tab.classList.add('active');
+            pane.classList.add('active', 'show');
+            tab.dispatchEvent(new Event('shown.bs.tab'));
+        }""",
+        [tab_id, pane_id],
+    )
+
+
+def _open_settings_modal(page):
+    # Mirror Bootstrap's visible modal state; the app lifts inert on show.bs.modal.
+    _show_modal(page, "#settingsModal")
+
+
+def _show_modal(page, modal_selector):
+    page.evaluate(
+        """(modalSelector) => {
+            const modal = document.querySelector(modalSelector);
+            // Bootstrap fires show (which lifts inert) before shown.
+            modal.removeAttribute('inert');
+            modal.classList.add('show');
+            modal.style.display = 'block';
+            document.body.classList.add('modal-open');
+            modal.dispatchEvent(new Event('show.bs.modal'));
+            modal.dispatchEvent(new Event('shown.bs.modal'));
+        }""",
+        modal_selector,
+    )
+
+
 def test_web_ui_axe(page, web_ui_server):
     _login(page, web_ui_server)
     axe = Axe()
@@ -361,18 +399,20 @@ def test_web_ui_modals_focus_useful_entry_controls(page, web_ui_server):
     ]
 
     for modal_selector, target_selector in cases:
-        page.evaluate(
-            """({modalSelector}) => {
-                const modal = document.querySelector(modalSelector);
-                // Bootstrap fires show (which lifts inert) before shown.
-                modal.dispatchEvent(new Event('show.bs.modal'));
-                modal.dispatchEvent(new Event('shown.bs.modal'));
-            }""",
-            {"modalSelector": modal_selector},
-        )
+        _show_modal(page, modal_selector)
         page.wait_for_function(
             "(selector) => document.activeElement === document.querySelector(selector)",
             arg=target_selector,
+        )
+        page.evaluate(
+            """(modalSelector) => {
+                const modal = document.querySelector(modalSelector);
+                modal.classList.remove('show');
+                modal.style.display = '';
+                modal.setAttribute('inert', '');
+                modal.dispatchEvent(new Event('hidden.bs.modal'));
+            }""",
+            modal_selector,
         )
 
 
@@ -810,13 +850,7 @@ def test_web_ui_files_tab_loads_selected_torrent_files(page, web_ui_server):
     )
     page.keyboard.press("Space")
 
-    page.evaluate(
-        """() => {
-            const tab = document.getElementById('files-tab');
-            tab.classList.add('active');
-            tab.dispatchEvent(new Event('shown.bs.tab'));
-        }"""
-    )
+    _show_details_tab(page, 'files-tab', 'details-files')
 
     page.wait_for_selector('#details-files table[aria-label="Arquivos torrent"]')
     rows = page.locator("#details-files tbody tr")
@@ -847,13 +881,7 @@ def test_web_ui_files_tab_reports_load_errors(page, web_ui_server):
     )
     page.keyboard.press("Space")
 
-    page.evaluate(
-        """() => {
-            const tab = document.getElementById('files-tab');
-            tab.classList.add('active');
-            tab.dispatchEvent(new Event('shown.bs.tab'));
-        }"""
-    )
+    _show_details_tab(page, 'files-tab', 'details-files')
 
     error = page.locator("#details-files [role=alert]")
     error.wait_for()
@@ -945,13 +973,7 @@ def test_web_ui_peers_tab_loads_selected_torrent_peers(page, web_ui_server):
     )
     page.keyboard.press("Space")
 
-    page.evaluate(
-        """() => {
-            const tab = document.getElementById('peers-tab');
-            tab.classList.add('active');
-            tab.dispatchEvent(new Event('shown.bs.tab'));
-        }"""
-    )
+    _show_details_tab(page, 'peers-tab', 'details-peers')
 
     page.wait_for_selector('#details-peers table[aria-label="Peers do torrent"]')
     row = page.locator("#details-peers tbody tr").first
@@ -988,13 +1010,7 @@ def test_web_ui_peers_tab_reports_load_errors(page, web_ui_server):
     )
     page.keyboard.press("Space")
 
-    page.evaluate(
-        """() => {
-            const tab = document.getElementById('peers-tab');
-            tab.classList.add('active');
-            tab.dispatchEvent(new Event('shown.bs.tab'));
-        }"""
-    )
+    _show_details_tab(page, 'peers-tab', 'details-peers')
 
     error = page.locator("#details-peers [role=alert]")
     error.wait_for()
@@ -1086,13 +1102,7 @@ def test_web_ui_trackers_tab_loads_selected_torrent_trackers(page, web_ui_server
     )
     page.keyboard.press("Space")
 
-    page.evaluate(
-        """() => {
-            const tab = document.getElementById('trackers-tab');
-            tab.classList.add('active');
-            tab.dispatchEvent(new Event('shown.bs.tab'));
-        }"""
-    )
+    _show_details_tab(page, 'trackers-tab', 'details-trackers')
 
     page.wait_for_selector('#details-trackers table[aria-label="Trackers do torrent"]')
     row = page.locator("#details-trackers tbody tr").first
@@ -1122,13 +1132,7 @@ def test_web_ui_trackers_tab_reports_load_errors(page, web_ui_server):
     )
     page.keyboard.press("Space")
 
-    page.evaluate(
-        """() => {
-            const tab = document.getElementById('trackers-tab');
-            tab.classList.add('active');
-            tab.dispatchEvent(new Event('shown.bs.tab'));
-        }"""
-    )
+    _show_details_tab(page, 'trackers-tab', 'details-trackers')
 
     error = page.locator("#details-trackers [role=alert]")
     error.wait_for()
@@ -1234,9 +1238,10 @@ def test_web_ui_refresh_error_preserves_current_torrent_list(page, web_ui_server
 
 def test_web_ui_app_settings_load_error_preserves_form_state(page, web_ui_server):
     _login(page, web_ui_server)
+    _open_settings_modal(page)
 
-    refresh_input = page.locator('#settingsForm input[name="refresh_rate"]')
-    refresh_input.fill("4321")
+    refresh_input = page.locator('#settingsForm input[name="dl_limit"]')
+    refresh_input.fill("999999")
 
     page.route(
         "**/api/v2/app/prefs",
@@ -1250,7 +1255,7 @@ def test_web_ui_app_settings_load_error_preserves_form_state(page, web_ui_server
     page.evaluate("loadAppSettings()")
     page.wait_for_timeout(150)
 
-    assert refresh_input.input_value() == "4321"
+    assert refresh_input.input_value() == "999999"
 
 
 def test_web_ui_remote_settings_reports_http_failure(page, web_ui_server):
@@ -1267,11 +1272,11 @@ def test_web_ui_remote_settings_reports_http_failure(page, web_ui_server):
 
     page.evaluate("loadRemoteSettings()")
     page.wait_for_function(
-        "() => document.getElementById('remoteSettingsFields').textContent.includes('Failed to load settings.')"
+        "() => document.getElementById('remoteSettingsFields').textContent.includes('Não foi possível carregar as configurações.')"
     )
 
     container = page.locator("#remoteSettingsFields")
-    assert "Failed to load settings." in container.inner_text()
+    assert "Não foi possível carregar as configurações." in container.text_content()
     assert container.locator("input").count() == 0
 
 
@@ -1280,6 +1285,11 @@ def test_web_ui_profile_refresh_error_preserves_sidebar(page, web_ui_server):
     page.wait_for_function(
         "() => document.querySelectorAll('#profileList .sidebar-link[data-profile-id]').length > 0"
     )
+    # Let the app's initial-load focus timer run before interacting.
+    page.wait_for_function(
+        "() => document.activeElement && document.activeElement.matches('tr[data-hash]')"
+    )
+    page.wait_for_timeout(150)
 
     before = page.evaluate(
         "() => Array.from(document.querySelectorAll('#profileList .sidebar-link[data-profile-id]')).map(link => [link.dataset.profileId, link.textContent])"

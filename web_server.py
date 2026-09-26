@@ -1013,6 +1013,20 @@ def set_remote_prefs():
         return "Remote preferences object is required.", 400
 
     try:
+        current_prefs = client.get_app_preferences()
+    except Exception:
+        return "Failed to load remote preferences.", 500
+    if not isinstance(current_prefs, dict):
+        return "Failed to load remote preferences.", 500
+
+    allowed_fields = {
+        key for key in current_prefs
+        if not _is_sensitive_remote_pref_key(key)
+    }
+    if set(new_prefs) - allowed_fields:
+        return "Unsupported remote preference field.", 400
+
+    try:
         client.set_app_preferences(new_prefs)
     except Exception as e:
         print(f"remote_prefs error: {e}")

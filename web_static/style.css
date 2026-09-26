@@ -40,6 +40,19 @@ body {
     margin-right: 20px;
 }
 
+/* Bootstrap's secondary gray (#6c757d) is 4.11:1 on the #f0f0f0 toolbar;
+   darken it to stay WCAG AA (>= 4.5:1) without changing the visual style. */
+.btn-outline-secondary {
+    --bs-btn-color: #5a6268;
+    --bs-btn-border-color: #5a6268;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #5a6268;
+    --bs-btn-hover-border-color: #5a6268;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #5a6268;
+    --bs-btn-active-border-color: #5a6268;
+}
+
 .btn-group .btn {
     border-radius: 3px;
     margin: 2px;
