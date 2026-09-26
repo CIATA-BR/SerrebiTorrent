@@ -1619,3 +1619,21 @@ def test_remote_preferences_endpoint_redacts_reusable_secrets(auth_client):
     assert b'web-secret' not in rv.data
     assert b'token-secret' not in rv.data
     assert b'api-secret' not in rv.data
+
+
+
+def test_torrent_upload_rejects_file_over_16_mb(auth_client, monkeypatch):
+    monkeypatch.setattr(web_server, "TORRENT_UPLOAD_MAX_BYTES", 8)
+    mock_client = MagicMock()
+    web_server.WEB_CONFIG['client'] = mock_client
+
+    rv = auth_client.post(
+        '/api/v2/torrents/add',
+        data={'torrents': (io.BytesIO(b'123456789'), 'large.torrent')},
+        headers=csrf_headers(auth_client),
+        content_type='multipart/form-data',
+    )
+
+    assert rv.status_code == 413
+    assert b"16 MB upload limit" in rv.data
+    mock_client.add_torrent_file.assert_not_called()
