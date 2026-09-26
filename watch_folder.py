@@ -12,6 +12,7 @@ SCAN_INTERVAL_SECONDS = 60
 # A file still being copied onto a share would fail to parse; wait until it
 # has not been modified for this long.
 SETTLE_SECONDS = 10
+TORRENT_MAX_BYTES = 16 * 1024 * 1024
 # path -> (size, mtime) from the previous scan. A file unchanged across two
 # scans is ready even when its mtime is in the future: a network share whose
 # clock runs ahead of this PC would otherwise hold it back indefinitely.
@@ -73,7 +74,10 @@ def import_folder(folder, add, now=None):
         name = os.path.basename(path)
         try:
             with open(path, "rb") as handle:
-                add(handle.read())
+                data = handle.read(TORRENT_MAX_BYTES + 1)
+            if len(data) > TORRENT_MAX_BYTES:
+                raise ValueError("Torrent file exceeds the 16 MB limit.")
+            add(data)
         except Exception as exc:  # noqa: BLE001 - client and file boundary
             failed.append((name, str(exc)))
             suffix = ".failed"
