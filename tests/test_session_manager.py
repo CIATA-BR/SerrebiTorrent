@@ -470,3 +470,45 @@ def test_corrupt_torrents_db_backup_restricts_permissions_on_posix(tmp_path, mon
     backup = tmp_path / "torrents.json.corrupt"
     assert backup.exists()
     assert (str(backup), 0o600) in chmods
+
+
+
+def test_resume_state_file_restricts_permissions_on_posix(session_manager, tmp_path, monkeypatch):
+    import session_manager as sm
+
+    info_hash = "7" * 40
+    session_manager.state_dir = str(tmp_path)
+    session_manager.pending_saves.add(info_hash)
+    alert = SimpleNamespace(
+        params=SimpleNamespace(info_hashes=info_hash, save_path="")
+    )
+    monkeypatch.setattr(sm.os, "name", "posix", raising=False)
+
+    with patch('session_manager._write_resume_data_bytes', return_value=b"resume-data"):
+        session_manager._handle_save_resume(alert)
+
+    path = tmp_path / f"{info_hash}.resume"
+    assert path.exists()
+    assert path.stat().st_mode & 0o777 == 0o600
+
+
+def test_torrent_state_file_restricts_permissions_on_posix(
+    session_manager, mock_libtorrent_environment, tmp_path, monkeypatch
+):
+    import session_manager as sm
+
+    session_manager.state_dir = str(tmp_path)
+    monkeypatch.setattr(sm.os, "name", "posix", raising=False)
+
+    info = MagicMock()
+    info.info_hashes.return_value = SimpleNamespace()
+    info.info_hash.return_value = "8" * 40
+    mock_libtorrent_environment.torrent_info.return_value = info
+    mock_libtorrent_environment.add_torrent_params.return_value = MagicMock()
+
+    with patch.object(session_manager, '_info_hash_dict', return_value={}),             patch.object(session_manager, '_info_hash_key', return_value="8" * 40),             patch.object(session_manager, '_find_handle', return_value=None),             patch.object(session_manager, '_save_torrents_db'):
+        session_manager.add_torrent_file(b"d4:infode", "/tmp")
+
+    path = tmp_path / (("8" * 40) + ".torrent")
+    assert path.exists()
+    assert path.stat().st_mode & 0o777 == 0o600
