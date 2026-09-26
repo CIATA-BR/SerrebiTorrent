@@ -307,3 +307,29 @@ def test_local_mutating_actions_fail_when_torrent_is_missing(method_name, args):
 
     with pytest.raises(LookupError, match="Torrent not found"):
         getattr(client, method_name)(*args)
+
+
+
+def test_scgi_transport_bounds_response_size(monkeypatch):
+    monkeypatch.setattr(clients, "SCGI_MAX_RESPONSE_BYTES", 8)
+
+    class FakeSocket:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc, tb):
+            return False
+
+        def sendall(self, payload):
+            self.payload = payload
+
+        def recv(self, size):
+            if not hasattr(self, "_chunks"):
+                self._chunks = [b"12345", b"6789"]
+            return self._chunks.pop(0) if self._chunks else b""
+
+    monkeypatch.setattr(clients.socket, "create_connection", lambda *args, **kwargs: FakeSocket())
+    transport = clients.SCGITransport("localhost", 5000)
+
+    with pytest.raises(clients.xmlrpc.client.ProtocolError, match="64 MB limit"):
+        transport.request("localhost", "/RPC2", b"<xml/>")
