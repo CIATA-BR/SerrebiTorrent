@@ -1489,6 +1489,14 @@ async function loadRemoteSettings() {
         
     } catch (e) {
         console.error("Load remote settings error", e);
-        container.innerHTML = '<div class="alert alert-danger">Failed to load settings.</div>';
+        const translate = window.SerrebiI18n?.t || ((value) => value);
+        const message = translate('Failed to load settings.');
+        container.innerHTML = '';
+        const alertBox = document.createElement('div');
+        alertBox.className = 'alert alert-danger';
+        alertBox.setAttribute('role', 'alert');
+        alertBox.textContent = message;
+        container.appendChild(alertBox);
+        announceToSR(message, true);
     }
 }
