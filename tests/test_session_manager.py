@@ -582,3 +582,19 @@ def test_apply_preferences_uses_safe_fallback_for_invalid_listen_interface(sessi
 
     settings = session_manager.ses.apply_settings.call_args[0][0]
     assert settings['listen_interfaces'] == '0.0.0.0:51413,[::]:51413'
+
+
+
+def test_update_priorities_rolls_back_when_db_save_fails(session_manager, monkeypatch):
+    key = "a" * 40
+    session_manager.torrents_db[key] = {
+        "save_path": "/tmp",
+        "priorities": [4, 4],
+    }
+    monkeypatch.setattr(session_manager, "_state_key_for_hash", lambda _value: key)
+    monkeypatch.setattr(session_manager, "_save_torrents_db", lambda: False)
+
+    with pytest.raises(OSError, match="Failed to persist file priorities"):
+        session_manager.update_priorities(key, [0, 4])
+
+    assert session_manager.torrents_db[key]["priorities"] == [4, 4]
