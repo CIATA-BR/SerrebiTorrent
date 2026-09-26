@@ -1371,6 +1371,10 @@ function copyToClipboard(type) {
     }
     navigator.clipboard.writeText(text).then(() => {
         announceToSR("Copied to clipboard");
+    }).catch(err => {
+        const message = err?.message || "Failed to copy to clipboard.";
+        announceToSR(message, true);
+        alert(message);
     });
     hideContextMenu();
 }
