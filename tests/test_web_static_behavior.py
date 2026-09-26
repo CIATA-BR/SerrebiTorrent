@@ -122,3 +122,19 @@ def test_remote_settings_load_failure_is_accessible():
     assert "alertBox.setAttribute('role', 'alert')" in block
     assert "announceToSR(message, true)" in block
     assert "Failed to load settings." in block
+
+
+
+def test_web_form_actions_and_refresh_failures_are_announced():
+    script = (ROOT / "web_static" / "app.js").read_text(encoding="utf-8")
+
+    assert 'announceToSR("Torrent added.")' in script
+    assert "Failed to add torrent:" in script
+    assert "announceToSR(message, true)" in script
+    assert "const message = 'Settings saved.'" in script
+    assert "const message = 'Error saving settings.'" in script
+    assert "const message = 'Remote settings saved.'" in script
+    assert "Error saving remote settings:" in script
+    assert "let refreshErrorActive = false;" in script
+    assert "if (!refreshErrorActive)" in script
+    assert "refreshErrorActive = false;" in script

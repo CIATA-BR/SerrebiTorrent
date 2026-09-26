@@ -235,14 +235,23 @@ window.addEventListener('DOMContentLoaded', () => {
             for (let i = 0; i < files.length; i++) {
                 formData.append('torrents', files[i]);
             }
-            const res = await apiFetch('/api/v2/torrents/add', { method: 'POST', body: formData });
-            if (res.ok) {
-                const modal = bootstrap.Modal.getInstance(document.getElementById('addTorrentModal'));
-                if (modal) modal.hide();
-                e.target.reset();
-                refreshData(true); 
-            } else {
-                alert("Failed to add torrent: " + await res.text());
+            try {
+                const res = await apiFetch('/api/v2/torrents/add', { method: 'POST', body: formData });
+                if (res.ok) {
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('addTorrentModal'));
+                    if (modal) modal.hide();
+                    e.target.reset();
+                    announceToSR("Torrent added.");
+                    refreshData(true);
+                    return;
+                }
+                const message = "Failed to add torrent: " + ((await res.text()) || res.statusText || `HTTP ${res.status}`);
+                announceToSR(message, true);
+                alert(message);
+            } catch (err) {
+                const message = `Failed to add torrent: ${err?.message || err}`;
+                announceToSR(message, true);
+                alert(message);
             }
         };
     }
@@ -379,13 +388,22 @@ window.addEventListener('DOMContentLoaded', () => {
                     body: JSON.stringify(data)
                 });
                 if (res.ok) {
-                    alert('Settings saved.');
+                    const message = 'Settings saved.';
+                    announceToSR(message);
+                    alert(message);
                     const modal = bootstrap.Modal.getInstance(settingsModal);
                     if(modal) modal.hide();
                 } else {
-                    alert('Error saving settings.');
+                    const message = 'Error saving settings.';
+                    announceToSR(message, true);
+                    alert(message);
                 }
-            } catch (err) { console.error(err); alert('Error saving settings.'); }
+            } catch (err) {
+                console.error(err);
+                const message = 'Error saving settings.';
+                announceToSR(message, true);
+                alert(message);
+            }
         };
     }
     
@@ -414,11 +432,20 @@ window.addEventListener('DOMContentLoaded', () => {
                     body: JSON.stringify(data)
                 });
                 if (res.ok) {
-                    alert('Remote settings saved.');
+                    const message = 'Remote settings saved.';
+                    announceToSR(message);
+                    alert(message);
                 } else {
-                    alert('Error saving remote settings: ' + await res.text());
+                    const message = 'Error saving remote settings: ' + ((await res.text()) || res.statusText || `HTTP ${res.status}`);
+                    announceToSR(message, true);
+                    alert(message);
                 }
-            } catch (err) { console.error(err); alert('Error saving remote settings.'); }
+            } catch (err) {
+                console.error(err);
+                const message = 'Error saving remote settings.';
+                announceToSR(message, true);
+                alert(message);
+            }
         };
     }
 });
@@ -479,6 +506,8 @@ function handleSidebarNavigation(e) {
     }
 }
 
+let refreshErrorActive = false;
+
 async function refreshData(force = false) {
     if (refreshInFlight) {
         if (force) forcedRefreshPending = true;
@@ -514,6 +543,7 @@ async function refreshData(force = false) {
         }
         const infoData = await infoRes.json();
         
+        refreshErrorActive = false;
         const listChanges = syncTorrentsMap(Array.isArray(torrentsList) ? torrentsList : []);
         updateFilteredList();
         renderVirtualRows();
@@ -565,6 +595,11 @@ async function refreshData(force = false) {
         }
     } catch (e) {
         console.error("Refresh error", e);
+        if (!refreshErrorActive) {
+            refreshErrorActive = true;
+            const message = e?.message || 'Failed to refresh torrents.';
+            announceToSR(message, true);
+        }
     } finally {
         refreshInFlight = false;
         if (forcedRefreshPending) {
