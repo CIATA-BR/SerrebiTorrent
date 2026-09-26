@@ -1656,3 +1656,41 @@ def test_web_app_preferences_reject_hidden_fields(auth_client):
     assert rv.status_code == 400
     assert b"Unsupported application preference field." in rv.data
     mock_app.config_manager.set_preferences.assert_not_called()
+
+
+
+def test_remote_preferences_reject_hidden_write_fields(auth_client):
+    mock_client = MagicMock()
+    mock_client.get_app_preferences.return_value = {
+        'save_path': '/downloads',
+        'web_ui_password': 'hidden-secret',
+    }
+    web_server.WEB_CONFIG['client'] = mock_client
+
+    rv = auth_client.post(
+        '/api/v2/app/remote_prefs',
+        json={'web_ui_password': 'replacement'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 400
+    assert b"Unsupported remote preference field." in rv.data
+    mock_client.set_app_preferences.assert_not_called()
+
+
+def test_remote_preferences_allow_visible_write_fields(auth_client):
+    mock_client = MagicMock()
+    mock_client.get_app_preferences.return_value = {
+        'save_path': '/downloads',
+        'web_ui_password': 'hidden-secret',
+    }
+    web_server.WEB_CONFIG['client'] = mock_client
+
+    rv = auth_client.post(
+        '/api/v2/app/remote_prefs',
+        json={'save_path': '/new'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 200
+    mock_client.set_app_preferences.assert_called_once_with({'save_path': '/new'})
