@@ -333,3 +333,24 @@ def test_scgi_transport_bounds_response_size(monkeypatch):
 
     with pytest.raises(clients.xmlrpc.client.ProtocolError, match="64 MB limit"):
         transport.request("localhost", "/RPC2", b"<xml/>")
+
+
+
+def test_rtorrent_global_stats_failure_is_not_reported_as_zero():
+    class FailingRate:
+        def rate(self):
+            raise RuntimeError("rpc unavailable")
+
+    throttle = type(
+        "Throttle",
+        (),
+        {
+            "global_down": FailingRate(),
+            "global_up": FailingRate(),
+        },
+    )()
+    client = clients.RTorrentClient("http://localhost/RPC2")
+    client.srv = type("Server", (), {"throttle": throttle})()
+
+    with pytest.raises(RuntimeError, match="rpc unavailable"):
+        client.get_global_stats()
