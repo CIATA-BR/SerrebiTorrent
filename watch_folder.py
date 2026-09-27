@@ -17,6 +17,10 @@ TORRENT_MAX_BYTES = 16 * 1024 * 1024
 # scans is ready even when its mtime is in the future: a network share whose
 # clock runs ahead of this PC would otherwise hold it back indefinitely.
 _last_seen = {}
+# Files successfully/unsuccessfully processed but not renamed are suppressed
+# until their size/mtime changes, so a transient rename failure cannot import
+# the same torrent on every scan.
+_processed = {}
 
 
 def clean_folder_path(folder):
@@ -40,8 +44,16 @@ def ready_torrent_files(folder, now=None, settle=SETTLE_SECONDS):
             except OSError:
                 continue
             sig = seen[entry.path] = (st.st_size, st.st_mtime)
+            processed_sig = _processed.get(entry.path)
+            if processed_sig == sig:
+                continue
+            if processed_sig is not None:
+                _processed.pop(entry.path, None)
             if now - st.st_mtime >= settle or _last_seen.get(entry.path) == sig:
                 found.append(entry.path)
+    for path in list(_processed):
+        if path not in seen:
+            _processed.pop(path, None)
     _last_seen.clear()
     _last_seen.update(seen)
     return sorted(found)
@@ -84,8 +96,11 @@ def import_folder(folder, add, now=None):
         else:
             added.append(name)
             suffix = ".added"
+        _processed[path] = _last_seen.get(path)
         try:
             mark(path, suffix)
         except OSError:
             pass
+        else:
+            _processed.pop(path, None)
     return added, failed
