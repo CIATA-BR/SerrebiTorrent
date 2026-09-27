@@ -76,11 +76,12 @@ def test_web_profile_switch_reports_http_and_network_failures():
 def test_web_clipboard_failures_are_announced_and_visible():
     script = (ROOT / "web_static" / "app.js").read_text(encoding="utf-8")
 
-    start = script.index("function copyToClipboard")
+    start = script.index("async function copyToClipboard")
     end = script.index("async function loadAppSettings", start)
     block = script[start:end]
 
-    assert ".catch(err =>" in block
+    assert "try {" in block
+    assert "} catch (err) {" in block
     assert "announceToSR(message, true)" in block
     assert "alert(message)" in block
     assert "Failed to copy to clipboard." in block
@@ -154,3 +155,16 @@ def test_web_add_profile_form_posts_and_reports_failures():
     assert "announceToSR('Profile created.')" in script
     assert "announceToSR(message, true)" in script
     assert "if (window.fetchProfiles) await window.fetchProfiles()" in script
+
+
+
+def test_web_clipboard_handles_missing_api_synchronously():
+    script = (ROOT / "web_static" / "app.js").read_text(encoding="utf-8")
+    start = script.index("async function copyToClipboard")
+    block = script[start: start + 1300]
+
+    assert "if (!navigator.clipboard || typeof navigator.clipboard.writeText !== 'function')" in block
+    assert "await navigator.clipboard.writeText(text)" in block
+    assert "} catch (err) {" in block
+    assert "} finally {" in block
+    assert "hideContextMenu();" in block
