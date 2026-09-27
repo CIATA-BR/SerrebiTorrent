@@ -62,3 +62,38 @@ def test_remote_profile_update_rejects_embedded_url_credentials(tmp_path, monkey
         cm.update_profile(pid, "Remote", "transmission", _credentialed_profile_url(), "", "")
 
     assert cm.get_profile(pid) == before
+
+
+
+@pytest.mark.parametrize(
+    ("client_type", "url"),
+    [
+        ("qbittorrent", "ftp://example.test"),
+        ("transmission", "scgi://example.test:5000"),
+        ("rtorrent", "ftp://example.test"),
+        ("qbittorrent", "https:///missing-host"),
+    ],
+)
+def test_remote_profile_rejects_invalid_endpoint_scheme_or_host(tmp_path, monkeypatch, client_type, url):
+    _configure_paths(tmp_path, monkeypatch)
+    cm = ConfigManager()
+
+    with pytest.raises(ValueError, match="Profile URL must use"):
+        cm.add_profile("Remote", client_type, url, "", "")
+
+
+@pytest.mark.parametrize(
+    ("client_type", "url"),
+    [
+        ("qbittorrent", "https://example.test:8080"),
+        ("transmission", "http://example.test:9091/transmission/rpc"),
+        ("rtorrent", "scgi://example.test:5000"),
+    ],
+)
+def test_remote_profile_accepts_supported_endpoint_schemes(tmp_path, monkeypatch, client_type, url):
+    _configure_paths(tmp_path, monkeypatch)
+    cm = ConfigManager()
+
+    pid = cm.add_profile("Remote", client_type, url, "", "")
+
+    assert cm.get_profile(pid)["url"] == url
