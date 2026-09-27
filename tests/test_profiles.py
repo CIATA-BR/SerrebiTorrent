@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import pytest
 from config_manager import ConfigManager
 import config_manager
 
@@ -27,3 +28,37 @@ def test_profiles_creates_default_profile(tmp_path, monkeypatch):
     assert profile.get("name") == "Local"
     assert profile.get("type") == "local"
     assert "url" in profile
+
+
+
+def _credentialed_profile_url():
+    return "https://" + "demo" + ":" + "pw" + "@example.test:8080"
+
+
+def test_remote_profile_rejects_embedded_url_credentials(tmp_path, monkeypatch):
+    _configure_paths(tmp_path, monkeypatch)
+    cm = ConfigManager()
+
+    with pytest.raises(ValueError, match="must not contain embedded credentials"):
+        cm.add_profile("Remote", "qbittorrent", _credentialed_profile_url(), "", "")
+
+
+def test_local_profile_path_is_not_treated_as_url_credentials(tmp_path, monkeypatch):
+    _configure_paths(tmp_path, monkeypatch)
+    cm = ConfigManager()
+
+    pid = cm.add_profile("Local 2", "local", r"C:\\Downloads", "", "")
+
+    assert cm.get_profile(pid)["url"] == r"C:\\Downloads"
+
+
+def test_remote_profile_update_rejects_embedded_url_credentials(tmp_path, monkeypatch):
+    _configure_paths(tmp_path, monkeypatch)
+    cm = ConfigManager()
+    pid = cm.add_profile("Remote", "transmission", "http://example.test:9091", "demo", "pw")
+    before = cm.get_profile(pid)
+
+    with pytest.raises(ValueError, match="must not contain embedded credentials"):
+        cm.update_profile(pid, "Remote", "transmission", _credentialed_profile_url(), "", "")
+
+    assert cm.get_profile(pid) == before
