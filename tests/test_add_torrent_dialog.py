@@ -38,3 +38,12 @@ def test_runtime_wires_localized_add_torrent_dialog():
     source = Path("app_entry.py").read_text(encoding="utf-8")
     assert "from add_torrent_dialog import AddTorrentDialog as LocalizedAddTorrentDialog" in source
     assert "legacy.AddTorrentDialog = LocalizedAddTorrentDialog" in source
+
+
+
+def test_add_torrent_enter_confirms_dialog_instead_of_toggling_tree():
+    source = Path("add_torrent_dialog.py").read_text(encoding="utf-8")
+
+    assert "self.ok_button.SetDefault()" in source
+    assert "if key in (wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):" in source
+    assert "self.EndModal(wx.ID_OK)" in source
