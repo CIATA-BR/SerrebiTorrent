@@ -728,7 +728,7 @@ class SessionManager:
                     pass
 
             try:
-                self.ses.add_torrent(params)
+                added_handle = self.ses.add_torrent(params)
             except Exception:
                 try:
                     if os.path.exists(tpath):
@@ -744,7 +744,18 @@ class SessionManager:
                 if file_priorities:
                     entry['priorities'] = list(file_priorities)
                 self.torrents_db[ih] = entry
-                self._save_torrents_db()
+                if not self._save_torrents_db():
+                    self.torrents_db.pop(ih, None)
+                    try:
+                        self.ses.remove_torrent(added_handle)
+                    except Exception:
+                        pass
+                    try:
+                        if os.path.exists(tpath):
+                            os.remove(tpath)
+                    except OSError:
+                        pass
+                    raise OSError(f"Failed to persist torrent state for {ih}.")
 
     def update_priorities(self, info_hash, priorities):
         with self.lock:
@@ -781,14 +792,20 @@ class SessionManager:
             if any(self._find_handle(key) for key in (list(hashes.values()) or [ih])):
                 raise ValueError(f"Magnet with hash {ih} already exists.")
 
-            self.ses.add_torrent(params)
+            added_handle = self.ses.add_torrent(params)
 
             if ih:
                  entry = {'save_path': save_path, 'added': time.time(), 'magnet_uri': url}
                  if hashes:
                      entry['hashes'] = hashes
                  self.torrents_db[ih] = entry
-                 self._save_torrents_db()
+                 if not self._save_torrents_db():
+                     self.torrents_db.pop(ih, None)
+                     try:
+                         self.ses.remove_torrent(added_handle)
+                     except Exception:
+                         pass
+                     raise OSError(f"Failed to persist magnet state for {ih}.")
 
     def load_state(self):
         print("Loading session state...")
