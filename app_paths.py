@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import os
 import sys
+import tempfile
 from pathlib import Path
 from typing import Optional
 
@@ -31,16 +32,24 @@ def _restrict_dir_permissions(path: str) -> None:
 
 
 def _is_writable_dir(path: str) -> bool:
+    probe_path = None
     try:
         p = Path(path)
         p.mkdir(parents=True, exist_ok=True)
-        test_path = p / ".write_test"
-        test_path.write_text("ok", encoding="utf-8")
-        test_path.unlink()
+        fd, probe_path = tempfile.mkstemp(prefix=".serrebitorrent-write-", dir=str(p))
+        os.close(fd)
+        os.remove(probe_path)
+        probe_path = None
         _restrict_dir_permissions(str(p))
         return True
     except Exception:
         return False
+    finally:
+        if probe_path:
+            try:
+                os.remove(probe_path)
+            except OSError:
+                pass
 
 
 def get_portable_base_dir() -> str:
