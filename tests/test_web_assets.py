@@ -15,3 +15,11 @@ def test_web_bootstrap_assets_are_local():
     assert (WEB / "vendor/bootstrap/bootstrap.min.css").is_file()
     assert (WEB / "vendor/bootstrap/bootstrap.bundle.min.js").is_file()
     assert (WEB / "vendor/bootstrap/LICENSE").is_file()
+
+
+
+def test_add_profile_icon_button_has_explicit_accessible_name():
+    index = (WEB / "index.html").read_text(encoding="utf-8")
+
+    assert 'data-bs-target="#addProfileModal"' in index
+    assert 'aria-label="Add Profile"' in index
