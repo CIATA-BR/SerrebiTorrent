@@ -76,11 +76,12 @@ def test_web_profile_switch_reports_http_and_network_failures():
 def test_web_clipboard_failures_are_announced_and_visible():
     script = (ROOT / "web_static" / "app.js").read_text(encoding="utf-8")
 
-    start = script.index("function copyToClipboard")
+    start = script.index("async function copyToClipboard")
     end = script.index("async function loadAppSettings", start)
     block = script[start:end]
 
-    assert ".catch(err =>" in block
+    assert "try {" in block
+    assert "} catch (err) {" in block
     assert "announceToSR(message, true)" in block
     assert "alert(message)" in block
     assert "Failed to copy to clipboard." in block
