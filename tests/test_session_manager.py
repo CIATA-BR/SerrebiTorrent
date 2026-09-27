@@ -642,3 +642,20 @@ def test_add_torrent_file_rolls_back_when_db_save_fails(session_manager, tmp_pat
     assert "a" * 40 not in session_manager.torrents_db
     assert not (tmp_path / (("a" * 40) + ".torrent")).exists()
     session_manager.ses.remove_torrent.assert_called_once_with(added_handle)
+
+
+
+def test_cleanup_torrent_state_rolls_back_db_when_save_fails(session_manager, monkeypatch):
+    key = "b" * 40
+    session_manager.torrents_db[key] = {
+        "save_path": "/tmp",
+        "hashes": {"v1": key},
+    }
+    session_manager.pending_saves.add(key)
+    monkeypatch.setattr(session_manager, "_save_torrents_db", lambda: False)
+
+    with pytest.raises(OSError, match="Failed to persist torrent removal state"):
+        session_manager._cleanup_torrent_state([key])
+
+    assert key in session_manager.torrents_db
+    assert key in session_manager.pending_saves
