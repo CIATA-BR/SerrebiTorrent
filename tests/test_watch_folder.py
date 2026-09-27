@@ -60,3 +60,50 @@ def test_watch_folder_rejects_oversized_torrent(tmp_path, monkeypatch):
     assert failed == [("large.torrent", "Torrent file exceeds the 16 MB limit.")]
     assert added_payloads == []
     assert (tmp_path / "large.torrent.failed").is_file()
+
+
+
+def test_mark_failure_does_not_reimport_unchanged_file(tmp_path, monkeypatch):
+    watch_folder._last_seen.clear()
+    watch_folder._processed.clear()
+    path = tmp_path / "stuck.torrent"
+    path.write_bytes(b"good")
+    os.utime(path, (0, 0))
+    added_payloads = []
+
+    def fail_mark(_path, _suffix):
+        raise OSError("rename blocked")
+
+    monkeypatch.setattr(watch_folder, "mark", fail_mark)
+
+    first = watch_folder.import_folder(
+        tmp_path,
+        added_payloads.append,
+        now=watch_folder.SETTLE_SECONDS + 1,
+    )
+    second = watch_folder.import_folder(
+        tmp_path,
+        added_payloads.append,
+        now=watch_folder.SETTLE_SECONDS + 61,
+    )
+
+    assert first == (["stuck.torrent"], [])
+    assert second == ([], [])
+    assert added_payloads == [b"good"]
+
+
+def test_modified_file_is_retried_after_mark_failure(tmp_path, monkeypatch):
+    watch_folder._last_seen.clear()
+    watch_folder._processed.clear()
+    path = tmp_path / "retry.torrent"
+    path.write_bytes(b"one")
+    os.utime(path, (0, 0))
+    added_payloads = []
+    monkeypatch.setattr(watch_folder, "mark", lambda *_args: (_ for _ in ()).throw(OSError("blocked")))
+
+    watch_folder.import_folder(tmp_path, added_payloads.append, now=20)
+    path.write_bytes(b"two")
+    os.utime(path, (30, 30))
+    watch_folder.import_folder(tmp_path, added_payloads.append, now=50)
+
+    assert added_payloads == [b"one", b"two"]
