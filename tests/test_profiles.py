@@ -97,3 +97,21 @@ def test_remote_profile_accepts_supported_endpoint_schemes(tmp_path, monkeypatch
     pid = cm.add_profile("Remote", client_type, url, "", "")
 
     assert cm.get_profile(pid)["url"] == url
+
+
+
+def test_rtorrent_scgi_profile_requires_port(tmp_path, monkeypatch):
+    _configure_paths(tmp_path, monkeypatch)
+    cm = ConfigManager()
+
+    with pytest.raises(ValueError, match="SCGI profile URL must include a port"):
+        cm.add_profile("rTorrent", "rtorrent", "scgi://example.test", "", "")
+
+
+def test_rtorrent_scgi_profile_accepts_explicit_port(tmp_path, monkeypatch):
+    _configure_paths(tmp_path, monkeypatch)
+    cm = ConfigManager()
+
+    pid = cm.add_profile("rTorrent", "rtorrent", "scgi://example.test:5000", "", "")
+
+    assert cm.get_profile(pid)["url"] == "scgi://example.test:5000"
