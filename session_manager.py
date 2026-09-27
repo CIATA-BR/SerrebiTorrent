@@ -1066,6 +1066,8 @@ class SessionManager:
                     print(f"Error removing state file {path}: {e}")
 
         with self.lock:
+            previous_db = dict(self.torrents_db)
+            previous_pending = set(self.pending_saves)
             changed = False
             for key in keys:
                 self.pending_saves.discard(key)
@@ -1082,8 +1084,10 @@ class SessionManager:
                 if any(key in aliases for key in keys):
                     del self.torrents_db[db_key]
                     changed = True
-            if changed:
-                self._save_torrents_db()
+            if changed and not self._save_torrents_db():
+                self.torrents_db = previous_db
+                self.pending_saves = previous_pending
+                raise OSError("Failed to persist torrent removal state.")
 
     def remove_torrent(self, info_hash, delete_files=False):
         h = self._find_handle(info_hash)
