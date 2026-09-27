@@ -601,3 +601,44 @@ def test_update_priorities_rolls_back_when_db_save_fails(session_manager, monkey
         session_manager.update_priorities(key, [0, 4])
 
     assert session_manager.torrents_db[key]["priorities"] == [4, 4]
+
+
+
+def test_add_magnet_rolls_back_when_db_save_fails(session_manager, mock_libtorrent_environment, monkeypatch):
+    magnet = "magnet:?xt=urn:btih:abcdef"
+    mock_params = MagicMock()
+    mock_params.info_hashes.v1 = "abcdef"
+    mock_params.info_hashes.has_v1.return_value = True
+    mock_libtorrent_environment.parse_magnet_uri.return_value = mock_params
+
+    added_handle = MagicMock()
+    session_manager.ses.add_torrent.return_value = added_handle
+    monkeypatch.setattr(session_manager, "_save_torrents_db", lambda: False)
+
+    with patch.object(session_manager, "_find_handle", return_value=None):
+        with pytest.raises(OSError, match="Failed to persist magnet state"):
+            session_manager.add_magnet(magnet, "/tmp")
+
+    assert "abcdef" not in session_manager.torrents_db
+    session_manager.ses.remove_torrent.assert_called_once_with(added_handle)
+
+
+def test_add_torrent_file_rolls_back_when_db_save_fails(session_manager, tmp_path, monkeypatch):
+    session_manager.state_dir = str(tmp_path)
+    info = MagicMock()
+    info.info_hash.return_value = "a" * 40
+    added_handle = MagicMock()
+    session_manager.ses.add_torrent.return_value = added_handle
+
+    monkeypatch.setattr(session_manager.lt, "torrent_info", lambda _data: info)
+    monkeypatch.setattr(session_manager, "_info_hash_dict", lambda _value: {})
+    monkeypatch.setattr(session_manager, "_info_hash_key", lambda _value: "a" * 40)
+    monkeypatch.setattr(session_manager, "_find_handle", lambda _value: None)
+    monkeypatch.setattr(session_manager, "_save_torrents_db", lambda: False)
+
+    with pytest.raises(OSError, match="Failed to persist torrent state"):
+        session_manager.add_torrent_file(b"torrent-data", "/tmp")
+
+    assert "a" * 40 not in session_manager.torrents_db
+    assert not (tmp_path / (("a" * 40) + ".torrent")).exists()
+    session_manager.ses.remove_torrent.assert_called_once_with(added_handle)
