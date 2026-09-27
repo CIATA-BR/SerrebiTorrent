@@ -16,6 +16,7 @@ prepare_libtorrent_dlls()
 
 import wx.adv
 import threading
+import tempfile
 import json
 import requests # Added for downloading torrent files from URL
 import concurrent.futures
@@ -55,6 +56,33 @@ APP_NAME = "SerrebiTorrent"
 EVENT_OBJECT_FOCUS = 0x8005
 OBJID_CLIENT = -4
 _NOTIFY_WIN_EVENT = None
+
+
+def _atomic_write_bytes(path, data):
+    target = os.path.abspath(path)
+    parent = os.path.dirname(target)
+    if parent and not os.path.isdir(parent):
+        os.makedirs(parent, exist_ok=True)
+    temp_path = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            prefix=os.path.basename(target) + ".",
+            suffix=".tmp",
+            dir=parent or None,
+            delete=False,
+        ) as tmp:
+            temp_path = tmp.name
+            tmp.write(data)
+            tmp.flush()
+            os.fsync(tmp.fileno())
+        os.replace(temp_path, target)
+        temp_path = None
+    finally:
+        if temp_path:
+            try:
+                os.remove(temp_path)
+            except OSError:
+                pass
 
 
 def frozen_self_test(output_path):
@@ -4285,12 +4313,9 @@ class MainFrame(wx.Frame):
                     creator=opts.get("creator", ""),
                     source=opts.get("source", ""),
                 )
-                # Write output
-                out_dir = os.path.dirname(os.path.abspath(output_path))
-                if out_dir and not os.path.isdir(out_dir):
-                    os.makedirs(out_dir, exist_ok=True)
-                with open(output_path, "wb") as f:
-                    f.write(torrent_bytes)
+                # Write output atomically so an interrupted write cannot
+                # truncate an existing destination selected with overwrite.
+                _atomic_write_bytes(output_path, torrent_bytes)
                 result["torrent_bytes"] = torrent_bytes
                 result["magnet"] = magnet
                 result["info_hash"] = info_hash

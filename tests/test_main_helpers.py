@@ -172,3 +172,36 @@ def test_rss_rule_toggle_uses_transactional_update_path():
     assert "self.manager.update_rule" in source
     assert "self.manager.save()" not in source
     assert "self._report_rule_save_failure()" in source
+
+
+
+def test_atomic_write_bytes_replaces_destination(tmp_path):
+    target = tmp_path / "created.torrent"
+    target.write_bytes(b"old")
+
+    main._atomic_write_bytes(str(target), b"new-data")
+
+    assert target.read_bytes() == b"new-data"
+    assert not list(tmp_path.glob("created.torrent.*.tmp"))
+
+
+def test_atomic_write_bytes_preserves_existing_file_when_replace_fails(tmp_path, monkeypatch):
+    target = tmp_path / "created.torrent"
+    target.write_bytes(b"old")
+
+    def fail_replace(_src, _dst):
+        raise OSError("replace failed")
+
+    monkeypatch.setattr(main.os, "replace", fail_replace)
+
+    with pytest.raises(OSError, match="replace failed"):
+        main._atomic_write_bytes(str(target), b"new-data")
+
+    assert target.read_bytes() == b"old"
+    assert not list(tmp_path.glob("created.torrent.*.tmp"))
+
+
+def test_create_torrent_worker_uses_atomic_output_write():
+    source = inspect.getsource(main.MainFrame.on_create_torrent)
+
+    assert "_atomic_write_bytes(output_path, torrent_bytes)" in source
