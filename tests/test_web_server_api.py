@@ -1741,3 +1741,24 @@ def test_remote_preferences_allow_visible_write_fields(auth_client):
 
     assert rv.status_code == 200
     mock_client.set_app_preferences.assert_called_once_with({'save_path': '/new'})
+
+
+
+def test_profile_add_reports_validation_failure_as_bad_request(auth_client):
+    mock_app = MagicMock()
+    mock_app.config_manager.add_profile.side_effect = ValueError("invalid endpoint detail")
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/profiles/add',
+        data={
+            'name': 'Remote',
+            'type': 'qbittorrent',
+            'url': 'ftp://example.test',
+        },
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 400
+    assert b"Invalid profile configuration." in rv.data
+    assert b"invalid endpoint detail" not in rv.data

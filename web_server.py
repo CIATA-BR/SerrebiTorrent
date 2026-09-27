@@ -429,6 +429,8 @@ def add_profile():
 
     try:
         app_ref.config_manager.add_profile(name, client_type, url, user, pw)
+    except ValueError:
+        return "Invalid profile configuration.", 400
     except Exception:
         return "Failed to create profile.", 500
     return "Ok."
