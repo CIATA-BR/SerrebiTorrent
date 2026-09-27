@@ -128,9 +128,22 @@ def _ensure_valid_default_profile(cfg: Dict[str, Any]) -> None:
 
 
 def _validate_profile_url(client_type: str, url: str) -> None:
-    if str(client_type or "").lower() == "local":
+    client_type = str(client_type or "").lower()
+    if client_type == "local":
         return
+
     parsed = urlparse(str(url or "").strip())
+    allowed_schemes = {
+        "rtorrent": {"http", "https", "scgi"},
+        "qbittorrent": {"http", "https"},
+        "transmission": {"http", "https"},
+    }
+    schemes = allowed_schemes.get(client_type)
+    if not schemes:
+        raise ValueError("Unsupported profile type.")
+    if parsed.scheme.lower() not in schemes or not parsed.hostname:
+        expected = ", ".join(sorted(schemes))
+        raise ValueError(f"Profile URL must use {expected} and include a host.")
     if parsed.username is not None or parsed.password is not None:
         raise ValueError("Profile URL must not contain embedded credentials; use the username and password fields instead.")
 
