@@ -9,6 +9,7 @@ Goals:
 from __future__ import annotations
 
 import copy
+from urllib.parse import urlparse
 import json
 import os
 import threading
@@ -126,6 +127,14 @@ def _ensure_valid_default_profile(cfg: Dict[str, Any]) -> None:
     cfg["default_profile"] = default_profile
 
 
+def _validate_profile_url(client_type: str, url: str) -> None:
+    if str(client_type or "").lower() == "local":
+        return
+    parsed = urlparse(str(url or "").strip())
+    if parsed.username is not None or parsed.password is not None:
+        raise ValueError("Profile URL must not contain embedded credentials; use the username and password fields instead.")
+
+
 class ConfigManager:
     def __init__(self) -> None:
         self.lock = threading.RLock()
@@ -240,6 +249,7 @@ class ConfigManager:
     def add_profile(self, name: str, client_type: str, url: str, user: str, password: str) -> str:
         import uuid
 
+        _validate_profile_url(client_type, url)
         pid = str(uuid.uuid4())
         with self.lock:
             previous = copy.deepcopy(self.config)
@@ -259,6 +269,7 @@ class ConfigManager:
         return pid
 
     def update_profile(self, pid: str, name: str, client_type: str, url: str, user: str, password: str) -> None:
+        _validate_profile_url(client_type, url)
         with self.lock:
             if pid in self.get_profiles():
                 previous = copy.deepcopy(self.config)
