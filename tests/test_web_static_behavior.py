@@ -154,3 +154,16 @@ def test_web_add_profile_form_posts_and_reports_failures():
     assert "announceToSR('Profile created.')" in script
     assert "announceToSR(message, true)" in script
     assert "if (window.fetchProfiles) await window.fetchProfiles()" in script
+
+
+
+def test_web_clipboard_handles_missing_api_synchronously():
+    script = (ROOT / "web_static" / "app.js").read_text(encoding="utf-8")
+    start = script.index("async function copyToClipboard")
+    block = script[start: start + 1300]
+
+    assert "if (!navigator.clipboard || typeof navigator.clipboard.writeText !== 'function')" in block
+    assert "await navigator.clipboard.writeText(text)" in block
+    assert "} catch (err) {" in block
+    assert "} finally {" in block
+    assert "hideContextMenu();" in block
