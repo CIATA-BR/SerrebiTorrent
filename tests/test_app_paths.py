@@ -29,16 +29,24 @@ def test_macos_keeps_existing_legacy_data_dir(monkeypatch, tmp_path):
 
 
 def test_writable_dir_rejects_paths_when_probe_cannot_be_removed(tmp_path, monkeypatch):
-    original_unlink = app_paths.Path.unlink
+    original_remove = app_paths.os.remove
 
-    def fail_probe_unlink(path, *args, **kwargs):
-        if path.name == ".write_test":
+    def fail_probe_remove(path):
+        if os.path.basename(path).startswith(".serrebitorrent-write-"):
             raise OSError("cannot remove")
-        return original_unlink(path, *args, **kwargs)
+        return original_remove(path)
 
-    monkeypatch.setattr(app_paths.Path, "unlink", fail_probe_unlink)
+    monkeypatch.setattr(app_paths.os, "remove", fail_probe_remove)
 
     assert app_paths._is_writable_dir(str(tmp_path)) is False
+
+
+def test_writable_dir_does_not_clobber_fixed_probe_name(tmp_path):
+    existing = tmp_path / ".write_test"
+    existing.write_text("keep-me", encoding="utf-8")
+
+    assert app_paths._is_writable_dir(str(tmp_path)) is True
+    assert existing.read_text(encoding="utf-8") == "keep-me"
 
 
 
