@@ -1442,7 +1442,7 @@ function toggleSelectAllBtn() {
     updateDetailsDebounced();
 }
 
-function copyToClipboard(type) {
+async function copyToClipboard(type) {
     if (selectedHashes.size === 0) return;
     let text = "";
     if (type === 'hash') {
@@ -1450,14 +1450,19 @@ function copyToClipboard(type) {
     } else {
         text = Array.from(selectedHashes).map(h => `magnet:?xt=urn:btih:${h}`).join('\n');
     }
-    navigator.clipboard.writeText(text).then(() => {
+    try {
+        if (!navigator.clipboard || typeof navigator.clipboard.writeText !== 'function') {
+            throw new Error("Clipboard access is unavailable in this browser context.");
+        }
+        await navigator.clipboard.writeText(text);
         announceToSR("Copied to clipboard");
-    }).catch(err => {
+    } catch (err) {
         const message = err?.message || "Failed to copy to clipboard.";
         announceToSR(message, true);
         alert(message);
-    });
-    hideContextMenu();
+    } finally {
+        hideContextMenu();
+    }
 }
 
 async function loadAppSettings() {
