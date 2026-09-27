@@ -630,7 +630,7 @@ def test_add_torrent_file_rolls_back_when_db_save_fails(session_manager, tmp_pat
     added_handle = MagicMock()
     session_manager.ses.add_torrent.return_value = added_handle
 
-    monkeypatch.setattr(session_manager.lt, "torrent_info", lambda _data: info)
+    monkeypatch.setattr(sys.modules["session_manager"].lt, "torrent_info", lambda _data: info)
     monkeypatch.setattr(session_manager, "_info_hash_dict", lambda _value: {})
     monkeypatch.setattr(session_manager, "_info_hash_key", lambda _value: "a" * 40)
     monkeypatch.setattr(session_manager, "_find_handle", lambda _value: None)
