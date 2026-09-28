@@ -525,3 +525,63 @@ def test_switched_off_sources_are_case_insensitive():
     assert "My Prowlarr" not in enabled
     assert ts.SOURCE_NYAA not in enabled
     assert ts.SOURCE_KNABEN in enabled
+
+
+
+def test_fetch_torrent_bytes_rejects_private_redirect(monkeypatch):
+    item = ts._item(
+        ts.SOURCE_KNABEN,
+        "",
+        "Release",
+        download_url="https://tracker.example/dl",
+    )
+
+    first = _Response(headers={"Location": "http://127.0.0.1/private.torrent"})
+    first.status_code = 302
+
+    class Session:
+        def __enter__(self):
+            return self
+        def __exit__(self, exc_type, exc, tb):
+            return False
+        def get(self, url, **kwargs):
+            assert kwargs["allow_redirects"] is False
+            return first
+
+    monkeypatch.setattr(ts, "_public_torrent_session", lambda: Session())
+    monkeypatch.setattr(
+        ts,
+        "validate_public_torrent_url",
+        lambda url: (_ for _ in ()).throw(ValueError("private"))
+        if "127.0.0.1" in url else None,
+    )
+
+    with pytest.raises(RuntimeError, match="public http/https"):
+        ts.fetch_torrent_bytes(item)
+
+
+def test_fetch_torrent_bytes_limits_redirect_count(monkeypatch):
+    item = ts._item(
+        ts.SOURCE_KNABEN,
+        "",
+        "Release",
+        download_url="https://tracker.example/dl",
+    )
+
+    class RedirectResponse(_Response):
+        status_code = 302
+        headers = {"Location": "/again"}
+
+    class Session:
+        def __enter__(self):
+            return self
+        def __exit__(self, exc_type, exc, tb):
+            return False
+        def get(self, url, **kwargs):
+            return RedirectResponse()
+
+    monkeypatch.setattr(ts, "_public_torrent_session", lambda: Session())
+    monkeypatch.setattr(ts, "validate_public_torrent_url", lambda url: None)
+
+    with pytest.raises(RuntimeError, match="redirected too many times"):
+        ts.fetch_torrent_bytes(item)
