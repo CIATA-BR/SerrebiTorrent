@@ -13,7 +13,7 @@ import time
 import zipfile
 from dataclasses import dataclass
 from typing import Any, Dict, Iterable, Mapping, Optional, Tuple
-from urllib.parse import urlparse
+from urllib.parse import urljoin, urlparse
 
 import requests
 
@@ -32,6 +32,7 @@ MAX_UPDATE_ZIP_UNCOMPRESSED_BYTES = 1024 * 1024 * 1024
 MAX_UPDATE_ZIP_MEMBER_BYTES = 512 * 1024 * 1024
 MAX_UPDATE_ZIP_MEMBERS = 20000
 BACKUP_RETENTION_GRACE_SECONDS = 300
+MAX_UPDATE_REDIRECTS = 5
 
 _SEMVER_RE = re.compile(r"v?(\d+)\.(\d+)\.(\d+)")
 _STRICT_SEMVER_RE = re.compile(r"^v?(\d+)\.(\d+)\.(\d+)$")
@@ -199,6 +200,28 @@ def _validate_download_response_url(response) -> None:
     _validate_download_url(final_url)
 
 
+def _get_validated_download_response(url: str, *, timeout: int, stream: bool = True):
+    current = str(url or "").strip()
+    for _ in range(MAX_UPDATE_REDIRECTS + 1):
+        _validate_download_url(current)
+        response = requests.get(
+            current,
+            timeout=timeout,
+            stream=stream,
+            allow_redirects=False,
+        )
+        if response.status_code not in {301, 302, 303, 307, 308}:
+            return response
+        location = response.headers.get("Location")
+        close = getattr(response, "close", None)
+        if callable(close):
+            close()
+        if not location:
+            raise UpdateError("Update download redirect is missing a Location header.")
+        current = urljoin(current, location)
+    raise UpdateError("Update download redirected too many times.")
+
+
 def _rate_limit_message(headers: Mapping[str, str]) -> str:
     reset = headers.get("X-RateLimit-Reset")
     if reset and reset.isdigit():
@@ -247,7 +270,11 @@ def download_manifest(release: Dict[str, Any]) -> Dict[str, Any]:
 def _download_manifest_url(url: str) -> Dict[str, Any]:
     _validate_download_url(url)
     try:
-        response = requests.get(url, timeout=API_TIMEOUT, stream=True)
+        response = _get_validated_download_response(
+            url,
+            timeout=API_TIMEOUT,
+            stream=True,
+        )
     except requests.RequestException as exc:
         raise UpdateError(f"Network error while downloading manifest: {exc}") from exc
     try:
@@ -398,7 +425,12 @@ def check_for_update() -> Optional[UpdateInfo]:
 def download_file(url: str, dest_path: str, progress_cb=None) -> None:
     _validate_download_url(url)
     try:
-        with requests.get(url, stream=True, timeout=DOWNLOAD_TIMEOUT) as response:
+        response = _get_validated_download_response(
+            url,
+            timeout=DOWNLOAD_TIMEOUT,
+            stream=True,
+        )
+        with response:
             _validate_download_response_url(response)
             if response.status_code != 200:
                 raise UpdateError(f"Download failed: {response.status_code} {response.reason}")
