@@ -900,7 +900,7 @@ def search_feed(query, feed, timeout=HTTP_TIMEOUT_S):
         raise ValueError("Credentialed indexer redirects are not allowed.")
     response.raise_for_status()
     source = feed["name"]
-    raw = _bounded_response_bytes(response)
+    raw = _bounded_response_bytes(response, limit=SEARCH_RESPONSE_MAX_BYTES)
     body = raw.decode(response.encoding or "utf-8", errors="replace").lstrip()
     if body.startswith(("{", "[")):
         payload = json.loads(body)

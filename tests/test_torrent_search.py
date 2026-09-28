@@ -25,6 +25,7 @@ class _Response:
         self.content = content
         self.headers = headers or {}
         self.status_code = 200
+        self.encoding = None
 
     def json(self):
         return self._payload
@@ -321,7 +322,7 @@ def test_prowlarr_json_skips_usenet_releases():
          "infoHash": "c" * 40, "seeders": 4, "leechers": 1, "size": 1024,
          "indexer": "SomeTracker", "categories": [{"name": "Movies"}]},
     ]
-    response = _Response(payload, text="[{}]")
+    response = _Response(payload, text="[{}]", content=json.dumps(payload).encode())
     with patch.object(ts, '_http', return_value=MagicMock(
             get=MagicMock(return_value=response))):
         items = ts.search_feed("release", {"name": "Prowlarr",
