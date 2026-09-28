@@ -774,8 +774,10 @@ def rss_add_feed():
     except ValueError:
         return "RSS feed URL must use http or https and include a host.", 400
     if not added:
-        if url in app_ref.rss_panel.manager.feeds:
-            return "RSS feed already exists.", 409
+        manager = app_ref.rss_panel.manager
+        with manager.lock:
+            if url in manager.feeds:
+                return "RSS feed already exists.", 409
         return "Failed to save RSS feed.", 500
     return "Ok."
 
@@ -789,11 +791,11 @@ def rss_remove_feed():
     if not url:
         return "RSS feed URL is required.", 400
     manager = app_ref.rss_panel.manager
-    existed = url in manager.feeds
-    if not existed:
-        return "RSS feed not found.", 404
-    if not manager.remove_feed(url):
-        return "Failed to remove RSS feed.", 500
+    with manager.lock:
+        if url not in manager.feeds:
+            return "RSS feed not found.", 404
+        if not manager.remove_feed(url):
+            return "Failed to remove RSS feed.", 500
     return "Ok."
 
 @app.route('/api/v2/rss/rules')
@@ -825,13 +827,14 @@ def rss_set_rule():
 
     manager = app_ref.rss_panel.manager
     if index is not None and index >= 0:
-        if index >= len(manager.rules):
-            return "RSS rule not found.", 404
-        if not manager.update_rule(
-            index,
-            {'pattern': pattern, 'type': rule_type, 'enabled': enabled},
-        ):
-            return "Failed to save RSS rule.", 500
+        with manager.lock:
+            if index >= len(manager.rules):
+                return "RSS rule not found.", 404
+            if not manager.update_rule(
+                index,
+                {'pattern': pattern, 'type': rule_type, 'enabled': enabled},
+            ):
+                return "Failed to save RSS rule.", 500
     else:
         if not manager.add_rule(pattern, rule_type, enabled=enabled):
             return "Failed to save RSS rule.", 500
@@ -849,10 +852,11 @@ def rss_remove_rule():
         return "RSS rule index is required.", 400
 
     manager = app_ref.rss_panel.manager
-    if index >= len(manager.rules):
-        return "RSS rule not found.", 404
-    if not manager.remove_rule(index):
-        return "Failed to remove RSS rule.", 500
+    with manager.lock:
+        if index >= len(manager.rules):
+            return "RSS rule not found.", 404
+        if not manager.remove_rule(index):
+            return "Failed to remove RSS rule.", 500
     return "Ok."
 
 @app.route('/api/v2/rss/import_flexget', methods=['POST'])
