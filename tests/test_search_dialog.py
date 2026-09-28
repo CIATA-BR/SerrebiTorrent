@@ -32,3 +32,21 @@ def test_search_status_has_explicit_accessible_name():
     source = Path("search_dialog.py").read_text(encoding="utf-8")
     assert 'self.status.SetName(self._("Search status"))' in source
     assert 'self.status.SetHelpText(self._("Search status"))' in source
+
+
+
+def test_close_invalidates_search_callbacks():
+    source = Path("search_dialog.py").read_text(encoding="utf-8")
+    close_start = source.index("def on_close")
+    close_block = source[close_start:close_start + 180]
+    assert "self._stop.set()" in close_block
+    assert "self._token += 1" in close_block
+
+
+def test_search_failure_callback_is_token_guarded():
+    source = Path("search_dialog.py").read_text(encoding="utf-8")
+    assert "self._search_failed" in source
+    start = source.index("def _search_failed")
+    block = source[start:start + 220]
+    assert "if token != self._token or not self:" in block
+    assert "self._say(message)" in block

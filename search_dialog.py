@@ -223,7 +223,11 @@ class TorrentSearchDialog(wx.Dialog):
                 query, timeout_s=torrent_search.SEARCH_TIMEOUT_S,
                 on_site=on_indexer, stop=stop, sources=sources, prefs=prefs)
         except Exception as exc:  # noqa: BLE001 - reported, never fatal
-            wx.CallAfter(self._say, _fmt(self._, "Search failed: {error}", error=exc))
+            wx.CallAfter(
+                self._search_failed,
+                token,
+                _fmt(self._, "Search failed: {error}", error=exc),
+            )
         wx.CallAfter(self._search_done, token)
 
     def _result_count(self, count):
@@ -258,6 +262,11 @@ class TorrentSearchDialog(wx.Dialog):
             self._say(_fmt(self._, key, count=count, pending=self._pending, source=source))
         else:
             self._say(self._result_count(count) + ".")
+
+    def _search_failed(self, token, message):
+        if token != self._token or not self:
+            return
+        self._say(message)
 
     def _search_done(self, token):
         if token != self._token or not self:
@@ -381,6 +390,7 @@ class TorrentSearchDialog(wx.Dialog):
 
     def on_close(self, event):
         self._stop.set()
+        self._token += 1
         event.Skip()
 
 
