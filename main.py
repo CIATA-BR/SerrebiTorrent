@@ -52,6 +52,7 @@ COL_AVAILABILITY = 7
 # Rows in the torrent list carry an extra hidden value at the end (info hash).
 ROW_HASH_INDEX = -1
 APP_NAME = "SerrebiTorrent"
+TORRENT_FILE_MAX_BYTES = 16 * 1024 * 1024
 
 EVENT_OBJECT_FOCUS = 0x8005
 OBJID_CLIENT = -4
@@ -3831,7 +3832,9 @@ class MainFrame(wx.Frame):
             path = fileDialog.GetPath()
             try:
                 with open(path, 'rb') as f:
-                    data = f.read()
+                    data = f.read(TORRENT_FILE_MAX_BYTES + 1)
+                if len(data) > TORRENT_FILE_MAX_BYTES:
+                    raise ValueError("Torrent file exceeds the 16 MB limit.")
                 
                 # Parse torrent info for dialog
                 file_list = []
