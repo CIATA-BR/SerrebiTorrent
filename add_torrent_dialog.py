@@ -70,6 +70,7 @@ class AddTorrentDialog(wx.Dialog):
         self.path_input.SetName(self._("Save Path"))
         path_sizer.Add(self.path_input, 1, wx.EXPAND | wx.RIGHT, 5)
         browse_btn = wx.Button(self, label=self._("Browse..."))
+        browse_btn.SetName(self._("Browse save path"))
         browse_btn.Bind(wx.EVT_BUTTON, self.on_browse)
         path_sizer.Add(browse_btn, 0)
         sizer.Add(path_sizer, 0, wx.EXPAND | wx.ALL, 10)
@@ -123,10 +124,12 @@ class AddTorrentDialog(wx.Dialog):
 
             btn_sizer = wx.BoxSizer(wx.HORIZONTAL)
             sel_all = wx.Button(self, label=self._("Select All"))
+            sel_all.SetName(self._("Select all torrent files"))
             sel_all.Bind(wx.EVT_BUTTON, lambda event: self.set_root_state(True))
             btn_sizer.Add(sel_all, 0, wx.RIGHT, 5)
 
             desel_all = wx.Button(self, label=self._("Deselect All"))
+            desel_all.SetName(self._("Deselect all torrent files"))
             desel_all.Bind(wx.EVT_BUTTON, lambda event: self.set_root_state(False))
             btn_sizer.Add(desel_all, 0)
             sizer.Add(btn_sizer, 0, wx.ALIGN_LEFT | wx.LEFT | wx.BOTTOM, 10)
