@@ -246,6 +246,9 @@ def feed_named(prefs, name):
     return next((feed for feed in feeds(prefs) if feed["name"] == name), None)
 
 
+BLINDDL_CONFIG_MAX_BYTES = 2 * 1024 * 1024
+
+
 def blinddl_config_path():
     """Where blindDL keeps its settings on this platform.
 
@@ -271,8 +274,11 @@ def blinddl_feeds():
     again over here.
     """
     try:
-        with open(blinddl_config_path(), encoding="utf-8") as handle:
-            return feeds(json.load(handle))
+        with open(blinddl_config_path(), "rb") as handle:
+            raw = handle.read(BLINDDL_CONFIG_MAX_BYTES + 1)
+        if len(raw) > BLINDDL_CONFIG_MAX_BYTES:
+            return []
+        return feeds(json.loads(raw.decode("utf-8")))
     except (OSError, ValueError):
         return []
 

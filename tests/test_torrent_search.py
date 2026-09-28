@@ -277,6 +277,15 @@ def test_no_blinddl_installed_is_not_an_error(tmp_path):
     assert prefs["torznab_feeds"] == []
 
 
+def test_oversized_blinddl_config_is_ignored(tmp_path, monkeypatch):
+    config = tmp_path / "config.json"
+    config.write_bytes(b"{}" + b" " * 9)
+    monkeypatch.setattr(ts, "BLINDDL_CONFIG_MAX_BYTES", 8)
+
+    with patch.object(ts, "blinddl_config_path", return_value=str(config)):
+        assert ts.blinddl_feeds() == []
+
+
 def test_a_corrupt_blinddl_config_is_not_an_error(tmp_path):
     config = tmp_path / "config.json"
     config.write_text("{not json", encoding="utf-8")
