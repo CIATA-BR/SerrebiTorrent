@@ -406,7 +406,13 @@ class PreferencesDialog(wx.Dialog):
         ) != wx.YES:
             return
         try:
-            RSSManager().reset_all()
+            manager = None
+            parent = self.GetParent()
+            if parent is not None and hasattr(parent, "rss_panel"):
+                manager = getattr(parent.rss_panel, "manager", None)
+            if manager is None:
+                manager = RSSManager()
+            manager.reset_all()
             wx.MessageBox(self._("RSS data reset successfully."), self._("Success"))
         except Exception as exc:  # noqa: BLE001 - UI boundary
             wx.LogError(self._("Reset failed: {error}").format(error=exc))

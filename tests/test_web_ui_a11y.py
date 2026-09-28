@@ -590,6 +590,29 @@ def test_web_ui_grid_shortcuts_do_not_capture_toolbar_keys(page, web_ui_server):
     assert page.locator('tr[data-hash][aria-selected="true"]').count() == 0
 
 
+def test_web_ui_row_checkbox_name_reflects_current_action(page, web_ui_server):
+    page.goto(web_ui_server)
+    page.wait_for_function("document.querySelectorAll('tr[data-hash]').length >= 1")
+
+    row = page.locator("tr[data-hash]").first
+    checkbox = row.locator(".row-check")
+    assert checkbox.get_attribute("aria-label").startswith("Select ")
+
+    row.click()
+    assert checkbox.get_attribute("aria-label").startswith("Deselect ")
+
+
+def test_web_ui_select_all_button_reflects_current_action(page, web_ui_server):
+    page.goto(web_ui_server)
+    page.wait_for_function("document.querySelectorAll('tr[data-hash]').length >= 1")
+
+    button = page.locator("#selectAllBtn")
+    assert button.inner_text() == "Select All"
+    button.click()
+    assert button.inner_text() == "Clear All"
+    assert button.get_attribute("aria-pressed") == "true"
+
+
 def test_web_ui_selection_checkboxes_have_accessible_names(page, web_ui_server):
     page.goto(web_ui_server)
     page.wait_for_function("document.querySelectorAll('tr[data-hash]').length >= 1")

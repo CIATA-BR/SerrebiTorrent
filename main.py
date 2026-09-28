@@ -1252,8 +1252,10 @@ class PreferencesDialog(wx.Dialog):
         gen_sizer.Add(wx.StaticText(general_panel, label="Default Download Path:"), 0, wx.ALL, 5)
         path_sizer = wx.BoxSizer(wx.HORIZONTAL)
         self.path_input = wx.TextCtrl(general_panel, value=self.prefs.get('download_path', ''))
+        self.path_input.SetName("Default Download Path")
         path_sizer.Add(self.path_input, 1, wx.EXPAND | wx.RIGHT, 5)
         browse_btn = wx.Button(general_panel, label="Browse...")
+        browse_btn.SetName("Browse default download path")
         browse_btn.Bind(wx.EVT_BUTTON, self.on_browse)
         path_sizer.Add(browse_btn, 0)
         gen_sizer.Add(path_sizer, 0, wx.EXPAND | wx.ALL, 5)
@@ -1289,18 +1291,22 @@ class PreferencesDialog(wx.Dialog):
         
         grid.Add(wx.StaticText(conn_panel, label="Download Rate (bytes/s):"), 0, wx.ALIGN_CENTER_VERTICAL)
         self.dl_limit = wx.SpinCtrl(conn_panel, min=-1, max=1000000000, initial=self.prefs.get('dl_limit', 0))
+        self.dl_limit.SetName("Download Rate (bytes/s)")
         grid.Add(self.dl_limit, 0, wx.EXPAND)
         
         grid.Add(wx.StaticText(conn_panel, label="Upload Rate (bytes/s):"), 0, wx.ALIGN_CENTER_VERTICAL)
         self.ul_limit = wx.SpinCtrl(conn_panel, min=-1, max=1000000000, initial=self.prefs.get('ul_limit', 0))
+        self.ul_limit.SetName("Upload Rate (bytes/s)")
         grid.Add(self.ul_limit, 0, wx.EXPAND)
         
         grid.Add(wx.StaticText(conn_panel, label="Max Connections:"), 0, wx.ALIGN_CENTER_VERTICAL)
         self.max_conn = wx.SpinCtrl(conn_panel, min=-1, max=65535, initial=self.prefs.get('max_connections', -1))
+        self.max_conn.SetName("Max Connections")
         grid.Add(self.max_conn, 0, wx.EXPAND)
         
         grid.Add(wx.StaticText(conn_panel, label="Max Upload Slots:"), 0, wx.ALIGN_CENTER_VERTICAL)
         self.max_slots = wx.SpinCtrl(conn_panel, min=-1, max=65535, initial=self.prefs.get('max_uploads', -1))
+        self.max_slots.SetName("Max Upload Slots")
         grid.Add(self.max_slots, 0, wx.EXPAND)
         
         conn_sizer.Add(grid, 0, wx.ALL, 10)
@@ -1311,6 +1317,7 @@ class PreferencesDialog(wx.Dialog):
         port_sizer = wx.BoxSizer(wx.HORIZONTAL)
         port_sizer.Add(wx.StaticText(conn_panel, label="Listening Port:"), 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
         self.port_input = wx.SpinCtrl(conn_panel, min=1, max=65535, initial=self.prefs.get('listen_port', 6881))
+        self.port_input.SetName("Listening Port")
         port_sizer.Add(self.port_input, 0)
         conn_sizer.Add(port_sizer, 0, wx.ALL, 10)
 
@@ -1470,12 +1477,13 @@ class PreferencesDialog(wx.Dialog):
     def on_reset_rss(self, event):
         if wx.MessageBox("Are you sure you want to clear ALL RSS feeds and rules?", "Confirm Reset", wx.YES_NO | wx.ICON_WARNING) == wx.YES:
             try:
-                # We need access to the manager. 
-                # Since RSSManager is a singleton-like store, we can just instantiate a temporary one
-                # OR use the one from main frame.
-                # Simplest is just call reset_all on a new instance since it saves to disk.
-                mgr = RSSManager()
-                mgr.reset_all()
+                manager = None
+                parent = self.GetParent()
+                if parent is not None and hasattr(parent, "rss_panel"):
+                    manager = getattr(parent.rss_panel, "manager", None)
+                if manager is None:
+                    manager = RSSManager()
+                manager.reset_all()
                 wx.MessageBox("RSS data reset successfully.", "Success")
             except Exception as e:
                 wx.LogError(f"Reset failed: {e}")

@@ -130,6 +130,13 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const savedTheme = localStorage.getItem('web-theme');
+    if (savedTheme === 'dark' || savedTheme === 'light') {
+        applyTheme(savedTheme);
+        const themeSelect = document.getElementById('webTheme');
+        if (themeSelect) themeSelect.value = savedTheme;
+    }
+
     // Initial fetch
     refreshData(true);
     if (window.fetchProfiles) window.fetchProfiles(); 
@@ -850,7 +857,11 @@ function updateSelectionVisuals() {
         tr.setAttribute('aria-selected', isSelected);
         tr.classList.toggle('selected', isSelected);
         const check = tr.querySelector('.row-check');
-        if (check) check.checked = isSelected;
+        if (check) {
+            check.checked = isSelected;
+            const torrent = torrentsMap.get(tr.dataset.hash);
+            check.setAttribute('aria-label', `${isSelected ? 'Deselect' : 'Select'} ${torrent?.name || 'torrent'}`);
+        }
     });
     const allSelected = visibleTorrents.length > 0 && visibleTorrents.every(t => selectedHashes.has(t.hash));
     const selectAllCheck = els.selectAllCheck();
@@ -861,6 +872,7 @@ function updateSelectionVisuals() {
     const selectAllBtn = document.getElementById('selectAllBtn');
     if (selectAllBtn) {
         selectAllBtn.setAttribute('aria-pressed', allSelected ? 'true' : 'false');
+        selectAllBtn.textContent = allSelected ? 'Clear All' : 'Select All';
     }
 }
 

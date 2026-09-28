@@ -75,3 +75,11 @@ def test_browse_buttons_have_contextual_accessible_names():
     source = Path("preferences_dialog.py").read_text(encoding="utf-8")
     assert 'browse_btn.SetName(self._("Browse default download path"))' in source
     assert 'watch_btn.SetName(self._("Browse watch folder"))' in source
+
+
+def test_rss_reset_prefers_live_panel_manager():
+    from pathlib import Path
+    source = Path("preferences_dialog.py").read_text(encoding="utf-8")
+    assert 'hasattr(parent, "rss_panel")' in source
+    assert 'getattr(parent.rss_panel, "manager", None)' in source
+    assert 'if manager is None:' in source
