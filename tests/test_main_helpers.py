@@ -239,3 +239,11 @@ def test_create_torrent_reports_clipboard_failure_accurately():
 
     assert "clipboard_copied = self._set_clipboard_text" in source
     assert "Magnet could not be copied to clipboard." in source
+
+
+
+def test_desktop_statusbar_has_accessible_identity():
+    source = inspect.getsource(main.MainFrame.__init__)
+
+    assert 'self.statusbar.SetName("Application status")' in source
+    assert 'self.statusbar.SetHelpText("Connection status and current transfer rates.")' in source
