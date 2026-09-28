@@ -282,3 +282,25 @@ def test_write_json_ignores_chmod_failure_after_successful_replace(tmp_path, mon
     config_manager._write_json(str(path), {"ok": True})
 
     assert json.loads(path.read_text(encoding="utf-8")) == {"ok": True}
+
+
+
+def test_read_json_rejects_oversized_config(tmp_path, monkeypatch):
+    import config_manager as cm
+
+    path = tmp_path / "config.json"
+    path.write_bytes(b"{}" + b" " * 7)
+    monkeypatch.setattr(cm, "CONFIG_MAX_BYTES", 8)
+
+    with pytest.raises(ValueError, match="exceeds the allowed size"):
+        cm._read_json(str(path))
+
+
+def test_read_json_accepts_config_at_limit(tmp_path, monkeypatch):
+    import config_manager as cm
+
+    path = tmp_path / "config.json"
+    path.write_bytes(b'{"a":1}')
+    monkeypatch.setattr(cm, "CONFIG_MAX_BYTES", len(path.read_bytes()))
+
+    assert cm._read_json(str(path)) == {"a": 1}
