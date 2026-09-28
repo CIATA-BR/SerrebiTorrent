@@ -857,7 +857,11 @@ function updateSelectionVisuals() {
         tr.setAttribute('aria-selected', isSelected);
         tr.classList.toggle('selected', isSelected);
         const check = tr.querySelector('.row-check');
-        if (check) check.checked = isSelected;
+        if (check) {
+            check.checked = isSelected;
+            const torrent = torrentsMap.get(tr.dataset.hash);
+            check.setAttribute('aria-label', `${isSelected ? 'Deselect' : 'Select'} ${torrent?.name || 'torrent'}`);
+        }
     });
     const allSelected = visibleTorrents.length > 0 && visibleTorrents.every(t => selectedHashes.has(t.hash));
     const selectAllCheck = els.selectAllCheck();
