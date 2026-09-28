@@ -188,3 +188,16 @@ def test_active_profile_dialog_controls_have_accessible_names():
         'self.pass_input.SetName("Password")',
     ]:
         assert snippet in source
+
+
+def test_connection_manager_action_buttons_have_contextual_accessible_names():
+    from pathlib import Path
+    source = Path("main.py").read_text(encoding="utf-8")
+    for snippet in [
+        'add_btn.SetName("Add connection profile")',
+        'edit_btn.SetName("Edit selected connection profile")',
+        'del_btn.SetName("Delete selected connection profile")',
+        'set_def_btn.SetName("Set selected connection profile as default")',
+        'connect_btn.SetName("Connect using selected profile")',
+    ]:
+        assert snippet in source
