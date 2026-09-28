@@ -594,3 +594,34 @@ def test_credentialed_indexer_redirect_is_blocked_before_api_key_can_leak():
 
     session.get.assert_called_once()
     assert session.get.call_args.kwargs["allow_redirects"] is False
+
+
+
+def test_custom_indexer_rejects_oversized_content_length():
+    response = _Response(
+        content=b'{"results":[]}',
+        headers={"Content-Length": str(ts.SEARCH_RESPONSE_MAX_BYTES + 1)},
+    )
+    session = MagicMock(get=MagicMock(return_value=response))
+
+    with patch.object(ts, "_http", return_value=session):
+        with pytest.raises(RuntimeError, match="4 MB limit"):
+            ts.search_feed(
+                "release",
+                {"name": "Indexer", "url": "https://indexer.example/api", "api_key": ""},
+            )
+
+    assert session.get.call_args.kwargs["stream"] is True
+
+
+def test_custom_indexer_stops_when_stream_exceeds_limit(monkeypatch):
+    response = _Response(content=b"123456789")
+    session = MagicMock(get=MagicMock(return_value=response))
+    monkeypatch.setattr(ts, "SEARCH_RESPONSE_MAX_BYTES", 8)
+
+    with patch.object(ts, "_http", return_value=session):
+        with pytest.raises(RuntimeError, match="4 MB limit"):
+            ts.search_feed(
+                "release",
+                {"name": "Indexer", "url": "https://indexer.example/api", "api_key": ""},
+            )
