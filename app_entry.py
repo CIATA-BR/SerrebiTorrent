@@ -70,7 +70,7 @@ class LocalizedMainFrame(legacy.MainFrame):
 
         def add(data):
             if generation != self.client_generation:
-                raise RuntimeError(self._("The active profile changed."))
+                raise watch_folder.RetryImportLater(self._("The active profile changed."))
             client.add_torrent_file(data, None, None)
             hash_hint = self._maybe_hash_from_torrent_bytes(data)
             if hash_hint:
