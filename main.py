@@ -3327,7 +3327,9 @@ class MainFrame(wx.Frame):
         if os.path.exists(arg):
             try:
                 with open(arg, 'rb') as f:
-                    content = f.read()
+                    content = f.read(TORRENT_FILE_MAX_BYTES + 1)
+                if len(content) > TORRENT_FILE_MAX_BYTES:
+                    raise ValueError("Torrent file exceeds the 16 MB limit.")
             except Exception as e:
                 wx.LogError(f"Failed to read torrent file: {e}")
                 return
