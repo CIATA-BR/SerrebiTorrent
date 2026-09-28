@@ -1108,38 +1108,58 @@ class SessionManager:
                             expanded.append(alias)
             keys = expanded
 
-        for key in keys:
-            for suffix in ('.torrent', '.resume'):
-                path = os.path.join(self.state_dir, key + suffix)
-                try:
-                    if os.path.exists(path):
-                        os.remove(path)
-                except Exception as e:
-                    print(f"Error removing state file {path}: {e}")
-
-        with self.lock:
-            previous_db = dict(self.torrents_db)
-            previous_pending = set(self.pending_saves)
-            changed = False
+        quarantined = []
+        try:
             for key in keys:
-                self.pending_saves.discard(key)
-                if key in self.torrents_db:
-                    del self.torrents_db[key]
-                    changed = True
-            for db_key, entry in list(self.torrents_db.items()):
-                if not isinstance(entry, dict):
-                    continue
-                stored_hashes = entry.get("hashes")
-                if not isinstance(stored_hashes, dict):
-                    continue
-                aliases = {self._hash_object_key(value) for value in stored_hashes.values()}
-                if any(key in aliases for key in keys):
-                    del self.torrents_db[db_key]
-                    changed = True
-            if changed and not self._save_torrents_db():
-                self.torrents_db = previous_db
-                self.pending_saves = previous_pending
-                raise OSError("Failed to persist torrent removal state.")
+                for suffix in ('.torrent', '.resume'):
+                    path = os.path.join(self.state_dir, key + suffix)
+                    if not os.path.exists(path):
+                        continue
+                    quarantine = f"{path}.{os.getpid()}.removing"
+                    n = 1
+                    while os.path.exists(quarantine):
+                        quarantine = f"{path}.{os.getpid()}.{n}.removing"
+                        n += 1
+                    os.replace(path, quarantine)
+                    quarantined.append((path, quarantine))
+
+            with self.lock:
+                previous_db = dict(self.torrents_db)
+                previous_pending = set(self.pending_saves)
+                changed = False
+                for key in keys:
+                    self.pending_saves.discard(key)
+                    if key in self.torrents_db:
+                        del self.torrents_db[key]
+                        changed = True
+                for db_key, entry in list(self.torrents_db.items()):
+                    if not isinstance(entry, dict):
+                        continue
+                    stored_hashes = entry.get("hashes")
+                    if not isinstance(stored_hashes, dict):
+                        continue
+                    aliases = {self._hash_object_key(value) for value in stored_hashes.values()}
+                    if any(key in aliases for key in keys):
+                        del self.torrents_db[db_key]
+                        changed = True
+                if changed and not self._save_torrents_db():
+                    self.torrents_db = previous_db
+                    self.pending_saves = previous_pending
+                    raise OSError("Failed to persist torrent removal state.")
+        except Exception:
+            for path, quarantine in reversed(quarantined):
+                try:
+                    if os.path.exists(quarantine):
+                        os.replace(quarantine, path)
+                except OSError as restore_error:
+                    print(f"Error restoring state file {path}: {restore_error}")
+            raise
+        else:
+            for _path, quarantine in quarantined:
+                try:
+                    os.remove(quarantine)
+                except OSError as cleanup_error:
+                    print(f"Error removing quarantined state file {quarantine}: {cleanup_error}")
 
     def remove_torrent(self, info_hash, delete_files=False):
         h = self._find_handle(info_hash)
