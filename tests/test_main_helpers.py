@@ -222,3 +222,12 @@ def test_cli_torrent_add_bounds_file_reads():
 
     assert "f.read(TORRENT_FILE_MAX_BYTES + 1)" in source
     assert "Torrent file exceeds the 16 MB limit." in source
+
+
+
+def test_active_add_torrent_dialog_enter_confirms():
+    source = inspect.getsource(main.AddTorrentDialog)
+
+    assert "self.ok_button.SetDefault()" in source
+    assert "if code in (wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):" in source
+    assert "self.EndModal(wx.ID_OK)" in source
