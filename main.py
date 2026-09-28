@@ -2616,22 +2616,27 @@ class RSSPanel(wx.Panel):
         # Toolbar
         tb_sizer = wx.BoxSizer(wx.HORIZONTAL)
         add_btn = wx.Button(self, label="Add Feed")
+        add_btn.SetName("Add RSS feed")
         add_btn.Bind(wx.EVT_BUTTON, self.on_add_feed)
         tb_sizer.Add(add_btn, 0, wx.RIGHT, 5)
         
         del_btn = wx.Button(self, label="Remove Feed")
+        del_btn.SetName("Remove selected RSS feed")
         del_btn.Bind(wx.EVT_BUTTON, self.on_remove_feed)
         tb_sizer.Add(del_btn, 0, wx.RIGHT, 5)
         
         refresh_btn = wx.Button(self, label="Refresh All")
+        refresh_btn.SetName("Refresh all RSS feeds")
         refresh_btn.Bind(wx.EVT_BUTTON, self.on_refresh_all)
         tb_sizer.Add(refresh_btn, 0, wx.RIGHT, 5)
         
         rules_btn = wx.Button(self, label="Rules")
+        rules_btn.SetName("Manage RSS rules")
         rules_btn.Bind(wx.EVT_BUTTON, self.on_rules)
         tb_sizer.Add(rules_btn, 0, wx.RIGHT, 5)
 
         import_btn = wx.Button(self, label="Import FlexGet")
+        import_btn.SetName("Import RSS feeds and rules from FlexGet")
         import_btn.Bind(wx.EVT_BUTTON, self.on_import_flexget)
         tb_sizer.Add(import_btn, 0)
         
