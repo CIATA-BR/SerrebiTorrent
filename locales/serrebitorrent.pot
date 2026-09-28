@@ -115,6 +115,9 @@ msgstr ""
 msgid "Add created torrent to the currently connected client"
 msgstr ""
 
+msgid "Add custom tracker"
+msgstr ""
+
 msgid "Add Feed"
 msgstr ""
 
@@ -1346,6 +1349,9 @@ msgid "Remove feed {url}?"
 msgstr ""
 
 msgid "Remove Selected"
+msgstr ""
+
+msgid "Remove selected included tracker"
 msgstr ""
 
 msgid "Remove selected torrents"
