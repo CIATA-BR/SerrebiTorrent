@@ -149,7 +149,13 @@ def _validate_profile_url(client_type: str, url: str) -> None:
     if parsed.scheme.lower() not in schemes or not parsed.hostname:
         expected = ", ".join(sorted(schemes))
         raise ValueError(f"Profile URL must use {expected} and include a host.")
-    if client_type == "rtorrent" and parsed.scheme.lower() == "scgi" and parsed.port is None:
+    try:
+        port = parsed.port
+    except ValueError as exc:
+        raise ValueError("Profile URL has an invalid port.") from exc
+    if port == 0:
+        raise ValueError("Profile URL port must be between 1 and 65535.")
+    if client_type == "rtorrent" and parsed.scheme.lower() == "scgi" and port is None:
         raise ValueError("rTorrent SCGI profile URL must include a port.")
     if parsed.username is not None or parsed.password is not None:
         raise ValueError("Profile URL must not contain embedded credentials; use the username and password fields instead.")
