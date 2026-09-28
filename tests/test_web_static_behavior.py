@@ -211,6 +211,13 @@ def test_web_refresh_rate_is_bounded_and_persisted():
     assert "localStorage.setItem('web-refresh-rate'" in js
 
 
+def test_remote_profile_form_exposes_field_semantics():
+    from pathlib import Path
+    html = Path("web_static/index.html").read_text(encoding="utf-8")
+    assert 'id="profUrl"' in html and 'type="url"' in html and 'autocomplete="url"' in html
+    assert 'id="profUser"' in html and 'autocomplete="username"' in html
+    assert 'id="profPass"' in html and 'autocomplete="current-password"' in html
+
 def test_web_theme_is_restored_from_local_storage():
     from pathlib import Path
     js = Path("web_static/app.js").read_text(encoding="utf-8")
