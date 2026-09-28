@@ -217,3 +217,9 @@ def test_remote_profile_form_exposes_field_semantics():
     assert 'id="profUrl"' in html and 'type="url"' in html and 'autocomplete="url"' in html
     assert 'id="profUser"' in html and 'autocomplete="username"' in html
     assert 'id="profPass"' in html and 'autocomplete="current-password"' in html
+
+def test_web_theme_is_restored_from_local_storage():
+    from pathlib import Path
+    js = Path("web_static/app.js").read_text(encoding="utf-8")
+    assert "localStorage.getItem('web-theme')" in js
+    assert "themeSelect.value = savedTheme" in js
