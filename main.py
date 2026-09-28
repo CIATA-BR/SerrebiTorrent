@@ -52,6 +52,7 @@ COL_AVAILABILITY = 7
 # Rows in the torrent list carry an extra hidden value at the end (info hash).
 ROW_HASH_INDEX = -1
 APP_NAME = "SerrebiTorrent"
+TRACKER_LIST_MAX_BYTES = 4 * 1024 * 1024
 TORRENT_FILE_MAX_BYTES = 16 * 1024 * 1024
 
 EVENT_OBJECT_FOCUS = 0x8005
@@ -3823,12 +3824,31 @@ class MainFrame(wx.Frame):
             ):
                 return self._cached_trackers
 
-            r = requests.get(url, timeout=5)
-            if r.status_code == 200:
-                trackers = [line.strip() for line in r.text.splitlines() if line.strip()]
-                self._cached_tracker_url = url
-                self._cached_trackers = trackers
-                return trackers
+            with requests.get(url, timeout=5, stream=True) as r:
+                if r.status_code == 200:
+                    content_length = r.headers.get("Content-Length")
+                    if content_length:
+                        try:
+                            if int(content_length) > TRACKER_LIST_MAX_BYTES:
+                                raise ValueError("Tracker list exceeds the 4 MB limit.")
+                        except ValueError:
+                            if not str(content_length).isdigit():
+                                raise ValueError("Tracker list returned an invalid Content-Length.")
+                            raise
+                    chunks = []
+                    total = 0
+                    for chunk in r.iter_content(64 * 1024):
+                        if not chunk:
+                            continue
+                        total += len(chunk)
+                        if total > TRACKER_LIST_MAX_BYTES:
+                            raise ValueError("Tracker list exceeds the 4 MB limit.")
+                        chunks.append(chunk)
+                    text = b"".join(chunks).decode(r.encoding or "utf-8", errors="replace")
+                    trackers = [line.strip() for line in text.splitlines() if line.strip()]
+                    self._cached_tracker_url = url
+                    self._cached_trackers = trackers
+                    return trackers
         except Exception as e:
             print(f"Failed to fetch trackers: {e}")
         return []
