@@ -7,11 +7,12 @@ import os
 import re
 import socket
 import time
+import threading
 from urllib.parse import quote, urljoin, urlparse, urlunparse
 
 import requests
 import urllib3
-from torrent_parsing import build_magnet_from_hashes, torrent_file_storage
+from torrent_parsing import build_magnet_from_hashes, torrent_file_storage, parse_magnet_infohash, clean_tracker_urls
 
 MAX_TORRENT_DOWNLOAD_BYTES = 64 * 1024 * 1024
 MAX_TORRENT_URL_REDIRECTS = 5
@@ -304,6 +305,23 @@ def _handle_set_auto_managed(handle, enabled):
         pass
 
 class BaseClient(abc.ABC):
+    handles_magnet_start = True
+    _magnet_add_lock = threading.RLock()
+
+    def add_magnet(self, url, save_path, start):
+        with self._magnet_add_lock:
+            duplicate = self.find_magnet_duplicate(url)
+            if duplicate:
+                return duplicate
+            self._add_new_magnet(url, save_path, start)
+        return None
+
+    def _add_new_magnet(self, url, save_path, start):
+        self.add_torrent_url(url, save_path)
+
+    def add_trackers(self, info_hash, trackers):
+        raise NotImplementedError
+
     @abc.abstractmethod
     def test_connection(self):
         pass
@@ -427,6 +445,9 @@ class BaseClient(abc.ABC):
     def set_app_preferences(self, p):
         raise NotImplementedError
 
+    def find_magnet_duplicate(self, url):
+        return None
+
     def get_default_save_path(self):
         return None
 
@@ -529,6 +550,34 @@ class SCGITransport(xmlrpc.client.Transport):
         return u.close()
 
 class RTorrentClient(BaseClient):
+    def find_magnet_duplicate(self, url):
+        info_hash = parse_magnet_infohash(url)
+        if not info_hash:
+            return None
+        for torrent_hash, name in self.srv.d.multicall2("", "main", "d.hash=", "d.name="):
+            if str(torrent_hash).lower() == info_hash:
+                return torrent_hash, name, [t['url'] for t in self.get_trackers(torrent_hash)]
+        return None
+
+    def _add_new_magnet(self, url, save_path, start):
+        load = self.srv.load.start if start else self.srv.load.normal
+        if save_path:
+            load("", url, f"d.directory.set={save_path}")
+        else:
+            load("", url)
+
+    def add_trackers(self, info_hash, trackers):
+        with self._magnet_add_lock:
+            current = self.srv.t.multicall(info_hash, "", "t.url=", "t.group=")
+            existing = {t[0] for t in current}
+            group = min(32, max((int(t[1]) for t in current), default=-1) + 1)
+            new = [t for t in clean_tracker_urls(trackers) if t not in existing]
+            for tracker in new:
+                self.srv.d.tracker.insert(info_hash, group, tracker)
+                group = min(32, group + 1)
+            if new:
+                self.srv.d.save_full_session(info_hash)
+
     def __init__(self, u, us=None, pw=None):
         if not u.startswith(('http://', 'https://', 'scgi://')):
             u = 'http://' + u
@@ -718,6 +767,30 @@ class RTorrentClient(BaseClient):
 # --- qBit ---
 import qbittorrentapi
 class QBittorrentClient(BaseClient):
+    def find_magnet_duplicate(self, url):
+        info_hash = parse_magnet_infohash(url)
+        if not info_hash:
+            return None
+        # qBittorrent identifies pure v2 torrents by their truncated SHA-256 hash.
+        candidates = list(dict.fromkeys([info_hash, info_hash[:40]]))
+        for torrent in self.c.torrents_info(torrent_hashes=candidates):
+            torrent_hash = str(torrent.hash)
+            if torrent_hash.lower() in candidates:
+                return torrent_hash, torrent.name, [t['url'] for t in self.get_trackers(torrent_hash)]
+        return None
+
+    def _add_new_magnet(self, url, save_path, start):
+        result = self.c.torrents_add(urls=url, save_path=save_path, is_paused=not start)
+        if isinstance(result, str) and result.strip().lower() == "fails.":
+            raise RuntimeError("qBittorrent rejected the URL (Fails.)")
+
+    def add_trackers(self, info_hash, trackers):
+        with self._magnet_add_lock:
+            existing = {t['url'] for t in self.get_trackers(info_hash)}
+            new = [t for t in clean_tracker_urls(trackers) if t not in existing]
+            if new:
+                self.c.torrents_add_trackers(torrent_hash=info_hash, urls=new)
+
     # qBittorrent acknowledges the delete request before its torrent list is
     # always updated, especially when deleting data on a remote server.
     _DELETE_VERIFY_ATTEMPTS = 20
@@ -845,6 +918,30 @@ class QBittorrentClient(BaseClient):
 # --- Trans ---
 from transmission_rpc import Client as TransClient
 class TransmissionClient(BaseClient):
+    def _add_new_magnet(self, url, save_path, start):
+        self.c.add_torrent(url, download_dir=save_path, paused=not start)
+
+    def find_magnet_duplicate(self, url):
+        info_hash = parse_magnet_infohash(url)
+        if not info_hash:
+            return None
+        torrents = self.c.get_torrents(ids=[info_hash], arguments=['hashString', 'name', 'trackers'])
+        for torrent in torrents:
+            existing_hash = self._field(torrent, 'hash_string', 'hashString', default='')
+            if str(existing_hash).lower() == info_hash:
+                trackers = self._collection(self._field(torrent, 'trackers', default=[]))
+                return info_hash, self._field(torrent, 'name', default=info_hash), [
+                    self._field(t, 'announce', default='') for t in trackers]
+        return None
+
+    def add_trackers(self, info_hash, trackers):
+        torrent = self.c.get_torrent(info_hash, arguments=['trackers'])
+        existing = {self._field(t, 'announce', default='') for t in
+                    self._collection(self._field(torrent, 'trackers', default=[]))}
+        new = [t for t in clean_tracker_urls(trackers) if t not in existing]
+        if new:
+            self.c.change_torrent(info_hash, tracker_add=new)
+
     DEFAULT_RPC_PATH = "/transmission/rpc"
     DEFAULT_PORT = 9091
 
@@ -942,6 +1039,19 @@ class TransmissionClient(BaseClient):
             pass
         return seeds, leechers
 
+    def _completion_bytes(self, torrent):
+        # Lifetime network traffic can include discarded/re-downloaded pieces
+        # and excludes files that were already on disk when the torrent was added.
+        size = max(0, self._int(self._field(torrent, "size_when_done", "sizeWhenDone",
+                                          "total_size", "totalSize", default=0)))
+        left = self._field(torrent, "left_until_done", "leftUntilDone")
+        if left is not None:
+            done = size - self._int(left)
+        else:
+            done = (self._int(self._field(torrent, "have_valid", "haveValid", default=0))
+                    + self._int(self._field(torrent, "have_unchecked", "haveUnchecked", default=0)))
+        return size, max(0, min(size, done))
+
     def get_torrents_full(self):
         try:
             ts = self.c.get_torrents()
@@ -958,8 +1068,9 @@ class TransmissionClient(BaseClient):
                 tracker_url = self._first_tracker_url(t)
                 tracker_domain = _safe_tracker_domain(tracker_url)
                 seeds_total, leechers_total = self._swarm_counts(t)
+                size, done = self._completion_bytes(t)
                 ratio = self._float(self._field(t, "ratio", default=0.0)) * 1000
-                res.append({"hash": self._field(t, "hash_string", "hashString", "hash", default=""), "name": self._field(t, "name", default=""), "size": self._int(self._field(t, "total_size", "totalSize", default=0)), "done": self._int(self._field(t, "downloaded_ever", "downloadedEver", default=0)), "up_total": self._int(self._field(t, "uploaded_ever", "uploadedEver", default=0)), "ratio": ratio, "state": sv, "active": av, "hashing": hv, "message": self._field(t, "error_string", "errorString", default=""), "down_rate": self._int(self._field(t, "rate_download", "rateDownload", default=0)), "up_rate": self._int(self._field(t, "rate_upload", "rateUpload", default=0)), "tracker_domain": tracker_domain, "eta": self._eta_seconds(self._field(t, "eta", default=-1)), "seeds_connected": self._int(self._field(t, "peers_sending_to_us", "peersSendingToUs", default=0)), "seeds_total": seeds_total, "leechers_connected": self._int(self._field(t, "peers_getting_from_us", "peersGettingFromUs", default=0)), "leechers_total": leechers_total, "availability": None, "save_path": self._field(t, "download_dir", "downloadDir", default=None)})
+                res.append({"hash": self._field(t, "hash_string", "hashString", "hash", default=""), "name": self._field(t, "name", default=""), "size": size, "done": done, "up_total": self._int(self._field(t, "uploaded_ever", "uploadedEver", default=0)), "ratio": ratio, "state": sv, "active": av, "hashing": hv, "message": self._field(t, "error_string", "errorString", default=""), "down_rate": self._int(self._field(t, "rate_download", "rateDownload", default=0)), "up_rate": self._int(self._field(t, "rate_upload", "rateUpload", default=0)), "tracker_domain": tracker_domain, "eta": self._eta_seconds(self._field(t, "eta", default=-1)), "seeds_connected": self._int(self._field(t, "peers_sending_to_us", "peersSendingToUs", default=0)), "seeds_total": seeds_total, "leechers_connected": self._int(self._field(t, "peers_getting_from_us", "peersGettingFromUs", default=0)), "leechers_total": leechers_total, "availability": None, "save_path": self._field(t, "download_dir", "downloadDir", default=None)})
             return res
         except Exception as e:
             print(f"Transmission error: {e}")
@@ -1004,7 +1115,11 @@ class TransmissionClient(BaseClient):
     def add_torrent_file(self, c, sp=None, p=None):
         # Pass raw .torrent bytes; transmission_rpc base64-encodes them into metainfo.
         # (Passing a base64 *string* makes v4 treat it as a filename and silently fail.)
-        self.c.add_torrent(c, download_dir=sp)
+        options = {}
+        if p is not None:
+            options['files_wanted'] = [i for i, priority in enumerate(p) if priority > 0]
+            options['files_unwanted'] = [i for i, priority in enumerate(p) if priority == 0]
+        self.c.add_torrent(c, download_dir=sp, **options)
     def recheck_torrent(self, h): self.c.verify_torrent(self._normalize_torrent_id(h))
     def reannounce_torrent(self, h): self.c.reannounce_torrent(self._normalize_torrent_id(h))
     def get_global_stats(self):
@@ -1136,6 +1251,22 @@ except ImportError:
     lt = None
 from session_manager import SessionManager
 class LocalClient(BaseClient):
+    def find_magnet_duplicate(self, url):
+        info_hash = parse_magnet_infohash(url)
+        if not info_hash:
+            return None
+        handle = self._gh(info_hash)
+        if handle:
+            return (info_hash, str(handle.status().name or info_hash),
+                    [str(t['url']) for t in handle.trackers()])
+        return None
+
+    def _add_new_magnet(self, url, save_path, start):
+        self.m.add_magnet(url, save_path or self._edp(), start=start)
+
+    def add_trackers(self, info_hash, trackers):
+        self.m.add_trackers(info_hash, trackers)
+
     def __init__(self, dp, us=None, pw=None):
         if not lt:
             raise RuntimeError("libtorrent not found.")

@@ -210,11 +210,12 @@ def localized_on_add_url(self, event):
         self,
         tr_runtime_message("Enter Magnet Link or URL:", language),
         tr_runtime_message("Add Torrent", language),
+        value=self._clipboard_torrent_value(),
     )
     try:
         if dlg.ShowModal() != wx.ID_OK:
             return
-        url = dlg.GetValue()
+        url = dlg.GetValue().strip()
         if not self.client:
             self.statusbar.SetStatusText(
                 tr_runtime_message("Not connected to any client.", language), 0
@@ -223,35 +224,8 @@ def localized_on_add_url(self, event):
         try:
             default_path = self._get_default_save_path()
             if url.lower().startswith("magnet:"):
-                adlg = legacy.AddTorrentDialog(
-                    self,
-                    tr_runtime_message("Magnet Link", language),
-                    None,
-                    default_path,
-                )
-                try:
-                    if adlg.ShowModal() == wx.ID_OK:
-                        save_path = adlg.get_selected_path() or None
-                        hash_hint = self._maybe_hash_from_magnet(url)
-                        self._prepare_auto_start()
-                        if hash_hint:
-                            self.pending_hash_starts.add(hash_hint)
-                        generation = self.client_generation
-                        client = self.client
-                        self.statusbar.SetStatusText(
-                            tr_runtime_message("Adding magnet link...", language), 0
-                        )
-                        self.thread_pool.submit(
-                            self._add_magnet_background,
-                            client,
-                            generation,
-                            url,
-                            save_path,
-                            tr_runtime_message("Magnet link added", language),
-                        )
-                finally:
-                    adlg.Destroy()
-            elif url.startswith(("http://", "https://")):
+                self._queue_magnet(url)
+            elif url.lower().startswith(("http://", "https://")):
                 client = self.client
                 generation = self.client_generation
                 self.statusbar.SetStatusText(
