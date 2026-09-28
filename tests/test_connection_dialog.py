@@ -73,3 +73,9 @@ def test_connection_dialogs_set_predictable_initial_focus():
 
     assert "self.name_input.SetFocus()" in profile_source
     assert "self.list_box.SetFocus()" in connect_source
+
+
+def test_profile_browse_button_has_contextual_accessible_name():
+    from pathlib import Path
+    source = Path("connection_dialog.py").read_text(encoding="utf-8")
+    assert 'self.url_browse_btn.SetName(self._("Browse local download path"))' in source

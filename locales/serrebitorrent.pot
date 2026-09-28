@@ -289,6 +289,9 @@ msgstr ""
 msgid "Browse default download path"
 msgstr ""
 
+msgid "Browse local download path"
+msgstr ""
+
 msgid "Browse watch folder"
 msgstr ""
 
