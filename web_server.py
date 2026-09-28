@@ -915,7 +915,7 @@ def rss_import_flexget():
             temp_file.write(content)
             temp_file.flush()
             os.fsync(temp_file.fileno())
-        feeds, rules = app_ref.rss_panel.manager.import_flexget_config(temp_path)
+        feeds, rules = app_ref.rss_panel.manager.import_flexget_config(temp_path, app_ref.config_manager)
     except ValueError:
         return "Invalid FlexGet configuration.", 400
     except Exception as e:
