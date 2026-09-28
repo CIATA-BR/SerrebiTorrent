@@ -73,3 +73,9 @@ def test_localized_entry_point_installs_external_catalogs_before_i18n_helpers():
 
     assert install < helpers
     assert install < preferences
+
+
+
+def test_watch_profile_switch_is_retryable_not_permanent_failure():
+    source = Path("app_entry.py").read_text(encoding="utf-8")
+    assert "watch_folder.RetryImportLater" in source
