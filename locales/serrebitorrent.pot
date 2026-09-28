@@ -1480,6 +1480,9 @@ msgstr ""
 msgid "Search sites..."
 msgstr ""
 
+msgid "Search status"
+msgstr ""
+
 msgid "Search torrent indexers and add what you find"
 msgstr ""
 

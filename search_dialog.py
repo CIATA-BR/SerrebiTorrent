@@ -124,6 +124,8 @@ class TorrentSearchDialog(wx.Dialog):
         self.list.Bind(wx.EVT_CHAR, self.on_char)
 
         self.status = wx.StaticText(panel, label=self._("Type what to look for."))
+        self.status.SetName(self._("Search status"))
+        self.status.SetHelpText(self._("Search status"))
 
         self.add_btn = wx.Button(panel, wx.ID_OK, self._("&Add selected"))
         self.add_btn.Bind(wx.EVT_BUTTON, self.on_add)
