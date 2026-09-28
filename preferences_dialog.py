@@ -77,6 +77,7 @@ class PreferencesDialog(wx.Dialog):
         )
         path_sizer = wx.BoxSizer(wx.HORIZONTAL)
         self.path_input = wx.TextCtrl(general_panel, value=self.prefs.get("download_path", ""))
+        self.path_input.SetName(self._("Default Download Path:"))
         path_sizer.Add(self.path_input, 1, wx.EXPAND | wx.RIGHT, 5)
         browse_btn = wx.Button(general_panel, label=self._("Browse..."))
         browse_btn.Bind(wx.EVT_BUTTON, self.on_browse)
@@ -94,6 +95,7 @@ class PreferencesDialog(wx.Dialog):
         )
         watch_sizer = wx.BoxSizer(wx.HORIZONTAL)
         self.watch_input = wx.TextCtrl(general_panel, value=self.prefs.get("watch_folder", ""))
+        self.watch_input.SetName(self._("Watch folder (checked every minute; leave empty to turn off):"))
         watch_sizer.Add(self.watch_input, 1, wx.EXPAND | wx.RIGHT, 5)
         watch_btn = wx.Button(general_panel, label=self._("Browse..."))
         watch_btn.Bind(wx.EVT_BUTTON, self.on_browse_watch)
@@ -143,24 +145,28 @@ class PreferencesDialog(wx.Dialog):
                  wx.ALIGN_CENTER_VERTICAL)
         self.dl_limit = wx.SpinCtrl(
             conn_panel, min=-1, max=1000000000, initial=self.prefs.get("dl_limit", 0))
+        self.dl_limit.SetName(self._("Download Rate (bytes/s):"))
         grid.Add(self.dl_limit, 0, wx.EXPAND)
 
         grid.Add(wx.StaticText(conn_panel, label=self._("Upload Rate (bytes/s):")), 0,
                  wx.ALIGN_CENTER_VERTICAL)
         self.ul_limit = wx.SpinCtrl(
             conn_panel, min=-1, max=1000000000, initial=self.prefs.get("ul_limit", 0))
+        self.ul_limit.SetName(self._("Upload Rate (bytes/s):"))
         grid.Add(self.ul_limit, 0, wx.EXPAND)
 
         grid.Add(wx.StaticText(conn_panel, label=self._("Max Connections:")), 0,
                  wx.ALIGN_CENTER_VERTICAL)
         self.max_conn = wx.SpinCtrl(
             conn_panel, min=-1, max=65535, initial=self.prefs.get("max_connections", -1))
+        self.max_conn.SetName(self._("Max Connections:"))
         grid.Add(self.max_conn, 0, wx.EXPAND)
 
         grid.Add(wx.StaticText(conn_panel, label=self._("Max Upload Slots:")), 0,
                  wx.ALIGN_CENTER_VERTICAL)
         self.max_slots = wx.SpinCtrl(
             conn_panel, min=-1, max=65535, initial=self.prefs.get("max_uploads", -1))
+        self.max_slots.SetName(self._("Max Upload Slots:"))
         grid.Add(self.max_slots, 0, wx.EXPAND)
         conn_sizer.Add(grid, 0, wx.ALL, 10)
 
@@ -171,6 +177,7 @@ class PreferencesDialog(wx.Dialog):
                        wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
         self.port_input = wx.SpinCtrl(
             conn_panel, min=1, max=65535, initial=self.prefs.get("listen_port", 6881))
+        self.port_input.SetName(self._("Listening Port:"))
         port_sizer.Add(self.port_input, 0)
         conn_sizer.Add(port_sizer, 0, wx.ALL, 10)
 
@@ -186,6 +193,7 @@ class PreferencesDialog(wx.Dialog):
         )
         self.announce_ip_input = wx.TextCtrl(
             conn_panel, value=self.prefs.get("announce_ip", ""))
+        self.announce_ip_input.SetName(self._("Announce IP (reported to trackers, blank = auto):"))
         ann_sizer.Add(self.announce_ip_input, 1, wx.EXPAND)
         conn_sizer.Add(ann_sizer, 0, wx.EXPAND | wx.ALL, 10)
 
@@ -201,6 +209,7 @@ class PreferencesDialog(wx.Dialog):
         )
         self.listen_interface_input = wx.TextCtrl(
             conn_panel, value=self.prefs.get("listen_interface", ""))
+        self.listen_interface_input.SetName(self._("Listen interface (local IP to bind, blank = all):"))
         listen_sizer.Add(self.listen_interface_input, 1, wx.EXPAND)
         conn_sizer.Add(listen_sizer, 0, wx.EXPAND | wx.ALL, 10)
 
@@ -241,6 +250,7 @@ class PreferencesDialog(wx.Dialog):
         )
         self.track_url_input = wx.TextCtrl(
             track_panel, value=self.prefs.get("tracker_url", ""))
+        self.track_url_input.SetName(self._("Tracker List URL:"))
         track_sizer.Add(self.track_url_input, 0, wx.EXPAND | wx.ALL, 5)
         track_panel.SetSizer(track_sizer)
         notebook.AddPage(track_panel, self._("Trackers"))
@@ -257,6 +267,7 @@ class PreferencesDialog(wx.Dialog):
         )
         self.rss_interval = wx.SpinCtrl(
             rss_panel, min=5, max=86400, initial=self.prefs.get("rss_update_interval", 300))
+        self.rss_interval.SetName(self._("RSS Update Interval (seconds):"))
         rss_interval_sizer.Add(self.rss_interval, 0)
         rss_sizer.Add(rss_interval_sizer, 0, wx.ALL, 10)
         rss_sizer.Add(wx.StaticLine(rss_panel), 0, wx.EXPAND | wx.ALL, 5)
@@ -278,16 +289,19 @@ class PreferencesDialog(wx.Dialog):
                      wx.ALIGN_CENTER_VERTICAL)
         self.web_host = wx.TextCtrl(
             web_panel, value=self.prefs.get("web_ui_host", "127.0.0.1"))
+        self.web_host.SetName(self._("Bind Host:"))
         web_grid.Add(self.web_host, 0, wx.EXPAND)
         web_grid.Add(wx.StaticText(web_panel, label=self._("Port:")), 0,
                      wx.ALIGN_CENTER_VERTICAL)
         self.web_port = wx.SpinCtrl(
             web_panel, min=1, max=65535, initial=self.prefs.get("web_ui_port", 8080))
+        self.web_port.SetName(self._("Port:"))
         web_grid.Add(self.web_port, 0, wx.EXPAND)
         web_grid.Add(wx.StaticText(web_panel, label=self._("Username:")), 0,
                      wx.ALIGN_CENTER_VERTICAL)
         self.web_user = wx.TextCtrl(
             web_panel, value=self.prefs.get("web_ui_user", "admin"))
+        self.web_user.SetName(self._("Username:"))
         web_grid.Add(self.web_user, 0, wx.EXPAND)
         web_grid.Add(wx.StaticText(web_panel, label=self._("Password:")), 0,
                      wx.ALIGN_CENTER_VERTICAL)
@@ -296,6 +310,7 @@ class PreferencesDialog(wx.Dialog):
             value=self.prefs.get("web_ui_pass", "password"),
             style=wx.TE_PASSWORD,
         )
+        self.web_pass.SetName(self._("Password:"))
         web_grid.Add(self.web_pass, 0, wx.EXPAND)
         web_sizer.Add(web_grid, 0, wx.ALL, 10)
         web_panel.SetSizer(web_sizer)
@@ -309,6 +324,7 @@ class PreferencesDialog(wx.Dialog):
         self.proxy_type = wx.Choice(
             proxy_panel, choices=[self._("None"), "SOCKS4", "SOCKS5", "HTTP"])
         self.proxy_type.SetSelection(self.prefs.get("proxy_type", 0))
+        self.proxy_type.SetName(self._("Proxy Type:"))
         proxy_sizer.Add(self.proxy_type, 0, wx.EXPAND | wx.ALL, 5)
 
         hp_sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -316,11 +332,13 @@ class PreferencesDialog(wx.Dialog):
                      wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
         self.proxy_host = wx.TextCtrl(
             proxy_panel, value=self.prefs.get("proxy_host", ""))
+        self.proxy_host.SetName(self._("Host:"))
         hp_sizer.Add(self.proxy_host, 1, wx.EXPAND | wx.RIGHT, 10)
         hp_sizer.Add(wx.StaticText(proxy_panel, label=self._("Port:")), 0,
                      wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
         self.proxy_port = wx.SpinCtrl(
             proxy_panel, min=1, max=65535, initial=self.prefs.get("proxy_port", 8080))
+        self.proxy_port.SetName(self._("Port:"))
         hp_sizer.Add(self.proxy_port, 0)
         proxy_sizer.Add(hp_sizer, 0, wx.EXPAND | wx.ALL, 5)
 
@@ -335,6 +353,7 @@ class PreferencesDialog(wx.Dialog):
                        wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
         self.proxy_user = wx.TextCtrl(
             proxy_panel, value=self.prefs.get("proxy_user", ""))
+        self.proxy_user.SetName(self._("Username:"))
         user_sizer.Add(self.proxy_user, 1, wx.EXPAND)
         proxy_sizer.Add(user_sizer, 0, wx.EXPAND | wx.ALL, 5)
 
@@ -346,6 +365,7 @@ class PreferencesDialog(wx.Dialog):
             value=self.prefs.get("proxy_password", ""),
             style=wx.TE_PASSWORD,
         )
+        self.proxy_pass.SetName(self._("Password:"))
         pass_sizer.Add(self.proxy_pass, 1, wx.EXPAND)
         proxy_sizer.Add(pass_sizer, 0, wx.EXPAND | wx.ALL, 5)
         proxy_panel.SetSizer(proxy_sizer)
