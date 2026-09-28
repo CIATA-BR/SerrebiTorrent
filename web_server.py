@@ -569,7 +569,18 @@ def _valid_torrent_snapshot(torrents):
 
 
 def _requested_torrent_hashes():
-    return [h for h in (request.form.get('hashes') or '').split('|') if h]
+    hashes = []
+    seen = set()
+    for raw in (request.form.get('hashes') or '').split('|'):
+        value = raw.strip()
+        if not value:
+            continue
+        key = value.casefold()
+        if key in seen:
+            continue
+        seen.add(key)
+        hashes.append(value)
+    return hashes
 
 
 def _torrent_action_context():
