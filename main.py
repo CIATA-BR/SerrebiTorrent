@@ -2413,11 +2413,13 @@ class RuleEditDialog(wx.Dialog):
         # Pattern
         sizer.Add(wx.StaticText(self, label="Regex Pattern:"), 0, wx.ALL, 5)
         self.pattern_input = wx.TextCtrl(self, value=self.rule['pattern'])
+        self.pattern_input.SetName("Regex Pattern")
         sizer.Add(self.pattern_input, 0, wx.EXPAND | wx.ALL, 5)
         
         # Type
         sizer.Add(wx.StaticText(self, label="Rule Type:"), 0, wx.ALL, 5)
         self.type_choice = wx.Choice(self, choices=["accept", "reject"])
+        self.type_choice.SetName("Rule Type")
         self.type_choice.SetStringSelection(self.rule.get('type', 'accept'))
         sizer.Add(self.type_choice, 0, wx.EXPAND | wx.ALL, 5)
         
@@ -2431,6 +2433,7 @@ class RuleEditDialog(wx.Dialog):
             display_names.append(data.get('alias') or url)
             
         self.check_list = wx.CheckListBox(self, choices=display_names)
+        self.check_list.SetName("Apply to Feeds")
         
         # Set initial checks
         scope = self.rule.get('scope')
@@ -2603,6 +2606,7 @@ class RSSPanel(wx.Panel):
         
         # Feed List
         self.feed_list = wx.ListBox(self.splitter, style=wx.LB_SINGLE)
+        self.feed_list.SetName("RSS Feeds")
         self.feed_list.Bind(wx.EVT_LISTBOX, self.on_feed_selected)
         
         # Article List
