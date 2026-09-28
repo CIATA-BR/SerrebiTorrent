@@ -659,3 +659,56 @@ def test_cleanup_torrent_state_rolls_back_db_when_save_fails(session_manager, mo
 
     assert key in session_manager.torrents_db
     assert key in session_manager.pending_saves
+
+
+
+def test_resume_save_path_update_preserves_existing_metadata(session_manager, monkeypatch, tmp_path):
+    session_manager.state_dir = str(tmp_path)
+    key = "c" * 40
+    session_manager.torrents_db[key] = {
+        "save_path": "/old",
+        "added": 123.0,
+        "magnet_uri": "magnet:?xt=urn:btih:" + key,
+        "priorities": [4, 0],
+    }
+
+    params = MagicMock()
+    params.info_hashes = key
+    params.save_path = "/new"
+    alert = MagicMock()
+    alert.params = params
+
+    monkeypatch.setattr(session_manager, "_info_hash_key", lambda _value: key)
+    monkeypatch.setattr(session_manager, "_info_hash_dict", lambda _value: {"v1": key})
+    monkeypatch.setattr(sys.modules["session_manager"], "_write_resume_data_bytes", lambda _params: b"resume")
+    monkeypatch.setattr(session_manager, "_save_torrents_db", lambda: True)
+
+    session_manager._handle_save_resume(alert)
+
+    entry = session_manager.torrents_db[key]
+    assert entry["save_path"] == "/new"
+    assert entry["added"] == 123.0
+    assert entry["magnet_uri"].startswith("magnet:")
+    assert entry["priorities"] == [4, 0]
+
+
+def test_resume_save_path_update_rolls_back_when_db_save_fails(session_manager, monkeypatch, tmp_path):
+    session_manager.state_dir = str(tmp_path)
+    key = "d" * 40
+    original = {"save_path": "/old", "added": 456.0, "magnet_uri": "magnet:?xt=urn:btih:" + key}
+    session_manager.torrents_db[key] = dict(original)
+
+    params = MagicMock()
+    params.info_hashes = key
+    params.save_path = "/new"
+    alert = MagicMock()
+    alert.params = params
+
+    monkeypatch.setattr(session_manager, "_info_hash_key", lambda _value: key)
+    monkeypatch.setattr(session_manager, "_info_hash_dict", lambda _value: {"v1": key})
+    monkeypatch.setattr(sys.modules["session_manager"], "_write_resume_data_bytes", lambda _params: b"resume")
+    monkeypatch.setattr(session_manager, "_save_torrents_db", lambda: False)
+
+    session_manager._handle_save_resume(alert)
+
+    assert session_manager.torrents_db[key] == original
