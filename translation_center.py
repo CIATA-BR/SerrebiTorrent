@@ -8,6 +8,7 @@ from __future__ import annotations
 from pathlib import Path
 import json
 import os
+import tempfile
 import webbrowser
 
 import wx
@@ -17,6 +18,7 @@ from translation_catalog import catalog_for, load_po, render_po, validate_catalo
 
 
 DRAFT_DIR_NAME = "translations"
+DRAFT_MAX_BYTES = 4 * 1024 * 1024
 DEFAULT_ONLINE_TRANSLATION_URL = "https://torrent.ciata.org.br/"
 ONLINE_TRANSLATION_URL = os.environ.get(
     "SERREBITORRENT_TRANSLATION_URL",
@@ -83,9 +85,13 @@ def load_draft(code: str) -> dict[str, str]:
     if not path.exists():
         return {}
     try:
-        data = json.loads(path.read_text(encoding="utf-8"))
+        with path.open("rb") as handle:
+            raw = handle.read(DRAFT_MAX_BYTES + 1)
+        if len(raw) > DRAFT_MAX_BYTES:
+            return {}
+        data = json.loads(raw.decode("utf-8"))
         return {str(k): str(v) for k, v in data.get("translations", {}).items()}
-    except (OSError, ValueError, TypeError):
+    except (OSError, UnicodeDecodeError, ValueError, TypeError):
         return {}
 
 
@@ -96,7 +102,27 @@ def save_draft(code: str, name: str, translations: dict[str, str]) -> Path:
         "language_name": name.strip(),
         "translations": dict(sorted(translations.items(), key=lambda item: item[0].casefold())),
     }
-    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    data = (json.dumps(payload, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+    temp_path = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            prefix=path.name + ".",
+            suffix=".tmp",
+            dir=str(path.parent),
+            delete=False,
+        ) as handle:
+            temp_path = Path(handle.name)
+            handle.write(data)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temp_path, path)
+        temp_path = None
+    finally:
+        if temp_path is not None:
+            try:
+                temp_path.unlink()
+            except OSError:
+                pass
     return path
 
 
