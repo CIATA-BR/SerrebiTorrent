@@ -231,3 +231,11 @@ def test_created_torrent_add_reuses_generated_bytes():
     assert 'content = result["torrent_bytes"]' in source
     add_block = source[source.index("# Optional add to client"):]
     assert 'open(output_path, "rb")' not in add_block
+
+
+
+def test_create_torrent_reports_clipboard_failure_accurately():
+    source = inspect.getsource(main.MainFrame.on_create_torrent)
+
+    assert "clipboard_copied = self._set_clipboard_text" in source
+    assert "Magnet could not be copied to clipboard." in source
