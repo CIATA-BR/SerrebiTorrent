@@ -93,3 +93,24 @@ def test_import_button_is_wired_and_the_portal_button_stays_available():
     # The hosted portal remains an option for contributors who can use it.
     assert 'label="Open &online translation"' in source
     assert "self.online_button.Bind(wx.EVT_BUTTON, self._on_online)" in source
+
+
+
+def test_translation_draft_read_is_bounded(tmp_path, monkeypatch):
+    monkeypatch.setattr(translation_center, "_data_dir", lambda: tmp_path)
+    monkeypatch.setattr(translation_center, "DRAFT_MAX_BYTES", 8)
+    path = translation_center.draft_path("pt-BR")
+    path.write_bytes(b"123456789")
+
+    assert translation_center.load_draft("pt-BR") == {}
+
+
+def test_translation_draft_save_is_atomic(tmp_path, monkeypatch):
+    monkeypatch.setattr(translation_center, "_data_dir", lambda: tmp_path)
+
+    path = translation_center.save_draft("pt-BR", "Portuguese", {"Settings": "Configurações"})
+
+    assert path.is_file()
+    assert not list(tmp_path.glob("pt-BR.json.*.tmp"))
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    assert payload["translations"]["Settings"] == "Configurações"
