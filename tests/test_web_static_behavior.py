@@ -177,3 +177,13 @@ def test_web_partial_torrent_add_is_announced_and_visible():
     assert 'announceToSR(message, true);' in script
     assert 'alert(message);' in script
     assert "Check the torrent list before retrying." not in script
+
+
+
+def test_web_select_all_button_exposes_toggle_state():
+    markup = (ROOT / "web_static" / "index.html").read_text(encoding="utf-8")
+    script = (ROOT / "web_static" / "app.js").read_text(encoding="utf-8")
+
+    assert 'id="selectAllBtn"' in markup
+    assert 'aria-pressed="false"' in markup
+    assert "selectAllBtn.setAttribute('aria-pressed', allSelected ? 'true' : 'false')" in script
