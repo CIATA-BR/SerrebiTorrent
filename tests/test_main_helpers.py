@@ -222,3 +222,11 @@ def test_cli_torrent_add_bounds_file_reads():
 
     assert "f.read(TORRENT_FILE_MAX_BYTES + 1)" in source
     assert "Torrent file exceeds the 16 MB limit." in source
+
+
+
+def test_create_torrent_reports_clipboard_failure_accurately():
+    source = inspect.getsource(main.MainFrame.on_create_torrent)
+
+    assert "clipboard_copied = self._set_clipboard_text" in source
+    assert "Magnet could not be copied to clipboard." in source
