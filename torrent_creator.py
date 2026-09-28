@@ -278,7 +278,7 @@ class CreateTorrentDialog(wx.Dialog):
         root.Add(wx.StaticText(self, label=self._("Source (file or folder):")), 0, wx.ALL, 8)
         src_row = wx.BoxSizer(wx.HORIZONTAL)
         self.src_input = wx.TextCtrl(self, value="")
-        self.src_input.SetName(self._("Source (file or folder)"))
+        self.src_input.SetName(self._("Source (file or folder):"))
         src_row.Add(self.src_input, 1, wx.EXPAND | wx.RIGHT, 6)
         pick_file = wx.Button(self, label=self._("File..."))
         pick_dir = wx.Button(self, label=self._("Folder..."))
@@ -291,7 +291,7 @@ class CreateTorrentDialog(wx.Dialog):
         root.Add(wx.StaticText(self, label=self._("Output .torrent file:")), 0, wx.ALL, 8)
         out_row = wx.BoxSizer(wx.HORIZONTAL)
         self.out_input = wx.TextCtrl(self, value="")
-        self.out_input.SetName(self._("Output .torrent file"))
+        self.out_input.SetName(self._("Output .torrent file:"))
         out_row.Add(self.out_input, 1, wx.EXPAND | wx.RIGHT, 6)
         pick_out = wx.Button(self, label=self._("Save As..."))
         pick_out.Bind(wx.EVT_BUTTON, self.on_pick_output)
@@ -311,7 +311,7 @@ class CreateTorrentDialog(wx.Dialog):
         self.piece_choice = wx.Choice(
             self, choices=[self._(label) for label, _ in PIECE_SIZE_CHOICES])
         self.piece_choice.SetSelection(0)
-        self.piece_choice.SetName(self._("Piece size"))
+        self.piece_choice.SetName(self._("Piece size:"))
         piece_row.Add(self.piece_choice, 0)
         opt_box.Add(piece_row, 0, wx.ALL, 6)
 
@@ -329,7 +329,7 @@ class CreateTorrentDialog(wx.Dialog):
         # NOTE: wx.ListBox often does not reliably deliver Enter via EVT_KEY_DOWN on Windows because
         # dialogs have default buttons. We also handle Enter at the dialog level via EVT_CHAR_HOOK.
         self.tr_list = wx.ListBox(self, choices=POPULAR_TRACKERS, style=wx.LB_EXTENDED)
-        self.tr_list.SetName(self._("Public tracker list"))
+        self.tr_list.SetName(self._("Public tracker list (press Enter to add to Included trackers)."))
         self.tr_list.Bind(wx.EVT_KEY_DOWN, self.on_public_tracker_key_down)
         try:
             self.tr_list.Bind(wx.EVT_LISTBOX_DCLICK, self.on_public_tracker_activate)
@@ -347,12 +347,12 @@ class CreateTorrentDialog(wx.Dialog):
         self.trackers_edit = wx.TextCtrl(
             self, value="", style=wx.TE_MULTILINE | wx.TE_DONTWRAP | wx.HSCROLL)
         self.trackers_edit.SetMinSize((-1, 140))
-        self.trackers_edit.SetName(self._("Included trackers"))
+        self.trackers_edit.SetName(self._("Included trackers (one per line):"))
         tr_box.Add(self.trackers_edit, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 6)
 
         add_row = wx.BoxSizer(wx.HORIZONTAL)
         self.custom_tr_input = wx.TextCtrl(self, value="", style=wx.TE_PROCESS_ENTER)
-        self.custom_tr_input.SetName(self._("Custom tracker URL"))
+        self.custom_tr_input.SetName(self._("Add Tracker"))
         add_row.Add(self.custom_tr_input, 1, wx.EXPAND | wx.RIGHT, 6)
         add_btn = wx.Button(self, label=self._("Add Tracker"))
         self.remove_tracker_btn = wx.Button(self, label=self._("Remove Selected"))
@@ -374,7 +374,7 @@ class CreateTorrentDialog(wx.Dialog):
         ws_box.Add(wx.StaticText(self, label=self._("One URL per line (HTTP/HTTPS).")),
                    0, wx.ALL, 6)
         self.webseeds_input = wx.TextCtrl(self, value="", style=wx.TE_MULTILINE)
-        self.webseeds_input.SetName(self._("Web seeds"))
+        self.webseeds_input.SetName(self._("Web Seeds (optional)"))
         ws_box.Add(self.webseeds_input, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 6)
         root.Add(ws_box, 1, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 8)
 
@@ -383,18 +383,18 @@ class CreateTorrentDialog(wx.Dialog):
 
         meta_box.Add(wx.StaticText(self, label=self._("Comment:")), 0, wx.ALL, 6)
         self.comment_input = wx.TextCtrl(self, value="")
-        self.comment_input.SetName(self._("Comment"))
+        self.comment_input.SetName(self._("Comment:"))
         meta_box.Add(self.comment_input, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 6)
 
         meta_box.Add(wx.StaticText(
             self, label=self._("Source (written into info dict as 'source'):")), 0, wx.ALL, 6)
         self.source_input = wx.TextCtrl(self, value="")
-        self.source_input.SetName(self._("Source metadata"))
+        self.source_input.SetName(self._("Source (written into info dict as 'source'):"))
         meta_box.Add(self.source_input, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 6)
 
         meta_box.Add(wx.StaticText(self, label=self._("Created by:")), 0, wx.ALL, 6)
         self.creator_input = wx.TextCtrl(self, value="SerrebiTorrent")
-        self.creator_input.SetName(self._("Created by"))
+        self.creator_input.SetName(self._("Created by:"))
         meta_box.Add(self.creator_input, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 6)
 
         root.Add(meta_box, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 8)
