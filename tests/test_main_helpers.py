@@ -260,3 +260,14 @@ def test_rss_rules_list_has_accessible_name():
     source = inspect.getsource(main.RulesManagerDialog.__init__)
 
     assert 'self.list.SetName("RSS Rules")' in source
+
+
+
+def test_rss_editor_controls_have_accessible_names():
+    editor = inspect.getsource(main.RuleEditDialog.__init__)
+    panel = inspect.getsource(main.RSSPanel.__init__)
+
+    assert 'self.pattern_input.SetName("Regex Pattern")' in editor
+    assert 'self.type_choice.SetName("Rule Type")' in editor
+    assert 'self.check_list.SetName("Apply to Feeds")' in editor
+    assert 'self.feed_list.SetName("RSS Feeds")' in panel
