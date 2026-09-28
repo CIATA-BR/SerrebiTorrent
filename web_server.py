@@ -25,6 +25,7 @@ FLEXGET_CONFIG_MAX_BYTES = 2 * 1024 * 1024
 
 # v1.16.8 accidentally published this shared session key.
 _COMPROMISED_SECRET_KEY_SHA256 = "235913427a91431f02c54460026b545ee2e1ad7e1fac34591031eb38a4a45687"
+_WEB_SECRET_MAX_BYTES = 4096
 
 
 def _load_or_create_secret_key():
@@ -37,7 +38,9 @@ def _load_or_create_secret_key():
         key_path = os.path.join(get_data_dir(), 'web_secret.key')
         if os.path.exists(key_path):
             with open(key_path, 'rb') as f:
-                data = f.read()
+                data = f.read(_WEB_SECRET_MAX_BYTES + 1)
+            if len(data) > _WEB_SECRET_MAX_BYTES:
+                data = b''
             if len(data) >= 16 and hashlib.sha256(data).hexdigest() != _COMPROMISED_SECRET_KEY_SHA256:
                 return data
         key = os.urandom(32)
