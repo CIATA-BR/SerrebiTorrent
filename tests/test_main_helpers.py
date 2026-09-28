@@ -231,3 +231,12 @@ def test_created_torrent_add_reuses_generated_bytes():
     assert 'content = result["torrent_bytes"]' in source
     add_block = source[source.index("# Optional add to client"):]
     assert 'open(output_path, "rb")' not in add_block
+
+
+
+def test_active_add_torrent_dialog_enter_confirms():
+    source = inspect.getsource(main.AddTorrentDialog)
+
+    assert "self.ok_button.SetDefault()" in source
+    assert "if code in (wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):" in source
+    assert "self.EndModal(wx.ID_OK)" in source
