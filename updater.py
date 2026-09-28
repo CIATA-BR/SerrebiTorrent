@@ -27,6 +27,7 @@ APP_EXE_NAME = "SerrebiTorrent.exe"
 API_TIMEOUT = 15
 DOWNLOAD_TIMEOUT = 60
 MAX_UPDATE_MANIFEST_BYTES = 1024 * 1024
+MAX_UPDATE_RELEASE_BYTES = 2 * 1024 * 1024
 MAX_UPDATE_DOWNLOAD_BYTES = 512 * 1024 * 1024
 MAX_UPDATE_ZIP_UNCOMPRESSED_BYTES = 1024 * 1024 * 1024
 MAX_UPDATE_ZIP_MEMBER_BYTES = 512 * 1024 * 1024
@@ -237,17 +238,37 @@ def fetch_latest_release() -> Dict[str, Any]:
         "User-Agent": "SerrebiTorrent-Updater",
     }
     try:
-        response = requests.get(url, headers=headers, timeout=API_TIMEOUT)
+        response = requests.get(url, headers=headers, timeout=API_TIMEOUT, stream=True)
     except requests.RequestException as exc:
         raise UpdateError(f"Network error while contacting GitHub: {exc}") from exc
-    if response.status_code == 429 or (response.status_code == 403 and response.headers.get("X-RateLimit-Remaining") == "0"):
-        raise RateLimitError(_rate_limit_message(response.headers))
-    if response.status_code != 200:
-        raise UpdateError(f"GitHub API error: {response.status_code} {response.reason}")
     try:
-        return response.json()
-    except json.JSONDecodeError as exc:
-        raise UpdateError(f"Failed to parse GitHub API response: {exc}") from exc
+        if response.status_code == 429 or (response.status_code == 403 and response.headers.get("X-RateLimit-Remaining") == "0"):
+            raise RateLimitError(_rate_limit_message(response.headers))
+        if response.status_code != 200:
+            raise UpdateError(f"GitHub API error: {response.status_code} {response.reason}")
+        content_length = response.headers.get("Content-Length")
+        if content_length:
+            try:
+                expected_size = int(content_length)
+            except ValueError as exc:
+                raise UpdateError("GitHub API returned an invalid Content-Length.") from exc
+            if expected_size < 0 or expected_size > MAX_UPDATE_RELEASE_BYTES:
+                raise UpdateError("GitHub release metadata is larger than the allowed size.")
+        content = bytearray()
+        for chunk in response.iter_content(64 * 1024):
+            if not chunk:
+                continue
+            content.extend(chunk)
+            if len(content) > MAX_UPDATE_RELEASE_BYTES:
+                raise UpdateError("GitHub release metadata is larger than the allowed size.")
+        try:
+            return json.loads(bytes(content).decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise UpdateError(f"Failed to parse GitHub API response: {exc}") from exc
+    finally:
+        close = getattr(response, "close", None)
+        if callable(close):
+            close()
 
 
 def _find_asset(release: Dict[str, Any], name: str) -> Optional[Dict[str, Any]]:
