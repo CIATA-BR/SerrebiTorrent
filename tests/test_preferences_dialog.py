@@ -52,3 +52,18 @@ def test_main_preferences_save_has_ui_error_boundary():
     assert "except Exception as exc" in block[save:error_box]
     assert error_box < runtime_apply
     assert 'self._("Failed to apply settings: {error}")' in block
+
+
+
+def test_preferences_controls_have_explicit_accessible_names():
+    from pathlib import Path
+
+    source = Path("preferences_dialog.py").read_text(encoding="utf-8")
+    for control in (
+        "path_input", "watch_input", "dl_limit", "ul_limit", "max_conn",
+        "max_slots", "port_input", "announce_ip_input", "listen_interface_input",
+        "track_url_input", "rss_interval", "web_host", "web_port", "web_user",
+        "web_pass", "proxy_type", "proxy_host", "proxy_port", "proxy_user",
+        "proxy_pass",
+    ):
+        assert f"self.{control}.SetName(" in source
