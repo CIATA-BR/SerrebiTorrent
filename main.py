@@ -4355,8 +4355,7 @@ class MainFrame(wx.Frame):
             if opts.get("add_to_client") and self.client:
                 try:
                     seed_save_path = seed_save_path_for_source(source_path)
-                    with open(output_path, "rb") as f:
-                        content = f.read()
+                    content = result["torrent_bytes"]
                     self._prepare_auto_start()
                     generation = self.client_generation
                     client = self.client
