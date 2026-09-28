@@ -286,6 +286,12 @@ msgstr ""
 msgid "BitTorrent"
 msgstr ""
 
+msgid "Browse default download path"
+msgstr ""
+
+msgid "Browse watch folder"
+msgstr ""
+
 msgid "Browse..."
 msgstr ""
 
