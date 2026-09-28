@@ -6,7 +6,7 @@ import json
 import io
 import time
 import hashlib
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, patch, call
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -1794,3 +1794,21 @@ def test_rss_mutation_prechecks_hold_manager_lock(auth_client):
     assert rv.status_code == 404
 
     assert manager.lock.__enter__.call_count >= 2
+
+
+
+def test_torrent_action_hashes_are_trimmed_and_deduplicated(auth_client):
+    mock_client = MagicMock()
+    web_server.WEB_CONFIG['client'] = mock_client
+
+    rv = auth_client.post(
+        '/api/v2/torrents/resume',
+        data={'hashes': ' ABC |abc|DEF|| def '},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 200
+    assert mock_client.start_torrent.call_args_list == [
+        call('ABC'),
+        call('DEF'),
+    ]
