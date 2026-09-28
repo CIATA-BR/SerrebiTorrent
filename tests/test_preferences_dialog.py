@@ -67,3 +67,11 @@ def test_preferences_controls_have_explicit_accessible_names():
         "proxy_pass",
     ):
         assert f"self.{control}.SetName(" in source
+
+
+def test_browse_buttons_have_contextual_accessible_names():
+    from pathlib import Path
+
+    source = Path("preferences_dialog.py").read_text(encoding="utf-8")
+    assert 'browse_btn.SetName(self._("Browse default download path"))' in source
+    assert 'watch_btn.SetName(self._("Browse watch folder"))' in source
