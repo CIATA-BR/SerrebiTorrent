@@ -47,3 +47,11 @@ def test_add_torrent_enter_confirms_dialog_instead_of_toggling_tree():
     assert "self.ok_button.SetDefault()" in source
     assert "if key in (wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):" in source
     assert "self.EndModal(wx.ID_OK)" in source
+
+
+def test_add_torrent_dialog_controls_have_accessible_names():
+    from pathlib import Path
+    source = Path("main.py").read_text(encoding="utf-8")
+    assert 'self.path_input.SetName("Save Path")' in source
+    assert 'browse_btn.SetName("Browse save path")' in source
+    assert 'self.tree.SetName("Torrent files")' in source
