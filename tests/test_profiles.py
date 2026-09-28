@@ -115,3 +115,20 @@ def test_rtorrent_scgi_profile_accepts_explicit_port(tmp_path, monkeypatch):
     pid = cm.add_profile("rTorrent", "rtorrent", "scgi://example.test:5000", "", "")
 
     assert cm.get_profile(pid)["url"] == "scgi://example.test:5000"
+
+
+
+@pytest.mark.parametrize(
+    "client_type,url",
+    [
+        ("qbittorrent", "http://example.test:notaport"),
+        ("transmission", "http://example.test:70000"),
+        ("rtorrent", "scgi://example.test:0"),
+    ],
+)
+def test_remote_profile_rejects_invalid_ports(tmp_path, monkeypatch, client_type, url):
+    _configure_paths(tmp_path, monkeypatch)
+    cm = ConfigManager()
+
+    with pytest.raises(ValueError):
+        cm.add_profile("Remote", client_type, url, "", "")
