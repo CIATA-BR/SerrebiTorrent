@@ -340,10 +340,11 @@ def test_an_html_error_page_is_not_mistaken_for_a_torrent_file():
     response = _Response(content=b"<!DOCTYPE html><html>Login</html>")
     item = ts._item(ts.SOURCE_KNABEN, "", "X",
                     download_url="https://tracker.example/dl")
-    with patch.object(ts, '_http', return_value=MagicMock(
-            get=MagicMock(return_value=response))):
-        with pytest.raises(RuntimeError, match="did not return a torrent file"):
-            ts.fetch_torrent_bytes(item)
+    with patch.object(ts, 'validate_public_torrent_url', return_value=None):
+        with patch.object(ts, '_http', return_value=MagicMock(
+                get=MagicMock(return_value=response))):
+            with pytest.raises(RuntimeError, match="did not return a torrent file"):
+                ts.fetch_torrent_bytes(item)
 
 
 def test_resolve_prefers_a_magnet_and_fetches_nothing():
@@ -358,9 +359,10 @@ def test_resolve_prefers_a_magnet_and_fetches_nothing():
 def test_resolve_downloads_the_tracker_file_when_there_is_no_magnet():
     item = ts._item(ts.SOURCE_KNABEN, "", "Release",
                     download_url="https://tracker.example/dl")
-    with patch.object(ts, '_http', return_value=MagicMock(
-            get=MagicMock(return_value=_Response(content=b"d4:infod")))):
-        kind, payload = ts.resolve(item)
+    with patch.object(ts, 'validate_public_torrent_url', return_value=None):
+        with patch.object(ts, '_http', return_value=MagicMock(
+                get=MagicMock(return_value=_Response(content=b"d4:infod")))):
+            kind, payload = ts.resolve(item)
 
     assert kind == "file"
     assert payload.startswith(b"d")
@@ -482,10 +484,11 @@ def test_tracker_file_download_rejects_oversized_content_length():
         download_url="https://tracker.example/dl",
     )
 
-    with patch.object(ts, '_http', return_value=MagicMock(
-            get=MagicMock(return_value=response))):
-        with pytest.raises(RuntimeError, match="16 MB download limit"):
-            ts.fetch_torrent_bytes(item)
+    with patch.object(ts, 'validate_public_torrent_url', return_value=None):
+        with patch.object(ts, '_http', return_value=MagicMock(
+                get=MagicMock(return_value=response))):
+            with pytest.raises(RuntimeError, match="16 MB download limit"):
+                ts.fetch_torrent_bytes(item)
 
 
 def test_tracker_file_download_stops_when_stream_exceeds_limit(monkeypatch):
@@ -496,10 +499,11 @@ def test_tracker_file_download_stops_when_stream_exceeds_limit(monkeypatch):
         download_url="https://tracker.example/dl",
     )
 
-    with patch.object(ts, '_http', return_value=MagicMock(
-            get=MagicMock(return_value=response))):
-        with pytest.raises(RuntimeError, match="download limit"):
-            ts.fetch_torrent_bytes(item)
+    with patch.object(ts, 'validate_public_torrent_url', return_value=None):
+        with patch.object(ts, '_http', return_value=MagicMock(
+                get=MagicMock(return_value=response))):
+            with pytest.raises(RuntimeError, match="download limit"):
+                ts.fetch_torrent_bytes(item)
 
 
 
@@ -561,12 +565,13 @@ def test_fetch_torrent_bytes_limits_redirect_count(monkeypatch):
         download_url="https://tracker.example/dl",
     )
 
-    class RedirectResponse(_Response):
-        status_code = 302
-        headers = {"Location": "/again"}
+    def redirect_response():
+        response = _Response(headers={"Location": "/again"})
+        response.status_code = 302
+        return response
 
     session = MagicMock()
-    session.get.side_effect = lambda *args, **kwargs: RedirectResponse()
+    session.get.side_effect = lambda *args, **kwargs: redirect_response()
     monkeypatch.setattr(ts, "_http", lambda: session)
     monkeypatch.setattr(ts, "validate_public_torrent_url", lambda url: None)
 
