@@ -590,6 +590,15 @@ def test_web_ui_grid_shortcuts_do_not_capture_toolbar_keys(page, web_ui_server):
     assert page.locator('tr[data-hash][aria-selected="true"]').count() == 0
 
 
+def test_web_ui_selection_checkboxes_have_accessible_names(page, web_ui_server):
+    page.goto(web_ui_server)
+    page.wait_for_function("document.querySelectorAll('tr[data-hash]').length >= 1")
+
+    assert page.locator("#selectAllCheck").get_attribute("aria-label") == "Select all visible torrents"
+    row_check = page.locator("tr[data-hash] .row-check").first
+    assert row_check.get_attribute("aria-label").startswith("Select ")
+
+
 def test_web_ui_grid_shortcuts_do_not_capture_actions_button_keys(page, web_ui_server):
     _login(page, web_ui_server)
 
