@@ -17,10 +17,15 @@ from typing import Any, Dict
 
 from app_paths import get_config_path, get_portable_base_dir
 
+CONFIG_MAX_BYTES = 8 * 1024 * 1024
+
 
 def _read_json(path: str) -> Dict[str, Any]:
-    with open(path, "r", encoding="utf-8") as f:
-        return json.load(f)
+    with open(path, "rb") as f:
+        raw = f.read(CONFIG_MAX_BYTES + 1)
+    if len(raw) > CONFIG_MAX_BYTES:
+        raise ValueError("Configuration file exceeds the allowed size.")
+    return json.loads(raw.decode("utf-8"))
 
 
 def _write_json(path: str, data: Dict[str, Any]) -> None:
