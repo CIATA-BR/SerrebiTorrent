@@ -138,7 +138,14 @@ window.addEventListener('DOMContentLoaded', () => {
     // Refresh rate listener
     const rr = els.refreshRateInput();
     if (rr) {
+        const savedRate = parseInt(localStorage.getItem('web-refresh-rate') || '', 10);
+        if (Number.isFinite(savedRate) && savedRate >= 500 && savedRate <= 60000) {
+            rr.value = String(savedRate);
+        }
         rr.addEventListener('change', () => {
+            const rate = Math.min(60000, Math.max(500, parseInt(rr.value, 10) || 5000));
+            rr.value = String(rate);
+            localStorage.setItem('web-refresh-rate', String(rate));
             startRefreshLoop();
         });
     }
@@ -500,8 +507,9 @@ function startRefreshLoop() {
     if (refreshIntervalId) clearInterval(refreshIntervalId);
     let rate = 2000;
     const input = els.refreshRateInput();
-    if (input && input.value) rate = parseInt(input.value);
-    if (rate < 500) rate = 500;
+    if (input && input.value) rate = parseInt(input.value, 10);
+    if (!Number.isFinite(rate)) rate = 2000;
+    rate = Math.min(60000, Math.max(500, rate));
     refreshIntervalId = setInterval(() => refreshData(), rate);
 }
 
