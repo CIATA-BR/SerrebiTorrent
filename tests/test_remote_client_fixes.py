@@ -171,8 +171,11 @@ def test_base_client_batch_delete_continues_after_failure():
     client = FakeClient.__new__(FakeClient)
     client.calls = []
 
-    with pytest.raises(RuntimeError, match="one or more torrents"):
+    with pytest.raises(clients.BatchRemoveError, match="one or more torrents") as exc_info:
         client.remove_torrents(["first", "bad", "last"])
+
+    assert exc_info.value.succeeded == 2
+    assert exc_info.value.failed == 1
 
     assert client.calls == ["first", "bad", "last"]
 
@@ -190,8 +193,11 @@ def test_transmission_batch_delete_continues_after_failure():
     client = clients.TransmissionClient.__new__(clients.TransmissionClient)
     client.c = FakeTransmissionRpc()
 
-    with pytest.raises(RuntimeError, match="one or more torrents"):
+    with pytest.raises(clients.BatchRemoveError, match="one or more torrents") as exc_info:
         client.remove_torrents([1, 2, 3], df=True)
+
+    assert exc_info.value.succeeded == 2
+    assert exc_info.value.failed == 1
 
     assert client.c.calls == [(1, True), (2, True), (3, True)]
 

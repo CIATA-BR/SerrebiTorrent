@@ -1812,3 +1812,21 @@ def test_torrent_action_hashes_are_trimmed_and_deduplicated(auth_client):
         call('ABC'),
         call('DEF'),
     ]
+
+
+
+def test_torrents_delete_reports_partial_batch_removal(auth_client):
+    from clients import BatchRemoveError
+
+    mock_client = MagicMock()
+    mock_client.remove_torrents.side_effect = BatchRemoveError(1, 1)
+    web_server.WEB_CONFIG['client'] = mock_client
+
+    rv = auth_client.post(
+        '/api/v2/torrents/delete',
+        data={'hashes': 'h1|h2', 'deleteFiles': 'false'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 207
+    assert b"Removed 1 torrent(s), but 1 failed." in rv.data

@@ -22,7 +22,7 @@ import requests # Added for downloading torrent files from URL
 import concurrent.futures
 from pathlib import Path
 
-from clients import RTorrentClient, QBittorrentClient, TransmissionClient, LocalClient, download_torrent_url, validate_public_torrent_url
+from clients import BatchRemoveError, RTorrentClient, QBittorrentClient, TransmissionClient, LocalClient, download_torrent_url, validate_public_torrent_url
 from config_manager import ConfigManager
 from session_manager import SessionManager
 from rss_manager import RSSManager
@@ -4426,6 +4426,16 @@ class MainFrame(wx.Frame):
             if generation != self.client_generation:
                 return
             wx.CallAfter(self._on_action_complete, "Removed torrents")
+        except BatchRemoveError as e:
+            if generation == self.client_generation:
+                if e.succeeded:
+                    wx.CallAfter(
+                        self._on_action_error,
+                        f"Removed {e.succeeded} torrent(s), but {e.failed} failed. The list has been refreshed.",
+                    )
+                    wx.CallAfter(self.refresh_data)
+                else:
+                    wx.CallAfter(self._on_action_error, f"Remove failed: {e}")
         except Exception as e:
             if generation == self.client_generation:
                 wx.CallAfter(self._on_action_error, f"Remove failed: {e}")

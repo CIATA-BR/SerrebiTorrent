@@ -11,7 +11,7 @@ from flask import Flask, request, jsonify, send_from_directory, session, redirec
 from werkzeug.utils import secure_filename
 from urllib.parse import urlparse
 
-from clients import download_torrent_url
+from clients import BatchRemoveError, download_torrent_url
 
 TORRENT_UPLOAD_MAX_BYTES = 16 * 1024 * 1024
 
@@ -696,6 +696,13 @@ def torrents_delete():
                     client.remove_torrent_with_data(h)
                 else:
                     client.remove_torrent(h)
+    except BatchRemoveError as exc:
+        if exc.succeeded:
+            return (
+                f"Removed {exc.succeeded} torrent(s), but {exc.failed} failed. Refresh the list before retrying.",
+                207,
+            )
+        return "Failed to remove torrent(s).", 500
     except Exception:
         return "Failed to remove torrent(s).", 500
     return "Ok."
