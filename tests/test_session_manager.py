@@ -776,3 +776,17 @@ def test_load_state_uses_bounded_resume_and_torrent_reads():
     assert source.count("TORRENT_STATE_MAX_BYTES") >= 2
     assert "fp.read()" not in source
     assert "tfp.read()" not in source
+
+
+
+def test_torrents_db_read_is_bounded(tmp_path, monkeypatch):
+    import session_manager as sm
+
+    path = tmp_path / "torrents.json"
+    path.write_bytes(b"x" * 9)
+    manager = sm.SessionManager.__new__(sm.SessionManager)
+    manager.torrents_db_path = str(path)
+    monkeypatch.setattr(sm, "TORRENTS_DB_MAX_BYTES", 8)
+
+    assert manager._load_torrents_db() == {}
+    assert (tmp_path / "torrents.json.corrupt").is_file()
