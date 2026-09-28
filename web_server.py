@@ -979,12 +979,35 @@ def set_app_prefs():
     if disallowed:
         return "Unsupported application preference field.", 400
 
+    numeric_limits = {
+        'rss_update_interval': (5, 86400),
+        'dl_limit': (-1, 1000000000),
+        'ul_limit': (-1, 1000000000),
+    }
+    for key, (minimum, maximum) in numeric_limits.items():
+        if key not in new_prefs:
+            continue
+        try:
+            value = int(new_prefs[key])
+        except (TypeError, ValueError):
+            return "Invalid numeric application preference.", 400
+        if not minimum <= value <= maximum:
+            return "Application preference is outside the allowed range.", 400
+        new_prefs[key] = value
+
     try:
         prefs = app_ref.config_manager.get_preferences()
         prefs.update(new_prefs)
         app_ref.config_manager.set_preferences(prefs)
     except Exception:
         return "Failed to save settings.", 500
+
+    if {'dl_limit', 'ul_limit'} & set(new_prefs):
+        try:
+            from session_manager import SessionManager
+            SessionManager.get_instance().apply_preferences(prefs)
+        except Exception:
+            return "Failed to apply transfer limits.", 500
 
     import wx
     wx.CallAfter(app_ref._update_client_default_save_path)

@@ -704,6 +704,105 @@ def test_app_prefs_save_persists_before_success(auth_client, monkeypatch):
     call_after.assert_any_call(mock_app._update_web_ui)
 
 
+def test_app_prefs_save_coerces_numeric_form_values(auth_client, monkeypatch):
+    mock_app = MagicMock()
+    mock_app.config_manager.get_preferences.return_value = {
+        'rss_update_interval': 300,
+        'dl_limit': 0,
+        'ul_limit': 0,
+    }
+    web_server.WEB_CONFIG['app'] = mock_app
+    local_session = MagicMock()
+    monkeypatch.setattr("session_manager.SessionManager.get_instance", lambda: local_session)
+    monkeypatch.setattr("wx.CallAfter", MagicMock())
+
+    rv = auth_client.post(
+        '/api/v2/app/prefs',
+        json={'rss_update_interval': '600', 'dl_limit': '1024', 'ul_limit': '2048'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 200
+    saved = mock_app.config_manager.set_preferences.call_args.args[0]
+    assert saved['rss_update_interval'] == 600
+    assert saved['dl_limit'] == 1024
+    assert saved['ul_limit'] == 2048
+
+
+@pytest.mark.parametrize(
+    "payload",
+    [
+        {'rss_update_interval': 'abc'},
+        {'rss_update_interval': 4},
+        {'rss_update_interval': 86401},
+        {'dl_limit': -2},
+        {'dl_limit': 1000000001},
+        {'ul_limit': 'nope'},
+    ],
+)
+def test_app_prefs_save_rejects_invalid_numeric_values(auth_client, payload):
+    mock_app = MagicMock()
+    mock_app.config_manager.get_preferences.return_value = {}
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/app/prefs',
+        json=payload,
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 400
+    mock_app.config_manager.set_preferences.assert_not_called()
+
+
+def test_app_prefs_save_applies_transfer_limits_immediately(auth_client, monkeypatch):
+    mock_app = MagicMock()
+    mock_app.config_manager.get_preferences.return_value = {
+        'download_path': 'C:/Downloads',
+        'dl_limit': 0,
+        'ul_limit': 0,
+    }
+    web_server.WEB_CONFIG['app'] = mock_app
+    local_session = MagicMock()
+    monkeypatch.setattr("session_manager.SessionManager.get_instance", lambda: local_session)
+    monkeypatch.setattr("wx.CallAfter", MagicMock())
+
+    rv = auth_client.post(
+        '/api/v2/app/prefs',
+        json={'dl_limit': 1024, 'ul_limit': 2048},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 200
+    local_session.apply_preferences.assert_called_once_with({
+        'download_path': 'C:/Downloads',
+        'dl_limit': 1024,
+        'ul_limit': 2048,
+    })
+
+
+def test_app_prefs_reports_live_limit_apply_failure(auth_client, monkeypatch):
+    mock_app = MagicMock()
+    mock_app.config_manager.get_preferences.return_value = {'dl_limit': 0, 'ul_limit': 0}
+    web_server.WEB_CONFIG['app'] = mock_app
+    local_session = MagicMock()
+    local_session.apply_preferences.side_effect = RuntimeError("apply failed")
+    monkeypatch.setattr("session_manager.SessionManager.get_instance", lambda: local_session)
+    call_after = MagicMock()
+    monkeypatch.setattr("wx.CallAfter", call_after)
+
+    rv = auth_client.post(
+        '/api/v2/app/prefs',
+        json={'dl_limit': 1024},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 500
+    assert b"Failed to apply transfer limits." in rv.data
+    assert b"apply failed" not in rv.data
+    call_after.assert_not_called()
+
+
 def test_app_prefs_save_applies_rss_interval_immediately(auth_client, monkeypatch):
     mock_app = MagicMock()
     mock_app.config_manager.get_preferences.return_value = {
