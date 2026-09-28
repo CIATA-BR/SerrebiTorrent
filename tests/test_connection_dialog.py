@@ -47,3 +47,18 @@ def test_connection_manager_wraps_profile_mutations_in_ui_error_boundary():
     assert "self.cm.delete_profile(pid)" in source
     assert "self.cm.set_default_profile_id(pid)" in source
     assert source.count("_run_config_change(") >= 5
+
+
+
+def test_connection_manager_enter_connects_from_profile_list():
+    from pathlib import Path
+
+    source = Path("connection_dialog.py").read_text(encoding="utf-8")
+    start = source.index("    def on_char_hook(self, event):")
+    end = source.index("    def refresh_list", start)
+    block = source[start:end]
+
+    assert "WXK_RETURN" in block
+    assert "WXK_NUMPAD_ENTER" in block
+    assert "wx.Window.FindFocus() is self.list_box" in block
+    assert "self.on_connect(event)" in block
