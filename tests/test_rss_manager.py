@@ -239,6 +239,32 @@ tasks:
     mock_config.delete_profile.assert_called_once_with("profile-1")
 
 
+def test_flexget_import_uses_supplied_live_config_manager(rss_manager, tmp_path):
+    config_path = tmp_path / "flexget.yml"
+    config_path.write_text(
+        """
+tasks:
+  one:
+    qbittorrent:
+      host: localhost
+      port: 8080
+      username: user
+      password: secret
+""",
+        encoding="utf-8",
+    )
+    rss_manager.save.return_value = True
+    live_config = MagicMock()
+    live_config.get_profiles.return_value = {}
+    live_config.add_profile.return_value = "profile-1"
+
+    with patch("config_manager.ConfigManager") as config_cls:
+        rss_manager.import_flexget_config(str(config_path), live_config)
+
+    config_cls.assert_not_called()
+    live_config.add_profile.assert_called_once()
+
+
 def test_flexget_import_avoids_duplicate_profiles_within_same_file(rss_manager, tmp_path):
     config_path = tmp_path / "flexget.yml"
     config_path.write_text(
