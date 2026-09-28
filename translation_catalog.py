@@ -174,8 +174,15 @@ def validate_catalog_code(value: str) -> str:
     return code
 
 
+MAX_CATALOG_BYTES = 4 * 1024 * 1024
+
+
 def load_po(path: Path) -> CatalogInfo:
-    metadata, translations = parse_po_text(path.read_text(encoding="utf-8"))
+    with path.open("rb") as handle:
+        data = handle.read(MAX_CATALOG_BYTES + 1)
+    if len(data) > MAX_CATALOG_BYTES:
+        raise ValueError("translation catalog exceeds the allowed size")
+    metadata, translations = parse_po_text(data.decode("utf-8"))
     code = validate_catalog_code(metadata.get("Language") or path.stem)
     name = metadata.get("X-Language-Name") or metadata.get("Language-Team") or code
     return CatalogInfo(code=code, name=name, path=path, metadata=metadata, translations=translations)

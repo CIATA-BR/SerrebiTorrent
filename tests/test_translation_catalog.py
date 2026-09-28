@@ -128,3 +128,15 @@ def test_validate_translation_keeps_file_dialog_wildcard():
     source = "Torrent files (*.torrent)|*.torrent"
     assert validate_translation(source, "Archivos torrent (*.torrent)|*.torrent") == []
     assert validate_translation(source, "Archivos de Torrent (*.torrent)")
+
+
+
+def test_load_po_rejects_oversized_catalog(tmp_path, monkeypatch):
+    import translation_catalog
+
+    catalog = tmp_path / "large.po"
+    catalog.write_bytes(b"x" * 17)
+    monkeypatch.setattr(translation_catalog, "MAX_CATALOG_BYTES", 16)
+
+    with pytest.raises(ValueError, match="translation catalog exceeds the allowed size"):
+        load_po(catalog)
