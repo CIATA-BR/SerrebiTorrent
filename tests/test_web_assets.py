@@ -23,3 +23,11 @@ def test_add_profile_icon_button_has_explicit_accessible_name():
 
     assert 'data-bs-target="#addProfileModal"' in index
     assert 'aria-label="Add Profile"' in index
+
+
+
+def test_web_toolbar_icon_buttons_have_explicit_accessible_names():
+    index = (WEB / "index.html").read_text(encoding="utf-8")
+
+    for label in ("Add Torrent", "Refresh", "Start", "Pause", "Remove"):
+        assert f'aria-label="{label}"' in index
