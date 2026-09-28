@@ -253,3 +253,10 @@ def test_desktop_statusbar_has_accessible_identity():
 
     assert 'self.statusbar.SetName("Application status")' in source
     assert 'self.statusbar.SetHelpText("Connection status and current transfer rates.")' in source
+
+
+
+def test_rss_rules_list_has_accessible_name():
+    source = inspect.getsource(main.RulesManagerDialog.__init__)
+
+    assert 'self.list.SetName("RSS Rules")' in source
