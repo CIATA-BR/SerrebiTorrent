@@ -56,6 +56,7 @@ USER_AGENT = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) "
               "Gecko/20100101 Firefox/128.0")
 HEADERS = {"User-Agent": USER_AGENT}
 TORRENT_MAX_DOWNLOAD_BYTES = 16 * 1024 * 1024
+SEARCH_RESPONSE_MAX_BYTES = 4 * 1024 * 1024
 TORRENT_MAX_REDIRECTS = 5
 _TORRENT_REDIRECT_STATUSES = {301, 302, 303, 307, 308}
 
@@ -131,6 +132,25 @@ def _http():
             session.headers.update(HEADERS)
             _session = session
         return _session
+
+
+def _bounded_response_bytes(response, limit=SEARCH_RESPONSE_MAX_BYTES):
+    content_length = response.headers.get("Content-Length")
+    if content_length:
+        try:
+            expected = int(content_length)
+        except ValueError as exc:
+            raise RuntimeError("Search response returned an invalid Content-Length.") from exc
+        if expected < 0 or expected > limit:
+            raise RuntimeError("Search response exceeds the 4 MB limit.")
+    data = bytearray()
+    for chunk in response.iter_content(64 * 1024):
+        if not chunk:
+            continue
+        data.extend(chunk)
+        if len(data) > limit:
+            raise RuntimeError("Search response exceeds the 4 MB limit.")
+    return bytes(data)
 
 
 # -- text helpers ------------------------------------------------------------
@@ -874,19 +894,21 @@ def search_feed(query, feed, timeout=HTTP_TIMEOUT_S):
         headers=headers,
         timeout=timeout,
         allow_redirects=not credentialed,
+        stream=True,
     )
     if credentialed and response.status_code in _TORRENT_REDIRECT_STATUSES:
         raise ValueError("Credentialed indexer redirects are not allowed.")
     response.raise_for_status()
     source = feed["name"]
-    body = response.text.lstrip()
+    raw = _bounded_response_bytes(response, limit=SEARCH_RESPONSE_MAX_BYTES)
+    body = raw.decode(response.encoding or "utf-8", errors="replace").lstrip()
     if body.startswith(("{", "[")):
-        payload = response.json()
+        payload = json.loads(body)
         rows = payload.get("results") if isinstance(payload, dict) else payload
         items = [_from_prowlarr(source, doc) for doc in rows or ()
                  if isinstance(doc, dict)]
     else:
-        root = ET.fromstring(response.content)
+        root = ET.fromstring(raw)
         items = [_from_torznab(source, entry)
                  for entry in root.iterfind("./channel/item")]
     return [item for item in items if item is not None]
