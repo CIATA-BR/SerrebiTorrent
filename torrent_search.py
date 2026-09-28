@@ -867,8 +867,16 @@ def search_feed(query, feed, timeout=HTTP_TIMEOUT_S):
         params["apikey"] = feed["api_key"]
         # Prowlarr prefers the header; Torznab endpoints want the parameter.
         headers["X-Api-Key"] = feed["api_key"]
-    response = _http().get(feed["url"], params=params, headers=headers,
-                           timeout=timeout)
+    credentialed = bool(feed.get("api_key"))
+    response = _http().get(
+        feed["url"],
+        params=params,
+        headers=headers,
+        timeout=timeout,
+        allow_redirects=not credentialed,
+    )
+    if credentialed and response.status_code in _TORRENT_REDIRECT_STATUSES:
+        raise ValueError("Credentialed indexer redirects are not allowed.")
     response.raise_for_status()
     source = feed["name"]
     body = response.text.lstrip()

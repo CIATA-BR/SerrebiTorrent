@@ -577,3 +577,20 @@ def test_fetch_torrent_bytes_limits_redirect_count(monkeypatch):
 
     with pytest.raises(RuntimeError, match="redirected too many times"):
         ts.fetch_torrent_bytes(item)
+
+
+
+def test_credentialed_indexer_redirect_is_blocked_before_api_key_can_leak():
+    response = _Response(headers={"Location": "https://evil.example/search"})
+    response.status_code = 302
+    session = MagicMock(get=MagicMock(return_value=response))
+
+    with patch.object(ts, "_http", return_value=session):
+        with pytest.raises(ValueError, match="Credentialed indexer redirects are not allowed"):
+            ts.search_feed(
+                "release",
+                {"name": "Private", "url": "https://indexer.example/api", "api_key": "secret"},
+            )
+
+    session.get.assert_called_once()
+    assert session.get.call_args.kwargs["allow_redirects"] is False
