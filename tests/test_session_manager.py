@@ -788,3 +788,17 @@ def test_qbittorrent_version_state_read_is_bounded(tmp_path, monkeypatch):
     monkeypatch.setattr(sm, "VERSION_STATE_MAX_BYTES", 16)
 
     assert sm._read_version_state() == (None, 0.0)
+
+
+
+def test_torrents_db_read_is_bounded(tmp_path, monkeypatch):
+    import session_manager as sm
+
+    path = tmp_path / "torrents.json"
+    path.write_bytes(b"x" * 9)
+    manager = sm.SessionManager.__new__(sm.SessionManager)
+    manager.torrents_db_path = str(path)
+    monkeypatch.setattr(sm, "TORRENTS_DB_MAX_BYTES", 8)
+
+    assert manager._load_torrents_db() == {}
+    assert (tmp_path / "torrents.json.corrupt").is_file()
