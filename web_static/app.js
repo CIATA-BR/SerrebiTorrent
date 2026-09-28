@@ -861,6 +861,7 @@ function updateSelectionVisuals() {
     const selectAllBtn = document.getElementById('selectAllBtn');
     if (selectAllBtn) {
         selectAllBtn.setAttribute('aria-pressed', allSelected ? 'true' : 'false');
+        selectAllBtn.textContent = allSelected ? 'Clear All' : 'Select All';
     }
 }
 
