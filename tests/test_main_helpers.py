@@ -214,3 +214,11 @@ def test_manual_torrent_add_bounds_file_reads():
     assert "f.read(TORRENT_FILE_MAX_BYTES + 1)" in source
     assert "Torrent file exceeds the 16 MB limit." in source
     assert main.TORRENT_FILE_MAX_BYTES == 16 * 1024 * 1024
+
+
+
+def test_cli_torrent_add_bounds_file_reads():
+    source = inspect.getsource(main.MainFrame._process_cli_arg)
+
+    assert "f.read(TORRENT_FILE_MAX_BYTES + 1)" in source
+    assert "Torrent file exceeds the 16 MB limit." in source
