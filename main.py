@@ -4348,8 +4348,9 @@ class MainFrame(wx.Frame):
                 return
 
             # Optional clipboard copy
+            clipboard_copied = False
             if opts.get("copy_magnet") and result.get("magnet"):
-                self._set_clipboard_text(result["magnet"])
+                clipboard_copied = self._set_clipboard_text(result["magnet"])
 
             # Optional add to client
             if opts.get("add_to_client") and self.client:
@@ -4377,7 +4378,10 @@ class MainFrame(wx.Frame):
             if result.get("info_hash"):
                 msg += f"\nInfo Hash: {result['info_hash']}"
             if result.get("magnet"):
-                msg += "\nMagnet copied to clipboard." if opts.get("copy_magnet") else f"\nMagnet: {result['magnet']}"
+                if opts.get("copy_magnet"):
+                    msg += "\nMagnet copied to clipboard." if clipboard_copied else "\nMagnet could not be copied to clipboard."
+                else:
+                    msg += f"\nMagnet: {result['magnet']}"
             wx.MessageBox(msg, "Create Torrent", wx.OK | wx.ICON_INFORMATION)
 
         wx.CallLater(200, poll)
