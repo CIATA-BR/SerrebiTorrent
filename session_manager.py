@@ -666,13 +666,23 @@ class SessionManager:
             # This ensures we have the latest path even if user moved it (though move is not fully implemented yet)
             if alert.params.save_path:
                  with self.lock:
-                     if ih not in self.torrents_db or self.torrents_db[ih].get('save_path') != alert.params.save_path:
-                          entry = {'save_path': alert.params.save_path, 'added': time.time()}
+                     current = self.torrents_db.get(ih)
+                     current_save_path = current.get('save_path') if isinstance(current, dict) else None
+                     if current_save_path != alert.params.save_path:
+                          previous = dict(current) if isinstance(current, dict) else None
+                          entry = dict(current) if isinstance(current, dict) else {}
+                          entry['save_path'] = alert.params.save_path
+                          entry.setdefault('added', time.time())
                           hashes = self._info_hash_dict(alert.params.info_hashes)
                           if hashes:
                               entry['hashes'] = hashes
                           self.torrents_db[ih] = entry
-                          self._save_torrents_db()
+                          if not self._save_torrents_db():
+                              if previous is None:
+                                  self.torrents_db.pop(ih, None)
+                              else:
+                                  self.torrents_db[ih] = previous
+                              raise OSError(f"Failed to persist resume state for {ih}.")
 
         except Exception as e:
             print(f"Error writing resume data: {e}")
