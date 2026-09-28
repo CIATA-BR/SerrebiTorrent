@@ -645,8 +645,13 @@ def test_add_torrent_file_rolls_back_when_db_save_fails(session_manager, tmp_pat
 
 
 
-def test_cleanup_torrent_state_rolls_back_db_when_save_fails(session_manager, monkeypatch):
+def test_cleanup_torrent_state_rolls_back_db_when_save_fails(session_manager, monkeypatch, tmp_path):
     key = "b" * 40
+    session_manager.state_dir = str(tmp_path)
+    torrent_path = tmp_path / f"{key}.torrent"
+    resume_path = tmp_path / f"{key}.resume"
+    torrent_path.write_bytes(b"torrent")
+    resume_path.write_bytes(b"resume")
     session_manager.torrents_db[key] = {
         "save_path": "/tmp",
         "hashes": {"v1": key},
@@ -659,6 +664,9 @@ def test_cleanup_torrent_state_rolls_back_db_when_save_fails(session_manager, mo
 
     assert key in session_manager.torrents_db
     assert key in session_manager.pending_saves
+    assert torrent_path.read_bytes() == b"torrent"
+    assert resume_path.read_bytes() == b"resume"
+    assert not list(tmp_path.glob("*.removing"))
 
 
 
@@ -802,3 +810,51 @@ def test_torrents_db_read_is_bounded(tmp_path, monkeypatch):
 
     assert manager._load_torrents_db() == {}
     assert (tmp_path / "torrents.json.corrupt").is_file()
+
+
+
+def test_cleanup_torrent_state_leaves_db_intact_when_state_file_cannot_be_quarantined(session_manager, monkeypatch, tmp_path):
+    key = "1" * 40
+    session_manager.state_dir = str(tmp_path)
+    torrent_path = tmp_path / f"{key}.torrent"
+    torrent_path.write_bytes(b"torrent")
+    session_manager.torrents_db[key] = {"save_path": "/tmp"}
+
+    real_replace = os.replace
+
+    def fail_quarantine(src, dst):
+        if str(src).endswith(".torrent") and str(dst).endswith(".removing"):
+            raise OSError("locked")
+        return real_replace(src, dst)
+
+    monkeypatch.setattr(os, "replace", fail_quarantine)
+
+    with pytest.raises(OSError, match="locked"):
+        session_manager._cleanup_torrent_state([key])
+
+    assert key in session_manager.torrents_db
+    assert torrent_path.read_bytes() == b"torrent"
+
+
+def test_cleanup_torrent_state_quarantines_before_persisting_removal(session_manager, monkeypatch, tmp_path):
+    key = "2" * 40
+    session_manager.state_dir = str(tmp_path)
+    torrent_path = tmp_path / f"{key}.torrent"
+    torrent_path.write_bytes(b"torrent")
+    session_manager.torrents_db[key] = {"save_path": "/tmp"}
+
+    observed = {}
+
+    def save_db():
+        observed["original_exists"] = torrent_path.exists()
+        observed["quarantine_exists"] = bool(list(tmp_path.glob("*.removing")))
+        return True
+
+    monkeypatch.setattr(session_manager, "_save_torrents_db", save_db)
+
+    session_manager._cleanup_torrent_state([key])
+
+    assert observed == {"original_exists": False, "quarantine_exists": True}
+    assert key not in session_manager.torrents_db
+    assert not torrent_path.exists()
+    assert not list(tmp_path.glob("*.removing"))
