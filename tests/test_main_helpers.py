@@ -239,3 +239,10 @@ def test_create_torrent_reports_clipboard_failure_accurately():
 
     assert "clipboard_copied = self._set_clipboard_text" in source
     assert "Magnet could not be copied to clipboard." in source
+
+
+
+def test_rss_rules_list_has_accessible_name():
+    source = inspect.getsource(main.RulesManagerDialog.__init__)
+
+    assert 'self.list.SetName("RSS Rules")' in source
