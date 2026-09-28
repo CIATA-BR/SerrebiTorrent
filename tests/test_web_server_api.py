@@ -690,6 +690,26 @@ def test_app_prefs_save_persists_before_success(auth_client, monkeypatch):
     call_after.assert_any_call(mock_app._update_web_ui)
 
 
+def test_app_prefs_save_applies_rss_interval_immediately(auth_client, monkeypatch):
+    mock_app = MagicMock()
+    mock_app.config_manager.get_preferences.return_value = {
+        'download_path': 'C:/Downloads',
+        'rss_update_interval': 300,
+    }
+    web_server.WEB_CONFIG['app'] = mock_app
+    call_after = MagicMock()
+    monkeypatch.setattr("wx.CallAfter", call_after)
+
+    rv = auth_client.post(
+        '/api/v2/app/prefs',
+        json={'rss_update_interval': 600},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 200
+    call_after.assert_any_call(mock_app.rss_timer.Start, 600000)
+
+
 def test_app_prefs_save_reports_persistence_failure(auth_client, monkeypatch):
     mock_app = MagicMock()
     mock_app.config_manager.set_preferences.side_effect = OSError("disk full")
