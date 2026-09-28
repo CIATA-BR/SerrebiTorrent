@@ -138,3 +138,18 @@ def test_connection_and_about_labels_translate_to_pt_br():
 def test_unknown_main_text_falls_back_to_source():
     assert main_ui_i18n.tr_main("Future main label", "pt-BR") == "Future main label"
     assert main_ui_i18n.tr_main("Future main label", "en") == "Future main label"
+
+
+def test_active_preferences_controls_have_accessible_names():
+    from pathlib import Path
+    source = Path("main.py").read_text(encoding="utf-8")
+    for snippet in [
+        'self.path_input.SetName("Default Download Path")',
+        'browse_btn.SetName("Browse default download path")',
+        'self.dl_limit.SetName("Download Rate (bytes/s)")',
+        'self.ul_limit.SetName("Upload Rate (bytes/s)")',
+        'self.max_conn.SetName("Max Connections")',
+        'self.max_slots.SetName("Max Upload Slots")',
+        'self.port_input.SetName("Listening Port")',
+    ]:
+        assert snippet in source
