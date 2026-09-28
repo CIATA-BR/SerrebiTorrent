@@ -337,6 +337,15 @@ msgstr ""
 msgid "Choose Download Folder"
 msgstr ""
 
+msgid "Choose output torrent file"
+msgstr ""
+
+msgid "Choose source file"
+msgstr ""
+
+msgid "Choose source folder"
+msgstr ""
+
 msgid "Choose Watch Folder"
 msgstr ""
 

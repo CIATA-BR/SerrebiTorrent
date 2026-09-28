@@ -163,3 +163,11 @@ def test_create_torrent_dialog_names_important_controls():
         "Created by:",
     ):
         assert f'SetName(self._("{label}"))' in source
+
+
+def test_creator_picker_buttons_have_contextual_accessible_names():
+    from pathlib import Path
+    source = Path("torrent_creator.py").read_text(encoding="utf-8")
+    assert 'pick_file.SetName(self._("Choose source file"))' in source
+    assert 'pick_dir.SetName(self._("Choose source folder"))' in source
+    assert 'pick_out.SetName(self._("Choose output torrent file"))' in source
