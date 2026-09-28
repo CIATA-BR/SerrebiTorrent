@@ -712,3 +712,35 @@ def test_resume_save_path_update_rolls_back_when_db_save_fails(session_manager, 
     session_manager._handle_save_resume(alert)
 
     assert session_manager.torrents_db[key] == original
+
+
+
+def test_save_resume_failure_is_tracked(session_manager):
+    key = "e" * 40
+    alert = MagicMock()
+    alert.params.info_hashes = key
+
+    session_manager.pending_saves.add(key)
+    session_manager._handle_save_resume_failed(alert)
+
+    assert key not in session_manager.pending_saves
+    assert key in session_manager.failed_resume_saves
+
+
+def test_successful_resume_save_clears_previous_failure(session_manager, monkeypatch, tmp_path):
+    key = "f" * 40
+    session_manager.state_dir = str(tmp_path)
+    session_manager.failed_resume_saves.add(key)
+
+    params = MagicMock()
+    params.info_hashes = key
+    params.save_path = ""
+    alert = MagicMock()
+    alert.params = params
+
+    monkeypatch.setattr(session_manager, "_info_hash_key", lambda _value: key)
+    monkeypatch.setattr(sys.modules["session_manager"], "_write_resume_data_bytes", lambda _params: b"resume")
+
+    session_manager._handle_save_resume(alert)
+
+    assert key not in session_manager.failed_resume_saves

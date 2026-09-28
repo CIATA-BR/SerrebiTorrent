@@ -273,6 +273,7 @@ class SessionManager:
         self.alerts_queue = []
         self.running = True
         self.pending_saves = set()  # Track info_hashes for pending resume data
+        self.failed_resume_saves = set()
         self.last_autosave = time.time()
         self.alert_thread = threading.Thread(target=self._alert_loop, daemon=True)
         self.alert_thread.start()
@@ -622,6 +623,7 @@ class SessionManager:
             ih = self._info_hash_key(info_hashes)
             if ih:
                 self.pending_saves.discard(ih)
+                self.failed_resume_saves.add(ih)
         except Exception as e:
             print(f"Error handling save_resume_data_failed_alert: {e}")
 
@@ -655,6 +657,7 @@ class SessionManager:
                     except OSError:
                         pass
                 self.pending_saves.discard(ih)
+                self.failed_resume_saves.discard(ih)
             finally:
                 try:
                     if os.path.exists(tmp):
@@ -971,6 +974,7 @@ class SessionManager:
         handles = self.ses.get_torrents()
         with self.lock:
             self.pending_saves.clear()
+            self.failed_resume_saves.clear()
 
         count = 0
         for h in handles:
@@ -1013,6 +1017,8 @@ class SessionManager:
             
         if self.pending_saves:
             print(f"Timed out waiting for {len(self.pending_saves)} resume data saves.")
+        elif self.failed_resume_saves:
+            print(f"Failed to save resume data for {len(self.failed_resume_saves)} torrent(s).")
         else:
             print("All resume data saved successfully.")
         
