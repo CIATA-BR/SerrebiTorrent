@@ -986,6 +986,12 @@ def set_app_prefs():
     import wx
     wx.CallAfter(app_ref._update_client_default_save_path)
     wx.CallAfter(app_ref._update_web_ui)
+    if 'rss_update_interval' in new_prefs and hasattr(app_ref, 'rss_timer'):
+        try:
+            interval = min(86400, max(5, int(prefs.get('rss_update_interval', 300))))
+        except (TypeError, ValueError):
+            interval = 300
+        wx.CallAfter(app_ref.rss_timer.Start, interval * 1000)
     return "Ok."
 
 def _is_sensitive_remote_pref_key(key):
