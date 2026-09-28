@@ -262,17 +262,20 @@
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label" for="settingsRssInterval">RSS Update Interval (s)</label>
-                                        <input type="number" class="form-control" id="settingsRssInterval" name="rss_update_interval">
+                                        <input type="number" class="form-control" id="settingsRssInterval" name="rss_update_interval" min="5" max="86400" step="1" aria-describedby="settingsRssIntervalHelp">
+                                        <div class="form-text" id="settingsRssIntervalHelp">5 to 86400 seconds.</div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label" for="settingsDlLimit">Global DL Limit (B/s)</label>
-                                        <input type="number" class="form-control" id="settingsDlLimit" name="dl_limit">
+                                        <input type="number" class="form-control" id="settingsDlLimit" name="dl_limit" min="-1" max="1000000000" step="1" aria-describedby="settingsDlLimitHelp">
+                                        <div class="form-text" id="settingsDlLimitHelp">-1 or 0 means unlimited; maximum 1000000000 B/s.</div>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label" for="settingsUlLimit">Global UL Limit (B/s)</label>
-                                        <input type="number" class="form-control" id="settingsUlLimit" name="ul_limit">
+                                        <input type="number" class="form-control" id="settingsUlLimit" name="ul_limit" min="-1" max="1000000000" step="1" aria-describedby="settingsUlLimitHelp">
+                                        <div class="form-text" id="settingsUlLimitHelp">-1 or 0 means unlimited; maximum 1000000000 B/s.</div>
                                     </div>
                                 </div>
                                 <div class="mb-3 form-check">
@@ -304,7 +307,8 @@
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label" for="webRefreshRate">UI Refresh Rate (ms)</label>
-                                    <input type="number" class="form-control" id="webRefreshRate" value="5000" step="500" min="1000">
+                                    <input type="number" class="form-control" id="webRefreshRate" value="5000" step="500" min="500" max="60000" aria-describedby="webRefreshRateHelp">
+                                    <div class="form-text" id="webRefreshRateHelp">500 to 60000 milliseconds.</div>
                                 </div>
                             </div>
                         </div>

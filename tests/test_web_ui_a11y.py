@@ -599,6 +599,24 @@ def test_web_ui_selection_checkboxes_have_accessible_names(page, web_ui_server):
     assert row_check.get_attribute("aria-label").startswith("Select ")
 
 
+def test_web_ui_app_setting_limits_match_backend_contract(page, web_ui_server):
+    page.goto(web_ui_server)
+
+    rss = page.locator("#settingsRssInterval")
+    assert rss.get_attribute("min") == "5"
+    assert rss.get_attribute("max") == "86400"
+    assert rss.get_attribute("aria-describedby") == "settingsRssIntervalHelp"
+
+    for selector, help_id in [
+        ("#settingsDlLimit", "settingsDlLimitHelp"),
+        ("#settingsUlLimit", "settingsUlLimitHelp"),
+    ]:
+        control = page.locator(selector)
+        assert control.get_attribute("min") == "-1"
+        assert control.get_attribute("max") == "1000000000"
+        assert control.get_attribute("aria-describedby") == help_id
+
+
 def test_web_ui_grid_shortcuts_do_not_capture_actions_button_keys(page, web_ui_server):
     _login(page, web_ui_server)
 
