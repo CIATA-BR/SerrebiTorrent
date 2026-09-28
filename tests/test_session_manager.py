@@ -776,3 +776,15 @@ def test_load_state_uses_bounded_resume_and_torrent_reads():
     assert source.count("TORRENT_STATE_MAX_BYTES") >= 2
     assert "fp.read()" not in source
     assert "tfp.read()" not in source
+
+
+
+def test_qbittorrent_version_state_read_is_bounded(tmp_path, monkeypatch):
+    import session_manager as sm
+
+    path = tmp_path / "qbittorrent_version.json"
+    path.write_bytes(b"x" * 17)
+    monkeypatch.setattr(sm, "_version_state_path", lambda: str(path))
+    monkeypatch.setattr(sm, "VERSION_STATE_MAX_BYTES", 16)
+
+    assert sm._read_version_state() == (None, 0.0)
