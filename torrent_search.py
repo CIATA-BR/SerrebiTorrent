@@ -44,9 +44,11 @@ import xml.etree.ElementTree as ET
 from datetime import datetime
 from difflib import SequenceMatcher
 from email.utils import parsedate_to_datetime
-from urllib.parse import quote, urlencode
+from urllib.parse import quote, urlencode, urljoin
 
 import requests
+
+from clients import _public_torrent_session, safe_encode_url, validate_public_torrent_url
 
 # Firefox on Windows: the indexers below serve their ordinary pages to it,
 # and a default requests User-Agent is refused outright by two of them.
@@ -54,6 +56,8 @@ USER_AGENT = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) "
               "Gecko/20100101 Firefox/128.0")
 HEADERS = {"User-Agent": USER_AGENT}
 TORRENT_MAX_DOWNLOAD_BYTES = 16 * 1024 * 1024
+TORRENT_MAX_REDIRECTS = 5
+_TORRENT_REDIRECT_STATUSES = {301, 302, 303, 307, 308}
 
 SOURCE_PIRATEBAY = "The Pirate Bay"
 SOURCE_EZTV = "EZTV"
@@ -430,31 +434,47 @@ def fetch_torrent_bytes(item, timeout=HTTP_TIMEOUT_S):
     url = str(item.get("download_url") or "").strip()
     if not url:
         raise RuntimeError("That result carries no torrent file to fetch.")
-    response = _http().get(
-        url, timeout=timeout, allow_redirects=True, stream=True
-    )
-    try:
-        response.raise_for_status()
-        length = response.headers.get("Content-Length")
-        if length:
-            try:
-                if int(length) > TORRENT_MAX_DOWNLOAD_BYTES:
-                    raise RuntimeError("Torrent file exceeds the 16 MB download limit.")
-            except ValueError:
-                pass
+    current = url
+    body = None
+    for _ in range(TORRENT_MAX_REDIRECTS + 1):
+        try:
+            validate_public_torrent_url(current)
+        except ValueError as exc:
+            raise RuntimeError("Torrent download URL must use a public http/https address.") from exc
 
-        body = bytearray()
-        for chunk in response.iter_content(64 * 1024):
-            if not chunk:
+        with _public_torrent_session() as session, session.get(
+            safe_encode_url(current),
+            timeout=timeout,
+            allow_redirects=False,
+            stream=True,
+        ) as response:
+            if response.status_code in _TORRENT_REDIRECT_STATUSES:
+                location = response.headers.get("Location")
+                if not location:
+                    raise RuntimeError("Torrent download redirect is missing a Location header.")
+                current = urljoin(current, location)
                 continue
-            body.extend(chunk)
-            if len(body) > TORRENT_MAX_DOWNLOAD_BYTES:
-                raise RuntimeError("Torrent file exceeds the 16 MB download limit.")
-        body = bytes(body)
-    finally:
-        close = getattr(response, "close", None)
-        if callable(close):
-            close()
+
+            response.raise_for_status()
+            length = response.headers.get("Content-Length")
+            if length:
+                try:
+                    if int(length) > TORRENT_MAX_DOWNLOAD_BYTES:
+                        raise RuntimeError("Torrent file exceeds the 16 MB download limit.")
+                except ValueError:
+                    pass
+
+            content = bytearray()
+            for chunk in response.iter_content(64 * 1024):
+                if not chunk:
+                    continue
+                content.extend(chunk)
+                if len(content) > TORRENT_MAX_DOWNLOAD_BYTES:
+                    raise RuntimeError("Torrent file exceeds the 16 MB download limit.")
+            body = bytes(content)
+        break
+    else:
+        raise RuntimeError("Torrent download redirected too many times.")
 
     # Some trackers answer a spent or unauthorised link with an HTML page and
     # a 200. A torrent file is bencoded and always starts with a dictionary.
