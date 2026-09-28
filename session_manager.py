@@ -594,6 +594,13 @@ class SessionManager:
             logger.setLevel(logging.INFO)
             logger.propagate = False
         logger.info("%s: %s", kind, alert.message())
+        if kind == "portmap_error_alert" and not getattr(self, "_portmap_error_hint_logged", False):
+            logger.info(
+                "portmap_hint: automatic router port mapping failed; local torrent listening "
+                "may still work, but inbound reachability can be limited. Check the router's "
+                "UPnP/NAT-PMP settings or disable the unsupported mapper."
+            )
+            self._portmap_error_hint_logged = True
 
     def _maybe_autosave(self):
         """Periodically flush resume data (ratio, totals, etc.) to disk.
