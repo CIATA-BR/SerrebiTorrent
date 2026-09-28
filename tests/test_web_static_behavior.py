@@ -196,3 +196,16 @@ def test_web_settings_tabs_have_explicit_tabpanel_relationships():
     assert 'id="settings-app" role="tabpanel" aria-labelledby="app-settings-tab"' in markup
     assert 'id="settings-remote" role="tabpanel" aria-labelledby="remote-settings-tab"' in markup
     assert 'id="settings-web" role="tabpanel" aria-labelledby="web-settings-tab"' in markup
+
+
+def test_web_refresh_rate_is_bounded_and_persisted():
+    from pathlib import Path
+
+    html = Path("web_static/index.html").read_text(encoding="utf-8")
+    js = Path("web_static/app.js").read_text(encoding="utf-8")
+
+    assert 'id="webRefreshRate"' in html
+    assert 'min="500"' in html
+    assert 'max="60000"' in html
+    assert "localStorage.getItem('web-refresh-rate')" in js
+    assert "localStorage.setItem('web-refresh-rate'" in js
