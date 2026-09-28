@@ -209,3 +209,10 @@ def test_web_refresh_rate_is_bounded_and_persisted():
     assert 'max="60000"' in html
     assert "localStorage.getItem('web-refresh-rate')" in js
     assert "localStorage.setItem('web-refresh-rate'" in js
+
+
+def test_web_theme_is_restored_from_local_storage():
+    from pathlib import Path
+    js = Path("web_static/app.js").read_text(encoding="utf-8")
+    assert "localStorage.getItem('web-theme')" in js
+    assert "themeSelect.value = savedTheme" in js
