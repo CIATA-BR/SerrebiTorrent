@@ -1762,3 +1762,35 @@ def test_profile_add_reports_validation_failure_as_bad_request(auth_client):
     assert rv.status_code == 400
     assert b"Invalid profile configuration." in rv.data
     assert b"invalid endpoint detail" not in rv.data
+
+
+
+def test_rss_mutation_prechecks_hold_manager_lock(auth_client):
+    manager = MagicMock()
+    manager.lock = MagicMock()
+    manager.lock.__enter__.return_value = None
+    manager.lock.__exit__.return_value = False
+    manager.feeds = {}
+    manager.rules = []
+    manager.remove_feed.return_value = True
+    manager.remove_rule.return_value = True
+
+    mock_app = MagicMock()
+    mock_app.rss_panel.manager = manager
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/rss/remove_feed',
+        data={'url': 'http://missing.example/feed'},
+        headers=csrf_headers(auth_client),
+    )
+    assert rv.status_code == 404
+
+    rv = auth_client.post(
+        '/api/v2/rss/remove_rule',
+        data={'index': '0'},
+        headers=csrf_headers(auth_client),
+    )
+    assert rv.status_code == 404
+
+    assert manager.lock.__enter__.call_count >= 2
