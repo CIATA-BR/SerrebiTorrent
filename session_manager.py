@@ -883,35 +883,35 @@ class SessionManager:
                                     "Torrent state file",
                                 )
                                 info = lt.torrent_info(torrent_content)
-                                    
-                                    # Fallback to .torrent
-                                    save_path = default_save_path
-                                    priorities = None
-                                    torrent_keys = self._info_hash_keys(info.info_hashes()) if hasattr(info, "info_hashes") else []
-                                    if ih_from_resume:
-                                        self._append_hash_key(torrent_keys, ih_from_resume)
-                                    entry = self._db_entry_for_keys(torrent_keys)
-                                    if entry:
-                                        if entry.get('save_path'):
-                                            save_path = entry.get('save_path')
-                                        if entry.get('priorities'):
-                                            priorities = entry.get('priorities')
-                                    
-                                    params = {'ti': info, 'save_path': save_path}
-                                    if priorities:
-                                        params['file_priorities'] = priorities
-                                    
-                                    self.ses.add_torrent(params)
+                                
+                                # Fallback to .torrent
+                                save_path = default_save_path
+                                priorities = None
+                                torrent_keys = self._info_hash_keys(info.info_hashes()) if hasattr(info, "info_hashes") else []
+                                if ih_from_resume:
+                                    self._append_hash_key(torrent_keys, ih_from_resume)
+                                entry = self._db_entry_for_keys(torrent_keys)
+                                if entry:
+                                    if entry.get('save_path'):
+                                        save_path = entry.get('save_path')
+                                    if entry.get('priorities'):
+                                        priorities = entry.get('priorities')
+                                
+                                params = {'ti': info, 'save_path': save_path}
+                                if priorities:
+                                    params['file_priorities'] = priorities
+                                
+                                self.ses.add_torrent(params)
+                                ih = ""
+                                try:
+                                    if hasattr(info, "info_hashes"):
+                                        ih = self._info_hash_key(info.info_hashes())
+                                except Exception:
                                     ih = ""
-                                    try:
-                                        if hasattr(info, "info_hashes"):
-                                            ih = self._info_hash_key(info.info_hashes())
-                                    except Exception:
-                                        ih = ""
-                                    if not ih:
-                                        ih = self._info_hash_key(info.info_hash())
-                                    loaded_hashes.update(key for key in (torrent_keys or [ih]) if key)
-                                    print(f"Successfully loaded {ih_from_resume}.torrent after resume data failure using tracked path.")
+                                if not ih:
+                                    ih = self._info_hash_key(info.info_hash())
+                                loaded_hashes.update(key for key in (torrent_keys or [ih]) if key)
+                                print(f"Successfully loaded {ih_from_resume}.torrent after resume data failure using tracked path.")
                             except Exception as tf_e:
                                 print(f"Failed to load .torrent file {torrent_file_path} as fallback: {tf_e}")
 
