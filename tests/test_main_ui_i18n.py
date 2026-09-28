@@ -153,3 +153,38 @@ def test_active_preferences_controls_have_accessible_names():
         'self.port_input.SetName("Listening Port")',
     ]:
         assert snippet in source
+
+
+def test_active_preferences_remaining_controls_have_accessible_names():
+    from pathlib import Path
+    source = Path("main.py").read_text(encoding="utf-8")
+    for snippet in [
+        'self.announce_ip_input.SetName("Announce IP")',
+        'self.listen_interface_input.SetName("Listen interface")',
+        'self.track_url_input.SetName("Tracker List URL")',
+        'self.rss_interval.SetName("RSS Update Interval (seconds)")',
+        'self.web_host.SetName("Web UI Bind Host")',
+        'self.web_port.SetName("Web UI Port")',
+        'self.web_user.SetName("Web UI Username")',
+        'self.web_pass.SetName("Web UI Password")',
+        'self.proxy_type.SetName("Proxy Type")',
+        'self.proxy_host.SetName("Proxy Host")',
+        'self.proxy_port.SetName("Proxy Port")',
+        'self.proxy_user.SetName("Proxy Username")',
+        'self.proxy_pass.SetName("Proxy Password")',
+    ]:
+        assert snippet in source
+
+
+def test_active_profile_dialog_controls_have_accessible_names():
+    from pathlib import Path
+    source = Path("main.py").read_text(encoding="utf-8")
+    for snippet in [
+        'self.name_input.SetName("Profile Name")',
+        'self.type_input.SetName("Client Type")',
+        'self.url_input.SetName("URL or download path")',
+        'self.url_browse_btn.SetName("Browse local download path")',
+        'self.user_input.SetName("Username")',
+        'self.pass_input.SetName("Password")',
+    ]:
+        assert snippet in source

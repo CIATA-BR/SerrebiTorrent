@@ -1003,11 +1003,13 @@ class ProfileDialog(wx.Dialog):
         # Name
         sizer.Add(wx.StaticText(self, label="Profile Name:"), 0, wx.ALL, 5)
         self.name_input = wx.TextCtrl(self, value=profile['name'] if profile else "")
+        self.name_input.SetName("Profile Name")
         sizer.Add(self.name_input, 0, wx.EXPAND | wx.ALL, 5)
         
         # Type
         sizer.Add(wx.StaticText(self, label="Client Type:"), 0, wx.ALL, 5)
         self.type_input = wx.Choice(self, choices=["local", "rtorrent", "qbittorrent", "transmission"])
+        self.type_input.SetName("Client Type")
         self.type_input.Bind(wx.EVT_CHOICE, self.on_type_change)
         if profile:
             self.type_input.SetStringSelection(profile.get('type', 'local'))
@@ -1021,9 +1023,11 @@ class ProfileDialog(wx.Dialog):
 
         url_sizer = wx.BoxSizer(wx.HORIZONTAL)
         self.url_input = wx.TextCtrl(self, value=profile['url'] if profile else "")
+        self.url_input.SetName("URL or download path")
         url_sizer.Add(self.url_input, 1, wx.EXPAND | wx.RIGHT, 5)
 
         self.url_browse_btn = wx.Button(self, label="Browse...")
+        self.url_browse_btn.SetName("Browse local download path")
         self.url_browse_btn.Bind(wx.EVT_BUTTON, self.on_browse_url_path)
         url_sizer.Add(self.url_browse_btn, 0)
 
@@ -1033,12 +1037,14 @@ class ProfileDialog(wx.Dialog):
         self.user_label = wx.StaticText(self, label="Username:")
         sizer.Add(self.user_label, 0, wx.ALL, 5)
         self.user_input = wx.TextCtrl(self, value=profile['user'] if profile else "")
+        self.user_input.SetName("Username")
         sizer.Add(self.user_input, 0, wx.EXPAND | wx.ALL, 5)
         
         # Pass
         self.pass_label = wx.StaticText(self, label="Password:")
         sizer.Add(self.pass_label, 0, wx.ALL, 5)
         self.pass_input = wx.TextCtrl(self, value=profile['password'] if profile else "", style=wx.TE_PASSWORD)
+        self.pass_input.SetName("Password")
         sizer.Add(self.pass_input, 0, wx.EXPAND | wx.ALL, 5)
         
         btns = wx.StdDialogButtonSizer()
@@ -1327,12 +1333,14 @@ class PreferencesDialog(wx.Dialog):
         ann_sizer = wx.BoxSizer(wx.HORIZONTAL)
         ann_sizer.Add(wx.StaticText(conn_panel, label="Announce IP (reported to trackers, blank = auto):"), 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
         self.announce_ip_input = wx.TextCtrl(conn_panel, value=self.prefs.get('announce_ip', ''))
+        self.announce_ip_input.SetName("Announce IP")
         ann_sizer.Add(self.announce_ip_input, 1, wx.EXPAND)
         conn_sizer.Add(ann_sizer, 0, wx.EXPAND | wx.ALL, 10)
 
         listen_sizer = wx.BoxSizer(wx.HORIZONTAL)
         listen_sizer.Add(wx.StaticText(conn_panel, label="Listen interface (local IP to bind, blank = all):"), 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
         self.listen_interface_input = wx.TextCtrl(conn_panel, value=self.prefs.get('listen_interface', ''))
+        self.listen_interface_input.SetName("Listen interface")
         listen_sizer.Add(self.listen_interface_input, 1, wx.EXPAND)
         conn_sizer.Add(listen_sizer, 0, wx.EXPAND | wx.ALL, 10)
 
@@ -1365,6 +1373,7 @@ class PreferencesDialog(wx.Dialog):
         
         track_sizer.Add(wx.StaticText(track_panel, label="Tracker List URL:"), 0, wx.ALL, 5)
         self.track_url_input = wx.TextCtrl(track_panel, value=self.prefs.get('tracker_url', ''))
+        self.track_url_input.SetName("Tracker List URL")
         track_sizer.Add(self.track_url_input, 0, wx.EXPAND | wx.ALL, 5)
         
         track_panel.SetSizer(track_sizer)
@@ -1377,6 +1386,7 @@ class PreferencesDialog(wx.Dialog):
         rss_interval_sizer = wx.BoxSizer(wx.HORIZONTAL)
         rss_interval_sizer.Add(wx.StaticText(rss_settings_panel, label="RSS Update Interval (seconds):"), 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
         self.rss_interval = wx.SpinCtrl(rss_settings_panel, min=5, max=86400, initial=self.prefs.get('rss_update_interval', 300))
+        self.rss_interval.SetName("RSS Update Interval (seconds)")
         rss_interval_sizer.Add(self.rss_interval, 0)
         rss_settings_sizer.Add(rss_interval_sizer, 0, wx.ALL, 10)
         
@@ -1400,18 +1410,22 @@ class PreferencesDialog(wx.Dialog):
         grid = wx.FlexGridSizer(4, 2, 10, 10)
         grid.Add(wx.StaticText(web_panel, label="Bind Host:"), 0, wx.ALIGN_CENTER_VERTICAL)
         self.web_host = wx.TextCtrl(web_panel, value=self.prefs.get('web_ui_host', '127.0.0.1'))
+        self.web_host.SetName("Web UI Bind Host")
         grid.Add(self.web_host, 0, wx.EXPAND)
 
         grid.Add(wx.StaticText(web_panel, label="Port:"), 0, wx.ALIGN_CENTER_VERTICAL)
         self.web_port = wx.SpinCtrl(web_panel, min=1, max=65535, initial=self.prefs.get('web_ui_port', 8080))
+        self.web_port.SetName("Web UI Port")
         grid.Add(self.web_port, 0, wx.EXPAND)
         
         grid.Add(wx.StaticText(web_panel, label="Username:"), 0, wx.ALIGN_CENTER_VERTICAL)
         self.web_user = wx.TextCtrl(web_panel, value=self.prefs.get('web_ui_user', 'admin'))
+        self.web_user.SetName("Web UI Username")
         grid.Add(self.web_user, 0, wx.EXPAND)
         
         grid.Add(wx.StaticText(web_panel, label="Password:"), 0, wx.ALIGN_CENTER_VERTICAL)
         self.web_pass = wx.TextCtrl(web_panel, value=self.prefs.get('web_ui_pass', 'password'), style=wx.TE_PASSWORD)
+        self.web_pass.SetName("Web UI Password")
         grid.Add(self.web_pass, 0, wx.EXPAND)
         
         web_sizer.Add(grid, 0, wx.ALL, 10)
@@ -1425,6 +1439,7 @@ class PreferencesDialog(wx.Dialog):
         # Proxy Type
         proxy_sizer.Add(wx.StaticText(proxy_panel, label="Proxy Type:"), 0, wx.ALL, 5)
         self.proxy_type = wx.Choice(proxy_panel, choices=["None", "SOCKS4", "SOCKS5", "HTTP"])
+        self.proxy_type.SetName("Proxy Type")
         self.proxy_type.SetSelection(self.prefs.get('proxy_type', 0))
         proxy_sizer.Add(self.proxy_type, 0, wx.EXPAND | wx.ALL, 5)
         
@@ -1433,10 +1448,12 @@ class PreferencesDialog(wx.Dialog):
         
         hp_sizer.Add(wx.StaticText(proxy_panel, label="Host:"), 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
         self.proxy_host = wx.TextCtrl(proxy_panel, value=self.prefs.get('proxy_host', ''))
+        self.proxy_host.SetName("Proxy Host")
         hp_sizer.Add(self.proxy_host, 1, wx.EXPAND | wx.RIGHT, 10)
         
         hp_sizer.Add(wx.StaticText(proxy_panel, label="Port:"), 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
         self.proxy_port = wx.SpinCtrl(proxy_panel, min=1, max=65535, initial=self.prefs.get('proxy_port', 8080))
+        self.proxy_port.SetName("Proxy Port")
         hp_sizer.Add(self.proxy_port, 0)
         
         proxy_sizer.Add(hp_sizer, 0, wx.EXPAND | wx.ALL, 5)
@@ -1447,12 +1464,14 @@ class PreferencesDialog(wx.Dialog):
         user_sizer = wx.BoxSizer(wx.HORIZONTAL)
         user_sizer.Add(wx.StaticText(proxy_panel, label="Username:"), 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
         self.proxy_user = wx.TextCtrl(proxy_panel, value=self.prefs.get('proxy_user', ''))
+        self.proxy_user.SetName("Proxy Username")
         user_sizer.Add(self.proxy_user, 1, wx.EXPAND)
         proxy_sizer.Add(user_sizer, 0, wx.EXPAND | wx.ALL, 5)
         
         pass_sizer = wx.BoxSizer(wx.HORIZONTAL)
         pass_sizer.Add(wx.StaticText(proxy_panel, label="Password:"), 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
         self.proxy_pass = wx.TextCtrl(proxy_panel, value=self.prefs.get('proxy_password', ''), style=wx.TE_PASSWORD)
+        self.proxy_pass.SetName("Proxy Password")
         pass_sizer.Add(self.proxy_pass, 1, wx.EXPAND)
         proxy_sizer.Add(pass_sizer, 0, wx.EXPAND | wx.ALL, 5)
 
