@@ -46,6 +46,7 @@ _version_lock = threading.Lock()
 AUTOSAVE_INTERVAL_SECONDS = 180
 TORRENT_STATE_MAX_BYTES = 16 * 1024 * 1024
 RESUME_STATE_MAX_BYTES = 64 * 1024 * 1024
+TORRENTS_DB_MAX_BYTES = 16 * 1024 * 1024
 VERSION_STATE_MAX_BYTES = 64 * 1024
 
 
@@ -299,8 +300,12 @@ class SessionManager:
     def _load_torrents_db(self):
         if os.path.exists(self.torrents_db_path):
             try:
-                with open(self.torrents_db_path, 'r', encoding='utf-8') as f:
-                    data = json.load(f)
+                raw = _read_bounded_state_file(
+                    self.torrents_db_path,
+                    TORRENTS_DB_MAX_BYTES,
+                    "torrents.json",
+                )
+                data = json.loads(raw.decode("utf-8"))
                 if not isinstance(data, dict):
                     raise ValueError("torrents.json root must be an object")
                 return data
