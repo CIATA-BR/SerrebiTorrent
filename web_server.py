@@ -986,6 +986,13 @@ def set_app_prefs():
     except Exception:
         return "Failed to save settings.", 500
 
+    if {'dl_limit', 'ul_limit'} & set(new_prefs):
+        try:
+            from session_manager import SessionManager
+            SessionManager.get_instance().apply_preferences(prefs)
+        except Exception:
+            return "Failed to apply transfer limits.", 500
+
     import wx
     wx.CallAfter(app_ref._update_client_default_save_path)
     wx.CallAfter(app_ref._update_web_ui)
