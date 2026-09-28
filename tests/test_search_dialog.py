@@ -25,3 +25,10 @@ def test_search_clipboard_failure_is_reported():
     assert 'self._say(self._("Failed to access clipboard."))' in block
     assert "finally:" in block
     assert "wx.TheClipboard.Close()" in block
+
+
+
+def test_search_status_has_explicit_accessible_name():
+    source = Path("search_dialog.py").read_text(encoding="utf-8")
+    assert 'self.status.SetName(self._("Search status"))' in source
+    assert 'self.status.SetHelpText(self._("Search status"))' in source
