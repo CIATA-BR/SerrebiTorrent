@@ -234,3 +234,11 @@ def test_rss_delete_accessible_name_is_attached_to_rss_rule_button():
     assert source.count('del_btn.SetName("Delete selected RSS rule")') == 1
     assert source.count('del_btn.SetName("Delete selected connection profile")') == 1
     assert source.index('del_btn.SetName("Delete selected RSS rule")') > source.index('self.list.SetName("RSS Rules")')
+
+
+def test_dynamic_remote_preference_controls_receive_accessible_names():
+    from pathlib import Path
+    source = Path("main.py").read_text(encoding="utf-8")
+    marker = 'control.SetName(self._format_label(key))'
+    assert marker in source
+    assert source.index(marker) < source.index('self.field_controls[key] = {')
