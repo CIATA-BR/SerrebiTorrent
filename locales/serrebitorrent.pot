@@ -304,6 +304,9 @@ msgstr ""
 msgid "Browse local download path"
 msgstr ""
 
+msgid "Browse save path"
+msgstr ""
+
 msgid "Browse watch folder"
 msgstr ""
 
@@ -509,6 +512,9 @@ msgid "Delete this profile?"
 msgstr ""
 
 msgid "Deselect All"
+msgstr ""
+
+msgid "Deselect all torrent files"
 msgstr ""
 
 msgid "Deselected {name}"
@@ -1562,6 +1568,9 @@ msgid "Select a torrent."
 msgstr ""
 
 msgid "Select All"
+msgstr ""
+
+msgid "Select all torrent files"
 msgstr ""
 
 msgid "Select all torrents"

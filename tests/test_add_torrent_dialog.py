@@ -55,3 +55,11 @@ def test_add_torrent_dialog_controls_have_accessible_names():
     assert 'self.path_input.SetName("Save Path")' in source
     assert 'browse_btn.SetName("Browse save path")' in source
     assert 'self.tree.SetName("Torrent files")' in source
+
+
+def test_localized_add_torrent_actions_have_contextual_accessible_names():
+    from pathlib import Path
+    source = Path("add_torrent_dialog.py").read_text(encoding="utf-8")
+    assert 'browse_btn.SetName(self._("Browse save path"))' in source
+    assert 'sel_all.SetName(self._("Select all torrent files"))' in source
+    assert 'desel_all.SetName(self._("Deselect all torrent files"))' in source
