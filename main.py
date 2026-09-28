@@ -1470,12 +1470,13 @@ class PreferencesDialog(wx.Dialog):
     def on_reset_rss(self, event):
         if wx.MessageBox("Are you sure you want to clear ALL RSS feeds and rules?", "Confirm Reset", wx.YES_NO | wx.ICON_WARNING) == wx.YES:
             try:
-                # We need access to the manager. 
-                # Since RSSManager is a singleton-like store, we can just instantiate a temporary one
-                # OR use the one from main frame.
-                # Simplest is just call reset_all on a new instance since it saves to disk.
-                mgr = RSSManager()
-                mgr.reset_all()
+                manager = None
+                parent = self.GetParent()
+                if parent is not None and hasattr(parent, "rss_panel"):
+                    manager = getattr(parent.rss_panel, "manager", None)
+                if manager is None:
+                    manager = RSSManager()
+                manager.reset_all()
                 wx.MessageBox("RSS data reset successfully.", "Success")
             except Exception as e:
                 wx.LogError(f"Reset failed: {e}")
