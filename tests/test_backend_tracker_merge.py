@@ -7,6 +7,7 @@ from urllib.parse import quote
 import pytest
 
 from clients import LocalClient, QBittorrentClient, RTorrentClient, TransmissionClient
+from clients import _torrent_status_flag
 from session_manager import SessionManager
 
 HASH = 'a' * 40
@@ -198,11 +199,11 @@ def test_native_local_merge_keeps_paused_state_and_restores_saved_trackers(tmp_p
     client.add_magnet(url, str(tmp_path), False)
     handle = manager._find_handle(HASH)
     before = handle.status()
-    assert before.paused
+    assert _torrent_status_flag(before, "paused")
     assert client.add_magnet(url, str(tmp_path / 'different'), True)[0] == HASH
     client.add_trackers(HASH, [OLD, NEW, NEW])
     assert [t['url'] for t in handle.trackers()].count(NEW) == 1
-    assert handle.status().paused
+    assert _torrent_status_flag(handle.status(), "paused")
     assert handle.status().save_path == before.save_path
     assert len(manager.ses.get_torrents()) == 1
     saved = json.loads((tmp_path / 'torrents.json').read_text())
@@ -212,4 +213,4 @@ def test_native_local_merge_keeps_paused_state_and_restores_saved_trackers(tmp_p
     manager.torrents_db = saved
     manager._restore_extra_trackers()
     assert {t['url'] for t in handle.trackers()} == {OLD, NEW}
-    assert handle.status().paused
+    assert _torrent_status_flag(handle.status(), "paused")
