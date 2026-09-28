@@ -1122,7 +1122,6 @@ class ConnectDialog(wx.Dialog):
         btn_sizer.Add(edit_btn, 0, wx.RIGHT, 5)
         
         del_btn = wx.Button(self, label="Delete")
-        del_btn.SetName("Delete selected RSS rule")
         del_btn.SetName("Delete selected connection profile")
         del_btn.Bind(wx.EVT_BUTTON, self.on_delete)
         btn_sizer.Add(del_btn, 0, wx.RIGHT, 5)
@@ -2535,6 +2534,7 @@ class RulesManagerDialog(wx.Dialog):
         btn_sizer.Add(edit_btn, 0, wx.RIGHT, 5)
         
         del_btn = wx.Button(self, label="Delete")
+        del_btn.SetName("Delete selected RSS rule")
         del_btn.Bind(wx.EVT_BUTTON, self.on_delete)
         btn_sizer.Add(del_btn, 0, wx.RIGHT, 5)
         
