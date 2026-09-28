@@ -115,6 +115,7 @@ _PT_BR: Mapping[str, str] = {
     "My indexers...": "Meus indexadores...",
     "My &indexers...": "Meus &indexadores...",
     "Results": "Resultados",
+    "Search status": "Status da pesquisa",
     "&Add selected": "&Adicionar selecionados",
     "&Close": "&Fechar",
     "Search sites": "Sites de pesquisa",
