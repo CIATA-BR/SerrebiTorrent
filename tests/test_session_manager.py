@@ -58,6 +58,18 @@ def mock_libtorrent_environment():
     elif 'session_manager' in sys.modules:
         del sys.modules['session_manager']
 
+def _restore_real_path_exists(monkeypatch):
+    """The session_manager fixture mocks os.path.exists to False for the whole
+    test; tests that exercise real file quarantine/removal need the real one."""
+    def real_exists(path):
+        try:
+            os.stat(path)
+        except OSError:
+            return False
+        return True
+    monkeypatch.setattr(os.path, "exists", real_exists)
+
+
 @pytest.fixture
 def session_manager(mock_libtorrent_environment):
     from session_manager import SessionManager
@@ -316,25 +328,27 @@ def test_save_resume_discards_pending_after_atomic_write(session_manager, tmp_pa
     assert list(tmp_path.glob("*.tmp")) == []
 
 
-def test_cleanup_torrent_state_removes_db_key_files_when_called_with_alias(session_manager, tmp_path):
+def test_cleanup_torrent_state_removes_db_key_files_when_called_with_alias(session_manager, monkeypatch, tmp_path):
     db_key = "5" * 40
     alias = "6" * 40
     session_manager.state_dir = str(tmp_path)
     session_manager.torrents_db[db_key] = {"hashes": {"v1": alias}, "save_path": "/tmp"}
     session_manager.pending_saves.update({db_key, alias})
+    for name in (db_key, alias):
+        for suffix in (".torrent", ".resume"):
+            (tmp_path / f"{name}{suffix}").write_bytes(b"data")
+    # Real fs behavior: the new quarantine logic renames state files before
+    # deleting them, so mocking os.path.exists to True would spin the
+    # quarantine-name uniqueness loop forever.
+    _restore_real_path_exists(monkeypatch)
 
-    with patch('os.path.exists', return_value=True), patch('os.remove') as remove_file:
-        with patch.object(session_manager, '_save_torrents_db'):
-            session_manager._cleanup_torrent_state([alias])
+    with patch.object(session_manager, '_save_torrents_db', return_value=True):
+        session_manager._cleanup_torrent_state([alias])
 
-    removed = {os.path.basename(call.args[0]) for call in remove_file.call_args_list}
-    assert f"{alias}.torrent" in removed
-    assert f"{alias}.resume" in removed
-    assert f"{db_key}.torrent" in removed
-    assert f"{db_key}.resume" in removed
     assert db_key not in session_manager.torrents_db
     assert db_key not in session_manager.pending_saves
     assert alias not in session_manager.pending_saves
+    assert list(tmp_path.iterdir()) == []
 
 
 def test_handle_has_metadata_across_libtorrent_versions():
@@ -647,6 +661,7 @@ def test_add_torrent_file_rolls_back_when_db_save_fails(session_manager, tmp_pat
 
 def test_cleanup_torrent_state_rolls_back_db_when_save_fails(session_manager, monkeypatch, tmp_path):
     key = "b" * 40
+    _restore_real_path_exists(monkeypatch)
     session_manager.state_dir = str(tmp_path)
     torrent_path = tmp_path / f"{key}.torrent"
     resume_path = tmp_path / f"{key}.resume"
@@ -815,6 +830,7 @@ def test_torrents_db_read_is_bounded(tmp_path, monkeypatch):
 
 def test_cleanup_torrent_state_leaves_db_intact_when_state_file_cannot_be_quarantined(session_manager, monkeypatch, tmp_path):
     key = "1" * 40
+    _restore_real_path_exists(monkeypatch)
     session_manager.state_dir = str(tmp_path)
     torrent_path = tmp_path / f"{key}.torrent"
     torrent_path.write_bytes(b"torrent")
@@ -838,6 +854,7 @@ def test_cleanup_torrent_state_leaves_db_intact_when_state_file_cannot_be_quaran
 
 def test_cleanup_torrent_state_quarantines_before_persisting_removal(session_manager, monkeypatch, tmp_path):
     key = "2" * 40
+    _restore_real_path_exists(monkeypatch)
     session_manager.state_dir = str(tmp_path)
     torrent_path = tmp_path / f"{key}.torrent"
     torrent_path.write_bytes(b"torrent")
