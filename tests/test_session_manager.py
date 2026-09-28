@@ -744,3 +744,35 @@ def test_successful_resume_save_clears_previous_failure(session_manager, monkeyp
     session_manager._handle_save_resume(alert)
 
     assert key not in session_manager.failed_resume_saves
+
+
+
+def test_read_bounded_state_file_accepts_content_at_limit(tmp_path):
+    import session_manager as sm
+
+    path = tmp_path / "state.bin"
+    path.write_bytes(b"x" * 8)
+
+    assert sm._read_bounded_state_file(str(path), 8, "State file") == b"x" * 8
+
+
+def test_read_bounded_state_file_rejects_oversized_content(tmp_path):
+    import session_manager as sm
+
+    path = tmp_path / "state.bin"
+    path.write_bytes(b"x" * 9)
+
+    with pytest.raises(ValueError, match="exceeds the allowed size"):
+        sm._read_bounded_state_file(str(path), 8, "State file")
+
+
+def test_load_state_uses_bounded_resume_and_torrent_reads():
+    import inspect
+    import session_manager as sm
+
+    source = inspect.getsource(sm.SessionManager.load_state)
+
+    assert "RESUME_STATE_MAX_BYTES" in source
+    assert source.count("TORRENT_STATE_MAX_BYTES") >= 2
+    assert "fp.read()" not in source
+    assert "tfp.read()" not in source
