@@ -849,6 +849,10 @@ function updateSelectionVisuals() {
         selectAllCheck.checked = allSelected; 
         selectAllCheck.indeterminate = !allSelected && selectedHashes.size > 0; 
     }
+    const selectAllBtn = document.getElementById('selectAllBtn');
+    if (selectAllBtn) {
+        selectAllBtn.setAttribute('aria-pressed', allSelected ? 'true' : 'false');
+    }
 }
 
 function updateSidebarStats(stats, trackers) {
