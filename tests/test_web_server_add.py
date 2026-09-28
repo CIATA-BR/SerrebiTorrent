@@ -167,3 +167,29 @@ def test_torrents_add_requires_csrf(app_client, fake_client):
     )
     assert res.status_code == 403
     assert fake_client.urls == []
+
+
+
+def test_torrents_add_reports_partial_success_without_generic_500(app_client, monkeypatch):
+    class PartialClient(FakeClient):
+        def add_torrent_url(self, u, sp=None):
+            if "bad" in u:
+                raise RuntimeError("boom")
+            self.urls.append((u, sp))
+
+    original = web_server.WEB_CONFIG["client"]
+    client = PartialClient()
+    web_server.WEB_CONFIG["client"] = client
+    monkeypatch.setattr(web_server, "_validate_add_url", lambda u: None)
+    try:
+        res = app_client.post(
+            "/api/v2/torrents/add",
+            data={"urls": "magnet:?xt=urn:btih:good\nmagnet:?xt=urn:btih:bad"},
+            headers=csrf_headers(),
+        )
+    finally:
+        web_server.WEB_CONFIG["client"] = original
+
+    assert res.status_code == 207
+    assert b"Added 1 torrent(s), but 1 item(s) failed." in res.data
+    assert client.urls == [("magnet:?xt=urn:btih:good", None)]
