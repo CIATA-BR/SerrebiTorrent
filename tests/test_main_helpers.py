@@ -222,3 +222,12 @@ def test_cli_torrent_add_bounds_file_reads():
 
     assert "f.read(TORRENT_FILE_MAX_BYTES + 1)" in source
     assert "Torrent file exceeds the 16 MB limit." in source
+
+
+
+def test_created_torrent_add_reuses_generated_bytes():
+    source = inspect.getsource(main.MainFrame.on_create_torrent)
+
+    assert 'content = result["torrent_bytes"]' in source
+    add_block = source[source.index("# Optional add to client"):]
+    assert 'open(output_path, "rb")' not in add_block
