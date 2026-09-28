@@ -1122,6 +1122,7 @@ class ConnectDialog(wx.Dialog):
         btn_sizer.Add(edit_btn, 0, wx.RIGHT, 5)
         
         del_btn = wx.Button(self, label="Delete")
+        del_btn.SetName("Delete selected RSS rule")
         del_btn.SetName("Delete selected connection profile")
         del_btn.Bind(wx.EVT_BUTTON, self.on_delete)
         btn_sizer.Add(del_btn, 0, wx.RIGHT, 5)
@@ -2524,10 +2525,12 @@ class RulesManagerDialog(wx.Dialog):
         btn_sizer = wx.BoxSizer(wx.HORIZONTAL)
         
         add_btn = wx.Button(self, label="Add Rule")
+        add_btn.SetName("Add RSS rule")
         add_btn.Bind(wx.EVT_BUTTON, self.on_add)
         btn_sizer.Add(add_btn, 0, wx.RIGHT, 5)
         
         edit_btn = wx.Button(self, label="Edit Rule")
+        edit_btn.SetName("Edit selected RSS rule")
         edit_btn.Bind(wx.EVT_BUTTON, self.on_edit)
         btn_sizer.Add(edit_btn, 0, wx.RIGHT, 5)
         
@@ -2536,6 +2539,7 @@ class RulesManagerDialog(wx.Dialog):
         btn_sizer.Add(del_btn, 0, wx.RIGHT, 5)
         
         toggle_btn = wx.Button(self, label="Toggle")
+        toggle_btn.SetName("Toggle selected RSS rule")
         toggle_btn.Bind(wx.EVT_BUTTON, self.on_toggle)
         btn_sizer.Add(toggle_btn, 0, wx.RIGHT, 5)
         
