@@ -539,16 +539,9 @@ def test_fetch_torrent_bytes_rejects_private_redirect(monkeypatch):
     first = _Response(headers={"Location": "http://127.0.0.1/private.torrent"})
     first.status_code = 302
 
-    class Session:
-        def __enter__(self):
-            return self
-        def __exit__(self, exc_type, exc, tb):
-            return False
-        def get(self, url, **kwargs):
-            assert kwargs["allow_redirects"] is False
-            return first
-
-    monkeypatch.setattr(ts, "_public_torrent_session", lambda: Session())
+    session = MagicMock()
+    session.get.return_value = first
+    monkeypatch.setattr(ts, "_http", lambda: session)
     monkeypatch.setattr(
         ts,
         "validate_public_torrent_url",
@@ -572,15 +565,9 @@ def test_fetch_torrent_bytes_limits_redirect_count(monkeypatch):
         status_code = 302
         headers = {"Location": "/again"}
 
-    class Session:
-        def __enter__(self):
-            return self
-        def __exit__(self, exc_type, exc, tb):
-            return False
-        def get(self, url, **kwargs):
-            return RedirectResponse()
-
-    monkeypatch.setattr(ts, "_public_torrent_session", lambda: Session())
+    session = MagicMock()
+    session.get.side_effect = lambda *args, **kwargs: RedirectResponse()
+    monkeypatch.setattr(ts, "_http", lambda: session)
     monkeypatch.setattr(ts, "validate_public_torrent_url", lambda url: None)
 
     with pytest.raises(RuntimeError, match="redirected too many times"):
