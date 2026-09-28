@@ -242,3 +242,10 @@ def test_dynamic_remote_preference_controls_receive_accessible_names():
     marker = 'control.SetName(self._format_label(key))'
     assert marker in source
     assert source.index(marker) < source.index('self.field_controls[key] = {')
+
+
+def test_active_connection_list_and_profile_focus_are_accessible():
+    from pathlib import Path
+    source = Path("main.py").read_text(encoding="utf-8")
+    assert 'self.list_box.SetName("Connection profiles")' in source
+    assert 'self.name_input.SetFocus()' in source
