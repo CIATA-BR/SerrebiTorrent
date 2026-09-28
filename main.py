@@ -1000,11 +1000,13 @@ class ProfileDialog(wx.Dialog):
         # Name
         sizer.Add(wx.StaticText(self, label="Profile Name:"), 0, wx.ALL, 5)
         self.name_input = wx.TextCtrl(self, value=profile['name'] if profile else "")
+        self.name_input.SetName("Profile Name")
         sizer.Add(self.name_input, 0, wx.EXPAND | wx.ALL, 5)
         
         # Type
         sizer.Add(wx.StaticText(self, label="Client Type:"), 0, wx.ALL, 5)
         self.type_input = wx.Choice(self, choices=["local", "rtorrent", "qbittorrent", "transmission"])
+        self.type_input.SetName("Client Type")
         self.type_input.Bind(wx.EVT_CHOICE, self.on_type_change)
         if profile:
             self.type_input.SetStringSelection(profile.get('type', 'local'))
@@ -1018,9 +1020,11 @@ class ProfileDialog(wx.Dialog):
 
         url_sizer = wx.BoxSizer(wx.HORIZONTAL)
         self.url_input = wx.TextCtrl(self, value=profile['url'] if profile else "")
+        self.url_input.SetName("URL or download path")
         url_sizer.Add(self.url_input, 1, wx.EXPAND | wx.RIGHT, 5)
 
         self.url_browse_btn = wx.Button(self, label="Browse...")
+        self.url_browse_btn.SetName("Browse local download path")
         self.url_browse_btn.Bind(wx.EVT_BUTTON, self.on_browse_url_path)
         url_sizer.Add(self.url_browse_btn, 0)
 
@@ -1030,12 +1034,14 @@ class ProfileDialog(wx.Dialog):
         self.user_label = wx.StaticText(self, label="Username:")
         sizer.Add(self.user_label, 0, wx.ALL, 5)
         self.user_input = wx.TextCtrl(self, value=profile['user'] if profile else "")
+        self.user_input.SetName("Username")
         sizer.Add(self.user_input, 0, wx.EXPAND | wx.ALL, 5)
         
         # Pass
         self.pass_label = wx.StaticText(self, label="Password:")
         sizer.Add(self.pass_label, 0, wx.ALL, 5)
         self.pass_input = wx.TextCtrl(self, value=profile['password'] if profile else "", style=wx.TE_PASSWORD)
+        self.pass_input.SetName("Password")
         sizer.Add(self.pass_input, 0, wx.EXPAND | wx.ALL, 5)
         
         btns = wx.StdDialogButtonSizer()
