@@ -15,6 +15,16 @@ from torrent_parsing import build_magnet_from_hashes, torrent_file_storage
 
 MAX_TORRENT_DOWNLOAD_BYTES = 64 * 1024 * 1024
 MAX_TORRENT_URL_REDIRECTS = 5
+
+
+class BatchRemoveError(RuntimeError):
+    def __init__(self, succeeded, failed, message=None):
+        self.succeeded = int(succeeded)
+        self.failed = int(failed)
+        super().__init__(
+            message
+            or f"Failed to remove one or more torrents ({self.succeeded} removed, {self.failed} failed)."
+        )
 _PERCENT_ESCAPE_RE = re.compile(r"%[0-9A-Fa-f]{2}")
 _REDIRECT_STATUSES = {301, 302, 303, 307, 308}
 
@@ -323,7 +333,8 @@ class BaseClient(abc.ABC):
         if not hashes:
             return
         delete_files = self._normalize_delete_files(df)
-        failed = False
+        succeeded = 0
+        failed = 0
         for h in hashes:
             if not h:
                 continue
@@ -332,10 +343,11 @@ class BaseClient(abc.ABC):
                     self.remove_torrent_with_data(h)
                 else:
                     self.remove_torrent(h)
+                succeeded += 1
             except Exception:
-                failed = True
+                failed += 1
         if failed:
-            raise RuntimeError("Failed to remove one or more torrents.")
+            raise BatchRemoveError(succeeded, failed)
 
     def _normalize_hashes(self, hs):
         if hs is None:
@@ -759,15 +771,19 @@ class QBittorrentClient(BaseClient):
             return
         existing = self._existing_torrent_hashes(hashes)
         if not existing:
-            raise RuntimeError("qBittorrent has no matching torrent for the selected hash.")
+            raise BatchRemoveError(0, len(hashes), "qBittorrent has no matching torrent for the selected hash.")
 
         to_delete = [h for h in hashes if h.lower() in existing]
+        missing = len(hashes) - len(to_delete)
         self.c.torrents_delete(torrent_hashes=to_delete, delete_files=self._normalize_delete_files(df))
         remaining = self._wait_for_removed(to_delete)
-        if remaining:
+        failed = missing + len(remaining)
+        if failed:
+            succeeded = len(to_delete) - len(remaining)
             sample = ", ".join(sorted(remaining)[:3])
             extra = "" if len(remaining) <= 3 else f" and {len(remaining) - 3} more"
-            raise RuntimeError(f"qBittorrent did not remove torrent(s): {sample}{extra}")
+            detail = f"qBittorrent did not remove torrent(s): {sample}{extra}" if remaining else "qBittorrent had missing selected torrent(s)."
+            raise BatchRemoveError(succeeded, failed, detail)
 
     def _existing_torrent_hashes(self, hashes):
         existing = set()
@@ -974,14 +990,16 @@ class TransmissionClient(BaseClient):
     def remove_torrent_with_data(self, h): self.c.remove_torrent(self._normalize_torrent_id(h), delete_data=True)
     def remove_torrents(self, hs, df=False):
         delete_data = self._normalize_delete_files(df)
-        failed = False
+        succeeded = 0
+        failed = 0
         for h in self._normalize_torrent_ids(hs):
             try:
                 self.c.remove_torrent(h, delete_data=delete_data)
+                succeeded += 1
             except Exception:
-                failed = True
+                failed += 1
         if failed:
-            raise RuntimeError("Failed to remove one or more torrents.")
+            raise BatchRemoveError(succeeded, failed)
     def add_torrent_url(self, u, sp=None): self.c.add_torrent(u, download_dir=sp)
     def add_torrent_file(self, c, sp=None, p=None):
         # Pass raw .torrent bytes; transmission_rpc base64-encodes them into metainfo.
