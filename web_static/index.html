@@ -18,22 +18,22 @@
                 <a class="navbar-brand px-2" href="#">SerrebiTorrent</a>
                 
                 <div class="btn-group border-end pe-2 me-2">
-                    <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#addTorrentModal" title="Add Torrent">
+                    <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#addTorrentModal" title="Add Torrent" aria-label="Add Torrent">
                         <span aria-hidden="true">&#x1F4C1;</span> Add
                     </button>
-                    <button class="btn btn-sm" onclick="refreshData()" title="Refresh">
+                    <button class="btn btn-sm" onclick="refreshData()" title="Refresh" aria-label="Refresh">
                         <span aria-hidden="true">&#x21BB;</span>
                     </button>
                 </div>
 
                 <div class="btn-group border-end pe-2 me-2">
-                    <button class="btn btn-sm" onclick="doAction('resume', false, 'Start')" title="Start">
+                    <button class="btn btn-sm" onclick="doAction('resume', false, 'Start')" title="Start" aria-label="Start">
                         <span aria-hidden="true" style="color: green;">&#x25B6;</span>
                     </button>
-                    <button class="btn btn-sm" onclick="doAction('pause', false, 'Pause')" title="Pause">
+                    <button class="btn btn-sm" onclick="doAction('pause', false, 'Pause')" title="Pause" aria-label="Pause">
                         <span aria-hidden="true" style="color: blue;">&#x23F8;</span>
                     </button>
-                    <button class="btn btn-sm" onclick="doAction('delete', false, 'Remove')" title="Remove">
+                    <button class="btn btn-sm" onclick="doAction('delete', false, 'Remove')" title="Remove" aria-label="Remove">
                         <span aria-hidden="true" style="color: red;">&#x2716;</span>
                     </button>
                 </div>
