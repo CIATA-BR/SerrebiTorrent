@@ -44,6 +44,16 @@ _version_lock = threading.Lock()
 # roll every torrent back to whatever was last saved, no matter which client
 # profile (local/remote) was active in the UI at the time.
 AUTOSAVE_INTERVAL_SECONDS = 180
+TORRENT_STATE_MAX_BYTES = 16 * 1024 * 1024
+RESUME_STATE_MAX_BYTES = 64 * 1024 * 1024
+
+
+def _read_bounded_state_file(path, limit, label):
+    with open(path, "rb") as f:
+        data = f.read(limit + 1)
+    if len(data) > limit:
+        raise ValueError(f"{label} exceeds the allowed size.")
+    return data
 
 
 def _parse_version(text):
@@ -831,8 +841,11 @@ class SessionManager:
                 if f.endswith('.resume'):
                     try:
                         ih_from_resume = f.replace('.resume', '')
-                        with open(os.path.join(self.state_dir, f), 'rb') as fp:
-                            data = fp.read()
+                        data = _read_bounded_state_file(
+                            os.path.join(self.state_dir, f),
+                            RESUME_STATE_MAX_BYTES,
+                            "Resume state file",
+                        )
                         params = lt.read_resume_data(data)
                         
                         ih = self._info_hash_key(params.info_hashes)
@@ -864,9 +877,12 @@ class SessionManager:
                         torrent_file_path = os.path.join(self.state_dir, ih_from_resume + '.torrent')
                         if os.path.exists(torrent_file_path):
                             try:
-                                with open(torrent_file_path, 'rb') as tfp:
-                                    torrent_content = tfp.read()
-                                    info = lt.torrent_info(torrent_content)
+                                torrent_content = _read_bounded_state_file(
+                                    torrent_file_path,
+                                    TORRENT_STATE_MAX_BYTES,
+                                    "Torrent state file",
+                                )
+                                info = lt.torrent_info(torrent_content)
                                     
                                     # Fallback to .torrent
                                     save_path = default_save_path
@@ -906,9 +922,12 @@ class SessionManager:
                     ih = f.replace('.torrent', '')
                     torrent_keys = [ih] if ih else []
                     try:
-                        with open(os.path.join(self.state_dir, f), 'rb') as tfp:
-                            torrent_content = tfp.read()
-                            info = lt.torrent_info(torrent_content)
+                        torrent_content = _read_bounded_state_file(
+                            os.path.join(self.state_dir, f),
+                            TORRENT_STATE_MAX_BYTES,
+                            "Torrent state file",
+                        )
+                        info = lt.torrent_info(torrent_content)
                         if hasattr(info, "info_hashes"):
                             for key in self._info_hash_keys(info.info_hashes()):
                                 if key not in torrent_keys:
