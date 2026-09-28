@@ -518,3 +518,15 @@ def test_add_feed_rejects_private_or_credentialed_urls(rss_manager, url, monkeyp
 
     assert rss_manager.feeds == {}
     rss_manager.save.assert_not_called()
+
+
+
+def test_flexget_import_rejects_oversized_desktop_config(rss_manager, tmp_path, monkeypatch):
+    import rss_manager as rss_module
+
+    monkeypatch.setattr(rss_module, "FLEXGET_CONFIG_MAX_BYTES", 16)
+    config_path = tmp_path / "huge.yml"
+    config_path.write_bytes(b"x" * 17)
+
+    with pytest.raises(ValueError, match="2 MB limit"):
+        rss_manager.import_flexget_config(str(config_path))

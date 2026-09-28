@@ -6,6 +6,8 @@ import threading
 from urllib.parse import urljoin, urlparse
 from defusedxml import ElementTree as ET
 from app_paths import get_data_dir
+
+FLEXGET_CONFIG_MAX_BYTES = 2 * 1024 * 1024
 from clients import _public_torrent_session, safe_encode_url, validate_public_torrent_url
 
 RSS_FILE = os.path.join(get_data_dir(), "rss.json")
@@ -316,8 +318,16 @@ class RSSManager:
             raise Exception("PyYAML is required to import FlexGet configs.")
 
         try:
-            with open(path, 'r', encoding='utf-8') as f:
-                config = yaml.safe_load(f)
+            with open(path, 'rb') as f:
+                raw_config = f.read(FLEXGET_CONFIG_MAX_BYTES + 1)
+        except Exception as e:
+            raise ValueError("Invalid FlexGet configuration.") from e
+
+        if len(raw_config) > FLEXGET_CONFIG_MAX_BYTES:
+            raise ValueError("FlexGet configuration exceeds the 2 MB limit.")
+
+        try:
+            config = yaml.safe_load(raw_config.decode('utf-8'))
         except Exception as e:
             raise ValueError("Invalid FlexGet configuration.") from e
 
