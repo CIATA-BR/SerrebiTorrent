@@ -273,6 +273,16 @@ window.addEventListener('DOMContentLoaded', () => {
             }
             try {
                 const res = await apiFetch('/api/v2/torrents/add', { method: 'POST', body: formData });
+                if (res.status === 207) {
+                    const message = (await res.text()) || "Some torrents were added, but one or more failed.";
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('addTorrentModal'));
+                    if (modal) modal.hide();
+                    e.target.reset();
+                    announceToSR(message, true);
+                    alert(message);
+                    refreshData(true);
+                    return;
+                }
                 if (res.ok) {
                     const modal = bootstrap.Modal.getInstance(document.getElementById('addTorrentModal'));
                     if (modal) modal.hide();

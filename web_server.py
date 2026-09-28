@@ -700,6 +700,7 @@ def torrents_add():
     save_path = request.form.get('savepath')
     errors = []
     attempted = 0
+    succeeded = 0
     
     if urls:
         for url in urls.split('\n'):
@@ -718,6 +719,7 @@ def torrents_add():
                     else:
                         content = download_torrent_url(u)
                         client.add_torrent_file(content, sp=save_path)
+                    succeeded += 1
                 except Exception as e:
                     errors.append("url-failed")
                     print(f"Web add URL error for {u[:80]!r}: {e}")
@@ -734,6 +736,7 @@ def torrents_add():
                 try:
                     attempted += 1
                     client.add_torrent_file(content, sp=save_path)
+                    succeeded += 1
                 except Exception as e:
                     errors.append("file-failed")
                     print(f"Web add file error for {f.filename!r}: {e}")
@@ -741,6 +744,12 @@ def torrents_add():
     if attempted == 0 and not errors:
         return "No torrents provided", 400
     if errors:
+        if succeeded:
+            return (
+                f"Added {succeeded} torrent(s), but {len(errors)} item(s) failed. "
+                "Check the torrent list before retrying.",
+                207,
+            )
         if attempted == 0 and all(error == "rejected-url" for error in errors):
             return "Invalid torrent URL.", 400
         if attempted == 0 and all(error == "file-too-large" for error in errors):

@@ -168,3 +168,12 @@ def test_web_clipboard_handles_missing_api_synchronously():
     assert "} catch (err) {" in block
     assert "} finally {" in block
     assert "hideContextMenu();" in block
+
+
+
+def test_web_partial_torrent_add_is_announced_and_visible():
+    script = (ROOT / "web_static" / "app.js").read_text(encoding="utf-8")
+    assert "if (res.status === 207)" in script
+    assert 'announceToSR(message, true);' in script
+    assert 'alert(message);' in script
+    assert "Check the torrent list before retrying." not in script
