@@ -367,11 +367,15 @@ class TorrentSearchDialog(wx.Dialog):
             self._say(self._(
                 "Those results carry a tracker file rather than a magnet link."))
             return
-        if wx.TheClipboard.Open():
+        if not wx.TheClipboard.Open():
+            self._say(self._("Failed to access clipboard."))
+            return
+        try:
             wx.TheClipboard.SetData(wx.TextDataObject("\n".join(links)))
+        finally:
             wx.TheClipboard.Close()
-            key = "Copied {count} magnet link." if len(links) == 1 else "Copied {count} magnet links."
-            self._say(_fmt(self._, key, count=len(links)))
+        key = "Copied {count} magnet link." if len(links) == 1 else "Copied {count} magnet links."
+        self._say(_fmt(self._, key, count=len(links)))
 
     def on_close(self, event):
         self._stop.set()
