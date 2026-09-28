@@ -213,3 +213,16 @@ def test_rss_rule_action_buttons_have_contextual_accessible_names():
         'toggle_btn.SetName("Toggle selected RSS rule")',
     ]:
         assert snippet in source
+
+
+def test_rss_feed_action_buttons_have_contextual_accessible_names():
+    from pathlib import Path
+    source = Path("main.py").read_text(encoding="utf-8")
+    for snippet in [
+        'add_btn.SetName("Add RSS feed")',
+        'del_btn.SetName("Remove selected RSS feed")',
+        'refresh_btn.SetName("Refresh all RSS feeds")',
+        'rules_btn.SetName("Manage RSS rules")',
+        'import_btn.SetName("Import RSS feeds and rules from FlexGet")',
+    ]:
+        assert snippet in source
