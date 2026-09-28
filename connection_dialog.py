@@ -56,6 +56,7 @@ class ProfileDialog(wx.Dialog):
         self.url_input.SetName(self._("URL or download path"))
         url_sizer.Add(self.url_input, 1, wx.EXPAND | wx.RIGHT, 5)
         self.url_browse_btn = wx.Button(self, label=self._("Browse..."))
+        self.url_browse_btn.SetName(self._("Browse local download path"))
         self.url_browse_btn.Bind(wx.EVT_BUTTON, self.on_browse_url_path)
         url_sizer.Add(self.url_browse_btn, 0)
         sizer.Add(url_sizer, 0, wx.EXPAND | wx.ALL, 5)
