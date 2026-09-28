@@ -530,3 +530,19 @@ def test_flexget_import_rejects_oversized_desktop_config(rss_manager, tmp_path, 
 
     with pytest.raises(ValueError, match="2 MB limit"):
         rss_manager.import_flexget_config(str(config_path))
+
+
+
+def test_load_rejects_oversized_rss_state(tmp_path, monkeypatch):
+    import rss_manager as rss_module
+
+    rss_path = tmp_path / "rss.json"
+    rss_path.write_bytes(b"x" * 9)
+    monkeypatch.setattr(rss_module, "RSS_FILE", str(rss_path))
+    monkeypatch.setattr(rss_module, "RSS_STATE_MAX_BYTES", 8)
+
+    manager = RSSManager()
+
+    assert manager.feeds == {}
+    assert manager.rules == []
+    assert (tmp_path / "rss.json.corrupt").read_bytes() == b"x" * 9
