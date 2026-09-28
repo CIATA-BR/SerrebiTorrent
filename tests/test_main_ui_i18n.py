@@ -201,3 +201,15 @@ def test_connection_manager_action_buttons_have_contextual_accessible_names():
         'connect_btn.SetName("Connect using selected profile")',
     ]:
         assert snippet in source
+
+
+def test_rss_rule_action_buttons_have_contextual_accessible_names():
+    from pathlib import Path
+    source = Path("main.py").read_text(encoding="utf-8")
+    for snippet in [
+        'add_btn.SetName("Add RSS rule")',
+        'edit_btn.SetName("Edit selected RSS rule")',
+        'del_btn.SetName("Delete selected RSS rule")',
+        'toggle_btn.SetName("Toggle selected RSS rule")',
+    ]:
+        assert snippet in source
