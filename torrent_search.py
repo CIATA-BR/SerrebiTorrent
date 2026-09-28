@@ -127,7 +127,7 @@ def _http():
     global _session
     with _session_lock:
         if _session is None:
-            session = requests.Session()
+            session = _public_torrent_session()
             session.headers.update(HEADERS)
             _session = session
         return _session
@@ -442,12 +442,13 @@ def fetch_torrent_bytes(item, timeout=HTTP_TIMEOUT_S):
         except ValueError as exc:
             raise RuntimeError("Torrent download URL must use a public http/https address.") from exc
 
-        with _public_torrent_session() as session, session.get(
+        response = _http().get(
             safe_encode_url(current),
             timeout=timeout,
             allow_redirects=False,
             stream=True,
-        ) as response:
+        )
+        try:
             if response.status_code in _TORRENT_REDIRECT_STATUSES:
                 location = response.headers.get("Location")
                 if not location:
@@ -472,6 +473,10 @@ def fetch_torrent_bytes(item, timeout=HTTP_TIMEOUT_S):
                 if len(content) > TORRENT_MAX_DOWNLOAD_BYTES:
                     raise RuntimeError("Torrent file exceeds the 16 MB download limit.")
             body = bytes(content)
+        finally:
+            close = getattr(response, "close", None)
+            if callable(close):
+                close()
         break
     else:
         raise RuntimeError("Torrent download redirected too many times.")
