@@ -11,6 +11,7 @@ FLEXGET_CONFIG_MAX_BYTES = 2 * 1024 * 1024
 from clients import _public_torrent_session, safe_encode_url, validate_public_torrent_url
 
 RSS_FILE = os.path.join(get_data_dir(), "rss.json")
+RSS_STATE_MAX_BYTES = 16 * 1024 * 1024
 RSS_MAX_DOWNLOAD_BYTES = 10 * 1024 * 1024
 RSS_MAX_REDIRECTS = 5
 _RSS_REDIRECT_STATUSES = {301, 302, 303, 307, 308}
@@ -71,8 +72,11 @@ class RSSManager:
         with self.lock:
             if os.path.exists(RSS_FILE):
                 try:
-                    with open(RSS_FILE, 'r', encoding='utf-8') as f:
-                        data = json.load(f)
+                    with open(RSS_FILE, 'rb') as f:
+                        raw = f.read(RSS_STATE_MAX_BYTES + 1)
+                    if len(raw) > RSS_STATE_MAX_BYTES:
+                        raise ValueError("rss.json exceeds the 16 MB state limit")
+                    data = json.loads(raw.decode('utf-8'))
                     if not isinstance(data, dict):
                         raise ValueError("rss.json root must be an object")
                     feeds = data.get('feeds', {})
