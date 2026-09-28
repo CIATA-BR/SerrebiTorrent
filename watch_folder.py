@@ -23,6 +23,10 @@ _last_seen = {}
 _processed = {}
 
 
+class RetryImportLater(RuntimeError):
+    """Transient watch-folder condition: leave the file untouched for a later scan."""
+
+
 def clean_folder_path(folder):
     """Explorer's "Copy as path" wraps the path in quotes."""
     return str(folder or "").strip().strip('"').strip()
@@ -90,6 +94,11 @@ def import_folder(folder, add, now=None):
             if len(data) > TORRENT_MAX_BYTES:
                 raise ValueError("Torrent file exceeds the 16 MB limit.")
             add(data)
+        except RetryImportLater:
+            # Profile/client changes are transient. Do not rename a valid
+            # torrent to .failed; leave it untouched for the next scan.
+            _processed.pop(path, None)
+            continue
         except Exception as exc:  # noqa: BLE001 - client and file boundary
             failed.append((name, str(exc)))
             suffix = ".failed"
