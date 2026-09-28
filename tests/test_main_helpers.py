@@ -242,6 +242,12 @@ def test_create_torrent_reports_clipboard_failure_accurately():
 
 
 
+def test_rss_rules_list_has_accessible_name():
+    source = inspect.getsource(main.RulesManagerDialog.__init__)
+
+    assert 'self.list.SetName("RSS Rules")' in source
+
+
 def test_desktop_statusbar_has_accessible_identity():
     source = inspect.getsource(main.MainFrame.__init__)
 

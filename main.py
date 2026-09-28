@@ -2472,6 +2472,7 @@ class RulesManagerDialog(wx.Dialog):
         sizer = wx.BoxSizer(wx.VERTICAL)
         
         self.list = wx.ListCtrl(self, style=wx.LC_REPORT | wx.LC_SINGLE_SEL)
+        self.list.SetName("RSS Rules")
         self.list.InsertColumn(0, "Type", width=80)
         self.list.InsertColumn(1, "Pattern", width=350)
         self.list.InsertColumn(2, "Scope", width=100)
