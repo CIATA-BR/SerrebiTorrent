@@ -171,3 +171,10 @@ def test_creator_picker_buttons_have_contextual_accessible_names():
     assert 'pick_file.SetName(self._("Choose source file"))' in source
     assert 'pick_dir.SetName(self._("Choose source folder"))' in source
     assert 'pick_out.SetName(self._("Choose output torrent file"))' in source
+
+
+def test_creator_tracker_buttons_have_contextual_accessible_names():
+    from pathlib import Path
+    source = Path("torrent_creator.py").read_text(encoding="utf-8")
+    assert 'add_btn.SetName(self._("Add custom tracker"))' in source
+    assert 'self.remove_tracker_btn.SetName(self._("Remove selected included tracker"))' in source
