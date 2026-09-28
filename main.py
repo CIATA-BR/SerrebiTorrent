@@ -3885,7 +3885,8 @@ class MainFrame(wx.Frame):
                 # Use the cached client default (remote path when connected, fallback to preferences)
                 default_path = self._get_default_save_path()
                 
-                dlg = AddTorrentDialog(self, name, file_list, default_path)
+                selectable_files = file_list if isinstance(self.client, LocalClient) else None
+                dlg = AddTorrentDialog(self, name, selectable_files, default_path)
                 if dlg.ShowModal() == wx.ID_OK:
                     save_path = dlg.get_selected_path()
                     if not save_path:

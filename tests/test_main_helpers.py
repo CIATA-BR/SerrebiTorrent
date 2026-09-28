@@ -289,3 +289,11 @@ def test_tracker_list_download_is_bounded():
     assert "TRACKER_LIST_MAX_BYTES" in source
     assert "iter_content(64 * 1024)" in source
     assert "Tracker list exceeds the 4 MB limit." in source
+
+
+
+def test_remote_manual_add_does_not_offer_unsupported_initial_file_selection():
+    source = inspect.getsource(main.MainFrame.on_add_file)
+
+    assert "selectable_files = file_list if isinstance(self.client, LocalClient) else None" in source
+    assert "AddTorrentDialog(self, name, selectable_files, default_path)" in source
