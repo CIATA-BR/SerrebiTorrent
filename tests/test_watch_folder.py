@@ -107,3 +107,37 @@ def test_modified_file_is_retried_after_mark_failure(tmp_path, monkeypatch):
     watch_folder.import_folder(tmp_path, added_payloads.append, now=50)
 
     assert added_payloads == [b"one", b"two"]
+
+
+
+def test_transient_watch_failure_leaves_file_for_next_scan(tmp_path):
+    watch_folder._last_seen.clear()
+    watch_folder._processed.clear()
+    path = tmp_path / "switch.torrent"
+    path.write_bytes(b"good")
+    os.utime(path, (0, 0))
+
+    def retry_later(_data):
+        raise watch_folder.RetryImportLater("profile changed")
+
+    added, failed = watch_folder.import_folder(
+        tmp_path,
+        retry_later,
+        now=watch_folder.SETTLE_SECONDS + 1,
+    )
+
+    assert added == []
+    assert failed == []
+    assert path.is_file()
+    assert not (tmp_path / "switch.torrent.failed").exists()
+
+    payloads = []
+    added, failed = watch_folder.import_folder(
+        tmp_path,
+        payloads.append,
+        now=watch_folder.SETTLE_SECONDS + 61,
+    )
+
+    assert added == ["switch.torrent"]
+    assert failed == []
+    assert payloads == [b"good"]
