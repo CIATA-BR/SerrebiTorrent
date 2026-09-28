@@ -151,15 +151,15 @@ def test_create_torrent_dialog_names_important_controls():
     source = inspect.getsource(torrent_creator.CreateTorrentDialog)
 
     for label in (
-        "Source (file or folder)",
-        "Output .torrent file",
-        "Piece size",
-        "Public tracker list",
-        "Included trackers",
-        "Custom tracker URL",
-        "Web seeds",
-        "Comment",
-        "Source metadata",
-        "Created by",
+        "Source (file or folder):",
+        "Output .torrent file:",
+        "Piece size:",
+        "Public tracker list (press Enter to add to Included trackers).",
+        "Included trackers (one per line):",
+        "Add Tracker",
+        "Web Seeds (optional)",
+        "Comment:",
+        "Source (written into info dict as 'source'):",
+        "Created by:",
     ):
         assert f'SetName(self._("{label}"))' in source
