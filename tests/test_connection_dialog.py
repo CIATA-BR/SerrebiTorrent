@@ -79,3 +79,16 @@ def test_profile_browse_button_has_contextual_accessible_name():
     from pathlib import Path
     source = Path("connection_dialog.py").read_text(encoding="utf-8")
     assert 'self.url_browse_btn.SetName(self._("Browse local download path"))' in source
+
+
+def test_connection_manager_buttons_have_contextual_accessible_names():
+    from pathlib import Path
+    source = Path("connection_dialog.py").read_text(encoding="utf-8")
+    for snippet in [
+        'add_btn.SetName(self._("Add connection profile"))',
+        'edit_btn.SetName(self._("Edit selected connection profile"))',
+        'del_btn.SetName(self._("Delete selected connection profile"))',
+        'set_def_btn.SetName(self._("Set selected connection profile as default"))',
+        'connect_btn.SetName(self._("Connect using selected profile"))',
+    ]:
+        assert snippet in source
