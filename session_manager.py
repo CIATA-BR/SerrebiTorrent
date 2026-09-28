@@ -46,6 +46,7 @@ _version_lock = threading.Lock()
 AUTOSAVE_INTERVAL_SECONDS = 180
 TORRENT_STATE_MAX_BYTES = 16 * 1024 * 1024
 RESUME_STATE_MAX_BYTES = 64 * 1024 * 1024
+VERSION_STATE_MAX_BYTES = 64 * 1024
 
 
 def _read_bounded_state_file(path, limit, label):
@@ -72,8 +73,12 @@ def _version_state_path():
 
 def _read_version_state():
     try:
-        with open(_version_state_path(), "r", encoding="utf-8") as f:
-            state = json.load(f)
+        data = _read_bounded_state_file(
+            _version_state_path(),
+            VERSION_STATE_MAX_BYTES,
+            "qBittorrent version state",
+        )
+        state = json.loads(data.decode("utf-8"))
         if not isinstance(state, dict):
             return None, 0.0
         return _parse_version(state.get("version")), float(state.get("checked", 0) or 0)
