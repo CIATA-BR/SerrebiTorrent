@@ -86,6 +86,7 @@ class ProfileDialog(wx.Dialog):
         self.Fit()
         self.Center()
         self.on_type_change(None)
+        self.name_input.SetFocus()
 
     def on_type_change(self, event):
         local = self.type_input.GetStringSelection() == "local"
@@ -160,6 +161,7 @@ class ConnectDialog(wx.Dialog):
 
         self.selected_profile_id = None
         self.refresh_list()
+        self.list_box.SetFocus()
 
     def on_char_hook(self, event):
         key = event.GetKeyCode()
