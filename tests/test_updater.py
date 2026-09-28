@@ -866,3 +866,47 @@ def test_manifest_download_rejects_redirect_to_untrusted_host(monkeypatch):
         )
 
     response.close.assert_called_once()
+
+
+
+def test_download_redirect_is_validated_before_second_request(monkeypatch):
+    first = MagicMock()
+    first.status_code = 302
+    first.headers = {"Location": "https://evil.example/update.zip"}
+    first.close = MagicMock()
+
+    calls = []
+    def fake_get(url, **kwargs):
+        calls.append(url)
+        return first
+
+    monkeypatch.setattr(updater.requests, "get", fake_get)
+
+    with pytest.raises(UpdateError, match="HTTPS GitHub release asset"):
+        updater._get_validated_download_response(
+            ASSET_URL,
+            timeout=updater.DOWNLOAD_TIMEOUT,
+            stream=True,
+        )
+
+    assert calls == [ASSET_URL]
+    first.close.assert_called_once()
+
+
+def test_download_redirect_count_is_bounded(monkeypatch):
+    def fake_get(url, **kwargs):
+        response = MagicMock()
+        response.status_code = 302
+        response.headers = {"Location": url}
+        response.close = MagicMock()
+        return response
+
+    monkeypatch.setattr(updater.requests, "get", fake_get)
+    monkeypatch.setattr(updater, "MAX_UPDATE_REDIRECTS", 1)
+
+    with pytest.raises(UpdateError, match="redirected too many times"):
+        updater._get_validated_download_response(
+            ASSET_URL,
+            timeout=updater.DOWNLOAD_TIMEOUT,
+            stream=True,
+        )
