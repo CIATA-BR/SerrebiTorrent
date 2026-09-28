@@ -1868,6 +1868,7 @@ class RemotePreferencesDialog(wx.Dialog):
             control = self._create_non_bool_control(panel, key, value, field_type)
             field_sizer.Add(control, 1, wx.EXPAND)
 
+        control.SetName(self._format_label(key))
         self.field_controls[key] = {
             "control": control,
             "type": field_type,
