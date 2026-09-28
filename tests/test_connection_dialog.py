@@ -1,4 +1,5 @@
 import i18n
+import inspect
 from connection_dialog import profile_display_label
 
 
