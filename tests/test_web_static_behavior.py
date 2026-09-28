@@ -187,3 +187,12 @@ def test_web_select_all_button_exposes_toggle_state():
     assert 'id="selectAllBtn"' in markup
     assert 'aria-pressed="false"' in markup
     assert "selectAllBtn.setAttribute('aria-pressed', allSelected ? 'true' : 'false')" in script
+
+
+
+def test_web_settings_tabs_have_explicit_tabpanel_relationships():
+    markup = (ROOT / "web_static" / "index.html").read_text(encoding="utf-8")
+
+    assert 'id="settings-app" role="tabpanel" aria-labelledby="app-settings-tab"' in markup
+    assert 'id="settings-remote" role="tabpanel" aria-labelledby="remote-settings-tab"' in markup
+    assert 'id="settings-web" role="tabpanel" aria-labelledby="web-settings-tab"' in markup
