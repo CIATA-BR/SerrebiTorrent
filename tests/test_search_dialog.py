@@ -12,3 +12,16 @@ def test_late_search_results_become_actionable_after_deadline():
     assert "self.list.SetName(" in block
     assert "self.list.Select(0)" in block
     assert "self.list.Focus(0)" in block
+
+
+
+def test_search_clipboard_failure_is_reported():
+    source = Path("search_dialog.py").read_text(encoding="utf-8")
+    start = source.index("    def _copy_magnet(self):")
+    end = source.index("    def on_close", start)
+    block = source[start:end]
+
+    assert "if not wx.TheClipboard.Open():" in block
+    assert 'self._say(self._("Failed to access clipboard."))' in block
+    assert "finally:" in block
+    assert "wx.TheClipboard.Close()" in block
