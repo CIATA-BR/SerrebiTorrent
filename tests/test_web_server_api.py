@@ -6,7 +6,7 @@ import json
 import io
 import time
 import hashlib
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, patch, call
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
