@@ -282,7 +282,7 @@ class LocalizedRSSPanel(legacy.RSSPanel):
                 return
             path = file_dialog.GetPath()
             try:
-                feeds, rules = self.manager.import_flexget_config(path)
+                feeds, rules = self.manager.import_flexget_config(path, self.frame.config_manager)
                 wx.MessageBox(
                     tr_rss("Imported {feeds} feeds and {rules} rules.", language).format(
                         feeds=feeds, rules=rules
