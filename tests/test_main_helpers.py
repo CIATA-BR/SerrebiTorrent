@@ -271,3 +271,11 @@ def test_rss_editor_controls_have_accessible_names():
     assert 'self.type_choice.SetName("Rule Type")' in editor
     assert 'self.check_list.SetName("Apply to Feeds")' in editor
     assert 'self.feed_list.SetName("RSS Feeds")' in panel
+
+
+
+def test_tracker_cache_is_keyed_by_source_url():
+    source = inspect.getsource(main.MainFrame.fetch_trackers)
+
+    assert "getattr(self, '_cached_tracker_url', None) == url" in source
+    assert "self._cached_tracker_url = url" in source

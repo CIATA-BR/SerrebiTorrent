@@ -3815,13 +3815,18 @@ class MainFrame(wx.Frame):
             return []
 
         try:
-            # Simple caching
-            if hasattr(self, '_cached_trackers') and self._cached_trackers:
+            # Cache by source URL so changing tracker_url cannot keep returning
+            # a stale list fetched from the previous source.
+            if (
+                getattr(self, '_cached_tracker_url', None) == url
+                and getattr(self, '_cached_trackers', None)
+            ):
                 return self._cached_trackers
 
             r = requests.get(url, timeout=5)
             if r.status_code == 200:
                 trackers = [line.strip() for line in r.text.splitlines() if line.strip()]
+                self._cached_tracker_url = url
                 self._cached_trackers = trackers
                 return trackers
         except Exception as e:
