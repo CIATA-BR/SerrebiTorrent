@@ -279,3 +279,13 @@ def test_tracker_cache_is_keyed_by_source_url():
 
     assert "getattr(self, '_cached_tracker_url', None) == url" in source
     assert "self._cached_tracker_url = url" in source
+
+
+
+def test_tracker_list_download_is_bounded():
+    source = inspect.getsource(main.MainFrame.fetch_trackers)
+
+    assert "stream=True" in source
+    assert "TRACKER_LIST_MAX_BYTES" in source
+    assert "iter_content(64 * 1024)" in source
+    assert "Tracker list exceeds the 4 MB limit." in source
