@@ -162,8 +162,12 @@ class ConnectDialog(wx.Dialog):
         self.refresh_list()
 
     def on_char_hook(self, event):
-        if event.GetKeyCode() == wx.WXK_ESCAPE:
+        key = event.GetKeyCode()
+        if key == wx.WXK_ESCAPE:
             self.EndModal(wx.ID_CANCEL)
+            return
+        if key in (wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER) and wx.Window.FindFocus() is self.list_box:
+            self.on_connect(event)
             return
         event.Skip()
 
