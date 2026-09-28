@@ -130,6 +130,13 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const savedTheme = localStorage.getItem('web-theme');
+    if (savedTheme === 'dark' || savedTheme === 'light') {
+        applyTheme(savedTheme);
+        const themeSelect = document.getElementById('webTheme');
+        if (themeSelect) themeSelect.value = savedTheme;
+    }
+
     // Initial fetch
     refreshData(true);
     if (window.fetchProfiles) window.fetchProfiles(); 
