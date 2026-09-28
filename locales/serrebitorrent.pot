@@ -112,6 +112,9 @@ msgstr ""
 msgid "Add Connection Profile"
 msgstr ""
 
+msgid "Add connection profile"
+msgstr ""
+
 msgid "Add created torrent to the currently connected client"
 msgstr ""
 
@@ -391,6 +394,9 @@ msgstr ""
 msgid "Connect to this profile"
 msgstr ""
 
+msgid "Connect using selected profile"
+msgstr ""
+
 msgid "Connected to {name}"
 msgstr ""
 
@@ -487,6 +493,9 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
+msgid "Delete selected connection profile"
+msgstr ""
+
 msgid "Delete this profile?"
 msgstr ""
 
@@ -563,6 +572,9 @@ msgid "Edit RSS Rule"
 msgstr ""
 
 msgid "Edit Rule"
+msgstr ""
+
+msgid "Edit selected connection profile"
 msgstr ""
 
 msgid "Enable DHT"
@@ -1574,6 +1586,9 @@ msgid "Set"
 msgstr ""
 
 msgid "Set Default"
+msgstr ""
+
+msgid "Set selected connection profile as default"
 msgstr ""
 
 msgid "Settings"
