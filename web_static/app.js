@@ -742,6 +742,7 @@ function createRowElement(t) {
     `;
     
     const check = tr.querySelector('.row-check');
+    check.setAttribute('aria-label', `Select ${t.name}`);
     check.onclick = (e) => { e.stopPropagation(); toggleSelection(t.hash); };
 
     tr.onclick = (e) => { 
