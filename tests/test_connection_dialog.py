@@ -1,4 +1,6 @@
+import connection_dialog
 import i18n
+import inspect
 from connection_dialog import profile_display_label
 
 
@@ -62,3 +64,12 @@ def test_connection_manager_enter_connects_from_profile_list():
     assert "WXK_NUMPAD_ENTER" in block
     assert "wx.Window.FindFocus() is self.list_box" in block
     assert "self.on_connect(event)" in block
+
+
+
+def test_connection_dialogs_set_predictable_initial_focus():
+    profile_source = inspect.getsource(connection_dialog.ProfileDialog.__init__)
+    connect_source = inspect.getsource(connection_dialog.ConnectDialog.__init__)
+
+    assert "self.name_input.SetFocus()" in profile_source
+    assert "self.list_box.SetFocus()" in connect_source
