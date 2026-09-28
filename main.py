@@ -2660,7 +2660,7 @@ class RSSPanel(wx.Panel):
                 return
             path = fileDialog.GetPath()
             try:
-                feeds, rules = self.manager.import_flexget_config(path)
+                feeds, rules = self.manager.import_flexget_config(path, self.frame.config_manager)
                 wx.MessageBox(f"Imported {feeds} feeds and {rules} rules.", "Import Complete", wx.OK | wx.ICON_INFORMATION)
                 self.refresh_feeds_list()
                 self.on_refresh_all(None)
