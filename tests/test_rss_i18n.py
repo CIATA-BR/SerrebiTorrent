@@ -58,3 +58,14 @@ def test_runtime_installer_wires_localized_rss_components():
         "legacy.RSSPanel = LocalizedRSSPanel",
     ):
         assert assignment in source
+
+
+def test_localized_rss_buttons_receive_contextual_accessible_names():
+    from pathlib import Path
+    source = Path("rss_i18n.py").read_text(encoding="utf-8")
+    assert '"Delete": "Delete selected RSS rule"' in source
+    assert '"Toggle": "Toggle selected RSS rule"' in source
+    assert '"Remove Feed": "Remove selected RSS feed"' in source
+    assert '"Import FlexGet": "Import RSS feeds and rules from FlexGet"' in source
+    assert "child.SetName(tr_rss(rule_button_names[source], self._rss_language))" in source
+    assert "child.SetName(tr_rss(feed_button_names[source], self._rss_language))" in source

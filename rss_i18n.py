@@ -169,11 +169,19 @@ class LocalizedRulesManagerDialog(legacy.RulesManagerDialog):
             _set_column_text(self.list, index, tr_rss(source, self._rss_language))
         self.list.SetName(tr_rss("RSS Rules Manager", self._rss_language))
 
+        rule_button_names = {
+            "Add Rule": "Add RSS rule",
+            "Edit Rule": "Edit selected RSS rule",
+            "Delete": "Delete selected RSS rule",
+            "Toggle": "Toggle selected RSS rule",
+            "Close": "Close RSS rules manager",
+        }
         for child in self.GetChildren():
             if isinstance(child, wx.Button):
                 source = child.GetLabel()
-                if source in {"Add Rule", "Edit Rule", "Delete", "Toggle", "Close"}:
+                if source in rule_button_names:
                     child.SetLabel(tr_rss(source, self._rss_language))
+                    child.SetName(tr_rss(rule_button_names[source], self._rss_language))
         self.refresh_list()
 
     def _report_rule_save_failure(self):
@@ -214,11 +222,19 @@ class LocalizedRSSPanel(legacy.RSSPanel):
         super().__init__(parent, frame)
         self._rss_language = _language_from_frame(frame)
 
+        feed_button_names = {
+            "Add Feed": "Add RSS feed",
+            "Remove Feed": "Remove selected RSS feed",
+            "Refresh All": "Refresh all RSS feeds",
+            "Rules": "Manage RSS rules",
+            "Import FlexGet": "Import RSS feeds and rules from FlexGet",
+        }
         for child in self.GetChildren():
             if isinstance(child, wx.Button):
                 source = child.GetLabel()
-                if source in {"Add Feed", "Remove Feed", "Refresh All", "Rules", "Import FlexGet"}:
+                if source in feed_button_names:
                     child.SetLabel(tr_rss(source, self._rss_language))
+                    child.SetName(tr_rss(feed_button_names[source], self._rss_language))
         self.feed_list.SetName(tr_rss("RSS Feeds", self._rss_language))
 
     def refresh_feeds_list(self):
