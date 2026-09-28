@@ -42,6 +42,20 @@ def csrf_headers(client):
         return {'X-CSRF-Token': session['csrf_token']}
 
 
+def test_oversized_web_secret_is_rotated_without_unbounded_read(tmp_path, monkeypatch):
+    import app_paths
+
+    key_path = tmp_path / 'web_secret.key'
+    key_path.write_bytes(b'x' * 9)
+    monkeypatch.setattr(app_paths, 'get_data_dir', lambda: str(tmp_path))
+    monkeypatch.setattr(web_server, '_WEB_SECRET_MAX_BYTES', 8)
+
+    key = web_server._load_or_create_secret_key()
+
+    assert len(key) == 32
+    assert key_path.read_bytes() == key
+
+
 def test_compromised_web_secret_is_rotated(tmp_path, monkeypatch):
     import app_paths
 
