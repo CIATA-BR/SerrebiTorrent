@@ -1059,6 +1059,7 @@ class ProfileDialog(wx.Dialog):
         
         # Trigger initial update
         self.on_type_change(None)
+        self.name_input.SetFocus()
 
     def on_type_change(self, event):
         sel = self.type_input.GetStringSelection()
@@ -1106,6 +1107,7 @@ class ConnectDialog(wx.Dialog):
         
         # List of Profiles
         self.list_box = wx.ListBox(self, style=wx.LB_SINGLE)
+        self.list_box.SetName("Connection profiles")
         sizer.Add(self.list_box, 1, wx.EXPAND | wx.ALL, 10)
         
         # Buttons Row
