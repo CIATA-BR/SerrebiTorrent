@@ -910,3 +910,24 @@ def test_download_redirect_count_is_bounded(monkeypatch):
             timeout=updater.DOWNLOAD_TIMEOUT,
             stream=True,
         )
+
+
+
+def test_fetch_latest_release_rejects_stream_over_limit(monkeypatch):
+    class FakeResponse:
+        status_code = 200
+        reason = "OK"
+        headers = {}
+
+        def iter_content(self, chunk_size):
+            yield b"123"
+            yield b"45"
+
+        def close(self):
+            pass
+
+    monkeypatch.setattr(updater, "MAX_UPDATE_RELEASE_BYTES", 4)
+    monkeypatch.setattr(updater.requests, "get", lambda *args, **kwargs: FakeResponse())
+
+    with pytest.raises(UpdateError, match="release metadata is larger"):
+        updater.fetch_latest_release()
