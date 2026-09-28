@@ -459,7 +459,9 @@ class AddTorrentDialog(wx.Dialog):
         
         # Dialog Buttons
         btns = wx.StdDialogButtonSizer()
-        btns.AddButton(wx.Button(self, wx.ID_OK))
+        self.ok_button = wx.Button(self, wx.ID_OK)
+        self.ok_button.SetDefault()
+        btns.AddButton(self.ok_button)
         btns.AddButton(wx.Button(self, wx.ID_CANCEL))
         btns.Realize()
         sizer.Add(btns, 0, wx.ALIGN_CENTER | wx.ALL, 10)
@@ -499,8 +501,11 @@ class AddTorrentDialog(wx.Dialog):
             item = self.tree.GetSelection()
             if item.IsOk():
                 self.toggle_item(item)
-        else:
-            event.Skip()
+            return
+        if code in (wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):
+            self.EndModal(wx.ID_OK)
+            return
+        event.Skip()
             
     def on_click(self, event):
         event.Skip()
