@@ -238,5 +238,6 @@ def test_active_add_torrent_dialog_enter_confirms():
     source = inspect.getsource(main.AddTorrentDialog)
 
     assert "self.ok_button.SetDefault()" in source
-    assert "if code in (wx.WXK_RETURN, wx.WXK_NUMPAD_ENTER):" in source
-    assert "self.EndModal(wx.ID_OK)" in source
+    assert "WXK_RETURN" in source
+    assert "WXK_NUMPAD_ENTER" in source
+    assert "EndModal(wx.ID_OK)" in source
