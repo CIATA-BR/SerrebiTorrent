@@ -2847,6 +2847,8 @@ class MainFrame(wx.Frame):
         self.sidebar.MoveBeforeInTabOrder(self.right_splitter)
 
         self.statusbar = self.CreateStatusBar(2)
+        self.statusbar.SetName("Application status")
+        self.statusbar.SetHelpText("Connection status and current transfer rates.")
         self.statusbar.SetStatusText("Disconnected", 0)
 
         
