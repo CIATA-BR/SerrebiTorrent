@@ -392,8 +392,10 @@ class AddTorrentDialog(wx.Dialog):
         path_sizer = wx.BoxSizer(wx.HORIZONTAL)
         path_sizer.Add(wx.StaticText(self, label="Save Path:"), 0, wx.ALIGN_CENTER_VERTICAL | wx.RIGHT, 5)
         self.path_input = wx.TextCtrl(self, value=default_path)
+        self.path_input.SetName("Save Path")
         path_sizer.Add(self.path_input, 1, wx.EXPAND | wx.RIGHT, 5)
         browse_btn = wx.Button(self, label="Browse...")
+        browse_btn.SetName("Browse save path")
         browse_btn.Bind(wx.EVT_BUTTON, self.on_browse)
         path_sizer.Add(browse_btn, 0)
         sizer.Add(path_sizer, 0, wx.EXPAND | wx.ALL, 10)
@@ -404,6 +406,7 @@ class AddTorrentDialog(wx.Dialog):
             
             # Standard TreeCtrl with text-based checkboxes
             self.tree = wx.TreeCtrl(self, style=wx.TR_DEFAULT_STYLE | wx.TR_HIDE_ROOT | wx.TR_HAS_BUTTONS | wx.TR_LINES_AT_ROOT)
+            self.tree.SetName("Torrent files")
             self.root = self.tree.AddRoot(name)
             self.item_map[self.root] = {'name': name, 'size': 0, 'idx': None}
             
