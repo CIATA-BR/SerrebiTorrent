@@ -315,7 +315,7 @@ class RSSManager:
                         continue
         return matches
 
-    def import_flexget_config(self, path):
+    def import_flexget_config(self, path, config_manager=None):
         try:
             import yaml
         except ImportError:
@@ -338,8 +338,10 @@ class RSSManager:
         if not config or 'tasks' not in config:
             return 0, 0
 
-        from config_manager import ConfigManager
-        cm = ConfigManager()
+        if config_manager is None:
+            from config_manager import ConfigManager
+            config_manager = ConfigManager()
+        cm = config_manager
         existing_profiles = cm.get_profiles()
         
         tasks = config.get('tasks', {})
