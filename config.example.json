@@ -28,6 +28,8 @@
         "enable_upnp": true,
         "enable_natpmp": true,
         "auto_start": true,
+        "clipboard_auto_add": false,
+        "clipboard_prefill": true,
         "min_to_tray": true,
         "close_to_tray": true,
         "auto_check_updates": true,
