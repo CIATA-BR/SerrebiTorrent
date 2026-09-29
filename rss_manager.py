@@ -83,6 +83,11 @@ class RSSManager:
                     rules = data.get('rules', [])
                     if not isinstance(feeds, dict) or not isinstance(rules, list):
                         raise ValueError("rss.json has invalid feeds or rules")
+                    feeds = {
+                        str(url): feed for url, feed in feeds.items()
+                        if isinstance(feed, dict)
+                    }
+                    rules = [rule for rule in rules if isinstance(rule, dict)]
                     self.feeds = feeds
                     self.rules = rules
                 except Exception as exc:
