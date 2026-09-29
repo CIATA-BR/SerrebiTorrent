@@ -2,6 +2,7 @@ import io
 import ipaddress
 
 import pytest
+from unittest.mock import MagicMock
 
 import web_server
 
