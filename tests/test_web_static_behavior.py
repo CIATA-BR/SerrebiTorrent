@@ -223,3 +223,15 @@ def test_web_theme_is_restored_from_local_storage():
     js = Path("web_static/app.js").read_text(encoding="utf-8")
     assert "localStorage.getItem('web-theme')" in js
     assert "themeSelect.value = savedTheme" in js
+
+
+def test_remote_settings_preserve_structured_values_as_json():
+    from pathlib import Path
+    js = Path("web_static/app.js").read_text(encoding="utf-8")
+    assert "remoteForm.querySelectorAll('input, select, textarea')" in js
+    assert "input.dataset.valueType === 'json'" in js
+    assert "data[key] = JSON.parse(input.value)" in js
+    assert "input = document.createElement('textarea')" in js
+    assert "input.dataset.valueType = 'json'" in js
+    assert "input.value = JSON.stringify(val, null, 2)" in js
+    assert "Invalid JSON in remote settings." in js
