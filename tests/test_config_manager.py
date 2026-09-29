@@ -416,3 +416,27 @@ def test_normalize_drops_malformed_profile_entries(tmp_path, monkeypatch):
     assert set(cm.get_profiles()) == {"valid"}
     assert cm.get_default_profile_id() == "valid"
     assert cm.get_profile("valid")["name"] == "Local"
+
+
+def test_normalize_drops_profiles_with_invalid_internal_schema(tmp_path, monkeypatch):
+    config_path = tmp_path / "config.json"
+    config_path.write_text(
+        json.dumps({
+            "preferences": {},
+            "profiles": {
+                "missing-type": {"name": "Bad", "url": "C:\\Bad"},
+                "bad-type": {"name": "Bad", "type": [], "url": "C:\\Bad", "user": "", "password": ""},
+                "bad-url": {"name": "Bad", "type": "qbittorrent", "url": "not-a-url", "user": "", "password": ""},
+                "bad-name": {"name": {}, "type": "local", "url": "C:\\Bad", "user": "", "password": ""},
+                "valid": {"name": "Local", "type": "local", "url": "C:\\Downloads", "user": "", "password": ""},
+            },
+            "default_profile": "missing-type",
+        }),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(config_manager, "CONFIG_FILE", config_path)
+
+    cm = config_manager.ConfigManager()
+
+    assert set(cm.get_profiles()) == {"valid"}
+    assert cm.get_default_profile_id() == "valid"
