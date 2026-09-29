@@ -214,6 +214,20 @@ _PT_BR: Mapping[str, str] = {
     "Add created torrent to the currently connected client":
         "Adicionar o torrent criado ao cliente conectado atualmente",
     "Copy magnet link to clipboard": "Copiar link magnet para a área de transferência",
+    "Browse local download path": "Procurar caminho local de download",
+    "Add connection profile": "Adicionar perfil de conexão",
+    "Edit selected connection profile": "Editar perfil de conexão selecionado",
+    "Delete selected connection profile": "Excluir perfil de conexão selecionado",
+    "Set selected connection profile as default": "Definir perfil de conexão selecionado como padrão",
+    "Connect using selected profile": "Conectar usando o perfil selecionado",
+    "Choose source file": "Escolher arquivo de origem",
+    "Choose source folder": "Escolher pasta de origem",
+    "Choose output torrent file": "Escolher arquivo torrent de saída",
+    "Add custom tracker": "Adicionar tracker personalizado",
+    "Remove selected included tracker": "Remover tracker incluído selecionado",
+    "Browse save path": "Procurar caminho para salvar",
+    "Select all torrent files": "Selecionar todos os arquivos do torrent",
+    "Deselect all torrent files": "Desmarcar todos os arquivos do torrent",
     "Automatically open the Add Torrent dialog for clipboard magnets":
         "Abrir automaticamente a janela Adicionar torrent para magnets da área de transferência",
     "Prefill Add URL from clipboard (magnets and .torrent URLs)":
