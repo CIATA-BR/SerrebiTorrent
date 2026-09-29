@@ -730,3 +730,43 @@ def test_fetch_feed_rolls_back_refresh_when_save_fails(mock_session_factory, rss
 
     assert rss_manager.fetch_feed(url) == []
     assert rss_manager.feeds[url] == old
+
+
+@patch('rss_manager._public_torrent_session')
+def test_fetch_feed_supports_atom_entries(mock_session_factory, rss_manager):
+    atom_content = b"""
+    <feed xmlns="http://www.w3.org/2005/Atom">
+      <title>Example</title>
+      <entry>
+        <id>tag:example.com,2026:1</id>
+        <title>Atom Torrent</title>
+        <link rel="alternate" href="https://example.com/post/1" />
+        <link rel="enclosure" type="application/x-bittorrent" href="https://example.com/file.torrent" />
+      </entry>
+    </feed>
+    """
+    session = MagicMock()
+    response = MagicMock()
+    response.status_code = 200
+    response.headers = {}
+    response.iter_content = lambda chunk_size=8192: iter([atom_content])
+    mock_session_factory.return_value.__enter__.return_value = session
+    session.get.return_value.__enter__.return_value = response
+
+    url = "http://93.184.216.34/feed.xml"
+    rss_manager.feeds[url] = {
+        "alias": "Atom",
+        "last_update": 0,
+        "articles": [],
+        "downloaded": [],
+        "last_error": None,
+    }
+    rss_manager.save = MagicMock(return_value=True)
+
+    articles = rss_manager.fetch_feed(url)
+
+    assert articles == [{
+        "title": "Atom Torrent",
+        "link": "https://example.com/file.torrent",
+        "uid": "tag:example.com,2026:1",
+    }]
