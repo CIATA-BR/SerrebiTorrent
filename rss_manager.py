@@ -115,16 +115,17 @@ class RSSManager:
                         enabled = rule.get('enabled', True)
                         if not isinstance(enabled, bool):
                             enabled = True
-                        scope = rule.get('scope')
-                        if scope is not None:
-                            if not isinstance(scope, list) or not all(isinstance(item, str) for item in scope):
-                                scope = None
-                        normalized_rules.append({
+                        normalized_rule = {
                             'pattern': pattern,
                             'enabled': enabled,
                             'type': rule_type,
-                            'scope': scope,
-                        })
+                        }
+                        if 'scope' in rule:
+                            scope = rule.get('scope')
+                            if not isinstance(scope, list) or not all(isinstance(item, str) for item in scope):
+                                scope = None
+                            normalized_rule['scope'] = scope
+                        normalized_rules.append(normalized_rule)
 
                     self.feeds = normalized_feeds
                     self.rules = normalized_rules
@@ -146,12 +147,15 @@ class RSSManager:
         with self.lock:
             data = {'feeds': self.feeds, 'rules': self.rules}
             try:
+                encoded = json.dumps(data, indent=4).encode('utf-8')
+                if len(encoded) > RSS_STATE_MAX_BYTES:
+                    raise ValueError("rss.json exceeds the 16 MB state limit")
                 # Atomic write: a direct open('w') truncates rss.json immediately,
                 # so a crash mid-write loses all feeds/rules. Write a temp + rename.
                 tmp = f"{RSS_FILE}.{os.getpid()}.tmp"
                 try:
-                    with open(tmp, 'w', encoding='utf-8') as f:
-                        json.dump(data, f, indent=4)
+                    with open(tmp, 'wb') as f:
+                        f.write(encoded)
                         f.flush()
                         os.fsync(f.fileno())
                     os.replace(tmp, RSS_FILE)
