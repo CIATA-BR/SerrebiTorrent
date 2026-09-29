@@ -440,6 +440,10 @@ window.addEventListener('DOMContentLoaded', () => {
             }
             const minTray = document.getElementById('minToTray');
             if (minTray) data['min_to_tray'] = !!minTray.checked;
+            const clipboardAutoAdd = document.getElementById('clipboardAutoAdd');
+            if (clipboardAutoAdd) data['clipboard_auto_add'] = !!clipboardAutoAdd.checked;
+            const clipboardPrefill = document.getElementById('clipboardPrefill');
+            if (clipboardPrefill) data['clipboard_prefill'] = !!clipboardPrefill.checked;
             
             try {
                 const res = await apiFetch('/api/v2/app/prefs', {

@@ -218,6 +218,14 @@ _PT_BR: Mapping[str, str] = {
         "Abrir automaticamente a janela Adicionar torrent para magnets da área de transferência",
     "Prefill Add URL from clipboard (magnets and .torrent URLs)":
         "Preencher Adicionar URL pela área de transferência (magnets e URLs .torrent)",
+    "Magnet Link": "Link magnet",
+    "Magnet link added": "Link magnet adicionado",
+    "Torrent already added": "Torrent já adicionado",
+    "This torrent is already in the list. The link contains no new trackers.":
+        "Este torrent já está na lista. O link não contém novos trackers.",
+    "\"{name}\" is already in the list. Add {count} new tracker(s) from this link?":
+        "\"{name}\" já está na lista. Adicionar {count} novo(s) tracker(s) deste link?",
+    "Trackers added to existing torrent": "Trackers adicionados ao torrent existente",
     "Select File": "Selecionar arquivo",
     "Select Folder": "Selecionar pasta",
     "Save Torrent As": "Salvar torrent como",
