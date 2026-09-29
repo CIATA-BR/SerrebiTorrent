@@ -108,12 +108,15 @@ class RSSManager:
         with self.lock:
             data = {'feeds': self.feeds, 'rules': self.rules}
             try:
+                encoded = json.dumps(data, indent=4).encode('utf-8')
+                if len(encoded) > RSS_STATE_MAX_BYTES:
+                    raise ValueError("rss.json exceeds the 16 MB state limit")
                 # Atomic write: a direct open('w') truncates rss.json immediately,
                 # so a crash mid-write loses all feeds/rules. Write a temp + rename.
                 tmp = f"{RSS_FILE}.{os.getpid()}.tmp"
                 try:
-                    with open(tmp, 'w', encoding='utf-8') as f:
-                        json.dump(data, f, indent=4)
+                    with open(tmp, 'wb') as f:
+                        f.write(encoded)
                         f.flush()
                         os.fsync(f.fileno())
                     os.replace(tmp, RSS_FILE)
