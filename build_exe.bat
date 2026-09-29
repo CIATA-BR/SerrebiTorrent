@@ -73,6 +73,7 @@ if /I "%MODE%"=="release" (
         echo DRY RUN: would update %VERSION_FILE% to !NEXT_VERSION!.
     ) else (
         call :update_version_file || goto :error
+        call :update_changelog || goto :error
     )
 ) else if /I "%MODE%"=="dry-run" (
     set "RELEASE_NOTES=%TEMP%\SerrebiTorrent_release_notes.txt"
@@ -210,6 +211,14 @@ if errorlevel 1 (
 )
 exit /b 0
 
+:update_changelog
+%PYTHON_CMD% tools\update_changelog.py --version-tag "v%NEXT_VERSION%" --notes-file "%RELEASE_NOTES%"
+if errorlevel 1 (
+    echo Failed to update CHANGELOG.md.
+    exit /b 1
+)
+exit /b 0
+
 :compute_version_and_notes
 if "%RELEASE_NOTES%"=="" set "RELEASE_NOTES=%CD%\release_notes.txt"
 for /f "usebackq delims=" %%A in (`powershell -NoProfile -File "tools\release_tools.ps1" -NotesPath "%RELEASE_NOTES%"`) do set "%%A"
@@ -236,6 +245,7 @@ exit /b 0
 
 :git_commit_tag_push
 git add "%VERSION_FILE%"
+git add CHANGELOG.md
 git diff --cached --quiet
 if errorlevel 1 (
     git commit -m "chore(release): v%NEXT_VERSION%"
@@ -376,3 +386,4 @@ exit /b 1
 echo ERROR: Build failed.
 popd
 exit /b 1
+
