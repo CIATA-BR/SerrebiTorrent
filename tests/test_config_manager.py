@@ -321,3 +321,24 @@ def test_config_example_documents_clipboard_preferences():
     source = Path("config.example.json").read_text(encoding="utf-8")
     assert '"clipboard_auto_add": false' in source
     assert '"clipboard_prefill": true' in source
+
+
+def test_normalize_repairs_invalid_boolean_preference_types(tmp_path, monkeypatch):
+    config_path = tmp_path / "config.json"
+    config_path.write_text(
+        json.dumps({
+            "preferences": {
+                "clipboard_auto_add": "false",
+                "clipboard_prefill": 1,
+                "min_to_tray": None,
+            },
+            "profiles": {},
+        }),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(config_manager, "CONFIG_FILE", config_path)
+    cm = config_manager.ConfigManager()
+    prefs = cm.get_preferences()
+    assert prefs["clipboard_auto_add"] is False
+    assert prefs["clipboard_prefill"] is True
+    assert prefs["min_to_tray"] is True
