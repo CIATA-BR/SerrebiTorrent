@@ -137,22 +137,28 @@ def _http():
 def _bounded_response_bytes(response, limit=None):
     if limit is None:
         limit = SEARCH_RESPONSE_MAX_BYTES
-    content_length = response.headers.get("Content-Length")
-    if content_length:
-        try:
-            expected = int(content_length)
-        except ValueError as exc:
-            raise RuntimeError("Search response returned an invalid Content-Length.") from exc
-        if expected < 0 or expected > limit:
-            raise RuntimeError("Search response exceeds the 4 MB limit.")
-    data = bytearray()
-    for chunk in response.iter_content(64 * 1024):
-        if not chunk:
-            continue
-        data.extend(chunk)
-        if len(data) > limit:
-            raise RuntimeError("Search response exceeds the 4 MB limit.")
-    return bytes(data)
+    try:
+        content_length = response.headers.get("Content-Length")
+        if content_length:
+            try:
+                expected = int(content_length)
+            except ValueError as exc:
+                raise RuntimeError("Search response returned an invalid Content-Length.") from exc
+            if expected < 0 or expected > limit:
+                raise RuntimeError("Search response exceeds the 4 MB limit.")
+        data = bytearray()
+        for chunk in response.iter_content(64 * 1024):
+            if not chunk:
+                continue
+            data.extend(chunk)
+            if len(data) > limit:
+                raise RuntimeError("Search response exceeds the 4 MB limit.")
+        return bytes(data)
+    except Exception:
+        close = getattr(response, "close", None)
+        if callable(close):
+            close()
+        raise
 
 
 def _bounded_json_response(response):

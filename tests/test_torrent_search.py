@@ -678,3 +678,26 @@ def test_builtin_search_requests_stream_responses():
         next_def = source.find("\ndef ", start + 1)
         block = source[start: next_def if next_def >= 0 else len(source)]
         assert "stream=True" in block
+
+
+def test_bounded_response_closes_oversized_stream():
+    response = _Response(
+        content=b"123456789",
+        headers={"Content-Length": "9"},
+    )
+    response.close = MagicMock()
+
+    with pytest.raises(RuntimeError, match="4 MB limit"):
+        ts._bounded_response_bytes(response, limit=8)
+
+    response.close.assert_called_once()
+
+
+def test_bounded_response_closes_stream_after_invalid_content_length():
+    response = _Response(content=b"ok", headers={"Content-Length": "not-a-number"})
+    response.close = MagicMock()
+
+    with pytest.raises(RuntimeError, match="invalid Content-Length"):
+        ts._bounded_response_bytes(response, limit=8)
+
+    response.close.assert_called_once()
