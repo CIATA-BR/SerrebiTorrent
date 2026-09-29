@@ -2075,3 +2075,35 @@ def test_remote_preferences_reject_type_mismatches(auth_client, current, value):
     assert rv.status_code == 400
     assert b"Invalid remote preference type." in rv.data
     mock_client.set_app_preferences.assert_not_called()
+
+
+def test_torrent_actions_reject_oversized_hash_batch(auth_client, monkeypatch):
+    mock_client = MagicMock()
+    web_server.WEB_CONFIG['client'] = mock_client
+    monkeypatch.setattr(web_server, "TORRENT_ACTION_MAX_ITEMS", 2)
+
+    rv = auth_client.post(
+        '/api/v2/torrents/resume',
+        data={'hashes': 'one|two|three'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 413
+    assert b"Too many torrents selected." in rv.data
+    mock_client.start_torrent.assert_not_called()
+
+
+def test_delete_rejects_oversized_hash_batch_before_backend(auth_client, monkeypatch):
+    mock_client = MagicMock()
+    web_server.WEB_CONFIG['client'] = mock_client
+    monkeypatch.setattr(web_server, "TORRENT_ACTION_MAX_ITEMS", 1)
+
+    rv = auth_client.post(
+        '/api/v2/torrents/delete',
+        data={'hashes': 'one|two', 'deleteFiles': 'true'},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 413
+    assert b"Too many torrents selected." in rv.data
+    mock_client.remove_torrents.assert_not_called()

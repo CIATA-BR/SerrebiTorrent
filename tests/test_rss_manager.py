@@ -645,3 +645,22 @@ def test_load_repairs_malformed_nested_rss_fields(tmp_path, monkeypatch):
     manager.save = MagicMock(return_value=True)
     manager.mark_downloaded("https://example.com/feed.xml", "uid-2")
     assert feed["downloaded"] == ["uid-2"]
+def test_rss_save_rejects_state_larger_than_read_limit(tmp_path, monkeypatch):
+    import rss_manager as rss_module
+
+    rss_path = tmp_path / "rss.json"
+    rss_path.write_text('{"feeds": {}, "rules": []}', encoding="utf-8")
+    monkeypatch.setattr(rss_module, "RSS_FILE", str(rss_path))
+    monkeypatch.setattr(rss_module, "RSS_STATE_MAX_BYTES", 64)
+
+    manager = RSSManager()
+    manager.feeds = {
+        "https://example.com/feed.xml": {
+            "alias": "x" * 128,
+            "last_update": 0,
+            "articles": [],
+        }
+    }
+
+    assert manager.save() is False
+    assert rss_path.read_text(encoding="utf-8") == '{"feeds": {}, "rules": []}'
