@@ -27,6 +27,7 @@ _PT_BR = {
     "Created torrent, but failed to add to client: {error}": "Torrent criado, mas houve falha ao adicioná-lo ao cliente: {error}",
     "Source path is required.": "O caminho de origem é obrigatório.",
     "Output .torrent path is required.": "O caminho do arquivo .torrent de saída é obrigatório.",
+    "Output .torrent path must not overwrite the source path.": "O caminho do arquivo .torrent de saída não pode sobrescrever o caminho de origem.",
     "Source path must not be a symlink or Windows reparse point.": "O caminho de origem não pode ser um link simbólico nem um ponto de nova análise do Windows.",
     "No regular files found to include in torrent.": "Nenhum arquivo regular foi encontrado para incluir no torrent.",
 }
