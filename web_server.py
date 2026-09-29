@@ -1010,7 +1010,8 @@ def set_app_prefs():
         new_prefs[key] = value
 
     try:
-        prefs = app_ref.config_manager.get_preferences()
+        previous_prefs = app_ref.config_manager.get_preferences()
+        prefs = dict(previous_prefs)
         prefs.update(new_prefs)
         app_ref.config_manager.set_preferences(prefs)
     except Exception:
@@ -1019,8 +1020,17 @@ def set_app_prefs():
     if {'dl_limit', 'ul_limit'} & set(new_prefs):
         try:
             from session_manager import SessionManager
-            SessionManager.get_instance().apply_preferences(prefs)
+            session = SessionManager.get_instance()
+            session.apply_preferences(prefs)
         except Exception:
+            try:
+                app_ref.config_manager.set_preferences(previous_prefs)
+            except Exception:
+                pass
+            try:
+                session.apply_preferences(previous_prefs)
+            except Exception:
+                pass
             return "Failed to apply transfer limits.", 500
 
     import wx
