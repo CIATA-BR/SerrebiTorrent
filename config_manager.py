@@ -174,9 +174,37 @@ class ConfigManager:
         prefs = cfg.get("preferences")
         if not isinstance(prefs, dict):
             prefs = {}
+        numeric_ranges = {
+            "dl_limit": (-1, 1000000000),
+            "ul_limit": (-1, 1000000000),
+            "max_connections": (-1, 65535),
+            "max_uploads": (-1, 65535),
+            "listen_port": (1, 65535),
+            "rss_update_interval": (5, 86400),
+            "web_ui_port": (1, 65535),
+            "proxy_type": (0, 3),
+            "proxy_port": (1, 65535),
+        }
         for k, v in DEFAULT_PREFERENCES.items():
             prefs.setdefault(k, v)
-            if isinstance(v, bool) and not isinstance(prefs.get(k), bool):
+            current = prefs.get(k)
+            if isinstance(v, bool):
+                if not isinstance(current, bool):
+                    prefs[k] = v
+                continue
+            if k in numeric_ranges:
+                if isinstance(current, bool):
+                    prefs[k] = v
+                    continue
+                try:
+                    number = int(current)
+                except (TypeError, ValueError):
+                    prefs[k] = v
+                    continue
+                minimum, maximum = numeric_ranges[k]
+                prefs[k] = number if minimum <= number <= maximum else v
+                continue
+            if isinstance(v, str) and not isinstance(current, str):
                 prefs[k] = v
         cfg["preferences"] = prefs
 
