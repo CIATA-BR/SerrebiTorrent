@@ -161,3 +161,12 @@ def test_mnemonics_do_not_collide_within_a_dialog():
         for labels in dialogs:
             keys = [_mnemonic(i18n.translate(label, language)) for label in labels]
             assert len(keys) == len(set(keys)), (language, labels, keys)
+
+
+def test_clipboard_preferences_have_brazilian_portuguese_translations():
+    assert i18n.translate(
+        "Automatically open the Add Torrent dialog for clipboard magnets", "pt-BR"
+    ) != "Automatically open the Add Torrent dialog for clipboard magnets"
+    assert i18n.translate(
+        "Prefill Add URL from clipboard (magnets and .torrent URLs)", "pt-BR"
+    ) != "Prefill Add URL from clipboard (magnets and .torrent URLs)"
