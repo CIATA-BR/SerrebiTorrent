@@ -1132,6 +1132,27 @@ def set_remote_prefs():
     if set(new_prefs) - allowed_fields:
         return "Unsupported remote preference field.", 400
 
+    for key, value in new_prefs.items():
+        current = current_prefs.get(key)
+        if isinstance(current, bool):
+            if not isinstance(value, bool):
+                return "Invalid remote preference type.", 400
+        elif isinstance(current, int) and not isinstance(current, bool):
+            if not isinstance(value, int) or isinstance(value, bool):
+                return "Invalid remote preference type.", 400
+        elif isinstance(current, float):
+            if not isinstance(value, (int, float)) or isinstance(value, bool):
+                return "Invalid remote preference type.", 400
+        elif isinstance(current, str):
+            if not isinstance(value, str):
+                return "Invalid remote preference type.", 400
+        elif isinstance(current, list):
+            if not isinstance(value, list):
+                return "Invalid remote preference type.", 400
+        elif isinstance(current, dict):
+            if not isinstance(value, dict):
+                return "Invalid remote preference type.", 400
+
     try:
         client.set_app_preferences(new_prefs)
     except Exception as e:

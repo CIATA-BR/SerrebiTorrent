@@ -353,3 +353,38 @@ def test_write_json_rejects_output_larger_than_read_limit(tmp_path, monkeypatch)
         config_manager._write_json(path, {"value": "x" * 128})
 
     assert path.read_text(encoding="utf-8") == '{"existing": true}'
+
+
+def test_normalize_repairs_malformed_scalar_preferences(tmp_path, monkeypatch):
+    config_path = tmp_path / "config.json"
+    config_path.write_text(
+        json.dumps({
+            "preferences": {
+                "dl_limit": "abc",
+                "max_connections": True,
+                "listen_port": 70000,
+                "rss_update_interval": 4,
+                "web_ui_port": [],
+                "proxy_type": 9,
+                "proxy_port": None,
+                "download_path": ["not", "a", "path"],
+                "proxy_host": {"bad": "type"},
+            },
+            "profiles": {},
+        }),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(config_manager, "CONFIG_FILE", config_path)
+    cm = config_manager.ConfigManager()
+    prefs = cm.get_preferences()
+
+    assert prefs["dl_limit"] == config_manager.DEFAULT_PREFERENCES["dl_limit"]
+    assert prefs["max_connections"] == config_manager.DEFAULT_PREFERENCES["max_connections"]
+    assert prefs["listen_port"] == config_manager.DEFAULT_PREFERENCES["listen_port"]
+    assert prefs["rss_update_interval"] == config_manager.DEFAULT_PREFERENCES["rss_update_interval"]
+    assert prefs["web_ui_port"] == config_manager.DEFAULT_PREFERENCES["web_ui_port"]
+    assert prefs["proxy_type"] == config_manager.DEFAULT_PREFERENCES["proxy_type"]
+    assert prefs["proxy_port"] == config_manager.DEFAULT_PREFERENCES["proxy_port"]
+    assert prefs["download_path"] == config_manager.DEFAULT_PREFERENCES["download_path"]
+    assert prefs["proxy_host"] == config_manager.DEFAULT_PREFERENCES["proxy_host"]
+
