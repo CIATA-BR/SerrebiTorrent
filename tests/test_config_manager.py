@@ -440,3 +440,33 @@ def test_normalize_drops_profiles_with_invalid_internal_schema(tmp_path, monkeyp
 
     assert set(cm.get_profiles()) == {"valid"}
     assert cm.get_default_profile_id() == "valid"
+
+
+def test_normalize_repairs_structured_search_preferences(tmp_path, monkeypatch):
+    config_path = tmp_path / "config.json"
+    config_path.write_text(
+        json.dumps({
+            "preferences": {
+                "disabled_torrent_sources": "Nyaa",
+                "torznab_feeds": [
+                    "bad",
+                    {"name": "Indexer", "url": "https://example.com/api", "api_key": "secret"},
+                    {"name": "indexer", "url": "https://duplicate.example/api", "api_key": ""},
+                    {"name": 3, "url": "https://bad.example/api", "api_key": ""},
+                ],
+            },
+            "profiles": {},
+        }),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(config_manager, "CONFIG_FILE", config_path)
+
+    cm = config_manager.ConfigManager()
+    prefs = cm.get_preferences()
+
+    assert prefs["disabled_torrent_sources"] == []
+    assert prefs["torznab_feeds"] == [{
+        "name": "Indexer",
+        "url": "https://example.com/api",
+        "api_key": "secret",
+    }]
