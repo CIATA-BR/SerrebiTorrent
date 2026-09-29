@@ -1009,6 +1009,8 @@ def set_app_prefs():
     for key, (minimum, maximum) in numeric_limits.items():
         if key not in new_prefs:
             continue
+        if isinstance(new_prefs[key], bool):
+            return "Invalid numeric application preference.", 400
         try:
             value = int(new_prefs[key])
         except (TypeError, ValueError):
