@@ -21,6 +21,8 @@ import torrent_search as ts
 class _Response:
     def __init__(self, payload=None, text="", content=b"", headers=None):
         self._payload = payload
+        if payload is not None and not content and not text:
+            content = json.dumps(payload).encode("utf-8")
         self.text = text
         self.content = content
         self.headers = headers or {}
@@ -635,3 +637,44 @@ def test_custom_indexer_stops_when_stream_exceeds_limit(monkeypatch):
                 "release",
                 {"name": "Indexer", "url": "https://indexer.example/api", "api_key": ""},
             )
+
+
+def test_builtin_json_search_rejects_oversized_response(monkeypatch):
+    response = _Response(
+        content=b"[]",
+        headers={"Content-Length": str(ts.SEARCH_RESPONSE_MAX_BYTES + 1)},
+    )
+    session = MagicMock(get=MagicMock(return_value=response))
+    monkeypatch.setattr(ts, "_session", session)
+
+    with pytest.raises(RuntimeError, match="4 MB limit"):
+        ts.search_piratebay("ubuntu")
+
+
+def test_builtin_xml_search_stops_when_stream_exceeds_limit(monkeypatch):
+    response = _Response(content=b"123456789")
+    session = MagicMock(get=MagicMock(return_value=response))
+    monkeypatch.setattr(ts, "_session", session)
+    monkeypatch.setattr(ts, "SEARCH_RESPONSE_MAX_BYTES", 8)
+
+    with pytest.raises(RuntimeError, match="4 MB limit"):
+        ts.search_nyaa("ubuntu")
+
+
+def test_builtin_search_requests_stream_responses():
+    from pathlib import Path
+    source = Path("torrent_search.py").read_text(encoding="utf-8")
+    for function_name in (
+        "search_piratebay",
+        "imdb_id_for",
+        "search_eztv",
+        "search_nyaa",
+        "search_torrents_csv",
+        "search_limetorrents",
+        "search_bitsearch",
+        "search_knaben",
+    ):
+        start = source.index(f"def {function_name}(")
+        next_def = source.find("\ndef ", start + 1)
+        block = source[start: next_def if next_def >= 0 else len(source)]
+        assert "stream=True" in block
