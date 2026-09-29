@@ -1177,6 +1177,9 @@ msgstr ""
 msgid "One URL per line (HTTP/HTTPS)."
 msgstr ""
 
+msgid "Open Add Torrent for clipboard magnets"
+msgstr ""
+
 msgid "Open Download &Folder"
 msgstr ""
 
@@ -1265,6 +1268,9 @@ msgid "Prefer TCP"
 msgstr ""
 
 msgid "Preferences"
+msgstr ""
+
+msgid "Prefill Add Torrent from clipboard magnets and .torrent URLs"
 msgstr ""
 
 msgid "Prefill Add URL from clipboard (magnets and .torrent URLs)"
@@ -1727,6 +1733,9 @@ msgid "The active profile changed."
 msgstr ""
 
 msgid "Theme"
+msgstr ""
+
+msgid "These options monitor the desktop application clipboard, not the browser clipboard."
 msgstr ""
 
 msgid "This torrent is already in the list. The link contains no new trackers."
