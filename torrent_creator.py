@@ -442,8 +442,10 @@ class CreateTorrentDialog(wx.Dialog):
             base = "output"
         name = base
         if name.lower().endswith(".torrent"):
-            return os.path.abspath(os.path.join(parent, name))
-        return os.path.abspath(os.path.join(parent, name + ".torrent"))
+            name += ".torrent"
+        else:
+            name += ".torrent"
+        return os.path.abspath(os.path.join(parent, name))
 
     def on_pick_file(self, event):
         with wx.FileDialog(
@@ -659,6 +661,10 @@ class CreateTorrentDialog(wx.Dialog):
             raise ValueError("Source path is required.")
         if not outp:
             raise ValueError("Output .torrent path is required.")
+        source_abs = os.path.normcase(os.path.abspath(src))
+        output_abs = os.path.normcase(os.path.abspath(outp))
+        if source_abs == output_abs:
+            raise ValueError("Output .torrent path must not overwrite the source path.")
 
         piece_size = PIECE_SIZE_CHOICES[self.piece_choice.GetSelection()][1]
 
