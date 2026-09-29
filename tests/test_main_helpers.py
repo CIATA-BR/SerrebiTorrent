@@ -297,3 +297,22 @@ def test_remote_manual_add_does_not_offer_unsupported_initial_file_selection():
 
     assert "selectable_files = file_list if isinstance(self.client, LocalClient) else None" in source
     assert "AddTorrentDialog(self, name, selectable_files, default_path)" in source
+
+
+def test_background_add_workers_ignore_stale_profile_results():
+    file_source = inspect.getsource(main.MainFrame._add_torrent_file_background)
+    magnet_source = inspect.getsource(main.MainFrame._add_magnet_background)
+
+    assert file_source.count("generation != self.client_generation") >= 2
+    assert "generation == self.client_generation and not self._closing" in file_source
+    assert magnet_source.count("generation != self.client_generation") >= 2
+    assert "generation == self.client_generation and not self._closing" in magnet_source
+
+
+def test_remote_preference_workers_ignore_stale_profile_results():
+    fetch_source = inspect.getsource(main.MainFrame._fetch_remote_preferences)
+    apply_source = inspect.getsource(main.MainFrame._apply_remote_preferences)
+
+    assert "generation == self.client_generation and not self._closing" in fetch_source
+    assert apply_source.count("generation != self.client_generation") >= 2
+    assert "not self._closing" in apply_source
