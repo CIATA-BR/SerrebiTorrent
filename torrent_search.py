@@ -153,6 +153,16 @@ def _bounded_response_bytes(response, limit=SEARCH_RESPONSE_MAX_BYTES):
     return bytes(data)
 
 
+def _bounded_json_response(response):
+    raw = _bounded_response_bytes(response)
+    return json.loads(raw.decode(response.encoding or "utf-8", errors="replace"))
+
+
+def _bounded_text_response(response):
+    raw = _bounded_response_bytes(response)
+    return raw.decode(response.encoding or "utf-8", errors="replace")
+
+
 # -- text helpers ------------------------------------------------------------
 
 
@@ -537,10 +547,10 @@ def resolve(item, timeout=HTTP_TIMEOUT_S):
 def search_piratebay(query, timeout=HTTP_TIMEOUT_S):
     """Query the public apibay endpoint, which answers in plain JSON."""
     response = _http().get(PIRATEBAY_URL, params={"q": query, "cat": "0"},
-                           timeout=timeout)
+                           timeout=timeout, stream=True)
     response.raise_for_status()
     items = []
-    for doc in response.json() or ():
+    for doc in _bounded_json_response(response) or ():
         infohash = str(doc.get("info_hash") or "")
         # An empty search answers with one placeholder row rather than [].
         if not infohash or set(infohash) == {"0"}:
@@ -572,10 +582,10 @@ def imdb_id_for(query, timeout=HTTP_TIMEOUT_S):
     """
     try:
         response = _http().get(TVMAZE_URL, params={"q": query},
-                               timeout=timeout)
+                               timeout=timeout, stream=True)
         if response.status_code != 200:
             return ""
-        imdb = (response.json().get("externals") or {}).get("imdb")
+        imdb = (_bounded_json_response(response).get("externals") or {}).get("imdb")
     except Exception:  # noqa: BLE001 - a name lookup must not fail the search
         return ""
     return str(imdb or "").strip()
@@ -598,10 +608,10 @@ def search_eztv(query, timeout=HTTP_TIMEOUT_S):
     if imdb:
         # The API wants the bare number; the tt prefix returns nothing.
         params["imdb_id"] = imdb[2:] if imdb.lower().startswith("tt") else imdb
-    response = _http().get(EZTV_URL, params=params, timeout=timeout)
+    response = _http().get(EZTV_URL, params=params, timeout=timeout, stream=True)
     response.raise_for_status()
     items = []
-    for doc in response.json().get("torrents") or ():
+    for doc in _bounded_json_response(response).get("torrents") or ():
         items.append(_item(
             SOURCE_EZTV, doc.get("hash"),
             doc.get("title") or doc.get("filename"),
@@ -623,9 +633,9 @@ def search_eztv(query, timeout=HTTP_TIMEOUT_S):
 def search_nyaa(query, timeout=HTTP_TIMEOUT_S):
     """Nyaa publishes its search as RSS, with the swarm counts in the feed."""
     response = _http().get(
-        NYAA_URL, params={"page": "rss", "q": query}, timeout=timeout)
+        NYAA_URL, params={"page": "rss", "q": query}, timeout=timeout, stream=True)
     response.raise_for_status()
-    root = ET.fromstring(response.content)
+    root = ET.fromstring(_bounded_response_bytes(response))
     items = []
     for entry in root.iterfind("./channel/item"):
         title = (entry.findtext("title") or "").strip()
@@ -654,10 +664,10 @@ def search_torrents_csv(query, timeout=HTTP_TIMEOUT_S):
     """A plain JSON index with no site to scrape and no rate limiting."""
     response = _http().get(TORRENTS_CSV_URL,
                            params={"q": query, "size": SEARCH_ROWS},
-                           timeout=timeout)
+                           timeout=timeout, stream=True)
     response.raise_for_status()
     items = []
-    for doc in response.json().get("torrents") or ():
+    for doc in _bounded_json_response(response).get("torrents") or ():
         items.append(_item(
             SOURCE_TORRENTS_CSV, doc.get("infohash"), doc.get("name"),
             seeders=_int(doc.get("seeders")),
@@ -686,10 +696,10 @@ _LIME_ROW_RE = re.compile(
 def search_limetorrents(query, timeout=HTTP_TIMEOUT_S):
     """Scrape one LimeTorrents search page."""
     response = _http().get(f"{LIMETORRENTS_URL}/{quote(query)}/",
-                           timeout=timeout)
+                           timeout=timeout, stream=True)
     response.raise_for_status()
     items = []
-    for match in _LIME_ROW_RE.finditer(response.text):
+    for match in _LIME_ROW_RE.finditer(_bounded_text_response(response)):
         cell = match.group("name")
         found = _HASH_RE.search(cell)
         if not found:
@@ -733,10 +743,11 @@ def search_bitsearch(query, timeout=HTTP_TIMEOUT_S):
         BITSEARCH_URL,
         params={"q": query, "sort": "seeders", "limit": 100},
         timeout=timeout,
+        stream=True,
     )
     response.raise_for_status()
     items = []
-    for doc in response.json().get("results") or ():
+    for doc in _bounded_json_response(response).get("results") or ():
         items.append(_item(
             SOURCE_BITSEARCH, doc.get("infohash"), doc.get("title"),
             seeders=_int(doc.get("seeders")),
@@ -780,10 +791,11 @@ def search_knaben(query, timeout=HTTP_TIMEOUT_S):
             "hide_xxx": True,
         },
         timeout=timeout,
+        stream=True,
     )
     response.raise_for_status()
     items = []
-    for doc in response.json().get("hits") or ():
+    for doc in _bounded_json_response(response).get("hits") or ():
         seeders = _int(doc.get("seeders"))
         items.append(_item(
             SOURCE_KNABEN, doc.get("hash"), doc.get("title"),
