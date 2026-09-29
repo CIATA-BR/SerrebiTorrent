@@ -1386,26 +1386,43 @@ async function updateDetails() {
 async function doAction(action, deleteFiles = false, actionLabel = null) {
     if (selectedHashes.size === 0) return;
     if (action === 'delete' && !confirmDeleteAction(deleteFiles)) return;
-    const formData = new FormData();
-    formData.append('hashes', Array.from(selectedHashes).join('|'));
-    if (deleteFiles) formData.append('deleteFiles', 'true');
+
+    const hashes = Array.from(selectedHashes);
+    const batchSize = 100;
+    let completed = 0;
+
     try {
-        const res = await apiFetch(`/api/v2/torrents/${action}`, { method: 'POST', body: formData });
-        if (res.ok) {
-            const sourceLabel = actionLabel || action;
-            const translate = window.SerrebiI18n?.t || ((value) => value);
-            const message = translate('{action} complete')
-                .replace('{action}', translate(sourceLabel));
-            announceToSR(message);
-            hideContextMenu();
-            setTimeout(() => refreshData(true), 100);
-            return;
+        for (let offset = 0; offset < hashes.length; offset += batchSize) {
+            const batch = hashes.slice(offset, offset + batchSize);
+            const formData = new FormData();
+            formData.append('hashes', batch.join('|'));
+            if (deleteFiles) formData.append('deleteFiles', 'true');
+
+            const res = await apiFetch(`/api/v2/torrents/${action}`, { method: 'POST', body: formData });
+            if (!res.ok) {
+                let message = (await res.text()) || `Failed to ${action} torrent(s).`;
+                if (completed > 0) {
+                    message = `${message} ${completed} of ${hashes.length} torrent(s) were already processed.`;
+                }
+                announceToSR(message, true);
+                alert(message);
+                return;
+            }
+            completed += batch.length;
         }
-        const message = (await res.text()) || `Failed to ${action} torrent(s).`;
-        announceToSR(message, true);
-        alert(message);
+
+        const sourceLabel = actionLabel || action;
+        const translate = window.SerrebiI18n?.t || ((value) => value);
+        const message = translate('{action} complete')
+            .replace('{action}', translate(sourceLabel));
+        announceToSR(message);
+        hideContextMenu();
+        setTimeout(() => refreshData(true), 100);
     } catch (err) {
-        const message = `Failed to ${action} torrent(s): ${err?.message || err}`;
+        let message = `Failed to ${action} torrent(s): ${err?.message || err}`;
+        if (completed > 0) {
+            message += ` ${completed} of ${hashes.length} torrent(s) were already processed.`;
+        }
         announceToSR(message, true);
         alert(message);
     }

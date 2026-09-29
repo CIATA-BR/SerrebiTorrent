@@ -235,3 +235,17 @@ def test_remote_settings_preserve_structured_values_as_json():
     assert "input.dataset.valueType = 'json'" in js
     assert "input.value = JSON.stringify(val, null, 2)" in js
     assert "Invalid JSON in remote settings." in js
+
+
+def test_web_bulk_actions_batch_server_limited_selections():
+    script = (ROOT / "web_static" / "app.js").read_text(encoding="utf-8")
+
+    start = script.index("async function doAction")
+    end = script.index("function confirmDeleteAction", start)
+    block = script[start:end]
+
+    assert "const batchSize = 100;" in block
+    assert "hashes.slice(offset, offset + batchSize)" in block
+    assert "formData.append('hashes', batch.join('|'))" in block
+    assert "completed += batch.length" in block
+    assert "were already processed" in block
