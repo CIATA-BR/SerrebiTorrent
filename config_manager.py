@@ -216,11 +216,33 @@ class ConfigManager:
         if not isinstance(profiles, dict):
             profiles = {}
         else:
-            profiles = {
-                str(pid): profile
-                for pid, profile in profiles.items()
-                if isinstance(profile, dict)
-            }
+            normalized_profiles = {}
+            for pid, profile in profiles.items():
+                if not isinstance(profile, dict):
+                    continue
+                profile_type = profile.get("type")
+                url = profile.get("url")
+                name = profile.get("name")
+                user = profile.get("user", "")
+                password = profile.get("password", "")
+                if not isinstance(profile_type, str) or profile_type not in {"local", "rtorrent", "qbittorrent", "transmission"}:
+                    continue
+                if not all(isinstance(value, str) for value in (url, name, user, password)):
+                    continue
+                if not url.strip() or not name.strip():
+                    continue
+                try:
+                    _validate_profile_url(profile_type, url)
+                except ValueError:
+                    continue
+                normalized_profiles[str(pid)] = {
+                    "name": name,
+                    "type": profile_type,
+                    "url": url,
+                    "user": user,
+                    "password": password,
+                }
+            profiles = normalized_profiles
         cfg["profiles"] = profiles
 
         _ensure_valid_default_profile(cfg)
