@@ -28,3 +28,8 @@ def test_runtime_installs_creator_localization_lazily():
     source = Path("runtime_actions_i18n.py").read_text(encoding="utf-8")
     assert "install_create_torrent_localization" in source
     assert "install_localized_runtime_components" in source
+
+
+def test_source_overwrite_error_translates_to_pt_br():
+    source = "Output .torrent path must not overwrite the source path."
+    assert runtime_create_i18n.tr_create(source, "pt-BR") != source
