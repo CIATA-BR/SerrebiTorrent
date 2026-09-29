@@ -214,7 +214,14 @@ class ConfigManager:
 
         profiles = cfg.get("profiles")
         if not isinstance(profiles, dict):
-            cfg["profiles"] = {}
+            profiles = {}
+        else:
+            profiles = {
+                str(pid): profile
+                for pid, profile in profiles.items()
+                if isinstance(profile, dict)
+            }
+        cfg["profiles"] = profiles
 
         _ensure_valid_default_profile(cfg)
         return cfg
