@@ -314,3 +314,10 @@ def test_read_json_accepts_config_at_limit(tmp_path, monkeypatch):
     monkeypatch.setattr(cm, "CONFIG_MAX_BYTES", len(path.read_bytes()))
 
     assert cm._read_json(str(path)) == {"a": 1}
+
+
+def test_config_example_documents_clipboard_preferences():
+    from pathlib import Path
+    source = Path("config.example.json").read_text(encoding="utf-8")
+    assert '"clipboard_auto_add": false' in source
+    assert '"clipboard_prefill": true' in source
