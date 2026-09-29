@@ -134,7 +134,9 @@ def _http():
         return _session
 
 
-def _bounded_response_bytes(response, limit=SEARCH_RESPONSE_MAX_BYTES):
+def _bounded_response_bytes(response, limit=None):
+    if limit is None:
+        limit = SEARCH_RESPONSE_MAX_BYTES
     content_length = response.headers.get("Content-Length")
     if content_length:
         try:

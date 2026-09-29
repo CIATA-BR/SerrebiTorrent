@@ -21,6 +21,8 @@ import torrent_search as ts
 class _Response:
     def __init__(self, payload=None, text="", content=b"", headers=None):
         self._payload = payload
+        if payload is not None and not content and not text:
+            content = json.dumps(payload).encode("utf-8")
         self.text = text
         self.content = content
         self.headers = headers or {}
