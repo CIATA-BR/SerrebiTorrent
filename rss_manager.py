@@ -303,6 +303,34 @@ class RSSManager:
                         'link': t_url,
                         'uid': t_url # simplified UID
                     })
+
+            # Handle Atom feeds as well. Prefer torrent enclosures, then alternate links.
+            atom_ns = {'atom': 'http://www.w3.org/2005/Atom'}
+            for entry in root.findall('atom:entry', atom_ns):
+                title = entry.find('atom:title', atom_ns)
+                t_url = ""
+                links = entry.findall('atom:link', atom_ns)
+                for atom_link in links:
+                    href = (atom_link.get('href') or '').strip()
+                    rel = (atom_link.get('rel') or 'alternate').lower()
+                    mime = (atom_link.get('type') or '').lower()
+                    if href and (mime == 'application/x-bittorrent' or rel == 'enclosure'):
+                        t_url = href
+                        break
+                if not t_url:
+                    for atom_link in links:
+                        href = (atom_link.get('href') or '').strip()
+                        rel = (atom_link.get('rel') or 'alternate').lower()
+                        if href and rel == 'alternate':
+                            t_url = href
+                            break
+                if title is not None and t_url:
+                    uid = entry.findtext('atom:id', default=t_url, namespaces=atom_ns) or t_url
+                    articles.append({
+                        'title': title.text or "",
+                        'link': t_url,
+                        'uid': uid,
+                    })
             
             with self.lock:
                 if url in self.feeds:
