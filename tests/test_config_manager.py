@@ -388,3 +388,31 @@ def test_normalize_repairs_malformed_scalar_preferences(tmp_path, monkeypatch):
     assert prefs["download_path"] == config_manager.DEFAULT_PREFERENCES["download_path"]
     assert prefs["proxy_host"] == config_manager.DEFAULT_PREFERENCES["proxy_host"]
 
+
+
+def test_normalize_drops_malformed_profile_entries(tmp_path, monkeypatch):
+    config_path = tmp_path / "config.json"
+    config_path.write_text(
+        json.dumps({
+            "preferences": {},
+            "profiles": {
+                "broken-string": "not-a-profile",
+                "broken-list": ["not", "a", "profile"],
+                "valid": {
+                    "name": "Local",
+                    "type": "local",
+                    "url": "C:\\Downloads",
+                    "user": "",
+                    "password": "",
+                },
+            },
+            "default_profile": "broken-string",
+        }),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(config_manager, "CONFIG_FILE", config_path)
+    cm = config_manager.ConfigManager()
+
+    assert set(cm.get_profiles()) == {"valid"}
+    assert cm.get_default_profile_id() == "valid"
+    assert cm.get_profile("valid")["name"] == "Local"
