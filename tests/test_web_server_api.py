@@ -2003,6 +2003,20 @@ def test_app_prefs_reject_invalid_string_types(auth_client, key, value):
     assert b"Invalid string application preference." in rv.data
 
 
+@pytest.mark.parametrize("key,value", [
+    ("download_path", "x" * 4097),
+    ("language", "x" * 129),
+])
+def test_app_prefs_reject_oversized_strings(auth_client, key, value):
+    rv = auth_client.post(
+        "/api/v2/app/prefs",
+        json={key: value},
+        headers=csrf_headers(auth_client),
+    )
+    assert rv.status_code == 400
+    assert b"Application preference string is too long." in rv.data
+
+
 def test_app_prefs_roll_back_saved_limits_when_live_apply_fails(auth_client, monkeypatch):
     mock_app = MagicMock()
     previous = {'dl_limit': 0, 'ul_limit': 0, 'download_path': 'C:/Downloads'}
