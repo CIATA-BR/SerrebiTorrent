@@ -178,3 +178,21 @@ def test_creator_tracker_buttons_have_contextual_accessible_names():
     source = Path("torrent_creator.py").read_text(encoding="utf-8")
     assert 'add_btn.SetName(self._("Add custom tracker"))' in source
     assert 'self.remove_tracker_btn.SetName(self._("Remove selected included tracker"))' in source
+
+
+def test_auto_output_path_does_not_overwrite_torrent_source(tmp_path):
+    src = tmp_path / "existing.torrent"
+    expected = tmp_path / "existing.torrent.torrent"
+
+    actual = torrent_creator.CreateTorrentDialog._auto_output_path(None, str(src))
+
+    assert os.path.normcase(actual) == os.path.normcase(str(expected))
+
+
+def test_creator_options_reject_output_equal_to_source():
+    dialog = object.__new__(torrent_creator.CreateTorrentDialog)
+    dialog.src_input = type("Field", (), {"GetValue": lambda self: "C:/data/source.torrent"})()
+    dialog.out_input = type("Field", (), {"GetValue": lambda self: "C:/data/source.torrent"})()
+
+    with pytest.raises(ValueError, match="must not overwrite the source path"):
+        torrent_creator.CreateTorrentDialog.get_options(dialog)
