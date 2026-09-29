@@ -214,6 +214,14 @@ _PT_BR: Mapping[str, str] = {
     "Add created torrent to the currently connected client":
         "Adicionar o torrent criado ao cliente conectado atualmente",
     "Copy magnet link to clipboard": "Copiar link magnet para a área de transferência",
+    "Magnet Link": "Link magnet",
+    "Magnet link added": "Link magnet adicionado",
+    "Torrent already added": "Torrent já adicionado",
+    "This torrent is already in the list. The link contains no new trackers.":
+        "Este torrent já está na lista. O link não contém novos trackers.",
+    "\"{name}\" is already in the list. Add {count} new tracker(s) from this link?":
+        "\"{name}\" já está na lista. Adicionar {count} novo(s) tracker(s) deste link?",
+    "Trackers added to existing torrent": "Trackers adicionados ao torrent existente",
     "Select File": "Selecionar arquivo",
     "Select Folder": "Selecionar pasta",
     "Save Torrent As": "Salvar torrent como",
