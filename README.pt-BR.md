@@ -64,6 +64,16 @@ O SerrebiTorrent não é distribuído com indexadores próprios configurados —
 - Sessão local + configurações do aplicativo: Ferramentas -> Configurações da sessão local... (`Ctrl+,`) (ou ícone da bandeja -> Configurações -> Configurações da sessão local...).
 - Configurações do cliente remoto (habilitadas somente quando conectado): Ferramentas -> Configurações remotas do qBittorrent/Transmission/rTorrent... (ou ícone da bandeja -> Configurações -> ...).
 
+## Magnets da área de transferência e trackers duplicados
+
+`Ctrl+U` preenche a janela Adicionar URL com o primeiro magnet válido ou URL HTTP(S) de arquivo `.torrent` encontrado na área de transferência, inclusive URLs com parâmetros. **Preencher Adicionar URL pela área de transferência (magnets e URLs .torrent)** em Ferramentas -> Configurações da sessão local -> Geral controla esse comportamento e vem ativado por padrão.
+
+Para abrir automaticamente a janela Adicionar torrent quando um magnet for copiado, ative **Abrir automaticamente a janela Adicionar torrent para magnets da área de transferência** em Ferramentas -> Configurações da sessão local -> Geral. Essa preferência do aplicativo também vale enquanto a interface Web está em uso.
+
+Cada magnet detectado abre a janela normal de destino. Nada é adicionado até a confirmação; Cancelar descarta aquele conteúdo da área de transferência. Vários magnets são processados um de cada vez, conteúdo inalterado não gera prompts repetidos e magnets copiados pelo próprio comando Copiar link magnet do aplicativo são ignorados.
+
+Se o torrent já existir, o SerrebiTorrent compara os trackers do novo magnet com os trackers existentes e pergunta se deve adicionar apenas os novos. Recusar mantém o torrent inalterado.
+
 ## Executar a partir do código-fonte (desenvolvedores)
 
 1. Instale Python 3.14.
