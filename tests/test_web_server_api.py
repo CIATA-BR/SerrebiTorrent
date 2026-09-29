@@ -1987,7 +1987,8 @@ import pytest
     ("clipboard_prefill", None),
 ])
 def test_app_prefs_reject_invalid_boolean_types(auth_client, key, value):
-    rv = auth_client.post("/api/v2/app/prefs", json={key: value})
+    rv = auth_client.post("/api/v2/app/prefs", json={key: value},
+                           headers=csrf_headers(auth_client))
     assert rv.status_code == 400
     assert b"Invalid boolean application preference." in rv.data
 
@@ -1996,6 +1997,7 @@ def test_app_prefs_reject_invalid_boolean_types(auth_client, key, value):
     ("language", ["pt-BR"]),
 ])
 def test_app_prefs_reject_invalid_string_types(auth_client, key, value):
-    rv = auth_client.post("/api/v2/app/prefs", json={key: value})
+    rv = auth_client.post("/api/v2/app/prefs", json={key: value},
+                          headers=csrf_headers(auth_client))
     assert rv.status_code == 400
     assert b"Invalid string application preference." in rv.data
