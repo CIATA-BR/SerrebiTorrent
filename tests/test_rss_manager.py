@@ -601,3 +601,47 @@ def test_load_filters_malformed_feed_and_rule_entries(tmp_path, monkeypatch):
 
     assert set(manager.feeds) == {"https://good.example/feed.xml"}
     assert manager.rules == [{"pattern": "ubuntu", "enabled": True, "type": "accept"}]
+
+
+def test_load_repairs_malformed_nested_rss_fields(tmp_path, monkeypatch):
+    import rss_manager as rss_module
+
+    rss_path = tmp_path / "rss.json"
+    rss_path.write_text(
+        json.dumps({
+            "feeds": {
+                "https://example.com/feed.xml": {
+                    "alias": ["bad"],
+                    "last_update": "yesterday",
+                    "articles": {"bad": "shape"},
+                    "downloaded": "uid-1",
+                    "last_error": {"message": "bad"},
+                },
+            },
+            "rules": [
+                {"pattern": "ubuntu", "enabled": "yes", "type": "weird", "scope": 3},
+                {"enabled": True, "type": "accept"},
+            ],
+        }),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(rss_module, "RSS_FILE", str(rss_path))
+
+    manager = RSSManager()
+    feed = manager.feeds["https://example.com/feed.xml"]
+
+    assert feed["alias"] == ""
+    assert feed["last_update"] == 0
+    assert feed["articles"] == []
+    assert feed["downloaded"] == []
+    assert isinstance(feed["last_error"], str)
+    assert manager.rules == [{
+        "pattern": "ubuntu",
+        "enabled": True,
+        "type": "accept",
+        "scope": None,
+    }]
+
+    manager.save = MagicMock(return_value=True)
+    manager.mark_downloaded("https://example.com/feed.xml", "uid-2")
+    assert feed["downloaded"] == ["uid-2"]
