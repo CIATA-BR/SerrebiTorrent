@@ -476,18 +476,27 @@ window.addEventListener('DOMContentLoaded', () => {
         remoteForm.onsubmit = async (e) => {
             e.preventDefault();
             const data = {};
-            const inputs = remoteForm.querySelectorAll('input, select');
-            inputs.forEach(input => {
-                const key = input.name;
-                if (!key) return;
-                if (input.type === 'checkbox') {
-                    data[key] = input.checked; 
-                } else if (input.type === 'number') {
-                    data[key] = parseFloat(input.value);
-                } else {
-                    data[key] = input.value;
-                }
-            });
+            const inputs = remoteForm.querySelectorAll('input, select, textarea');
+            try {
+                inputs.forEach(input => {
+                    const key = input.name;
+                    if (!key) return;
+                    if (input.dataset.valueType === 'json') {
+                        data[key] = JSON.parse(input.value);
+                    } else if (input.type === 'checkbox') {
+                        data[key] = input.checked;
+                    } else if (input.type === 'number') {
+                        data[key] = parseFloat(input.value);
+                    } else {
+                        data[key] = input.value;
+                    }
+                });
+            } catch (error) {
+                const message = 'Invalid JSON in remote settings.';
+                announceToSR(message, true);
+                alert(message);
+                return;
+            }
             
             try {
                 const res = await apiFetch('/api/v2/app/remote_prefs', {
@@ -1585,12 +1594,20 @@ async function loadRemoteSettings() {
                 label.className = 'form-check-label';
                 col.appendChild(input);
                 col.appendChild(label);
+            } else if (Array.isArray(val) || (val !== null && type === 'object')) {
+                input = document.createElement('textarea');
+                input.className = 'form-control form-control-sm';
+                input.rows = 4;
+                input.dataset.valueType = 'json';
+                input.value = JSON.stringify(val, null, 2);
+                col.appendChild(label);
+                col.appendChild(input);
             } else {
                 input = document.createElement('input');
                 input.className = 'form-control form-control-sm';
                 if (type === 'number') input.type = 'number';
                 else input.type = 'text';
-                input.value = val;
+                input.value = val ?? '';
                 
                 col.appendChild(label);
                 col.appendChild(input);
