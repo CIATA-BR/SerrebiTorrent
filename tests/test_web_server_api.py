@@ -2026,3 +2026,24 @@ def test_app_prefs_reject_oversized_strings(auth_client, key, value):
     )
     assert rv.status_code == 400
     assert b"Application preference string is too long." in rv.data
+
+
+def test_app_prefs_roll_back_saved_limits_when_live_apply_fails(auth_client, monkeypatch):
+    mock_app = MagicMock()
+    previous = {'dl_limit': 0, 'ul_limit': 0, 'download_path': 'C:/Downloads'}
+    mock_app.config_manager.get_preferences.return_value = dict(previous)
+    web_server.WEB_CONFIG['app'] = mock_app
+    local_session = MagicMock()
+    local_session.apply_preferences.side_effect = [RuntimeError("apply failed"), None]
+    monkeypatch.setattr("session_manager.SessionManager.get_instance", lambda: local_session)
+    monkeypatch.setattr("wx.CallAfter", MagicMock())
+
+    rv = auth_client.post(
+        '/api/v2/app/prefs',
+        json={'dl_limit': 1024},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 500
+    assert mock_app.config_manager.set_preferences.call_args_list[-1].args[0] == previous
+    assert local_session.apply_preferences.call_args_list[-1].args[0] == previous
