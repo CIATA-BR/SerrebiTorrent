@@ -225,7 +225,7 @@ class ConfigManager:
                 name = profile.get("name")
                 user = profile.get("user", "")
                 password = profile.get("password", "")
-                if profile_type not in {"local", "rtorrent", "qbittorrent", "transmission"}:
+                if not isinstance(profile_type, str) or profile_type not in {"local", "rtorrent", "qbittorrent", "transmission"}:
                     continue
                 if not all(isinstance(value, str) for value in (url, name, user, password)):
                     continue
