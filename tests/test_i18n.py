@@ -183,3 +183,24 @@ def test_clipboard_preferences_have_brazilian_portuguese_translations():
     assert i18n.translate(
         "Prefill Add URL from clipboard (magnets and .torrent URLs)", "pt-BR"
     ) != "Prefill Add URL from clipboard (magnets and .torrent URLs)"
+
+
+def test_contextual_accessible_names_have_brazilian_portuguese_translations():
+    messages = [
+        "Browse local download path",
+        "Add connection profile",
+        "Edit selected connection profile",
+        "Delete selected connection profile",
+        "Set selected connection profile as default",
+        "Connect using selected profile",
+        "Choose source file",
+        "Choose source folder",
+        "Choose output torrent file",
+        "Add custom tracker",
+        "Remove selected included tracker",
+        "Browse save path",
+        "Select all torrent files",
+        "Deselect all torrent files",
+    ]
+    for source in messages:
+        assert i18n.translate(source, "pt-BR") != source
