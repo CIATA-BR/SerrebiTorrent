@@ -161,3 +161,16 @@ def test_mnemonics_do_not_collide_within_a_dialog():
         for labels in dialogs:
             keys = [_mnemonic(i18n.translate(label, language)) for label in labels]
             assert len(keys) == len(set(keys)), (language, labels, keys)
+
+
+def test_magnet_intake_messages_have_brazilian_portuguese_translations():
+    messages = [
+        "Magnet Link",
+        "Magnet link added",
+        "Torrent already added",
+        "This torrent is already in the list. The link contains no new trackers.",
+        '"{name}" is already in the list. Add {count} new tracker(s) from this link?',
+        "Trackers added to existing torrent",
+    ]
+    for source in messages:
+        assert i18n.translate(source, "pt-BR") != source
