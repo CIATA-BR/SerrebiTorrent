@@ -664,3 +664,69 @@ def test_rss_save_rejects_state_larger_than_read_limit(tmp_path, monkeypatch):
 
     assert manager.save() is False
     assert rss_path.read_text(encoding="utf-8") == '{"feeds": {}, "rules": []}'
+
+
+@patch('rss_manager._public_torrent_session')
+def test_fetch_feed_persists_refreshed_state(mock_session_factory, rss_manager):
+    rss_content = b"""
+    <rss version="2.0"><channel><item>
+      <title>Persisted Torrent</title>
+      <link>http://example.com/file.torrent</link>
+    </item></channel></rss>
+    """
+    session = MagicMock()
+    response = MagicMock()
+    response.status_code = 200
+    response.headers = {}
+    response.iter_content = lambda chunk_size=8192: iter([rss_content])
+    mock_session_factory.return_value.__enter__.return_value = session
+    session.get.return_value.__enter__.return_value = response
+
+    url = "http://93.184.216.34/feed.xml"
+    rss_manager.feeds[url] = {
+        "alias": "Example",
+        "last_update": 0,
+        "articles": [],
+        "downloaded": [],
+        "last_error": "old error",
+    }
+    rss_manager.save = MagicMock(return_value=True)
+
+    articles = rss_manager.fetch_feed(url)
+
+    assert articles[0]["title"] == "Persisted Torrent"
+    assert rss_manager.feeds[url]["articles"] == articles
+    assert rss_manager.feeds[url]["last_update"] > 0
+    assert rss_manager.feeds[url]["last_error"] is None
+    rss_manager.save.assert_called_once()
+
+
+@patch('rss_manager._public_torrent_session')
+def test_fetch_feed_rolls_back_refresh_when_save_fails(mock_session_factory, rss_manager):
+    rss_content = b"""
+    <rss version="2.0"><channel><item>
+      <title>New Torrent</title>
+      <link>http://example.com/new.torrent</link>
+    </item></channel></rss>
+    """
+    session = MagicMock()
+    response = MagicMock()
+    response.status_code = 200
+    response.headers = {}
+    response.iter_content = lambda chunk_size=8192: iter([rss_content])
+    mock_session_factory.return_value.__enter__.return_value = session
+    session.get.return_value.__enter__.return_value = response
+
+    url = "http://93.184.216.34/feed.xml"
+    old = {
+        "alias": "Example",
+        "last_update": 123,
+        "articles": [{"title": "Old", "link": "old", "uid": "old"}],
+        "downloaded": [],
+        "last_error": None,
+    }
+    rss_manager.feeds[url] = dict(old)
+    rss_manager.save = MagicMock(return_value=False)
+
+    assert rss_manager.fetch_feed(url) == []
+    assert rss_manager.feeds[url] == old
