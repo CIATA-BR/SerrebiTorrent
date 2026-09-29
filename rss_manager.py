@@ -83,13 +83,52 @@ class RSSManager:
                     rules = data.get('rules', [])
                     if not isinstance(feeds, dict) or not isinstance(rules, list):
                         raise ValueError("rss.json has invalid feeds or rules")
-                    feeds = {
-                        str(url): feed for url, feed in feeds.items()
-                        if isinstance(feed, dict)
-                    }
-                    rules = [rule for rule in rules if isinstance(rule, dict)]
-                    self.feeds = feeds
-                    self.rules = rules
+                    normalized_feeds = {}
+                    for url, feed in feeds.items():
+                        if not isinstance(feed, dict):
+                            continue
+                        normalized = dict(feed)
+                        if not isinstance(normalized.get('alias', ''), str):
+                            normalized['alias'] = ''
+                        if not isinstance(normalized.get('articles', []), list):
+                            normalized['articles'] = []
+                        if not isinstance(normalized.get('downloaded', []), list):
+                            normalized['downloaded'] = []
+                        last_update = normalized.get('last_update', 0)
+                        if isinstance(last_update, bool) or not isinstance(last_update, (int, float)):
+                            normalized['last_update'] = 0
+                        last_error = normalized.get('last_error')
+                        if last_error is not None and not isinstance(last_error, str):
+                            normalized['last_error'] = str(last_error)
+                        normalized_feeds[str(url)] = normalized
+
+                    normalized_rules = []
+                    for rule in rules:
+                        if not isinstance(rule, dict):
+                            continue
+                        pattern = rule.get('pattern')
+                        if not isinstance(pattern, str) or not pattern:
+                            continue
+                        rule_type = rule.get('type', 'accept')
+                        if rule_type not in {'accept', 'reject'}:
+                            rule_type = 'accept'
+                        enabled = rule.get('enabled', True)
+                        if not isinstance(enabled, bool):
+                            enabled = True
+                        normalized_rule = {
+                            'pattern': pattern,
+                            'enabled': enabled,
+                            'type': rule_type,
+                        }
+                        if 'scope' in rule:
+                            scope = rule.get('scope')
+                            if not isinstance(scope, list) or not all(isinstance(item, str) for item in scope):
+                                scope = None
+                            normalized_rule['scope'] = scope
+                        normalized_rules.append(normalized_rule)
+
+                    self.feeds = normalized_feeds
+                    self.rules = normalized_rules
                 except Exception as exc:
                     print(f"Failed to load RSS data: {exc}")
                     backup = RSS_FILE + ".corrupt"
