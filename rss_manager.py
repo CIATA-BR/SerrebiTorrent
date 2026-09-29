@@ -306,10 +306,14 @@ class RSSManager:
             
             with self.lock:
                 if url in self.feeds:
+                    previous = dict(self.feeds[url])
                     self.feeds[url]['articles'] = articles
                     import time
                     self.feeds[url]['last_update'] = time.time()
                     self.feeds[url]['last_error'] = None # Clear error
+                    if not self.save():
+                        self.feeds[url] = previous
+                        raise OSError("Failed to save refreshed RSS state.")
             
             return articles
         except Exception as e:
@@ -317,7 +321,10 @@ class RSSManager:
             print(f"RSS Fetch Error {url}: {err_msg}")
             with self.lock:
                 if url in self.feeds:
+                    previous = dict(self.feeds[url])
                     self.feeds[url]['last_error'] = err_msg
+                    if not self.save():
+                        self.feeds[url] = previous
             return []
 
     def get_matches(self, articles, feed_url=None):
