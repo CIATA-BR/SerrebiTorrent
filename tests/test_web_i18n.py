@@ -119,3 +119,9 @@ def test_pt_br_layer_covers_the_lockout_message():
         "'Too many failed attempts. Try again later.': "
         "'Muitas tentativas de login falharam. Tente novamente mais tarde.'"
     ) in I18N
+
+
+def test_pt_br_layer_covers_clipboard_app_settings():
+    assert "'Open Add Torrent for clipboard magnets':" in I18N
+    assert "'Prefill Add Torrent from clipboard magnets and .torrent URLs':" in I18N
+    assert "'These options monitor the desktop application clipboard, not the browser clipboard.':" in I18N
