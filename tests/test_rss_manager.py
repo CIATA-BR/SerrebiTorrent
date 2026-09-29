@@ -593,3 +593,33 @@ def test_rss_save_rejects_state_larger_than_read_limit(tmp_path, monkeypatch):
 
     assert manager.save() is False
     assert rss_path.read_text(encoding="utf-8") == '{"feeds": {}, "rules": []}'
+
+
+def test_load_filters_malformed_feed_and_rule_entries(tmp_path, monkeypatch):
+    import rss_manager as rss_module
+
+    rss_path = tmp_path / "rss.json"
+    rss_path.write_text(
+        json.dumps({
+            "feeds": {
+                "https://good.example/feed.xml": {
+                    "alias": "Good",
+                    "last_update": 0,
+                    "articles": [],
+                },
+                "https://bad.example/feed.xml": "not-a-feed-object",
+            },
+            "rules": [
+                {"pattern": "ubuntu", "enabled": True, "type": "accept"},
+                "not-a-rule-object",
+            ],
+        }),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(rss_module, "RSS_FILE", str(rss_path))
+
+    manager = RSSManager()
+
+    assert set(manager.feeds) == {"https://good.example/feed.xml"}
+    assert manager.rules == [{"pattern": "ubuntu", "enabled": True, "type": "accept"}]
+

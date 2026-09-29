@@ -14,6 +14,7 @@ from urllib.parse import urlparse
 from clients import BatchRemoveError, download_torrent_url
 
 TORRENT_UPLOAD_MAX_BYTES = 16 * 1024 * 1024
+TORRENT_ADD_MAX_ITEMS = 100
 
 def get_bundle_dir():
     return getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
@@ -719,12 +720,17 @@ def torrents_add():
     
     urls = request.form.get('urls')
     save_path = request.form.get('savepath')
+    files = request.files.getlist('torrents') if 'torrents' in request.files else []
+    url_items = [url for url in (urls or '').split('\n') if url.strip()]
+    if len(url_items) + len(files) > TORRENT_ADD_MAX_ITEMS:
+        return "Too many torrents in one request.", 413
+
     errors = []
     attempted = 0
     succeeded = 0
     
-    if urls:
-        for url in urls.split('\n'):
+    if url_items:
+        for url in url_items:
             u = url.strip()
             if u:
                 try:
@@ -745,8 +751,7 @@ def torrents_add():
                     errors.append("url-failed")
                     print(f"Web add URL error for {u[:80]!r}: {e}")
 
-    if 'torrents' in request.files:
-        files = request.files.getlist('torrents')
+    if files:
         for f in files:
             content = f.read(TORRENT_UPLOAD_MAX_BYTES + 1)
             if len(content) > TORRENT_UPLOAD_MAX_BYTES:

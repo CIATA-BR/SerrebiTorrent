@@ -193,3 +193,38 @@ def test_torrents_add_reports_partial_success_without_generic_500(app_client, mo
     assert res.status_code == 207
     assert b"Added 1 torrent(s), but 1 item(s) failed." in res.data
     assert client.urls == [("magnet:?xt=urn:btih:good", None)]
+
+
+def test_torrents_add_rejects_oversized_item_batch(app_client, fake_client, monkeypatch):
+    monkeypatch.setattr(web_server, "TORRENT_ADD_MAX_ITEMS", 2)
+    res = app_client.post(
+        "/api/v2/torrents/add",
+        data={"urls": "\n".join([
+            "magnet:?xt=urn:btih:one",
+            "magnet:?xt=urn:btih:two",
+            "magnet:?xt=urn:btih:three",
+        ])},
+        headers=csrf_headers(),
+    )
+
+    assert res.status_code == 413
+    assert b"Too many torrents in one request." in res.data
+    assert fake_client.urls == []
+    assert fake_client.files == []
+
+
+def test_torrents_add_counts_urls_and_files_together(app_client, fake_client, monkeypatch):
+    monkeypatch.setattr(web_server, "TORRENT_ADD_MAX_ITEMS", 2)
+    res = app_client.post(
+        "/api/v2/torrents/add",
+        data={
+            "urls": "magnet:?xt=urn:btih:one\nmagnet:?xt=urn:btih:two",
+            "torrents": (io.BytesIO(b"abc"), "three.torrent"),
+        },
+        content_type="multipart/form-data",
+        headers=csrf_headers(),
+    )
+
+    assert res.status_code == 413
+    assert fake_client.urls == []
+    assert fake_client.files == []
