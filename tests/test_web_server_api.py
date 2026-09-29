@@ -1977,3 +1977,25 @@ def test_web_app_preferences_expose_clipboard_settings():
     assert 'name="clipboard_prefill"' in html
     assert "data['clipboard_auto_add'] = !!clipboardAutoAdd.checked" in js
     assert "data['clipboard_prefill'] = !!clipboardPrefill.checked" in js
+
+
+import pytest
+
+@pytest.mark.parametrize("key,value", [
+    ("min_to_tray", "false"),
+    ("clipboard_auto_add", 1),
+    ("clipboard_prefill", None),
+])
+def test_app_prefs_reject_invalid_boolean_types(auth_client, key, value):
+    rv = auth_client.post("/api/v2/app/prefs", json={key: value})
+    assert rv.status_code == 400
+    assert b"Invalid boolean application preference." in rv.data
+
+@pytest.mark.parametrize("key,value", [
+    ("download_path", {"bad": "type"}),
+    ("language", ["pt-BR"]),
+])
+def test_app_prefs_reject_invalid_string_types(auth_client, key, value):
+    rv = auth_client.post("/api/v2/app/prefs", json={key: value})
+    assert rv.status_code == 400
+    assert b"Invalid string application preference." in rv.data
