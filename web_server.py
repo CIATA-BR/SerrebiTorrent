@@ -15,6 +15,7 @@ from clients import BatchRemoveError, download_torrent_url
 
 TORRENT_UPLOAD_MAX_BYTES = 16 * 1024 * 1024
 TORRENT_ADD_MAX_ITEMS = 100
+TORRENT_ACTION_MAX_ITEMS = 100
 
 def get_bundle_dir():
     return getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
@@ -594,6 +595,8 @@ def _torrent_action_context():
         return None, hashes, ("No torrent client is connected.", 503)
     if not hashes:
         return client, hashes, ("No torrents selected.", 400)
+    if len(hashes) > TORRENT_ACTION_MAX_ITEMS:
+        return client, hashes, ("Too many torrents selected.", 413)
     return client, hashes, None
 
 
