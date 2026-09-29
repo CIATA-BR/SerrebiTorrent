@@ -2012,3 +2012,17 @@ def test_app_prefs_reject_boolean_numeric_values(auth_client, key):
     )
     assert rv.status_code == 400
     assert b"Invalid numeric application preference." in rv.data
+
+
+@pytest.mark.parametrize("key,value", [
+    ("download_path", "x" * 4097),
+    ("language", "x" * 129),
+])
+def test_app_prefs_reject_oversized_strings(auth_client, key, value):
+    rv = auth_client.post(
+        "/api/v2/app/prefs",
+        json={key: value},
+        headers=csrf_headers(auth_client),
+    )
+    assert rv.status_code == 400
+    assert b"Application preference string is too long." in rv.data

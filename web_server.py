@@ -988,10 +988,18 @@ def set_app_prefs():
         if not isinstance(new_prefs[key], bool):
             return "Invalid boolean application preference.", 400
 
-    string_fields = {'download_path', 'language'}
-    for key in string_fields & set(new_prefs):
-        if not isinstance(new_prefs[key], str):
+    string_limits = {
+        'download_path': 4096,
+        'language': 128,
+    }
+    for key, maximum in string_limits.items():
+        if key not in new_prefs:
+            continue
+        value = new_prefs[key]
+        if not isinstance(value, str):
             return "Invalid string application preference.", 400
+        if len(value) > maximum:
+            return "Application preference string is too long.", 400
 
     numeric_limits = {
         'rss_update_interval': (5, 86400),
