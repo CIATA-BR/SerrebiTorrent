@@ -176,6 +176,8 @@ class ConfigManager:
             prefs = {}
         for k, v in DEFAULT_PREFERENCES.items():
             prefs.setdefault(k, v)
+            if isinstance(v, bool) and not isinstance(prefs.get(k), bool):
+                prefs[k] = v
         cfg["preferences"] = prefs
 
         profiles = cfg.get("profiles")
