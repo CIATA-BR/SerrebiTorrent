@@ -950,6 +950,8 @@ def get_app_prefs():
         'dl_limit',
         'ul_limit',
         'min_to_tray',
+        'clipboard_auto_add',
+        'clipboard_prefill',
         'language',
     }
     return jsonify({key: prefs[key] for key in web_fields if key in prefs})
@@ -960,6 +962,8 @@ _WEB_APP_PREF_FIELDS = {
     'dl_limit',
     'ul_limit',
     'min_to_tray',
+    'clipboard_auto_add',
+    'clipboard_prefill',
     'language',
 }
 
