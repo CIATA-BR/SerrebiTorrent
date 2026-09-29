@@ -210,6 +210,44 @@ class ConfigManager:
                 continue
             if isinstance(v, str) and not isinstance(current, str):
                 prefs[k] = v
+        disabled_sources = prefs.get("disabled_torrent_sources")
+        if not isinstance(disabled_sources, list):
+            prefs["disabled_torrent_sources"] = []
+        else:
+            prefs["disabled_torrent_sources"] = [
+                str(source).strip()
+                for source in disabled_sources
+                if isinstance(source, str) and str(source).strip()
+            ]
+
+        torznab_feeds = prefs.get("torznab_feeds")
+        if not isinstance(torznab_feeds, list):
+            prefs["torznab_feeds"] = []
+        else:
+            normalized_feeds = []
+            seen_feed_names = set()
+            for feed in torznab_feeds:
+                if not isinstance(feed, dict):
+                    continue
+                name = feed.get("name")
+                url = feed.get("url")
+                api_key = feed.get("api_key", "")
+                if not all(isinstance(value, str) for value in (name, url, api_key)):
+                    continue
+                name = name.strip()
+                url = url.strip()
+                api_key = api_key.strip()
+                key = name.casefold()
+                if not name or not url or key in seen_feed_names:
+                    continue
+                seen_feed_names.add(key)
+                normalized_feeds.append({
+                    "name": name,
+                    "url": url,
+                    "api_key": api_key,
+                })
+            prefs["torznab_feeds"] = normalized_feeds
+
         cfg["preferences"] = prefs
 
         profiles = cfg.get("profiles")
