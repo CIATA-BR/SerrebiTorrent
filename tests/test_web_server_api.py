@@ -1963,3 +1963,17 @@ def test_torrents_delete_reports_partial_batch_removal(auth_client):
 
     assert rv.status_code == 207
     assert b"Removed 1 torrent(s), but 1 failed." in rv.data
+
+
+def test_web_app_preferences_expose_clipboard_settings():
+    from pathlib import Path
+    server = Path("web_server.py").read_text(encoding="utf-8")
+    html = Path("web_static/index.html").read_text(encoding="utf-8")
+    js = Path("web_static/app.js").read_text(encoding="utf-8")
+
+    assert server.count("'clipboard_auto_add'") >= 2
+    assert server.count("'clipboard_prefill'") >= 2
+    assert 'name="clipboard_auto_add"' in html
+    assert 'name="clipboard_prefill"' in html
+    assert "data['clipboard_auto_add'] = !!clipboardAutoAdd.checked" in js
+    assert "data['clipboard_prefill'] = !!clipboardPrefill.checked" in js
