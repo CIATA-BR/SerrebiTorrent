@@ -214,6 +214,10 @@ _PT_BR: Mapping[str, str] = {
     "Add created torrent to the currently connected client":
         "Adicionar o torrent criado ao cliente conectado atualmente",
     "Copy magnet link to clipboard": "Copiar link magnet para a área de transferência",
+    "Automatically open the Add Torrent dialog for clipboard magnets":
+        "Abrir automaticamente a janela Adicionar torrent para magnets da área de transferência",
+    "Prefill Add URL from clipboard (magnets and .torrent URLs)":
+        "Preencher Adicionar URL pela área de transferência (magnets e URLs .torrent)",
     "Magnet Link": "Link magnet",
     "Magnet link added": "Link magnet adicionado",
     "Torrent already added": "Torrent já adicionado",

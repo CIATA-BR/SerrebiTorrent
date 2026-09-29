@@ -174,3 +174,12 @@ def test_magnet_intake_messages_have_brazilian_portuguese_translations():
     ]
     for source in messages:
         assert i18n.translate(source, "pt-BR") != source
+
+
+def test_clipboard_preferences_have_brazilian_portuguese_translations():
+    assert i18n.translate(
+        "Automatically open the Add Torrent dialog for clipboard magnets", "pt-BR"
+    ) != "Automatically open the Add Torrent dialog for clipboard magnets"
+    assert i18n.translate(
+        "Prefill Add URL from clipboard (magnets and .torrent URLs)", "pt-BR"
+    ) != "Prefill Add URL from clipboard (magnets and .torrent URLs)"
