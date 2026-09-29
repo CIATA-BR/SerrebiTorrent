@@ -1210,6 +1210,9 @@ msgstr ""
 msgid "Output .torrent path is required."
 msgstr ""
 
+msgid "Output .torrent path must not overwrite the source path."
+msgstr ""
+
 msgid "Password"
 msgstr ""
 

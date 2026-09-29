@@ -190,7 +190,7 @@ def test_auto_output_path_does_not_overwrite_torrent_source(tmp_path):
 
 
 def test_creator_options_reject_output_equal_to_source():
-    dialog = object.__new__(torrent_creator.CreateTorrentDialog)
+    dialog = torrent_creator.CreateTorrentDialog.__new__(torrent_creator.CreateTorrentDialog)
     dialog.src_input = type("Field", (), {"GetValue": lambda self: "C:/data/source.torrent"})()
     dialog.out_input = type("Field", (), {"GetValue": lambda self: "C:/data/source.torrent"})()
 
