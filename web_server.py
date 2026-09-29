@@ -983,6 +983,16 @@ def set_app_prefs():
     if disallowed:
         return "Unsupported application preference field.", 400
 
+    bool_fields = {'min_to_tray', 'clipboard_auto_add', 'clipboard_prefill'}
+    for key in bool_fields & set(new_prefs):
+        if not isinstance(new_prefs[key], bool):
+            return "Invalid boolean application preference.", 400
+
+    string_fields = {'download_path', 'language'}
+    for key in string_fields & set(new_prefs):
+        if not isinstance(new_prefs[key], str):
+            return "Invalid string application preference.", 400
+
     numeric_limits = {
         'rss_update_interval': (5, 86400),
         'dl_limit': (-1, 1000000000),
