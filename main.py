@@ -3349,14 +3349,17 @@ class MainFrame(MagnetIntakeMixin, wx.Frame):
 
     def _add_torrent_file_background(self, client, generation, data, save_path, priorities, status_msg):
         try:
-            if generation != self.client_generation:
+            if generation != self.client_generation or self._closing:
                 return
             if not client:
                 raise RuntimeError("No client connected.")
             client.add_torrent_file(data, save_path, priorities)
+            if generation != self.client_generation or self._closing:
+                return
             wx.CallAfter(self._on_action_complete, status_msg)
         except Exception as e:
-            wx.CallAfter(self._on_action_error, f"Failed to add torrent: {e}")
+            if generation == self.client_generation and not self._closing:
+                wx.CallAfter(self._on_action_error, f"Failed to add torrent: {e}")
 
     def _add_magnet_background(self, client, generation, url, save_path, status_msg):
         original_url = url
@@ -3374,9 +3377,12 @@ class MainFrame(MagnetIntakeMixin, wx.Frame):
                 raise RuntimeError("No client connected.")
             if not self._submit_magnet_to_client(client, generation, original_url, url, save_path):
                 return
+            if generation != self.client_generation or self._closing:
+                return
             wx.CallAfter(self._on_action_complete, status_msg)
         except Exception as e:
-            wx.CallAfter(self._on_action_error, f"Failed to add magnet: {e}")
+            if generation == self.client_generation and not self._closing:
+                wx.CallAfter(self._on_action_error, f"Failed to add magnet: {e}")
 
     def _process_cli_arg(self, arg):
         if not self.connected or not self.client:
@@ -3493,8 +3499,9 @@ class MainFrame(MagnetIntakeMixin, wx.Frame):
                 return
             wx.CallAfter(self._show_remote_preferences_dialog, prefs, client, generation)
         except Exception as e:
-            wx.CallAfter(wx.LogError, f"Failed to fetch remote preferences: {e}")
-            wx.CallAfter(self.statusbar.SetStatusText, "Error fetching preferences", 0)
+            if generation == self.client_generation and not self._closing:
+                wx.CallAfter(wx.LogError, f"Failed to fetch remote preferences: {e}")
+                wx.CallAfter(self.statusbar.SetStatusText, "Error fetching preferences", 0)
 
     def _show_remote_preferences_dialog(self, prefs, client=None, generation=None):
         if generation is not None and generation != self.client_generation:
@@ -3528,6 +3535,10 @@ class MainFrame(MagnetIntakeMixin, wx.Frame):
             if generation is not None and generation != self.client_generation:
                 return
             client.set_app_preferences(prefs)
+            if generation is not None and generation != self.client_generation:
+                return
+            if self._closing:
+                return
             name = "Remote"
             if isinstance(client, QBittorrentClient):
                 name = "qBittorrent"
@@ -3541,7 +3552,8 @@ class MainFrame(MagnetIntakeMixin, wx.Frame):
             wx.CallAfter(self.statusbar.SetStatusText, f"{name} preferences saved", 0)
             wx.CallAfter(self._update_client_default_save_path)
         except Exception as e:
-            wx.CallAfter(wx.LogError, f"Failed to update remote preferences: {e}")
+            if (generation is None or generation == self.client_generation) and not self._closing:
+                wx.CallAfter(wx.LogError, f"Failed to update remote preferences: {e}")
 
     def on_minimize(self, event):
         if hasattr(event, "IsIconized") and not event.IsIconized():
