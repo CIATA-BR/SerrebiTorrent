@@ -2,6 +2,7 @@ import io
 import ipaddress
 
 import pytest
+from unittest.mock import MagicMock
 
 import web_server
 
@@ -228,3 +229,48 @@ def test_torrents_add_counts_urls_and_files_together(app_client, fake_client, mo
     assert res.status_code == 413
     assert fake_client.urls == []
     assert fake_client.files == []
+
+
+def test_download_torrent_url_rejects_oversized_content_length_before_stream(monkeypatch):
+    import clients
+
+    response = MagicMock()
+    response.status_code = 200
+    response.headers = {"Content-Length": str(clients.MAX_TORRENT_DOWNLOAD_BYTES + 1)}
+    response.__enter__.return_value = response
+    response.__exit__.return_value = False
+    response.iter_content.side_effect = AssertionError("body should not be read")
+
+    session = MagicMock()
+    session.__enter__.return_value = session
+    session.__exit__.return_value = False
+    session.get.return_value = response
+
+    monkeypatch.setattr(clients, "validate_public_torrent_url", lambda _url: None)
+    monkeypatch.setattr(clients, "_public_torrent_session", lambda: session)
+
+    with pytest.raises(ValueError, match="64 MB limit"):
+        clients.download_torrent_url("https://example.com/file.torrent")
+
+    response.iter_content.assert_not_called()
+
+
+def test_download_torrent_url_rejects_invalid_content_length(monkeypatch):
+    import clients
+
+    response = MagicMock()
+    response.status_code = 200
+    response.headers = {"Content-Length": "not-a-number"}
+    response.__enter__.return_value = response
+    response.__exit__.return_value = False
+
+    session = MagicMock()
+    session.__enter__.return_value = session
+    session.__exit__.return_value = False
+    session.get.return_value = response
+
+    monkeypatch.setattr(clients, "validate_public_torrent_url", lambda _url: None)
+    monkeypatch.setattr(clients, "_public_torrent_session", lambda: session)
+
+    with pytest.raises(ValueError, match="invalid Content-Length"):
+        clients.download_torrent_url("https://example.com/file.torrent")

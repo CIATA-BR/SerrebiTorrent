@@ -159,7 +159,7 @@ def download_torrent_url(url, timeout=30):
     current = url
     for _ in range(MAX_TORRENT_URL_REDIRECTS + 1):
         validate_public_torrent_url(current)
-        content = b""
+        content = bytearray()
         with _public_torrent_session() as session, session.get(
             safe_encode_url(current), timeout=timeout, stream=True, allow_redirects=False
         ) as r:
@@ -170,13 +170,23 @@ def download_torrent_url(url, timeout=30):
                 current = urljoin(current, location)
                 continue
             r.raise_for_status()
+            content_length = r.headers.get("Content-Length")
+            if content_length:
+                try:
+                    expected_size = int(content_length)
+                except ValueError as exc:
+                    raise ValueError("Torrent download returned an invalid Content-Length.") from exc
+                if expected_size < 0:
+                    raise ValueError("Torrent download returned an invalid Content-Length.")
+                if expected_size > MAX_TORRENT_DOWNLOAD_BYTES:
+                    raise ValueError("Torrent download exceeds 64 MB limit.")
             for chunk in r.iter_content(1024 * 1024):
                 if not chunk:
                     continue
-                content += chunk
+                content.extend(chunk)
                 if len(content) > MAX_TORRENT_DOWNLOAD_BYTES:
                     raise ValueError("Torrent download exceeds 64 MB limit.")
-        return content
+        return bytes(content)
     raise ValueError("Torrent URL redirected too many times.")
 
 
