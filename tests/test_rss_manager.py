@@ -572,3 +572,32 @@ def test_load_rejects_oversized_rss_state(tmp_path, monkeypatch):
     assert manager.feeds == {}
     assert manager.rules == []
     assert (tmp_path / "rss.json.corrupt").read_bytes() == b"x" * 9
+
+
+def test_load_filters_malformed_feed_and_rule_entries(tmp_path, monkeypatch):
+    import rss_manager as rss_module
+
+    rss_path = tmp_path / "rss.json"
+    rss_path.write_text(
+        json.dumps({
+            "feeds": {
+                "https://good.example/feed.xml": {
+                    "alias": "Good",
+                    "last_update": 0,
+                    "articles": [],
+                },
+                "https://bad.example/feed.xml": "not-a-feed-object",
+            },
+            "rules": [
+                {"pattern": "ubuntu", "enabled": True, "type": "accept"},
+                "not-a-rule-object",
+            ],
+        }),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(rss_module, "RSS_FILE", str(rss_path))
+
+    manager = RSSManager()
+
+    assert set(manager.feeds) == {"https://good.example/feed.xml"}
+    assert manager.rules == [{"pattern": "ubuntu", "enabled": True, "type": "accept"}]
