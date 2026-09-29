@@ -36,12 +36,16 @@ def _write_json(path: str, data: Dict[str, Any]) -> None:
     profile/preference. Writing to a sibling temp and atomically renaming keeps
     the previous good file intact on any failure.
     """
+    encoded = json.dumps(data, indent=4).encode("utf-8")
+    if len(encoded) > CONFIG_MAX_BYTES:
+        raise ValueError("Configuration file exceeds the allowed size.")
+
     d = os.path.dirname(path) or "."
     os.makedirs(d, exist_ok=True)
     tmp = f"{path}.{os.getpid()}.tmp"
     try:
-        with open(tmp, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=4)
+        with open(tmp, "wb") as f:
+            f.write(encoded)
             f.flush()
             os.fsync(f.fileno())
         os.replace(tmp, path)

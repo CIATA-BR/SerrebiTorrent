@@ -344,6 +344,17 @@ def test_normalize_repairs_invalid_boolean_preference_types(tmp_path, monkeypatc
     assert prefs["min_to_tray"] is True
 
 
+def test_write_json_rejects_output_larger_than_read_limit(tmp_path, monkeypatch):
+    path = tmp_path / "config.json"
+    monkeypatch.setattr(config_manager, "CONFIG_MAX_BYTES", 64)
+    path.write_text('{"existing": true}', encoding="utf-8")
+
+    with pytest.raises(ValueError, match="exceeds the allowed size"):
+        config_manager._write_json(path, {"value": "x" * 128})
+
+    assert path.read_text(encoding="utf-8") == '{"existing": true}'
+
+
 def test_normalize_repairs_malformed_scalar_preferences(tmp_path, monkeypatch):
     config_path = tmp_path / "config.json"
     config_path.write_text(
@@ -376,3 +387,4 @@ def test_normalize_repairs_malformed_scalar_preferences(tmp_path, monkeypatch):
     assert prefs["proxy_port"] == config_manager.DEFAULT_PREFERENCES["proxy_port"]
     assert prefs["download_path"] == config_manager.DEFAULT_PREFERENCES["download_path"]
     assert prefs["proxy_host"] == config_manager.DEFAULT_PREFERENCES["proxy_host"]
+
