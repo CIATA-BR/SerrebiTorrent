@@ -2047,3 +2047,31 @@ def test_app_prefs_roll_back_saved_limits_when_live_apply_fails(auth_client, mon
     assert rv.status_code == 500
     assert mock_app.config_manager.set_preferences.call_args_list[-1].args[0] == previous
     assert local_session.apply_preferences.call_args_list[-1].args[0] == previous
+
+
+@pytest.mark.parametrize(
+    "current,value",
+    [
+        (True, "false"),
+        (10, True),
+        (10, "10"),
+        (1.5, "1.5"),
+        ("downloads", {"bad": "type"}),
+        (["a"], "a"),
+        ({"a": 1}, ["a"]),
+    ],
+)
+def test_remote_preferences_reject_type_mismatches(auth_client, current, value):
+    mock_client = MagicMock()
+    mock_client.get_app_preferences.return_value = {"field": current}
+    web_server.WEB_CONFIG["client"] = mock_client
+
+    rv = auth_client.post(
+        "/api/v2/app/remote_prefs",
+        json={"field": value},
+        headers=csrf_headers(auth_client),
+    )
+
+    assert rv.status_code == 400
+    assert b"Invalid remote preference type." in rv.data
+    mock_client.set_app_preferences.assert_not_called()
