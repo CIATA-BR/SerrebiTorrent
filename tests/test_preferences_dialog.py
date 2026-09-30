@@ -47,7 +47,7 @@ def test_main_preferences_save_has_ui_error_boundary():
 
     save = block.index("self.config_manager.set_preferences(prefs)")
     error_box = block.index("wx.MessageBox(", save)
-    runtime_apply = block.index("legacy.SessionManager.get_instance().apply_preferences(prefs)")
+    runtime_apply = block.index("session.apply_preferences(prefs)")
 
     assert "except Exception as exc" in block[save:error_box]
     assert error_box < runtime_apply
