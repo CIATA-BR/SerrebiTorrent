@@ -48,6 +48,7 @@ TORRENT_STATE_MAX_BYTES = 16 * 1024 * 1024
 RESUME_STATE_MAX_BYTES = 64 * 1024 * 1024
 TORRENTS_DB_MAX_BYTES = 16 * 1024 * 1024
 VERSION_STATE_MAX_BYTES = 64 * 1024
+VERSION_FETCH_MAX_BYTES = 256 * 1024
 
 
 def _read_bounded_state_file(path, limit, label):
@@ -108,6 +109,7 @@ def _write_version_state(version):
 
 def _fetch_latest_qbittorrent():
     """Ask GitHub for qBittorrent's newest release tag. None on any failure."""
+    response = None
     try:
         import requests
 
@@ -116,11 +118,32 @@ def _fetch_latest_qbittorrent():
             headers={"Accept": "application/vnd.github+json",
                      "User-Agent": "SerrebiTorrent"},
             timeout=VERSION_FETCH_TIMEOUT_S,
+            stream=True,
         )
         response.raise_for_status()
-        return _parse_version(response.json().get("tag_name"))
+        content_length = response.headers.get("Content-Length")
+        if content_length:
+            expected = int(content_length)
+            if expected < 0 or expected > VERSION_FETCH_MAX_BYTES:
+                return None
+        data = bytearray()
+        for chunk in response.iter_content(64 * 1024):
+            if not chunk:
+                continue
+            data.extend(chunk)
+            if len(data) > VERSION_FETCH_MAX_BYTES:
+                return None
+        payload = json.loads(bytes(data).decode("utf-8"))
+        if not isinstance(payload, dict):
+            return None
+        return _parse_version(payload.get("tag_name"))
     except Exception:
         return None
+    finally:
+        if response is not None:
+            close = getattr(response, "close", None)
+            if callable(close):
+                close()
 
 
 def qbittorrent_version(allow_network=True):
