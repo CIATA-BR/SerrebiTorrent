@@ -568,7 +568,8 @@ def _valid_torrent_snapshot(torrents):
         return False
     return all(
         isinstance(torrent, dict)
-        and bool(str(torrent.get('hash') or '').strip())
+        and isinstance(torrent.get('hash'), str)
+        and bool(torrent['hash'].strip())
         for torrent in torrents
     )
 

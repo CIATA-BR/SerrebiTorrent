@@ -2118,3 +2118,18 @@ def test_remote_prefs_rejects_non_object_backend_result(auth_client):
 
     assert rv.status_code == 500
     assert b"Failed to load remote preferences." in rv.data
+
+
+@pytest.mark.parametrize("bad_hash", [[], {}, 123, True])
+def test_torrent_snapshots_reject_non_string_hashes(auth_client, bad_hash):
+    mock_client = MagicMock()
+    mock_client.get_torrents_full.return_value = [{
+        "hash": bad_hash,
+        "name": "bad",
+    }]
+    web_server.WEB_CONFIG['client'] = mock_client
+
+    rv = auth_client.get('/api/v2/sync/maindata')
+
+    assert rv.status_code == 500
+    assert b"Failed to load torrent sync data." in rv.data
