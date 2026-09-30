@@ -204,7 +204,7 @@ def test_creator_options_reject_output_inside_source_folder(tmp_path):
     output = source / "existing-file.txt"
     output.write_text("original", encoding="utf-8")
 
-    dialog = object.__new__(torrent_creator.CreateTorrentDialog)
+    dialog = torrent_creator.CreateTorrentDialog.__new__(torrent_creator.CreateTorrentDialog)
     dialog.src_input = type("Field", (), {"GetValue": lambda self: str(source)})()
     dialog.out_input = type("Field", (), {"GetValue": lambda self: str(output)})()
 
