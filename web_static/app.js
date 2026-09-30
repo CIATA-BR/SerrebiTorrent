@@ -765,7 +765,7 @@ function createRowElement(t) {
         <td role="gridcell" class="col-name"></td>
         <td role="gridcell" class="col-size text-nowrap"></td>
         <td role="gridcell" class="col-status text-nowrap"></td>
-        <td role="gridcell"><div class="progress" aria-hidden="true"><div class="progress-bar"></div></div></td>
+        <td role="gridcell" class="col-progress"><div class="progress" aria-hidden="true"><div class="progress-bar"></div></div></td>
         <td role="gridcell" class="col-speed text-nowrap"></td>
     `;
     
@@ -806,6 +806,9 @@ function updateRowData(tr, t, absIndex) {
     const statusCell = tr.querySelector('.col-status');
     if (statusCell.textContent !== statusText) statusCell.textContent = statusText;
     
+    const progressCell = tr.querySelector('.col-progress');
+    progressCell.setAttribute('aria-label', `Progress ${progress}%`);
+
     const bar = tr.querySelector('.progress-bar');
     bar.style.width = progress + '%';
     bar.textContent = progress + '%';
