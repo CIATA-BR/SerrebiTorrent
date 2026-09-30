@@ -196,3 +196,19 @@ def test_creator_options_reject_output_equal_to_source():
 
     with pytest.raises(ValueError, match="must not overwrite the source path"):
         torrent_creator.CreateTorrentDialog.get_options(dialog)
+
+
+def test_creator_options_reject_output_inside_source_folder(tmp_path):
+    source = tmp_path / "payload"
+    source.mkdir()
+    output = source / "existing-file.txt"
+    output.write_text("original", encoding="utf-8")
+
+    dialog = object.__new__(torrent_creator.CreateTorrentDialog)
+    dialog.src_input = type("Field", (), {"GetValue": lambda self: str(source)})()
+    dialog.out_input = type("Field", (), {"GetValue": lambda self: str(output)})()
+
+    with pytest.raises(ValueError, match="outside the source folder"):
+        torrent_creator.CreateTorrentDialog.get_options(dialog)
+
+    assert output.read_text(encoding="utf-8") == "original"
