@@ -231,13 +231,20 @@ class TranslationCenterDialog(wx.Dialog):
 
         nav = wx.BoxSizer(wx.HORIZONTAL)
         self.prev_button = wx.Button(self, label="&Previous")
+        self.prev_button.SetName("Previous translation entry")
         self.save_button = wx.Button(self, label="&Save entry")
+        self.save_button.SetName("Save current translation entry")
         self.next_button = wx.Button(self, label="&Next")
+        self.next_button.SetName("Next translation entry")
         self.export_button = wx.Button(self, label="&Export PO...")
+        self.export_button.SetName("Export translation catalog as PO")
         self.import_button = wx.Button(self, label="&Import PO...")
+        self.import_button.SetName("Import translation catalog from PO")
         self.online_button = wx.Button(self, label="Open &online translation")
+        self.online_button.SetName("Open online translation portal")
         self.online_button.Enable(bool(ONLINE_TRANSLATION_URL))
         close_button = wx.Button(self, wx.ID_CLOSE, label="&Close")
+        close_button.SetName("Close Translation Center")
         for button in (self.prev_button, self.save_button, self.next_button, self.export_button,
                        self.import_button, self.online_button):
             nav.Add(button, 0, wx.RIGHT, 6)
