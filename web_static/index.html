@@ -172,7 +172,7 @@
                     <form id="addProfileForm">
                         <div class="mb-3">
                             <label class="form-label" for="profName">Name</label>
-                            <input type="text" class="form-control" id="profName" placeholder="My Remote Server" required>
+                            <input type="text" class="form-control" id="profName" placeholder="My Remote Server" autocomplete="off" spellcheck="false" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="profType">Type</label>
@@ -185,11 +185,11 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="profUrl">URL / Path</label>
-                            <input type="url" class="form-control" id="profUrl" placeholder="http://1.2.3.4:8080" autocomplete="url" required>
+                            <input type="url" class="form-control" id="profUrl" placeholder="http://1.2.3.4:8080" autocomplete="url" autocapitalize="none" spellcheck="false" required>
                         </div>
                         <div class="mb-2">
                             <label class="form-label" for="profUser">Username</label>
-                            <input type="text" class="form-control" id="profUser" autocomplete="username">
+                            <input type="text" class="form-control" id="profUser" autocomplete="username" autocapitalize="none" spellcheck="false">
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="profPass">Password</label>
@@ -214,15 +214,15 @@
                     <form id="addTorrentForm">
                         <div class="mb-3">
                             <label class="form-label" for="torrentUrls">URLs / Magnets (one per line)</label>
-                            <textarea class="form-control" id="torrentUrls" rows="3"></textarea>
+                            <textarea class="form-control" id="torrentUrls" rows="3" autocomplete="off" autocapitalize="none" spellcheck="false"></textarea>
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="torrentFiles">Torrent Files</label>
-                            <input type="file" class="form-control" id="torrentFiles" multiple>
+                            <input type="file" class="form-control" id="torrentFiles" accept=".torrent,application/x-bittorrent" multiple>
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="torrentSavePath">Save Path (Optional)</label>
-                            <input type="text" class="form-control" id="torrentSavePath">
+                            <input type="text" class="form-control" id="torrentSavePath" autocomplete="off" spellcheck="false">
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Add</button>
                     </form>
