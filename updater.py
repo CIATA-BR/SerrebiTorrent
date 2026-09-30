@@ -585,6 +585,9 @@ def verify_authenticode(exe_path: str, allowed_thumbprints: Iterable[str]) -> No
         except json.JSONDecodeError as exc:
             last_error = f"{powershell_exe}: invalid Authenticode data: {exc}"
             continue
+        if not isinstance(data, dict):
+            last_error = f"{powershell_exe}: invalid Authenticode data shape"
+            continue
 
         status = str(data.get("Status", "")).strip()
         status_msg = str(data.get("StatusMessage", "")).strip()
