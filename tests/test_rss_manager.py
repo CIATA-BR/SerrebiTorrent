@@ -770,3 +770,39 @@ def test_fetch_feed_supports_atom_entries(mock_session_factory, rss_manager):
         "link": "https://example.com/file.torrent",
         "uid": "tag:example.com,2026:1",
     }]
+
+
+def test_load_filters_malformed_persisted_rss_articles(tmp_path, monkeypatch):
+    import rss_manager as rss_module
+
+    rss_path = tmp_path / "rss.json"
+    rss_path.write_text(
+        json.dumps({
+            "feeds": {
+                "https://example.com/feed.xml": {
+                    "alias": "Example",
+                    "last_update": 0,
+                    "articles": [
+                        "not-an-object",
+                        {"title": "Missing link"},
+                        {"title": 7, "link": "https://example.com/bad"},
+                        {"title": "Good", "link": "https://example.com/good", "uid": ["bad"]},
+                    ],
+                    "downloaded": ["good", {"bad": "uid"}],
+                }
+            },
+            "rules": [],
+        }),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(rss_module, "RSS_FILE", str(rss_path))
+
+    manager = RSSManager()
+    feed = manager.feeds["https://example.com/feed.xml"]
+
+    assert feed["articles"] == [{
+        "title": "Good",
+        "link": "https://example.com/good",
+        "uid": "https://example.com/good",
+    }]
+    assert feed["downloaded"] == ["good"]
