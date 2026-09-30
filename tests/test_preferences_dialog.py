@@ -83,3 +83,18 @@ def test_rss_reset_prefers_live_panel_manager():
     assert 'hasattr(parent, "rss_panel")' in source
     assert 'getattr(parent.rss_panel, "manager", None)' in source
     assert 'if manager is None:' in source
+
+
+def test_app_entry_preferences_roll_back_when_runtime_apply_fails():
+    from pathlib import Path
+    source = Path("app_entry.py").read_text(encoding="utf-8")
+    start = source.index("    def on_prefs(self, event):")
+    end = source.index("    def on_connect(self, event):", start)
+    block = source[start:end]
+
+    assert "previous_prefs = self.config_manager.get_preferences()" in block
+    assert "session.apply_preferences(prefs)" in block
+    assert "self.config_manager.set_preferences(previous_prefs)" in block
+    assert "session.apply_preferences(previous_prefs)" in block
+    failure = block.index("except Exception as exc")
+    assert "return" in block[failure:]
