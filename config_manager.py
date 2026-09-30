@@ -435,10 +435,12 @@ class ConfigManager:
 
     def set_default_profile_id(self, pid: str) -> None:
         with self.lock:
+            profiles = self.config.get("profiles", {})
+            if not isinstance(profiles, dict) or pid not in profiles:
+                raise ValueError("Default profile does not exist.")
             previous = copy.deepcopy(self.config)
             try:
                 self.config["default_profile"] = pid
-                _ensure_valid_default_profile(self.config)
                 self.save_config()
             except Exception:
                 self.config = previous
