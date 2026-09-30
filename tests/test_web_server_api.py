@@ -11,6 +11,7 @@ from unittest.mock import MagicMock, patch, call
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import web_server
+from rss_manager import RSSManager
 
 @pytest.fixture
 def client():
@@ -2143,6 +2144,7 @@ def test_rss_set_rule_rejects_invalid_regex(auth_client):
     rv = auth_client.post(
         '/api/v2/rss/set_rule',
         data={'pattern': '(', 'type': 'accept', 'enabled': 'true'},
+        headers=csrf_headers(auth_client),
     )
 
     assert rv.status_code == 400
