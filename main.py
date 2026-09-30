@@ -3435,14 +3435,17 @@ class MainFrame(MagnetIntakeMixin, wx.Frame):
         try:
             time.sleep(0.3)
             for h in hashes:
-                if generation != self.client_generation:
+                if generation != self.client_generation or self._closing:
                     return
                 if self.client:
                     self.client.start_torrent(h)
+            if generation != self.client_generation or self._closing:
+                return
             wx.CallAfter(self.statusbar.SetStatusText, "Auto-started new torrent(s)", 0)
             wx.CallAfter(self.refresh_data)
         except Exception as e:
-            wx.CallAfter(self.statusbar.SetStatusText, f"Auto-start failed: {e}", 0)
+            if generation == self.client_generation and not self._closing:
+                wx.CallAfter(self.statusbar.SetStatusText, f"Auto-start failed: {e}", 0)
 
     def on_prefs(self, event):
         dlg = PreferencesDialog(self, self.config_manager)
@@ -4038,12 +4041,16 @@ class MainFrame(MagnetIntakeMixin, wx.Frame):
         the account's passkey. That is why this runs off the GUI thread.
         """
         try:
-            if generation != self.client_generation:
+            if generation != self.client_generation or self._closing:
                 return
             kind, payload = torrent_search.resolve(item)
         except Exception as e:
-            wx.CallAfter(self._on_action_error,
-                         f"Failed to fetch {item.get('title', 'torrent')}: {e}")
+            if generation == self.client_generation and not self._closing:
+                wx.CallAfter(self._on_action_error,
+                             f"Failed to fetch {item.get('title', 'torrent')}: {e}")
+            return
+
+        if generation != self.client_generation or self._closing:
             return
 
         if kind == "magnet":
@@ -4084,9 +4091,14 @@ class MainFrame(MagnetIntakeMixin, wx.Frame):
     def _download_and_add_torrent(self, url, default_path, client=None, generation=None):
         try:
             data = download_torrent_url(url)
+            if generation is not None and generation != self.client_generation:
+                return
+            if self._closing:
+                return
             wx.CallAfter(self._show_add_after_download, data, default_path, client, generation)
         except Exception as e:
-            wx.CallAfter(wx.LogError, f"Failed to download torrent from URL: {e}")
+            if (generation is None or generation == self.client_generation) and not self._closing:
+                wx.CallAfter(wx.LogError, f"Failed to download torrent from URL: {e}")
 
     def _show_add_after_download(self, data, default_path, client=None, generation=None):
         if generation is not None and generation != self.client_generation:
@@ -4189,23 +4201,30 @@ class MainFrame(MagnetIntakeMixin, wx.Frame):
             out.append(h)
         return out
 
-    def _apply_background_bulk(self, action, hashes, label):
+    def _apply_background_bulk(self, action, hashes, label, generation=None):
         failed = 0
         last_error = None
         try:
+            if generation is None:
+                generation = self.client_generation
             for h in hashes:
+                if generation != self.client_generation or self._closing:
+                    return
                 try:
                     action(h)
                 except Exception as e:
                     failed += 1
                     last_error = e
+            if generation != self.client_generation or self._closing:
+                return
             if failed == 0:
                 wx.CallAfter(self._on_action_complete, f"{label} complete")
             else:
                 wx.CallAfter(self.statusbar.SetStatusText, f"{label} complete ({failed} failed). Last error: {last_error}", 0)
                 wx.CallAfter(self.refresh_data)
         except Exception as e:
-            wx.CallAfter(self._on_action_error, f"Failed to {label.lower()}: {e}")
+            if generation == self.client_generation and not self._closing:
+                wx.CallAfter(self._on_action_error, f"Failed to {label.lower()}: {e}")
 
     def start_all_torrents(self):
         if not self.client or not hasattr(self.client, 'start_torrent'):
@@ -4219,7 +4238,7 @@ class MainFrame(MagnetIntakeMixin, wx.Frame):
             return
         if hasattr(self, 'statusbar'):
             self.statusbar.SetStatusText('Starting all torrents...', 0)
-        self.thread_pool.submit(self._apply_background_bulk, self.client.start_torrent, hashes, 'Start all')
+        self.thread_pool.submit(self._apply_background_bulk, self.client.start_torrent, hashes, 'Start all', self.client_generation)
 
     def stop_all_torrents(self):
         if not self.client or not hasattr(self.client, 'stop_torrent'):
@@ -4233,7 +4252,7 @@ class MainFrame(MagnetIntakeMixin, wx.Frame):
             return
         if hasattr(self, 'statusbar'):
             self.statusbar.SetStatusText('Stopping all torrents...', 0)
-        self.thread_pool.submit(self._apply_background_bulk, self.client.stop_torrent, hashes, 'Stop all')
+        self.thread_pool.submit(self._apply_background_bulk, self.client.stop_torrent, hashes, 'Stop all', self.client_generation)
 
     def on_start(self, event):
         action = self.client.start_torrent if self.client else None
