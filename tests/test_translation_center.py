@@ -152,3 +152,27 @@ def test_translation_draft_rejects_non_object_translations(tmp_path, monkeypatch
     )
 
     assert translation_center.load_draft("pt-BR") == {}
+
+
+def test_translation_draft_save_feedback_handles_size_errors(monkeypatch):
+    calls = []
+    monkeypatch.setattr(
+        translation_center,
+        "save_draft",
+        lambda *args, **kwargs: (_ for _ in ()).throw(ValueError("Translation draft exceeds the 4 MB limit.")),
+    )
+    monkeypatch.setattr(
+        translation_center.wx,
+        "MessageBox",
+        lambda message, *args, **kwargs: calls.append(message),
+    )
+
+    assert translation_center._save_draft_with_feedback(
+        None, "pt-BR", "Português (Brasil)", {"Settings": "Configurações"}
+    ) is False
+    assert "4 MB limit" in calls[0]
+
+
+def test_translation_center_handlers_use_safe_draft_save_wrapper():
+    source = inspect.getsource(translation_center.TranslationCenterDialog)
+    assert source.count("_save_draft_with_feedback") >= 3

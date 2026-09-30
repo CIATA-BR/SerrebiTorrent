@@ -133,6 +133,21 @@ def save_draft(code: str, name: str, translations: dict[str, str]) -> Path:
     return path
 
 
+def _save_draft_with_feedback(parent, code: str, name: str, translations: dict[str, str], *, exported=False) -> bool:
+    try:
+        save_draft(code, name, translations)
+        return True
+    except (OSError, ValueError) as exc:
+        prefix = "Catalog was exported, but the local draft could not be saved" if exported else "Could not save translation draft"
+        wx.MessageBox(
+            f"{prefix}: {exc}",
+            "Translation Center",
+            wx.OK | wx.ICON_ERROR,
+            parent,
+        )
+        return False
+
+
 def load_shipped_catalog(code: str) -> dict[str, str]:
     """Return the translations already reviewed and shipped for a language.
 
@@ -279,7 +294,8 @@ class TranslationCenterDialog(wx.Dialog):
         self.language_code.SetValue(info.code)
         if info.name:
             self.language_name.SetValue(info.name)
-        save_draft(info.code, info.name, self.translations)
+        if not _save_draft_with_feedback(self, info.code, info.name, self.translations):
+            return
         self._refresh_list()
         translated, total, review = progress(self.messages, self.translations)
         wx.MessageBox(
@@ -356,7 +372,13 @@ class TranslationCenterDialog(wx.Dialog):
         if source:
             problems = validate_translation(source, self.translations.get(source, ""))
             self.validation_text.SetValue("\n".join(problems) if problems else "Saved. No validation problems.")
-        save_draft(self.language_code.GetValue(), self.language_name.GetValue(), self.translations)
+        if not _save_draft_with_feedback(
+            self,
+            self.language_code.GetValue(),
+            self.language_name.GetValue(),
+            self.translations,
+        ):
+            return
         self._refresh_list()
 
     def _move(self, delta: int) -> None:
@@ -405,7 +427,8 @@ class TranslationCenterDialog(wx.Dialog):
             if dialog.ShowModal() != wx.ID_OK:
                 return
             Path(dialog.GetPath()).write_text(render_po(code, name, self.translations), encoding="utf-8")
-        save_draft(code, name, self.translations)
+        if not _save_draft_with_feedback(self, code, name, self.translations, exported=True):
+            return
         wx.MessageBox("Translation catalog exported successfully.", "Translation Center")
 
     def _on_online(self, _event) -> None:
