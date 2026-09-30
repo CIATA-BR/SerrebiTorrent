@@ -276,6 +276,16 @@ def test_web_bulk_delete_reports_http_207_as_partial_failure():
     assert "announceToSR(message, true);" in block[partial:generic_failure]
 
 
+def test_web_torrent_and_profile_fields_avoid_text_autocorrection():
+    markup = (ROOT / "web_static" / "index.html").read_text(encoding="utf-8")
+
+    assert 'id="torrentUrls" rows="3" autocomplete="off" autocapitalize="none" spellcheck="false"' in markup
+    assert 'id="torrentFiles" accept=".torrent,application/x-bittorrent" multiple' in markup
+    assert 'id="torrentSavePath" autocomplete="off" spellcheck="false"' in markup
+    assert 'id="profUrl"' in markup and 'autocapitalize="none" spellcheck="false"' in markup
+    assert 'id="profUser"' in markup and 'spellcheck="false"' in markup
+
+
 def test_web_progress_cell_exposes_percentage_to_screen_readers():
     script = (ROOT / "web_static" / "app.js").read_text(encoding="utf-8")
 
