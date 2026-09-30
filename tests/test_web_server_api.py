@@ -2133,3 +2133,18 @@ def test_torrent_snapshots_reject_non_string_hashes(auth_client, bad_hash):
 
     assert rv.status_code == 500
     assert b"Failed to load torrent sync data." in rv.data
+
+
+def test_rss_set_rule_rejects_invalid_regex(auth_client):
+    mock_app = MagicMock()
+    mock_app.rss_panel.manager = RSSManager()
+    web_server.WEB_CONFIG['app'] = mock_app
+
+    rv = auth_client.post(
+        '/api/v2/rss/set_rule',
+        data={'pattern': '(', 'type': 'accept', 'enabled': 'true'},
+    )
+
+    assert rv.status_code == 400
+    assert b"valid regular expression" in rv.data
+    assert mock_app.rss_panel.manager.rules == []
