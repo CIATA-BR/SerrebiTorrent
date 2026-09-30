@@ -895,3 +895,32 @@ def test_save_torrents_db_rejects_output_larger_than_read_limit(tmp_path, monkey
     assert json.loads(Path(manager.torrents_db_path).read_text(encoding="utf-8")) == {
         "existing": {"save_path": "/old"}
     }
+
+
+def test_qbittorrent_version_fetch_rejects_oversized_response(monkeypatch):
+    import requests
+    import session_manager as sm
+
+    response = MagicMock()
+    response.headers = {"Content-Length": str(sm.VERSION_FETCH_MAX_BYTES + 1)}
+    response.raise_for_status.return_value = None
+    response.iter_content.side_effect = AssertionError("body should not be read")
+    monkeypatch.setattr(requests, "get", lambda *args, **kwargs: response)
+
+    assert sm._fetch_latest_qbittorrent() is None
+    response.iter_content.assert_not_called()
+    response.close.assert_called_once()
+
+
+def test_qbittorrent_version_fetch_rejects_non_object_json(monkeypatch):
+    import requests
+    import session_manager as sm
+
+    response = MagicMock()
+    response.headers = {}
+    response.raise_for_status.return_value = None
+    response.iter_content.return_value = iter([b"[]"])
+    monkeypatch.setattr(requests, "get", lambda *args, **kwargs: response)
+
+    assert sm._fetch_latest_qbittorrent() is None
+    response.close.assert_called_once()
