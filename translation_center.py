@@ -103,6 +103,8 @@ def save_draft(code: str, name: str, translations: dict[str, str]) -> Path:
         "translations": dict(sorted(translations.items(), key=lambda item: item[0].casefold())),
     }
     data = (json.dumps(payload, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+    if len(data) > DRAFT_MAX_BYTES:
+        raise ValueError("Translation draft exceeds the 4 MB limit.")
     temp_path = None
     try:
         with tempfile.NamedTemporaryFile(

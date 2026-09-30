@@ -1,5 +1,6 @@
 import inspect
 import json
+import pytest
 from pathlib import Path
 
 import i18n
@@ -115,3 +116,20 @@ def test_translation_draft_save_is_atomic(tmp_path, monkeypatch):
     assert not list(tmp_path.glob("pt-BR.json.*.tmp"))
     payload = json.loads(path.read_text(encoding="utf-8"))
     assert payload["translations"]["Settings"] == "Configurações"
+
+
+def test_translation_draft_save_rejects_output_larger_than_read_limit(tmp_path, monkeypatch):
+    monkeypatch.setattr(translation_center, "_data_dir", lambda: tmp_path)
+    monkeypatch.setattr(translation_center, "DRAFT_MAX_BYTES", 64)
+
+    path = translation_center.draft_path("pt-BR")
+    path.write_text('{"language":"pt-BR","translations":{}}', encoding="utf-8")
+
+    with pytest.raises(ValueError, match="4 MB limit"):
+        translation_center.save_draft(
+            "pt-BR",
+            "Português (Brasil)",
+            {"Settings": "x" * 128},
+        )
+
+    assert path.read_text(encoding="utf-8") == '{"language":"pt-BR","translations":{}}'
