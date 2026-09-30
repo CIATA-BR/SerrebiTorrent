@@ -327,9 +327,12 @@ class SessionManager:
     def _save_torrents_db(self):
         tmp = f"{self.torrents_db_path}.{os.getpid()}.tmp"
         try:
+            encoded = json.dumps(self.torrents_db, indent=2).encode("utf-8")
+            if len(encoded) > TORRENTS_DB_MAX_BYTES:
+                raise ValueError("torrents.json exceeds the allowed size")
             os.makedirs(os.path.dirname(self.torrents_db_path), exist_ok=True)
-            with open(tmp, 'w', encoding='utf-8') as f:
-                json.dump(self.torrents_db, f, indent=2)
+            with open(tmp, 'wb') as f:
+                f.write(encoded)
                 f.flush()
                 os.fsync(f.fileno())
             os.replace(tmp, self.torrents_db_path)
