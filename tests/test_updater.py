@@ -977,3 +977,12 @@ def test_download_manifest_rejects_non_object_json(monkeypatch):
         updater._download_manifest_url(
             "https://github.com/serrebidev/SerrebiTorrent/releases/latest/download/update-manifest.json"
         )
+
+
+def test_verify_authenticode_rejects_non_object_json(monkeypatch):
+    result = SimpleNamespace(returncode=0, stdout="[]", stderr="")
+    monkeypatch.setattr(updater, "_powershell_executables", lambda: ("powershell.exe",))
+    monkeypatch.setattr(updater.subprocess, "run", lambda *args, **kwargs: result)
+
+    with pytest.raises(updater.UpdateError, match="invalid Authenticode data shape"):
+        updater.verify_authenticode("SerrebiTorrent.exe", [SIGNING_THUMBPRINT])
