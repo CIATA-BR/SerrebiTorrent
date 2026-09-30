@@ -1097,14 +1097,13 @@ def get_remote_prefs():
         prefs = client.get_app_preferences()
     except Exception:
         return "Failed to load remote preferences.", 500
-    if prefs is None:
+    if not isinstance(prefs, dict):
         return "Failed to load remote preferences.", 500
 
-    if isinstance(prefs, dict):
-        prefs = {
-            key: value for key, value in prefs.items()
-            if not _is_sensitive_remote_pref_key(key)
-        }
+    prefs = {
+        key: value for key, value in prefs.items()
+        if not _is_sensitive_remote_pref_key(key)
+    }
 
     return jsonify({
         'name': name,
