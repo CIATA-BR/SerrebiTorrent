@@ -316,3 +316,26 @@ def test_remote_preference_workers_ignore_stale_profile_results():
     assert "generation == self.client_generation and not self._closing" in fetch_source
     assert apply_source.count("generation != self.client_generation") >= 2
     assert "not self._closing" in apply_source
+
+
+def test_remaining_background_workers_ignore_stale_profile_results():
+    search_source = inspect.getsource(main.MainFrame._add_search_result_background)
+    download_source = inspect.getsource(main.MainFrame._download_and_add_torrent)
+    auto_source = inspect.getsource(main.MainFrame._auto_start_hashes)
+    bulk_source = inspect.getsource(main.MainFrame._apply_background_bulk)
+
+    assert search_source.count("generation != self.client_generation") >= 2
+    assert "generation == self.client_generation and not self._closing" in search_source
+    assert "generation is not None and generation != self.client_generation" in download_source
+    assert "not self._closing" in download_source
+    assert auto_source.count("generation != self.client_generation") >= 2
+    assert "generation == self.client_generation and not self._closing" in auto_source
+    assert "generation != self.client_generation or self._closing" in bulk_source
+
+
+def test_start_stop_all_capture_client_generation():
+    start_source = inspect.getsource(main.MainFrame.start_all_torrents)
+    stop_source = inspect.getsource(main.MainFrame.stop_all_torrents)
+
+    assert "'Start all', self.client_generation" in start_source
+    assert "'Stop all', self.client_generation" in stop_source
