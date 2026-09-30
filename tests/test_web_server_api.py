@@ -2107,3 +2107,14 @@ def test_delete_rejects_oversized_hash_batch_before_backend(auth_client, monkeyp
     assert rv.status_code == 413
     assert b"Too many torrents selected." in rv.data
     mock_client.remove_torrents.assert_not_called()
+
+
+def test_remote_prefs_rejects_non_object_backend_result(auth_client):
+    mock_client = MagicMock()
+    mock_client.get_app_preferences.return_value = ["unexpected", "shape"]
+    web_server.WEB_CONFIG['client'] = mock_client
+
+    rv = auth_client.get('/api/v2/app/remote_prefs')
+
+    assert rv.status_code == 500
+    assert b"Failed to load remote preferences." in rv.data
