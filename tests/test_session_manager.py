@@ -879,6 +879,7 @@ def test_cleanup_torrent_state_quarantines_before_persisting_removal(session_man
 
 
 def test_save_torrents_db_rejects_output_larger_than_read_limit(tmp_path, monkeypatch):
+    import session_manager as sm
     manager = object.__new__(sm.SessionManager)
     manager.torrents_db_path = str(tmp_path / "torrents.json")
     manager.torrents_db = {"existing": {"save_path": "/old"}}
