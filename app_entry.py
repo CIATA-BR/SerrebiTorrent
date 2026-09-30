@@ -353,6 +353,7 @@ class LocalizedMainFrame(legacy.MainFrame):
         try:
             if dlg.ShowModal() != wx.ID_OK:
                 return
+            previous_prefs = self.config_manager.get_preferences()
             prefs = dlg.get_preferences()
             try:
                 self.config_manager.set_preferences(prefs)
@@ -364,10 +365,25 @@ class LocalizedMainFrame(legacy.MainFrame):
                     self,
                 )
                 return
+            session = legacy.SessionManager.get_instance()
             try:
-                legacy.SessionManager.get_instance().apply_preferences(prefs)
+                session.apply_preferences(prefs)
             except Exception as exc:  # noqa: BLE001 - UI boundary
-                wx.LogError(self._("Failed to apply settings: {error}").format(error=exc))
+                try:
+                    self.config_manager.set_preferences(previous_prefs)
+                except Exception:
+                    pass
+                try:
+                    session.apply_preferences(previous_prefs)
+                except Exception:
+                    pass
+                wx.MessageBox(
+                    self._("Failed to apply settings: {error}").format(error=exc),
+                    "SerrebiTorrent",
+                    wx.OK | wx.ICON_ERROR,
+                    self,
+                )
+                return
             self._update_client_default_save_path()
             self._update_web_ui()
             self._schedule_auto_update_check()
