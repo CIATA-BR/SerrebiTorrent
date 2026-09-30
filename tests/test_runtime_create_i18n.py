@@ -33,3 +33,8 @@ def test_runtime_installs_creator_localization_lazily():
 def test_source_overwrite_error_translates_to_pt_br():
     source = "Output .torrent path must not overwrite the source path."
     assert runtime_create_i18n.tr_create(source, "pt-BR") != source
+
+
+def test_source_tree_output_error_translates_to_pt_br():
+    source = "Output .torrent path must be outside the source folder."
+    assert runtime_create_i18n.tr_create(source, "pt-BR") != source
