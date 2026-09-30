@@ -25,7 +25,7 @@ def _fetch_public_feed(url):
         except ValueError as exc:
             raise ValueError("RSS feed URL must use a public http/https address") from exc
 
-        content = b""
+        content = bytearray()
         with _public_torrent_session() as session, session.get(
             safe_encode_url(current), timeout=10, stream=True, allow_redirects=False
         ) as response:
@@ -37,13 +37,23 @@ def _fetch_public_feed(url):
                 continue
 
             response.raise_for_status()
+            content_length = response.headers.get("Content-Length")
+            if content_length:
+                try:
+                    expected_size = int(content_length)
+                except ValueError as exc:
+                    raise ValueError("RSS feed returned an invalid Content-Length") from exc
+                if expected_size < 0:
+                    raise ValueError("RSS feed returned an invalid Content-Length")
+                if expected_size > RSS_MAX_DOWNLOAD_BYTES:
+                    raise ValueError("RSS feed exceeds 10 MB limit")
             for chunk in response.iter_content(8192):
                 if not chunk:
                     continue
-                content += chunk
+                content.extend(chunk)
                 if len(content) > RSS_MAX_DOWNLOAD_BYTES:
                     raise ValueError("RSS feed exceeds 10 MB limit")
-        return content
+        return bytes(content)
 
     raise ValueError("RSS feed redirected too many times")
 
