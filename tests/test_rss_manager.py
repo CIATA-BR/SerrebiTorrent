@@ -836,3 +836,48 @@ def test_fetch_feed_resolves_relative_rss_and_atom_links(mock_session_factory, r
 
     assert rss_manager.fetch_feed(rss_url)[0]["link"] == "http://93.184.216.34/files/rss.torrent"
     assert rss_manager.fetch_feed(atom_url)[0]["link"] == "http://93.184.216.34/files/atom.torrent"
+
+
+def test_fetch_public_feed_rejects_oversized_content_length_before_stream(monkeypatch):
+    import rss_manager as rss_module
+
+    response = MagicMock()
+    response.status_code = 200
+    response.headers = {"Content-Length": str(rss_module.RSS_MAX_DOWNLOAD_BYTES + 1)}
+    response.__enter__.return_value = response
+    response.__exit__.return_value = False
+    response.iter_content.side_effect = AssertionError("body should not be read")
+
+    session = MagicMock()
+    session.__enter__.return_value = session
+    session.__exit__.return_value = False
+    session.get.return_value = response
+
+    monkeypatch.setattr(rss_module, "validate_public_torrent_url", lambda _url: None)
+    monkeypatch.setattr(rss_module, "_public_torrent_session", lambda: session)
+
+    with pytest.raises(ValueError, match="10 MB limit"):
+        rss_module._fetch_public_feed("https://example.com/feed.xml")
+
+    response.iter_content.assert_not_called()
+
+
+def test_fetch_public_feed_rejects_invalid_content_length(monkeypatch):
+    import rss_manager as rss_module
+
+    response = MagicMock()
+    response.status_code = 200
+    response.headers = {"Content-Length": "bad"}
+    response.__enter__.return_value = response
+    response.__exit__.return_value = False
+
+    session = MagicMock()
+    session.__enter__.return_value = session
+    session.__exit__.return_value = False
+    session.get.return_value = response
+
+    monkeypatch.setattr(rss_module, "validate_public_torrent_url", lambda _url: None)
+    monkeypatch.setattr(rss_module, "_public_torrent_session", lambda: session)
+
+    with pytest.raises(ValueError, match="invalid Content-Length"):
+        rss_module._fetch_public_feed("https://example.com/feed.xml")
