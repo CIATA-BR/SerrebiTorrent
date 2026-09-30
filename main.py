@@ -2588,7 +2588,12 @@ class RulesManagerDialog(wx.Dialog):
         if dlg.ShowModal() == wx.ID_OK:
             data = dlg.get_rule_data()
             if data['pattern']:
-                self.manager.add_rule(data['pattern'], data['type'], data['scope'])
+                try:
+                    self.manager.add_rule(data['pattern'], data['type'], data['scope'])
+                except ValueError as exc:
+                    wx.MessageBox(str(exc), "Invalid RSS rule", wx.OK | wx.ICON_ERROR)
+                    dlg.Destroy()
+                    return
                 self.refresh_list()
         dlg.Destroy()
 
@@ -2599,7 +2604,12 @@ class RulesManagerDialog(wx.Dialog):
             dlg = RuleEditDialog(self, self.manager, rule)
             if dlg.ShowModal() == wx.ID_OK:
                 data = dlg.get_rule_data()
-                self.manager.update_rule(sel, data)
+                try:
+                    self.manager.update_rule(sel, data)
+                except ValueError as exc:
+                    wx.MessageBox(str(exc), "Invalid RSS rule", wx.OK | wx.ICON_ERROR)
+                    dlg.Destroy()
+                    return
                 self.refresh_list()
             dlg.Destroy()
 

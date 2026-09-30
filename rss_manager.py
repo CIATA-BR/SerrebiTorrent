@@ -71,6 +71,16 @@ def _normalize_feed_url(url):
     return parsed.geturl()
 
 
+def _validate_rule_pattern(pattern):
+    if not isinstance(pattern, str) or not pattern.strip():
+        raise ValueError("RSS rule pattern is required.")
+    try:
+        re.compile(pattern)
+    except re.error as exc:
+        raise ValueError("RSS rule pattern is not a valid regular expression.") from exc
+    return pattern
+
+
 class RSSManager:
     def __init__(self):
         self.lock = threading.RLock()
@@ -139,7 +149,9 @@ class RSSManager:
                         if not isinstance(rule, dict):
                             continue
                         pattern = rule.get('pattern')
-                        if not isinstance(pattern, str) or not pattern:
+                        try:
+                            _validate_rule_pattern(pattern)
+                        except ValueError:
                             continue
                         rule_type = rule.get('type', 'accept')
                         if rule_type not in {'accept', 'reject'}:
@@ -234,6 +246,7 @@ class RSSManager:
         Add a rule.
         scope: None for global, or a list of feed URLs this rule applies to.
         """
+        _validate_rule_pattern(pattern)
         with self.lock:
             self.rules.append({'pattern': pattern, 'enabled': bool(enabled), 'type': rule_type, 'scope': scope})
             if self.save():
@@ -252,6 +265,8 @@ class RSSManager:
             return False
 
     def update_rule(self, index, data):
+        if 'pattern' in data:
+            _validate_rule_pattern(data.get('pattern'))
         with self.lock:
             if not 0 <= index < len(self.rules):
                 return False
@@ -549,13 +564,23 @@ class RSSManager:
                         accept = regexp.get('accept', [])
                         if isinstance(accept, list):
                             for pattern in accept:
-                                self.rules.append({'pattern': str(pattern), 'enabled': True, 'type': 'accept', 'scope': task_feed_urls})
+                                pattern = str(pattern)
+                                try:
+                                    _validate_rule_pattern(pattern)
+                                except ValueError:
+                                    continue
+                                self.rules.append({'pattern': pattern, 'enabled': True, 'type': 'accept', 'scope': task_feed_urls})
                                 count_rules += 1
                         # Reject
                         reject = regexp.get('reject', [])
                         if isinstance(reject, list):
                             for pattern in reject:
-                                self.rules.append({'pattern': str(pattern), 'enabled': True, 'type': 'reject', 'scope': task_feed_urls})
+                                pattern = str(pattern)
+                                try:
+                                    _validate_rule_pattern(pattern)
+                                except ValueError:
+                                    continue
+                                self.rules.append({'pattern': pattern, 'enabled': True, 'type': 'reject', 'scope': task_feed_urls})
                                 count_rules += 1
                     
                     # 3. Series - Scope them to task_feed_urls

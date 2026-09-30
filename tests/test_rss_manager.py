@@ -881,3 +881,18 @@ def test_fetch_public_feed_rejects_invalid_content_length(monkeypatch):
 
     with pytest.raises(ValueError, match="invalid Content-Length"):
         rss_module._fetch_public_feed("https://example.com/feed.xml")
+
+
+def test_add_rule_rejects_invalid_regex(rss_manager):
+    with pytest.raises(ValueError, match="valid regular expression"):
+        rss_manager.add_rule("(", "accept")
+    assert rss_manager.rules == []
+
+
+def test_update_rule_rejects_invalid_regex_without_mutation(rss_manager):
+    rss_manager.rules = [
+        {"pattern": "ubuntu", "enabled": True, "type": "accept", "scope": None}
+    ]
+    with pytest.raises(ValueError, match="valid regular expression"):
+        rss_manager.update_rule(0, {"pattern": "["})
+    assert rss_manager.rules[0]["pattern"] == "ubuntu"

@@ -869,13 +869,21 @@ def rss_set_rule():
         with manager.lock:
             if index >= len(manager.rules):
                 return "RSS rule not found.", 404
-            if not manager.update_rule(
-                index,
-                {'pattern': pattern, 'type': rule_type, 'enabled': enabled},
-            ):
+            try:
+                updated = manager.update_rule(
+                    index,
+                    {'pattern': pattern, 'type': rule_type, 'enabled': enabled},
+                )
+            except ValueError:
+                return "Rule pattern must be a valid regular expression.", 400
+            if not updated:
                 return "Failed to save RSS rule.", 500
     else:
-        if not manager.add_rule(pattern, rule_type, enabled=enabled):
+        try:
+            added = manager.add_rule(pattern, rule_type, enabled=enabled)
+        except ValueError:
+            return "Rule pattern must be a valid regular expression.", 400
+        if not added:
             return "Failed to save RSS rule.", 500
     return "Ok."
 
