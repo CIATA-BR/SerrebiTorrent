@@ -3667,6 +3667,7 @@ class MainFrame(MagnetIntakeMixin, wx.Frame):
             wx.LogError(f"Connection failed: {error}")
             self.connected = False
             self.client = None
+            self.current_profile_id = None
             self.statusbar.SetStatusText("Connection Failed", 0)
             self._update_remote_prefs_menu_state()
             self._update_web_ui()
