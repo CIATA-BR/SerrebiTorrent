@@ -90,10 +90,32 @@ class RSSManager:
                         normalized = dict(feed)
                         if not isinstance(normalized.get('alias', ''), str):
                             normalized['alias'] = ''
-                        if not isinstance(normalized.get('articles', []), list):
-                            normalized['articles'] = []
-                        if not isinstance(normalized.get('downloaded', []), list):
-                            normalized['downloaded'] = []
+                        articles = normalized.get('articles', [])
+                        if not isinstance(articles, list):
+                            articles = []
+                        normalized_articles = []
+                        for article in articles:
+                            if not isinstance(article, dict):
+                                continue
+                            title = article.get('title')
+                            link = article.get('link')
+                            uid = article.get('uid', link)
+                            if not isinstance(title, str) or not isinstance(link, str):
+                                continue
+                            if not isinstance(uid, str):
+                                uid = link
+                            normalized_articles.append({
+                                'title': title,
+                                'link': link,
+                                'uid': uid,
+                            })
+                        normalized['articles'] = normalized_articles
+                        downloaded = normalized.get('downloaded', [])
+                        if not isinstance(downloaded, list):
+                            downloaded = []
+                        normalized['downloaded'] = [
+                            uid for uid in downloaded if isinstance(uid, str)
+                        ]
                         last_update = normalized.get('last_update', 0)
                         if isinstance(last_update, bool) or not isinstance(last_update, (int, float)):
                             normalized['last_update'] = 0
