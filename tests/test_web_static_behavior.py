@@ -284,3 +284,11 @@ def test_web_torrent_and_profile_fields_avoid_text_autocorrection():
     assert 'id="torrentSavePath" autocomplete="off" spellcheck="false"' in markup
     assert 'id="profUrl"' in markup and 'autocapitalize="none" spellcheck="false"' in markup
     assert 'id="profUser"' in markup and 'spellcheck="false"' in markup
+
+
+def test_web_progress_cell_exposes_percentage_to_screen_readers():
+    script = (ROOT / "web_static" / "app.js").read_text(encoding="utf-8")
+
+    assert 'class="col-progress"' in script
+    assert "progressCell.setAttribute('aria-label', `Progress ${progress}%`)" in script
+    assert 'class="progress" aria-hidden="true"' in script

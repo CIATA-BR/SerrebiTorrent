@@ -176,3 +176,18 @@ def test_translation_draft_save_feedback_handles_size_errors(monkeypatch):
 def test_translation_center_handlers_use_safe_draft_save_wrapper():
     source = inspect.getsource(translation_center.TranslationCenterDialog)
     assert source.count("_save_draft_with_feedback") >= 3
+
+
+def test_translation_center_actions_have_contextual_accessible_names():
+    source = inspect.getsource(translation_center.TranslationCenterDialog.__init__)
+
+    for name in (
+        "Previous translation entry",
+        "Save current translation entry",
+        "Next translation entry",
+        "Export translation catalog as PO",
+        "Import translation catalog from PO",
+        "Open online translation portal",
+        "Close Translation Center",
+    ):
+        assert f'SetName("{name}")' in source

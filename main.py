@@ -1113,32 +1113,33 @@ class ConnectDialog(wx.Dialog):
         # Buttons Row
         btn_sizer = wx.BoxSizer(wx.HORIZONTAL)
         
-        add_btn = wx.Button(self, label="Add")
+        add_btn = wx.Button(self, label="&Add")
         add_btn.SetName("Add connection profile")
         add_btn.Bind(wx.EVT_BUTTON, self.on_add)
         btn_sizer.Add(add_btn, 0, wx.RIGHT, 5)
         
-        edit_btn = wx.Button(self, label="Edit")
+        edit_btn = wx.Button(self, label="&Edit")
         edit_btn.SetName("Edit selected connection profile")
         edit_btn.Bind(wx.EVT_BUTTON, self.on_edit)
         btn_sizer.Add(edit_btn, 0, wx.RIGHT, 5)
         
-        del_btn = wx.Button(self, label="Delete")
+        del_btn = wx.Button(self, label="&Delete")
         del_btn.SetName("Delete selected connection profile")
         del_btn.Bind(wx.EVT_BUTTON, self.on_delete)
         btn_sizer.Add(del_btn, 0, wx.RIGHT, 5)
         
-        set_def_btn = wx.Button(self, label="Set Default")
+        set_def_btn = wx.Button(self, label="Set De&fault")
         set_def_btn.SetName("Set selected connection profile as default")
         set_def_btn.Bind(wx.EVT_BUTTON, self.on_set_default)
         btn_sizer.Add(set_def_btn, 0, wx.RIGHT, 5)
         
-        connect_btn = wx.Button(self, label="Connect")
+        connect_btn = wx.Button(self, label="&Connect")
         connect_btn.SetName("Connect using selected profile")
         connect_btn.Bind(wx.EVT_BUTTON, self.on_connect)
         btn_sizer.Add(connect_btn, 0, wx.LEFT, 20)
         
-        close_btn = wx.Button(self, wx.ID_CANCEL, label="Close")
+        close_btn = wx.Button(self, wx.ID_CANCEL, label="C&lose")
+        close_btn.SetName("Close connection manager")
         close_btn.Bind(wx.EVT_BUTTON, lambda evt: self.EndModal(wx.ID_CANCEL))
         btn_sizer.Add(close_btn, 0, wx.LEFT, 10)
         

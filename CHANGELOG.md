@@ -2,6 +2,24 @@
 
 All notable changes to SerrebiTorrent are recorded here.
 
+## v1.22.32 - 2026-09-30
+
+- Reject invalid RSS regex rules (#290).
+- Bound qBittorrent version response (#291).
+- Report partial Web delete results (#292).
+- Handle translation draft save failures (#289).
+- Validate Authenticode JSON object shape (#286).
+- Bound torrents database writes (#287).
+- Reject malformed translation drafts (#285).
+- Require string torrent hashes in Web snapshots (#288).
+- Validate updater JSON object shape (#284).
+- Reject oversized RSS feeds early (#282).
+- Reject invalid default profile ids (#283).
+- Bound translation draft writes (#281).
+- A11y: add Connection Manager keyboard mnemonics (#294).
+- A11y: name Translation Center actions contextually (#296).
+- A11y: expose Web torrent progress percentage (#293).
+
 ## v1.22.31 - 2026-09-30
 
 - Reject malformed remote preference reads (#277).
