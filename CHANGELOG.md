@@ -2,6 +2,13 @@
 
 All notable changes to SerrebiTorrent are recorded here.
 
+## v1.22.31 - 2026-09-30
+
+- Reject malformed remote preference reads (#277).
+- Resolve relative RSS and Atom links (#278).
+- Refresh after partial Web bulk action (#279).
+- Clear current profile after connection failure (#280).
+
 ## v1.22.30 - 2026-09-30
 
 - Restore desktop preference rollback (#274).
