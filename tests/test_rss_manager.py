@@ -806,3 +806,33 @@ def test_load_filters_malformed_persisted_rss_articles(tmp_path, monkeypatch):
         "uid": "https://example.com/good",
     }]
     assert feed["downloaded"] == ["good"]
+
+
+@patch('rss_manager._public_torrent_session')
+def test_fetch_feed_resolves_relative_rss_and_atom_links(mock_session_factory, rss_manager):
+    contents = [
+        b'<rss version="2.0"><channel><item><title>Relative RSS</title><enclosure type="application/x-bittorrent" url="../files/rss.torrent" /></item></channel></rss>',
+        b'<feed xmlns="http://www.w3.org/2005/Atom"><entry><id>tag:example.com,2026:atom</id><title>Relative Atom</title><link rel="enclosure" type="application/x-bittorrent" href="/files/atom.torrent" /></entry></feed>',
+    ]
+    session = MagicMock()
+    responses = []
+    for content in contents:
+        response = MagicMock()
+        response.status_code = 200
+        response.headers = {}
+        response.iter_content = lambda chunk_size=8192, content=content: iter([content])
+        responses.append(response)
+    mock_session_factory.return_value.__enter__.return_value = session
+    session.get.return_value.__enter__.side_effect = responses
+
+    rss_url = "http://93.184.216.34/feeds/main.xml"
+    atom_url = "http://93.184.216.34/feeds/atom.xml"
+    for feed_url in (rss_url, atom_url):
+        rss_manager.feeds[feed_url] = {
+            "alias": "", "last_update": 0, "articles": [],
+            "downloaded": [], "last_error": None,
+        }
+    rss_manager.save = MagicMock(return_value=True)
+
+    assert rss_manager.fetch_feed(rss_url)[0]["link"] == "http://93.184.216.34/files/rss.torrent"
+    assert rss_manager.fetch_feed(atom_url)[0]["link"] == "http://93.184.216.34/files/atom.torrent"
