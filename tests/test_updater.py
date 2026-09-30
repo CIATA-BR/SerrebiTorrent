@@ -34,6 +34,24 @@ ASSET_URL = "https://github.com/serrebidev/SerrebiTorrent/releases/download/v1.0
 SIGNING_THUMBPRINT = "A" * 40
 
 
+class _FakeResponse:
+    """Minimal streaming-response stand-in for updater network tests."""
+
+    def __init__(self, status_code=200, chunks=(), headers=None, url=None):
+        self.status_code = status_code
+        self.reason = "OK"
+        self.headers = dict(headers or {})
+        self.url = url
+        self._chunks = list(chunks)
+
+    def iter_content(self, chunk_size):
+        yield from self._chunks
+
+    def close(self):
+        pass
+
+
+
 class FakeStartupInfo:
     def __init__(self):
         self.dwFlags = 0
