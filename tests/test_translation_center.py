@@ -133,3 +133,22 @@ def test_translation_draft_save_rejects_output_larger_than_read_limit(tmp_path, 
         )
 
     assert path.read_text(encoding="utf-8") == '{"language":"pt-BR","translations":{}}'
+
+
+def test_translation_draft_rejects_non_object_json(tmp_path, monkeypatch):
+    monkeypatch.setattr(translation_center, "_data_dir", lambda: tmp_path)
+    path = translation_center.draft_path("pt-BR")
+    path.write_text("[]", encoding="utf-8")
+
+    assert translation_center.load_draft("pt-BR") == {}
+
+
+def test_translation_draft_rejects_non_object_translations(tmp_path, monkeypatch):
+    monkeypatch.setattr(translation_center, "_data_dir", lambda: tmp_path)
+    path = translation_center.draft_path("pt-BR")
+    path.write_text(
+        json.dumps({"translations": ["bad"]}),
+        encoding="utf-8",
+    )
+
+    assert translation_center.load_draft("pt-BR") == {}
