@@ -90,7 +90,12 @@ def load_draft(code: str) -> dict[str, str]:
         if len(raw) > DRAFT_MAX_BYTES:
             return {}
         data = json.loads(raw.decode("utf-8"))
-        return {str(k): str(v) for k, v in data.get("translations", {}).items()}
+        if not isinstance(data, dict):
+            return {}
+        translations = data.get("translations", {})
+        if not isinstance(translations, dict):
+            return {}
+        return {str(k): str(v) for k, v in translations.items()}
     except (OSError, UnicodeDecodeError, ValueError, TypeError):
         return {}
 
