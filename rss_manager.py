@@ -320,6 +320,7 @@ class RSSManager:
                     t_url = link.text
                 
                 if title is not None and t_url:
+                    t_url = urljoin(url, t_url.strip())
                     articles.append({
                         'title': title.text or "",  # avoid None -> re.search TypeError
                         'link': t_url,
@@ -347,6 +348,7 @@ class RSSManager:
                             t_url = href
                             break
                 if title is not None and t_url:
+                    t_url = urljoin(url, t_url)
                     uid = entry.findtext('atom:id', default=t_url, namespaces=atom_ns) or t_url
                     articles.append({
                         'title': title.text or "",
