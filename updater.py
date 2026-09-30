@@ -262,9 +262,12 @@ def fetch_latest_release() -> Dict[str, Any]:
             if len(content) > MAX_UPDATE_RELEASE_BYTES:
                 raise UpdateError("GitHub release metadata is larger than the allowed size.")
         try:
-            return json.loads(bytes(content).decode("utf-8"))
+            release = json.loads(bytes(content).decode("utf-8"))
         except (UnicodeDecodeError, json.JSONDecodeError) as exc:
             raise UpdateError(f"Failed to parse GitHub API response: {exc}") from exc
+        if not isinstance(release, dict):
+            raise UpdateError("GitHub API response must be a JSON object.")
+        return release
     finally:
         close = getattr(response, "close", None)
         if callable(close):
@@ -318,9 +321,12 @@ def _download_manifest_url(url: str) -> Dict[str, Any]:
             if len(content) > MAX_UPDATE_MANIFEST_BYTES:
                 raise UpdateError("Update manifest is larger than the allowed size.")
         try:
-            return json.loads(content.decode("utf-8"))
+            manifest = json.loads(content.decode("utf-8"))
         except (UnicodeDecodeError, json.JSONDecodeError) as exc:
             raise UpdateError(f"Update manifest is not valid JSON: {exc}") from exc
+        if not isinstance(manifest, dict):
+            raise UpdateError("Update manifest must be a JSON object.")
+        return manifest
     finally:
         response.close()
 
