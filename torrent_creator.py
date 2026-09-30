@@ -665,6 +665,13 @@ class CreateTorrentDialog(wx.Dialog):
         output_abs = os.path.normcase(os.path.abspath(outp))
         if source_abs == output_abs:
             raise ValueError("Output .torrent path must not overwrite the source path.")
+        if os.path.isdir(src):
+            try:
+                inside_source = os.path.commonpath([source_abs, output_abs]) == source_abs
+            except ValueError:
+                inside_source = False
+            if inside_source:
+                raise ValueError("Output .torrent path must be outside the source folder.")
 
         piece_size = PIECE_SIZE_CHOICES[self.piece_choice.GetSelection()][1]
 
