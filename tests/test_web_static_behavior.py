@@ -274,3 +274,11 @@ def test_web_bulk_delete_reports_http_207_as_partial_failure():
     assert partial < generic_failure < completed
     assert "await refreshData(true);" in block[partial:generic_failure]
     assert "announceToSR(message, true);" in block[partial:generic_failure]
+
+
+def test_web_progress_cell_exposes_percentage_to_screen_readers():
+    script = (ROOT / "web_static" / "app.js").read_text(encoding="utf-8")
+
+    assert 'class="col-progress"' in script
+    assert "progressCell.setAttribute('aria-label', `Progress ${progress}%`)" in script
+    assert 'class="progress" aria-hidden="true"' in script
