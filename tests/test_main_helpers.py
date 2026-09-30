@@ -339,3 +339,10 @@ def test_start_stop_all_capture_client_generation():
 
     assert "'Start all', self.client_generation" in start_source
     assert "'Stop all', self.client_generation" in stop_source
+
+
+def test_failed_profile_connection_clears_current_profile_marker():
+    source = inspect.getsource(main.MainFrame._on_connect_complete)
+    failure_block = source[source.index("if error or not client:"):]
+
+    assert "self.current_profile_id = None" in failure_block
