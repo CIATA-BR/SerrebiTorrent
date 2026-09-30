@@ -2,6 +2,10 @@
 
 All notable changes to SerrebiTorrent are recorded here.
 
+## v1.22.33 - 2026-09-30
+
+- Refine Web torrent form input semantics (#295).
+
 ## v1.22.32 - 2026-09-30
 
 - Reject invalid RSS regex rules (#290).
