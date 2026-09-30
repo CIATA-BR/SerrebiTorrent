@@ -1,6 +1,7 @@
 import pytest
 import sys
 import json
+from pathlib import Path
 import os
 from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
@@ -875,3 +876,21 @@ def test_cleanup_torrent_state_quarantines_before_persisting_removal(session_man
     assert key not in session_manager.torrents_db
     assert not torrent_path.exists()
     assert not list(tmp_path.glob("*.removing"))
+
+
+def test_save_torrents_db_rejects_output_larger_than_read_limit(tmp_path, monkeypatch):
+    manager = object.__new__(sm.SessionManager)
+    manager.torrents_db_path = str(tmp_path / "torrents.json")
+    manager.torrents_db = {"existing": {"save_path": "/old"}}
+    Path(manager.torrents_db_path).write_text(
+        json.dumps(manager.torrents_db),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(sm, "TORRENTS_DB_MAX_BYTES", 64)
+
+    manager.torrents_db = {"large": {"save_path": "x" * 128}}
+
+    assert manager._save_torrents_db() is False
+    assert json.loads(Path(manager.torrents_db_path).read_text(encoding="utf-8")) == {
+        "existing": {"save_path": "/old"}
+    }
