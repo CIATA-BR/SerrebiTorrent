@@ -2,6 +2,22 @@
 
 All notable changes to SerrebiTorrent are recorded here.
 
+## v1.22.30 - 2026-09-30
+
+- Restore desktop preference rollback (#274).
+- Keep torrent output outside source tree (#275).
+- Normalize persisted RSS articles (#276).
+- Finish stale client worker guards (#273).
+- Normalize structured search preferences (#271).
+- Batch large Web torrent actions (#272).
+- Ignore stale client worker results (#270).
+- Support Atom RSS feeds (#269).
+- Reject oversized torrent downloads early (#267).
+- Prevent torrent creator from overwriting source (#268).
+- Persist RSS refresh state (#266).
+- Close rejected search response streams (#265).
+- Add CHANGELOG.md maintained from release notes, like BlindRSS.
+
 ## v1.22.29 - 2026-09-29
 
 - Maintenance update.
