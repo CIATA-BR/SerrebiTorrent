@@ -1403,6 +1403,7 @@ async function doAction(action, deleteFiles = false, actionLabel = null) {
                 let message = (await res.text()) || `Failed to ${action} torrent(s).`;
                 if (completed > 0) {
                     message = `${message} ${completed} of ${hashes.length} torrent(s) were already processed.`;
+                    await refreshData(true);
                 }
                 announceToSR(message, true);
                 alert(message);
@@ -1422,6 +1423,7 @@ async function doAction(action, deleteFiles = false, actionLabel = null) {
         let message = `Failed to ${action} torrent(s): ${err?.message || err}`;
         if (completed > 0) {
             message += ` ${completed} of ${hashes.length} torrent(s) were already processed.`;
+            await refreshData(true);
         }
         announceToSR(message, true);
         alert(message);
