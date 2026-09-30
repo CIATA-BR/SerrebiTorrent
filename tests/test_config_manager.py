@@ -470,3 +470,16 @@ def test_normalize_repairs_structured_search_preferences(tmp_path, monkeypatch):
         "url": "https://example.com/api",
         "api_key": "secret",
     }]
+
+
+def test_set_default_profile_rejects_unknown_id_without_changing_default(tmp_path, monkeypatch):
+    _configure_paths(tmp_path, monkeypatch)
+    cm = config_manager.ConfigManager()
+    profiles = cm.get_profiles()
+    original = cm.get_default_profile_id()
+
+    assert original in profiles
+    with pytest.raises(ValueError, match="does not exist"):
+        cm.set_default_profile_id("missing-profile")
+
+    assert cm.get_default_profile_id() == original
