@@ -259,3 +259,18 @@ def test_web_bulk_action_partial_failure_refreshes_processed_state():
 
     assert block.count("if (completed > 0)") >= 2
     assert block.count("await refreshData(true);") >= 2
+
+
+def test_web_bulk_delete_reports_http_207_as_partial_failure():
+    script = (ROOT / "web_static" / "app.js").read_text(encoding="utf-8")
+    start = script.index("async function doAction")
+    end = script.index("function confirmDeleteAction", start)
+    block = script[start:end]
+
+    partial = block.index("if (res.status === 207)")
+    generic_failure = block.index("if (!res.ok)")
+    completed = block.index("completed += batch.length")
+
+    assert partial < generic_failure < completed
+    assert "await refreshData(true);" in block[partial:generic_failure]
+    assert "announceToSR(message, true);" in block[partial:generic_failure]

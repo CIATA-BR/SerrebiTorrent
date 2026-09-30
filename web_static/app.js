@@ -1399,6 +1399,16 @@ async function doAction(action, deleteFiles = false, actionLabel = null) {
             if (deleteFiles) formData.append('deleteFiles', 'true');
 
             const res = await apiFetch(`/api/v2/torrents/${action}`, { method: 'POST', body: formData });
+            if (res.status === 207) {
+                let message = (await res.text()) || `${action} partially completed.`;
+                if (completed > 0) {
+                    message = `${message} ${completed} torrent(s) were processed in earlier batch(es).`;
+                }
+                await refreshData(true);
+                announceToSR(message, true);
+                alert(message);
+                return;
+            }
             if (!res.ok) {
                 let message = (await res.text()) || `Failed to ${action} torrent(s).`;
                 if (completed > 0) {
