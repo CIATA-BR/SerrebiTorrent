@@ -931,3 +931,31 @@ def test_fetch_latest_release_rejects_stream_over_limit(monkeypatch):
 
     with pytest.raises(UpdateError, match="release metadata is larger"):
         updater.fetch_latest_release()
+
+
+def test_fetch_latest_release_rejects_non_object_json(monkeypatch):
+    response = _FakeResponse(
+        status_code=200,
+        chunks=[b"[]"],
+        headers={"Content-Length": "2"},
+    )
+    monkeypatch.setattr(updater.requests, "get", lambda *args, **kwargs: response)
+
+    with pytest.raises(updater.UpdateError, match="JSON object"):
+        updater.fetch_latest_release()
+
+
+def test_download_manifest_rejects_non_object_json(monkeypatch):
+    response = _FakeResponse(
+        status_code=200,
+        chunks=[b"[]"],
+        headers={"Content-Length": "2"},
+        url="https://github.com/serrebidev/SerrebiTorrent/releases/download/v1.2.3/update-manifest.json",
+    )
+    monkeypatch.setattr(updater, "_get_validated_download_response", lambda *args, **kwargs: response)
+    monkeypatch.setattr(updater, "_validate_download_response_url", lambda _response: None)
+
+    with pytest.raises(updater.UpdateError, match="JSON object"):
+        updater._download_manifest_url(
+            "https://github.com/serrebidev/SerrebiTorrent/releases/latest/download/update-manifest.json"
+        )
