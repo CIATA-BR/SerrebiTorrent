@@ -249,3 +249,13 @@ def test_web_bulk_actions_batch_server_limited_selections():
     assert "formData.append('hashes', batch.join('|'))" in block
     assert "completed += batch.length" in block
     assert "were already processed" in block
+
+
+def test_web_bulk_action_partial_failure_refreshes_processed_state():
+    script = (ROOT / "web_static" / "app.js").read_text(encoding="utf-8")
+    start = script.index("async function doAction")
+    end = script.index("function confirmDeleteAction", start)
+    block = script[start:end]
+
+    assert block.count("if (completed > 0)") >= 2
+    assert block.count("await refreshData(true);") >= 2
