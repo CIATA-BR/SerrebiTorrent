@@ -346,3 +346,11 @@ def test_failed_profile_connection_clears_current_profile_marker():
     failure_block = source[source.index("if error or not client:"):]
 
     assert "self.current_profile_id = None" in failure_block
+
+
+def test_connection_manager_buttons_have_keyboard_mnemonics():
+    source = inspect.getsource(main.ConnectDialog.__init__)
+
+    for label in ("&Add", "&Edit", "&Delete", "Set De&fault", "&Connect", "C&lose"):
+        assert f'label="{label}"' in source
+    assert 'close_btn.SetName("Close connection manager")' in source
