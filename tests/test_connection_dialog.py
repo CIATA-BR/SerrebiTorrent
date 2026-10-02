@@ -92,3 +92,15 @@ def test_connection_manager_buttons_have_contextual_accessible_names():
         'connect_btn.SetName(self._("Connect using selected profile"))',
     ]:
         assert snippet in source
+
+
+def test_connection_dialog_terminal_actions_have_contextual_accessible_names():
+    from pathlib import Path
+    source = Path("connection_dialog.py").read_text(encoding="utf-8")
+
+    for snippet in [
+        'save_btn.SetName(self._("Save connection profile"))',
+        'cancel_btn.SetName(self._("Cancel profile changes"))',
+        'close_btn.SetName(self._("Close connection manager"))',
+    ]:
+        assert snippet in source
