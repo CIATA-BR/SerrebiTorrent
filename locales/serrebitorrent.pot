@@ -316,6 +316,9 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
+msgid "Cancel profile changes"
+msgstr ""
+
 msgid "Categories"
 msgstr ""
 
@@ -377,6 +380,9 @@ msgid "Client Type:"
 msgstr ""
 
 msgid "Close"
+msgstr ""
+
+msgid "Close connection manager"
 msgstr ""
 
 msgid "Close to System Tray"
@@ -1487,6 +1493,9 @@ msgid "Save App Settings"
 msgstr ""
 
 msgid "Save As..."
+msgstr ""
+
+msgid "Save connection profile"
 msgstr ""
 
 msgid "Save entry"
