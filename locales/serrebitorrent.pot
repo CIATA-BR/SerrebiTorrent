@@ -1387,10 +1387,16 @@ msgstr ""
 msgid "Remove feed {url}?"
 msgstr ""
 
+msgid "Remove from Included"
+msgstr ""
+
 msgid "Remove Selected"
 msgstr ""
 
 msgid "Remove selected included tracker"
+msgstr ""
+
+msgid "Remove selected public tracker from Included trackers"
 msgstr ""
 
 msgid "Remove selected torrents"
