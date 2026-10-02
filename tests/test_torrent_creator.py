@@ -212,3 +212,10 @@ def test_creator_options_reject_output_inside_source_folder(tmp_path):
         torrent_creator.CreateTorrentDialog.get_options(dialog)
 
     assert output.read_text(encoding="utf-8") == "original"
+
+
+def test_creator_remove_tracker_action_names_its_selection_source():
+    from pathlib import Path
+    source = Path("torrent_creator.py").read_text(encoding="utf-8")
+    assert 'label=self._("Remove from Included")' in source
+    assert 'SetName(self._("Remove selected public tracker from Included trackers"))' in source
