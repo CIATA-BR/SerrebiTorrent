@@ -78,8 +78,12 @@ class ProfileDialog(wx.Dialog):
         sizer.Add(self.pass_input, 0, wx.EXPAND | wx.ALL, 5)
 
         btns = wx.StdDialogButtonSizer()
-        btns.AddButton(wx.Button(self, wx.ID_OK))
-        btns.AddButton(wx.Button(self, wx.ID_CANCEL))
+        save_btn = wx.Button(self, wx.ID_OK)
+        save_btn.SetName(self._("Save connection profile"))
+        cancel_btn = wx.Button(self, wx.ID_CANCEL)
+        cancel_btn.SetName(self._("Cancel profile changes"))
+        btns.AddButton(save_btn)
+        btns.AddButton(cancel_btn)
         btns.Realize()
         sizer.Add(btns, 0, wx.ALIGN_CENTER | wx.ALL, 10)
 
@@ -148,6 +152,7 @@ class ConnectDialog(wx.Dialog):
         connect_btn = wx.Button(self, label=self._("Connect"))
         connect_btn.SetName(self._("Connect using selected profile"))
         close_btn = wx.Button(self, wx.ID_CANCEL, label=self._("Close"))
+        close_btn.SetName(self._("Close connection manager"))
 
         add_btn.Bind(wx.EVT_BUTTON, self.on_add)
         edit_btn.Bind(wx.EVT_BUTTON, self.on_edit)
