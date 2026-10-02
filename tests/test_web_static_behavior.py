@@ -292,3 +292,15 @@ def test_web_progress_cell_exposes_percentage_to_screen_readers():
     assert 'class="col-progress"' in script
     assert "progressCell.setAttribute('aria-label', `Progress ${progress}%`)" in script
     assert 'class="progress" aria-hidden="true"' in script
+
+
+def test_web_toolbar_actions_have_contextual_accessible_names():
+    page = (ROOT / "web_static" / "index.html").read_text(encoding="utf-8")
+    for label in (
+        "Refresh torrent list",
+        "Start selected torrents",
+        "Pause selected torrents",
+        "Remove selected torrents",
+    ):
+        assert f'aria-label="{label}"' in page
+        assert f'title="{label}"' in page
