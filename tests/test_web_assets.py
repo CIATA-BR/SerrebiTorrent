@@ -29,5 +29,11 @@ def test_add_profile_icon_button_has_explicit_accessible_name():
 def test_web_toolbar_icon_buttons_have_explicit_accessible_names():
     index = (WEB / "index.html").read_text(encoding="utf-8")
 
-    for label in ("Add Torrent", "Refresh", "Start", "Pause", "Remove"):
+    for label in (
+        "Add Torrent",
+        "Refresh torrent list",
+        "Start selected torrents",
+        "Pause selected torrents",
+        "Remove selected torrents",
+    ):
         assert f'aria-label="{label}"' in index
