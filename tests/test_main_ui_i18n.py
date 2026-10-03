@@ -249,3 +249,16 @@ def test_active_connection_list_and_profile_focus_are_accessible():
     source = Path("main.py").read_text(encoding="utf-8")
     assert 'self.list_box.SetName("Connection profiles")' in source
     assert 'self.name_input.SetFocus()' in source
+
+
+def test_rss_toolbar_buttons_have_keyboard_mnemonics():
+    from pathlib import Path
+    source = Path("main.py").read_text(encoding="utf-8")
+    for snippet in [
+        'wx.Button(self, label="&Add Feed")',
+        'wx.Button(self, label="&Remove Feed")',
+        'wx.Button(self, label="Re&fresh All")',
+        'wx.Button(self, label="R&ules")',
+        'wx.Button(self, label="&Import FlexGet")',
+    ]:
+        assert snippet in source
