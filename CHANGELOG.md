@@ -2,6 +2,13 @@
 
 All notable changes to SerrebiTorrent are recorded here.
 
+## v1.22.34 - 2026-10-03
+
+- A11y: add RSS toolbar keyboard mnemonics (#297).
+- A11y: contextualize Web toolbar actions (#298).
+- Clarify tracker removal action (#299).
+- A11y: contextualize connection dialog actions (#300).
+
 ## v1.22.33 - 2026-09-30
 
 - Refine Web torrent form input semantics (#295).
