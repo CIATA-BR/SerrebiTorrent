@@ -177,7 +177,7 @@ def test_creator_tracker_buttons_have_contextual_accessible_names():
     from pathlib import Path
     source = Path("torrent_creator.py").read_text(encoding="utf-8")
     assert 'add_btn.SetName(self._("Add custom tracker"))' in source
-    assert 'self.remove_tracker_btn.SetName(self._("Remove selected included tracker"))' in source
+    assert 'self.remove_tracker_btn.SetName(self._("Remove selected public tracker from Included trackers"))' in source
 
 
 def test_auto_output_path_does_not_overwrite_torrent_source(tmp_path):
@@ -212,3 +212,10 @@ def test_creator_options_reject_output_inside_source_folder(tmp_path):
         torrent_creator.CreateTorrentDialog.get_options(dialog)
 
     assert output.read_text(encoding="utf-8") == "original"
+
+
+def test_creator_remove_tracker_action_names_its_selection_source():
+    from pathlib import Path
+    source = Path("torrent_creator.py").read_text(encoding="utf-8")
+    assert 'label=self._("Remove from Included")' in source
+    assert 'SetName(self._("Remove selected public tracker from Included trackers"))' in source
