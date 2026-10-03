@@ -136,7 +136,7 @@ jobs:
       - uses: astral-sh/setup-uv@v6
 
       # wxPython is built from source like on the VPS; cache uv's wheel cache.
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: ~/.cache/uv
           key: uv-linux-${{ hashFiles('requirements*.txt') }}
