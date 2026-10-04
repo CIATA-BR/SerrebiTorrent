@@ -143,9 +143,12 @@ class AddTorrentDialog(wx.Dialog):
 
         btns = wx.StdDialogButtonSizer()
         self.ok_button = wx.Button(self, wx.ID_OK)
+        self.ok_button.SetName(f"{self._('Add Torrent')}: {self._('OK')}")
         self.ok_button.SetDefault()
+        cancel_btn = wx.Button(self, wx.ID_CANCEL)
+        cancel_btn.SetName(f"{self._('Add Torrent')}: {self._('Cancel')}")
         btns.AddButton(self.ok_button)
-        btns.AddButton(wx.Button(self, wx.ID_CANCEL))
+        btns.AddButton(cancel_btn)
         btns.Realize()
         sizer.Add(btns, 0, wx.ALIGN_CENTER | wx.ALL, 10)
 
