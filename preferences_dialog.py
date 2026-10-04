@@ -283,6 +283,7 @@ class PreferencesDialog(wx.Dialog):
         rss_sizer.Add(wx.StaticLine(rss_panel), 0, wx.EXPAND | wx.ALL, 5)
         self.reset_rss_btn = wx.Button(
             rss_panel, label=self._("Reset RSS (Clear all feeds and rules)"))
+        self.reset_rss_btn.SetName(self._("Reset RSS (Clear all feeds and rules)"))
         self.reset_rss_btn.Bind(wx.EVT_BUTTON, self.on_reset_rss)
         rss_sizer.Add(self.reset_rss_btn, 0, wx.ALL, 10)
         rss_panel.SetSizer(rss_sizer)
