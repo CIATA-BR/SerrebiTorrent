@@ -1048,8 +1048,12 @@ class ProfileDialog(wx.Dialog):
         sizer.Add(self.pass_input, 0, wx.EXPAND | wx.ALL, 5)
         
         btns = wx.StdDialogButtonSizer()
-        btns.AddButton(wx.Button(self, wx.ID_OK))
-        btns.AddButton(wx.Button(self, wx.ID_CANCEL))
+        save_btn = wx.Button(self, wx.ID_OK)
+        save_btn.SetName("Save connection profile")
+        cancel_btn = wx.Button(self, wx.ID_CANCEL)
+        cancel_btn.SetName("Cancel profile changes")
+        btns.AddButton(save_btn)
+        btns.AddButton(cancel_btn)
         btns.Realize()
         sizer.Add(btns, 0, wx.ALIGN_CENTER | wx.ALL, 10)
         
