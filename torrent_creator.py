@@ -419,8 +419,12 @@ class CreateTorrentDialog(wx.Dialog):
         root.Add(post_box, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 8)
 
         btns = wx.StdDialogButtonSizer()
-        btns.AddButton(wx.Button(self, wx.ID_OK))
-        btns.AddButton(wx.Button(self, wx.ID_CANCEL))
+        create_btn = wx.Button(self, wx.ID_OK)
+        create_btn.SetName(f"{self._('Create Torrent')}: {self._('OK')}")
+        cancel_btn = wx.Button(self, wx.ID_CANCEL)
+        cancel_btn.SetName(f"{self._('Create Torrent')}: {self._('Cancel')}")
+        btns.AddButton(create_btn)
+        btns.AddButton(cancel_btn)
         btns.Realize()
         root.Add(btns, 0, wx.ALIGN_CENTER | wx.ALL, 10)
 
