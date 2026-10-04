@@ -40,7 +40,7 @@
 
                 <div class="ms-auto d-flex align-items-center">
                     <button class="btn btn-sm me-2" data-bs-toggle="modal" data-bs-target="#settingsModal" aria-label="Open Preferences">Settings</button>
-                    <button class="btn btn-sm" onclick="logout()">Logout</button>
+                    <button class="btn btn-sm" onclick="logout()" aria-label="Log out of Web UI">Logout</button>
                 </div>
             </div>
         </header>
@@ -195,7 +195,7 @@
                             <label class="form-label" for="profPass">Password</label>
                             <input type="password" class="form-control" id="profPass" autocomplete="current-password">
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">Create Profile</button>
+                        <button type="submit" class="btn btn-primary w-100" aria-label="Create connection profile">Create Profile</button>
                     </form>
                 </div>
             </div>
@@ -224,7 +224,7 @@
                             <label class="form-label" for="torrentSavePath">Save Path (Optional)</label>
                             <input type="text" class="form-control" id="torrentSavePath" autocomplete="off" spellcheck="false">
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">Add</button>
+                        <button type="submit" class="btn btn-primary w-100" aria-label="Add torrents">Add</button>
                     </form>
                 </div>
             </div>
