@@ -131,6 +131,7 @@ class TorrentSearchDialog(wx.Dialog):
         self.status.SetHelpText(self._("Search status"))
 
         self.add_btn = wx.Button(panel, wx.ID_OK, self._("&Add selected"))
+        self.add_btn.SetName(self._("&Add selected").replace("&", ""))
         self.add_btn.Bind(wx.EVT_BUTTON, self.on_add)
         self.add_btn.Enable(False)
         close_btn = wx.Button(panel, wx.ID_CANCEL, self._("&Close"))
