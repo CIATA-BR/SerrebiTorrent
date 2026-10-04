@@ -2,6 +2,18 @@
 
 All notable changes to SerrebiTorrent are recorded here.
 
+## v1.22.36 - 2026-10-04
+
+- A11y: name torrent search actions contextually (#310).
+- A11y: name RSS rules close action (#309).
+- A11y: contextualize remote settings actions (#307).
+- A11y: contextualize preferences dialog actions (#306).
+- A11y: name Add Torrent deselect-all action (#302).
+- A11y: name Add Torrent select-all action (#301).
+- A11y: contextualize Add Torrent dialog actions (#303).
+- A11y: name RSS reset action contextually (#305).
+- A11y: contextualize profile dialog actions (#304).
+
 ## v1.22.35 - 2026-10-04
 
 - Update dependencies and test tooling.
