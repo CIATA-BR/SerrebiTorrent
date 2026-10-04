@@ -418,7 +418,9 @@ class SourcesDialog(wx.Dialog):
             self.checklist.Check(index, source not in disabled)
 
         all_btn = wx.Button(self, label=self._("Select &all"))
+        all_btn.SetName(self._("Select &all").replace("&", ""))
         none_btn = wx.Button(self, label=self._("Select &none"))
+        none_btn.SetName(self._("Select &none").replace("&", ""))
         all_btn.Bind(wx.EVT_BUTTON, lambda e: self._set_all(True))
         none_btn.Bind(wx.EVT_BUTTON, lambda e: self._set_all(False))
         row = wx.BoxSizer(wx.HORIZONTAL)
