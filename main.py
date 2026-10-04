@@ -1846,8 +1846,12 @@ class RemotePreferencesDialog(wx.Dialog):
         sizer.Add(notebook, 1, wx.EXPAND | wx.ALL, 5)
 
         btns = wx.StdDialogButtonSizer()
-        btns.AddButton(wx.Button(self, wx.ID_OK))
-        btns.AddButton(wx.Button(self, wx.ID_CANCEL))
+        save_btn = wx.Button(self, wx.ID_OK)
+        save_btn.SetName(f"Save {client_name} remote settings")
+        cancel_btn = wx.Button(self, wx.ID_CANCEL)
+        cancel_btn.SetName(f"Cancel {client_name} remote settings changes")
+        btns.AddButton(save_btn)
+        btns.AddButton(cancel_btn)
         btns.Realize()
         sizer.Add(btns, 0, wx.ALIGN_CENTER | wx.ALL, 10)
 
