@@ -1509,8 +1509,12 @@ class PreferencesDialog(wx.Dialog):
         
         # Buttons
         btns = wx.StdDialogButtonSizer()
-        btns.AddButton(wx.Button(self, wx.ID_OK))
-        btns.AddButton(wx.Button(self, wx.ID_CANCEL))
+        save_btn = wx.Button(self, wx.ID_OK)
+        save_btn.SetName("Save local session settings")
+        cancel_btn = wx.Button(self, wx.ID_CANCEL)
+        cancel_btn.SetName("Cancel local session settings")
+        btns.AddButton(save_btn)
+        btns.AddButton(cancel_btn)
         btns.Realize()
         sizer.Add(btns, 0, wx.ALIGN_CENTER | wx.ALL, 10)
         
