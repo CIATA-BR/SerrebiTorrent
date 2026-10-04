@@ -2,6 +2,29 @@
 
 All notable changes to SerrebiTorrent are recorded here.
 
+## v1.22.37 - 2026-10-04
+
+- A11y: contextualize RSS rule editor actions (#321).
+- A11y: name runtime RSS reset action (#322).
+- A11y: contextualize indexer manager dialog actions (#323).
+- A11y: name Web preferences trigger explicitly (#327).
+- A11y: contextualize Web settings modal close (#324).
+- A11y: contextualize Web torrent actions menu (#325).
+- A11y: contextualize Web select-all action (#326).
+- A11y: name Web logout action explicitly (#328).
+- A11y: contextualize Web create-profile submit (#329).
+- A11y: contextualize Web Add Torrent submit (#330).
+- A11y: contextualize Web profile modal close (#319).
+- A11y: contextualize runtime Add Torrent actions (#317).
+- A11y: contextualize Web Add Torrent modal close (#320).
+- A11y: contextualize torrent creator actions (#318).
+- A11y: contextualize runtime preferences actions (#316).
+- A11y: contextualize indexer manager actions (#315).
+- A11y: name search add-selected action (#311).
+- A11y: contextualize search-sites dialog actions (#313).
+- A11y: contextualize indexer editor actions (#314).
+- A11y: name search-site selection actions (#312).
+
 ## v1.22.36 - 2026-10-04
 
 - A11y: name torrent search actions contextually (#310).
