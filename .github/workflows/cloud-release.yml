@@ -48,7 +48,7 @@ jobs:
           echo "::error::Cloud releases run from main only (got ${{ github.ref }})."
           exit 1
 
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           ref: main
           fetch-depth: 0
@@ -129,14 +129,14 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           ref: ${{ needs.plan.outputs.sha }}
 
-      - uses: astral-sh/setup-uv@v6
+      - uses: astral-sh/setup-uv@main
 
       # wxPython is built from source like on the VPS; cache uv's wheel cache.
-      - uses: actions/cache@v5
+      - uses: actions/cache@v6
         with:
           path: ~/.cache/uv
           key: uv-linux-${{ hashFiles('requirements*.txt') }}
@@ -170,7 +170,7 @@ jobs:
           SERREBITORRENT_BUILD_VERSION: ${{ needs.plan.outputs.version }}
         run: UV="$(command -v uv)" bash tools/build_linux.sh
 
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           name: SerrebiTorrent-linux
           path: dist/SerrebiTorrent-v*-linux-x86_64.tar.gz
@@ -183,7 +183,7 @@ jobs:
       contents: write
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           ref: main
           fetch-depth: 0
@@ -192,11 +192,11 @@ jobs:
         run: |
           if ((git rev-parse HEAD) -ne "${{ needs.plan.outputs.sha }}") { throw "main moved since the plan job; re-run the workflow" }
 
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.14"
 
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@v8
         with:
           name: SerrebiTorrent-linux
           path: ${{ runner.temp }}/linux
@@ -265,7 +265,7 @@ jobs:
           }
           "Signed: $($sig.Status)"
 
-      - uses: actions/upload-artifact@v6
+      - uses: actions/upload-artifact@v7
         with:
           name: SerrebiTorrent-windows
           path: |

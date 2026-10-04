@@ -39,7 +39,7 @@ def test_future_mtime_file_is_ready_once_unchanged(tmp_path):
 
 
 def test_clean_folder_path_strips_copy_as_path_quotes():
-    assert watch_folder.clean_folder_path(' "C:\Torrents" ') == "C:\Torrents"
+    assert watch_folder.clean_folder_path(r' "C:\Torrents" ') == r"C:\Torrents"
 
 
 

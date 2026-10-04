@@ -590,9 +590,20 @@ def test_web_ui_grid_shortcuts_do_not_capture_toolbar_keys(page, web_ui_server):
     assert page.locator('tr[data-hash][aria-selected="true"]').count() == 0
 
 
-def test_web_ui_row_checkbox_name_reflects_current_action(page, web_ui_server):
-    page.goto(web_ui_server)
-    page.wait_for_function("document.querySelectorAll('tr[data-hash]').length >= 1")
+@pytest.fixture
+def english_web_ui(page, web_ui_server):
+    page.route(
+        "**/api/v2/app/prefs",
+        lambda route: route.fulfill(
+            status=200, content_type="application/json", body='{"language":"en"}'
+        ),
+    )
+    _login(page, web_ui_server, expected_language="en")
+    return page
+
+
+def test_web_ui_row_checkbox_name_reflects_current_action(english_web_ui):
+    page = english_web_ui
 
     row = page.locator("tr[data-hash]").first
     checkbox = row.locator(".row-check")
@@ -602,9 +613,8 @@ def test_web_ui_row_checkbox_name_reflects_current_action(page, web_ui_server):
     assert checkbox.get_attribute("aria-label").startswith("Deselect ")
 
 
-def test_web_ui_select_all_button_reflects_current_action(page, web_ui_server):
-    page.goto(web_ui_server)
-    page.wait_for_function("document.querySelectorAll('tr[data-hash]').length >= 1")
+def test_web_ui_select_all_button_reflects_current_action(english_web_ui):
+    page = english_web_ui
 
     button = page.locator("#selectAllBtn")
     assert button.inner_text() == "Select All"
@@ -613,17 +623,16 @@ def test_web_ui_select_all_button_reflects_current_action(page, web_ui_server):
     assert button.get_attribute("aria-pressed") == "true"
 
 
-def test_web_ui_selection_checkboxes_have_accessible_names(page, web_ui_server):
-    page.goto(web_ui_server)
-    page.wait_for_function("document.querySelectorAll('tr[data-hash]').length >= 1")
+def test_web_ui_selection_checkboxes_have_accessible_names(english_web_ui):
+    page = english_web_ui
 
     assert page.locator("#selectAllCheck").get_attribute("aria-label") == "Select all visible torrents"
     row_check = page.locator("tr[data-hash] .row-check").first
     assert row_check.get_attribute("aria-label").startswith("Select ")
 
 
-def test_web_ui_app_setting_limits_match_backend_contract(page, web_ui_server):
-    page.goto(web_ui_server)
+def test_web_ui_app_setting_limits_match_backend_contract(english_web_ui):
+    page = english_web_ui
 
     rss = page.locator("#settingsRssInterval")
     assert rss.get_attribute("min") == "5"

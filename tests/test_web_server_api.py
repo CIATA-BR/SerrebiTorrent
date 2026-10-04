@@ -229,10 +229,10 @@ def test_rss_feeds_endpoint(auth_client):
 
 
 def test_translation_catalogs_are_public_before_login(client):
-    response = client.get('/locales/index.json')
-    assert response.status_code == 200
-    payload = response.get_json()
-    assert isinstance(payload.get('languages'), list)
+    with client.get('/locales/index.json') as response:
+        assert response.status_code == 200
+        payload = response.get_json()
+        assert isinstance(payload.get('languages'), list)
 
 
 def test_non_locale_static_assets_remain_protected_before_login(client):
@@ -304,13 +304,12 @@ def test_throttle_cache_is_bounded_and_evicts_oldest(monkeypatch, auth_failures)
 
 
 def test_baseline_security_headers_are_sent(client):
-    response = client.get('/login.html')
-
-    assert response.headers['X-Content-Type-Options'] == 'nosniff'
-    assert response.headers['X-Frame-Options'] == 'DENY'
-    assert response.headers['Referrer-Policy'] == 'no-referrer'
-    assert response.headers['Permissions-Policy'] == 'camera=(), microphone=(), geolocation=()'
-    assert response.headers['Cache-Control'] == 'no-store'
+    with client.get('/login.html') as response:
+        assert response.headers['X-Content-Type-Options'] == 'nosniff'
+        assert response.headers['X-Frame-Options'] == 'DENY'
+        assert response.headers['Referrer-Policy'] == 'no-referrer'
+        assert response.headers['Permissions-Policy'] == 'camera=(), microphone=(), geolocation=()'
+        assert response.headers['Cache-Control'] == 'no-store'
 
 
 def test_api_responses_are_not_cached(client, auth_failures):

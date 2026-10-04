@@ -645,7 +645,7 @@ def test_download_and_apply_update_launches_helper_from_temp(monkeypatch, tmp_pa
 
     monkeypatch.setattr(updater.sys, "frozen", True, raising=False)
     monkeypatch.setattr(updater, "_make_update_temp_root", lambda _: str(temp_root))
-    monkeypatch.setattr(updater, "download_file", lambda url, dest, progress_cb=None: open(dest, "wb").write(b"zip"))
+    monkeypatch.setattr(updater, "download_file", lambda url, dest, progress_cb=None: Path(dest).write_bytes(b"zip"))
     monkeypatch.setattr(updater, "compute_sha256", lambda path: "abc")
     monkeypatch.setattr(updater, "extract_zip", lambda zip_path, dest_dir: None)
     monkeypatch.setattr(updater, "verify_authenticode", lambda exe, thumbs: None)
