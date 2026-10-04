@@ -2,6 +2,11 @@
 
 All notable changes to SerrebiTorrent are recorded here.
 
+## v1.22.35 - 2026-10-04
+
+- Update dependencies and test tooling.
+- Update GitHub Actions to Node 24-compatible versions (cache v5).
+
 ## v1.22.34 - 2026-10-03
 
 - A11y: add RSS toolbar keyboard mnemonics (#297).
