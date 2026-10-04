@@ -2577,6 +2577,7 @@ class RulesManagerDialog(wx.Dialog):
         btn_sizer.Add(toggle_btn, 0, wx.RIGHT, 5)
         
         close_btn = wx.Button(self, wx.ID_OK, label="Close")
+        close_btn.SetName("Close RSS rules manager")
         btn_sizer.Add(close_btn, 0)
         
         sizer.Add(btn_sizer, 0, wx.ALIGN_CENTER | wx.BOTTOM, 10)
