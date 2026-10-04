@@ -450,6 +450,7 @@ class AddTorrentDialog(wx.Dialog):
             # Select/Deselect Buttons
             btn_sizer = wx.BoxSizer(wx.HORIZONTAL)
             sel_all = wx.Button(self, label="Select All")
+            sel_all.SetName("Select all torrent files")
             sel_all.Bind(wx.EVT_BUTTON, lambda e: self.set_root_state(True))
             btn_sizer.Add(sel_all, 0, wx.RIGHT, 5)
             
