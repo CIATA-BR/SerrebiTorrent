@@ -554,8 +554,11 @@ class IndexersDialog(wx.Dialog):
         self.list.Bind(wx.EVT_CHAR, self.on_char)
 
         self.add_btn = wx.Button(self, label=self._("&Add..."))
+        self.add_btn.SetName(f"{self._('&Add...').replace('&', '').rstrip('.')} - {self._('My torrent indexers')}")
         self.edit_btn = wx.Button(self, label=self._("&Edit..."))
+        self.edit_btn.SetName(f"{self._('&Edit...').replace('&', '').rstrip('.')} - {self._('My torrent indexers')}")
         self.remove_btn = wx.Button(self, label=self._("&Remove"))
+        self.remove_btn.SetName(f"{self._('&Remove').replace('&', '')} - {self._('My torrent indexers')}")
         self.add_btn.Bind(wx.EVT_BUTTON, self.on_add)
         self.edit_btn.Bind(wx.EVT_BUTTON, self.on_edit)
         self.remove_btn.Bind(wx.EVT_BUTTON, self.on_remove)
