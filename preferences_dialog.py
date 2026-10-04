@@ -384,8 +384,12 @@ class PreferencesDialog(wx.Dialog):
         sizer.Add(notebook, 1, wx.EXPAND | wx.ALL, 5)
 
         btns = wx.StdDialogButtonSizer()
-        btns.AddButton(wx.Button(self, wx.ID_OK))
-        btns.AddButton(wx.Button(self, wx.ID_CANCEL))
+        save_btn = wx.Button(self, wx.ID_OK)
+        save_btn.SetName(f"{self._('Local Session Settings')}: {self._('OK')}")
+        cancel_btn = wx.Button(self, wx.ID_CANCEL)
+        cancel_btn.SetName(f"{self._('Local Session Settings')}: {self._('Cancel')}")
+        btns.AddButton(save_btn)
+        btns.AddButton(cancel_btn)
         btns.Realize()
         sizer.Add(btns, 0, wx.ALIGN_CENTER | wx.ALL, 10)
 
