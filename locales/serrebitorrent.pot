@@ -142,10 +142,10 @@ msgstr ""
 msgid "Add Torrent"
 msgstr ""
 
-msgid "Add torrents"
+msgid "Add Torrent: {name}"
 msgstr ""
 
-msgid "Add Torrent: {name}"
+msgid "Add torrents"
 msgstr ""
 
 msgid "Add Tracker"
@@ -391,10 +391,10 @@ msgstr ""
 msgid "Close Add Torrent"
 msgstr ""
 
-msgid "Close Preferences"
+msgid "Close connection manager"
 msgstr ""
 
-msgid "Close connection manager"
+msgid "Close Preferences"
 msgstr ""
 
 msgid "Close to System Tray"
@@ -493,13 +493,13 @@ msgstr ""
 msgid "Create a .torrent file from a file or folder"
 msgstr ""
 
+msgid "Create connection profile"
+msgstr ""
+
 msgid "Create Profile"
 msgstr ""
 
 msgid "Create Torrent"
-msgstr ""
-
-msgid "Create connection profile"
 msgstr ""
 
 msgid "Created by:"
@@ -1012,9 +1012,6 @@ msgstr ""
 msgid "Loading trackers..."
 msgstr ""
 
-msgid "Log out of Web UI"
-msgstr ""
-
 msgid "Loading..."
 msgstr ""
 
@@ -1031,6 +1028,9 @@ msgid "Local Session Settings"
 msgstr ""
 
 msgid "Local Session Settings..."
+msgstr ""
+
+msgid "Log out of Web UI"
 msgstr ""
 
 msgid "Login"
@@ -1210,10 +1210,10 @@ msgstr ""
 msgid "Open Download Folder"
 msgstr ""
 
-msgid "Open Preferences"
+msgid "Open online translation"
 msgstr ""
 
-msgid "Open online translation"
+msgid "Open Preferences"
 msgstr ""
 
 msgid "Open the download folder (if available)"
