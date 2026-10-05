@@ -413,6 +413,7 @@ window.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             visibleTorrents.forEach(t => selectedHashes.add(t.hash));
             updateSelectionVisuals();
+            updateDetailsDebounced();
             announceToSR(`Selected all ${visibleTorrents.length} torrents`);
             return;
         }
