@@ -509,7 +509,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     body: JSON.stringify(data)
                 });
                 if (res.ok) {
-                    const message = 'Remote settings saved.';
+                    const message = (window.SerrebiI18n?.t || ((value) => value))('Remote settings saved.');
                     announceToSR(message);
                     alert(message);
                 } else {
