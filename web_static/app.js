@@ -652,7 +652,7 @@ async function refreshData(force = false) {
                     table.tabIndex = 0;
                     table.focus();
                 }
-                announceToSR("Focused torrent is no longer available. The torrent list is empty.", true);
+                announceToSR((window.SerrebiI18n?.t || ((value) => value))("Focused torrent is no longer available. The torrent list is empty."), true);
             }
         } else if (lastFocusedHash && torrentsMap.has(lastFocusedHash)) {
             focusRow(lastFocusedHash, false);
