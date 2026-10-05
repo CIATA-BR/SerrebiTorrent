@@ -200,7 +200,10 @@ window.addEventListener('DOMContentLoaded', () => {
         selectAllCheck.onchange = (e) => {
             if (e.target.checked) {
                 visibleTorrents.forEach(t => selectedHashes.add(t.hash));
-                announceToSR(`Selected all ${visibleTorrents.length} torrents`);
+                announceToSR(
+                (window.SerrebiI18n?.t || ((value) => value))("Selected all {count} torrents")
+                    .replace("{count}", String(visibleTorrents.length))
+            );
             } else {
                 selectedHashes.clear();
                 announceToSR((window.SerrebiI18n?.t || ((value) => value))("Selection cleared"));
