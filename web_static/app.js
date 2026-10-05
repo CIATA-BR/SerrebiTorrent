@@ -805,7 +805,10 @@ function createRowElement(t) {
 function updateRowData(tr, t, absIndex) {
     const progress = t.size > 0 ? (t.done / t.size * 100).toFixed(1) : 0;
     const isSelected = selectedHashes.has(t.hash);
-    const statusText = t.state === 1 ? (progress >= 100 ? 'Seeding' : 'Downloading') : 'Paused';
+    const translate = window.SerrebiI18n?.t || ((value) => value);
+    const statusText = t.state === 1
+        ? translate(progress >= 100 ? 'Seeding' : 'Downloading')
+        : translate('Paused');
     const speedText = progress >= 100
         ? `UL: ${fmtSize(t.up_rate)}/s`
         : `DL: ${fmtSize(t.down_rate)}/s | UL: ${fmtSize(t.up_rate)}/s`;
