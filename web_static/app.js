@@ -808,7 +808,10 @@ function updateRowData(tr, t, absIndex) {
     if (statusCell.textContent !== statusText) statusCell.textContent = statusText;
     
     const progressCell = tr.querySelector('.col-progress');
-    progressCell.setAttribute('aria-label', `Progress ${progress}%`);
+    progressCell.setAttribute(
+        'aria-label',
+        `${(window.SerrebiI18n?.t || ((value) => value))('Progress')} ${progress}%`
+    );
 
     const bar = tr.querySelector('.progress-bar');
     bar.style.width = progress + '%';
