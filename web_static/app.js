@@ -519,7 +519,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (err) {
                 console.error(err);
-                const message = 'Error saving remote settings.';
+                const message = (window.SerrebiI18n?.t || ((value) => value))('Error saving remote settings.');
                 announceToSR(message, true);
                 alert(message);
             }
@@ -644,7 +644,11 @@ async function refreshData(force = false) {
                 );
                 const fallback = visibleTorrents[fallbackIndex];
                 focusRow(fallback.hash, true);
-                announceToSR(`Focused torrent is no longer available. Focus moved to ${fallback.name}.`, true);
+                announceToSR(
+                    (window.SerrebiI18n?.t || ((value) => value))('Focused torrent is no longer available. Focus moved to {name}.')
+                        .replace('{name}', fallback.name),
+                    true
+                );
             } else {
                 lastFocusedHash = null;
                 const table = els.table();
@@ -675,7 +679,13 @@ async function refreshData(force = false) {
                         .replace('{count}', String(addedCount))
                 );
             }
-            if (removedCount > 0) announceToSR(`${removedCount} torrent${removedCount === 1 ? '' : 's'} removed.`);
+            if (removedCount > 0) {
+                const key = removedCount === 1 ? '{count} torrent removed.' : '{count} torrents removed.';
+                announceToSR(
+                    (window.SerrebiI18n?.t || ((value) => value))(key)
+                        .replace('{count}', String(removedCount))
+                );
+            }
         }
     } catch (e) {
         console.error("Refresh error", e);
