@@ -1384,10 +1384,10 @@ msgstr ""
 msgid "Refresh"
 msgstr ""
 
-msgid "Refresh torrent list"
+msgid "Refresh All"
 msgstr ""
 
-msgid "Refresh All"
+msgid "Refresh torrent list"
 msgstr ""
 
 msgid "Regex Pattern:"
