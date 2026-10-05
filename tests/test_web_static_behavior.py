@@ -292,7 +292,9 @@ def test_web_progress_cell_exposes_percentage_to_screen_readers():
     script = (ROOT / "web_static" / "app.js").read_text(encoding="utf-8")
 
     assert 'class="col-progress"' in script
-    assert "progressCell.setAttribute('aria-label', `Progress ${progress}%`)" in script
+    assert "progressCell.setAttribute(" in script
+    assert "'aria-label'" in script
+    assert "`${(window.SerrebiI18n?.t || ((value) => value))('Progress')} ${progress}%`" in script
     assert 'class="progress" aria-hidden="true"' in script
 
 
