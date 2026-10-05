@@ -465,7 +465,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (err) {
                 console.error(err);
-                const message = 'Error saving settings.';
+                const message = (window.SerrebiI18n?.t || ((value) => value))('Error saving settings.');
                 announceToSR(message, true);
                 alert(message);
             }
