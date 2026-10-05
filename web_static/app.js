@@ -1552,7 +1552,7 @@ async function copyToClipboard(type) {
             throw new Error("Clipboard access is unavailable in this browser context.");
         }
         await navigator.clipboard.writeText(text);
-        announceToSR("Copied to clipboard");
+        announceToSR((window.SerrebiI18n?.t || ((value) => value))("Copied to clipboard"));
     } catch (err) {
         const message = err?.message || "Failed to copy to clipboard.";
         announceToSR(message, true);
