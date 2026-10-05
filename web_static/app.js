@@ -224,7 +224,7 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         });
         actionsBtn.addEventListener('hidden.bs.dropdown', () => {
-            announceToSR("Menu closed");
+            announceToSR((window.SerrebiI18n?.t || ((value) => value))("Menu closed"));
             const origin = actionMenuReturnFocus;
             actionMenuReturnFocus = null;
             if (origin && origin.isConnected) {
