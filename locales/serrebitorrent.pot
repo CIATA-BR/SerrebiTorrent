@@ -385,6 +385,9 @@ msgstr ""
 msgid "Client Type:"
 msgstr ""
 
+msgid "Clear All"
+msgstr ""
+
 msgid "Close"
 msgstr ""
 
