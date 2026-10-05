@@ -669,7 +669,13 @@ async function refreshData(force = false) {
                 : listChanges.removed.length;
             // Separate calls so each sentence is translated on its own.
             if (addedCount > 0) announceToSR(`${addedCount} torrent${addedCount === 1 ? '' : 's'} added.`);
-            if (removedCount > 0) announceToSR(`${removedCount} torrent${removedCount === 1 ? '' : 's'} removed.`);
+            if (removedCount > 0) {
+                const key = removedCount === 1 ? '{count} torrent removed.' : '{count} torrents removed.';
+                announceToSR(
+                    (window.SerrebiI18n?.t || ((value) => value))(key)
+                        .replace('{count}', String(removedCount))
+                );
+            }
         }
     } catch (e) {
         console.error("Refresh error", e);
