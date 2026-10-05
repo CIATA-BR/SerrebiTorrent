@@ -668,7 +668,13 @@ async function refreshData(force = false) {
                 ? listChanges.removed.length - 1
                 : listChanges.removed.length;
             // Separate calls so each sentence is translated on its own.
-            if (addedCount > 0) announceToSR(`${addedCount} torrent${addedCount === 1 ? '' : 's'} added.`);
+            if (addedCount > 0) {
+                const key = addedCount === 1 ? '{count} torrent added.' : '{count} torrents added.';
+                announceToSR(
+                    (window.SerrebiI18n?.t || ((value) => value))(key)
+                        .replace('{count}', String(addedCount))
+                );
+            }
             if (removedCount > 0) announceToSR(`${removedCount} torrent${removedCount === 1 ? '' : 's'} removed.`);
         }
     } catch (e) {
