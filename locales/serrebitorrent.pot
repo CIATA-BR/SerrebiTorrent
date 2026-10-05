@@ -535,10 +535,10 @@ msgstr ""
 msgid "Delete this profile?"
 msgstr ""
 
-msgid "Deselect {name}"
+msgid "Deselect All"
 msgstr ""
 
-msgid "Deselect All"
+msgid "Deselect {name}"
 msgstr ""
 
 msgid "Deselect all torrent files"
