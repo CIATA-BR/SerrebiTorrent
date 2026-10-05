@@ -1032,7 +1032,7 @@ window.fetchProfiles = async function() {
 async function switchProfile(id, event) {
     if (event) event.preventDefault();
     if (id === currentProfileId) return;
-    announceToSR("Switching client profile...");
+    announceToSR((window.SerrebiI18n?.t || ((value) => value))("Switching client profile..."));
     const fd = new FormData(); fd.append('id', id);
     try {
         const res = await apiFetch('/api/v2/profiles/switch', { method: 'POST', body: fd });
