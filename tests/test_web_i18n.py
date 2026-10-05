@@ -25,6 +25,14 @@ def test_pt_br_layer_covers_accessibility_critical_strings():
         "Menu de ações aberto. Use as setas para navegar.",
         "Selecione pelo menos um torrent primeiro.",
         "Seleção limpa",
+        "Abrir Preferências",
+        "Sair da interface Web",
+        "Ações dos torrents selecionados",
+        "Fechar Adicionar perfil de conexão",
+        "Fechar Adicionar torrent",
+        "Fechar Preferências",
+        "Criar perfil de conexão",
+        "Adicionar torrents",
     )
     for text in expected:
         assert text in I18N
