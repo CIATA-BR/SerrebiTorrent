@@ -922,10 +922,12 @@ function updateSidebarStats(stats, trackers) {
             trackerList.appendChild(a);
         });
         if (focusedTracker) {
-            const target = Array.from(trackerList.querySelectorAll('.sidebar-link'))
-                .find(link => link.dataset.filter === focusedTracker);
+            const links = Array.from(trackerList.querySelectorAll('.sidebar-link'));
+            const target = links.find(link => link.dataset.filter === focusedTracker)
+                || links.find(link => link.getAttribute('aria-selected') === 'true')
+                || links[0];
             if (target) {
-                trackerList.querySelectorAll('.sidebar-link').forEach(link => { link.tabIndex = -1; });
+                links.forEach(link => { link.tabIndex = -1; });
                 target.tabIndex = 0;
                 target.focus();
             }
