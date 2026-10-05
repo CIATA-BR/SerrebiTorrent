@@ -889,6 +889,10 @@ function updateSelectionVisuals() {
     const selectAllBtn = document.getElementById('selectAllBtn');
     if (selectAllBtn) {
         selectAllBtn.setAttribute('aria-pressed', allSelected ? 'true' : 'false');
+        selectAllBtn.setAttribute(
+            'aria-label',
+            allSelected ? 'Clear selection of visible torrents' : 'Select all visible torrents'
+        );
         selectAllBtn.textContent = allSelected ? 'Clear All' : 'Select All';
     }
 }
