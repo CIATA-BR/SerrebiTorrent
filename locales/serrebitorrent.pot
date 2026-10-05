@@ -538,10 +538,10 @@ msgstr ""
 msgid "Deselect All"
 msgstr ""
 
-msgid "Deselect {name}"
+msgid "Deselect all torrent files"
 msgstr ""
 
-msgid "Deselect all torrent files"
+msgid "Deselect {name}"
 msgstr ""
 
 msgid "Deselected {name}"
