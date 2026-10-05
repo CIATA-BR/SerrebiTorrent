@@ -1381,6 +1381,9 @@ msgstr ""
 msgid "Rechecking torrents..."
 msgstr ""
 
+msgid "Refresh torrent list"
+msgstr ""
+
 msgid "Refresh"
 msgstr ""
 
