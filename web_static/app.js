@@ -456,7 +456,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     body: JSON.stringify(data)
                 });
                 if (res.ok) {
-                    const message = 'Settings saved.';
+                    const message = (window.SerrebiI18n?.t || ((value) => value))('Settings saved.');
                     announceToSR(message);
                     alert(message);
                     const modal = bootstrap.Modal.getInstance(settingsModal);
