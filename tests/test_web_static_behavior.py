@@ -133,7 +133,7 @@ def test_web_form_actions_and_refresh_failures_are_announced():
     assert "Failed to add torrent:" in script
     assert "announceToSR(message, true)" in script
     assert "const message = (window.SerrebiI18n?.t || ((value) => value))('Settings saved.');" in script
-    assert "const message = 'Error saving settings.'" in script
+    assert "const message = (window.SerrebiI18n?.t || ((value) => value))('Error saving settings.');" in script
     assert "const message = 'Remote settings saved.'" in script
     assert "Error saving remote settings:" in script
     assert "let refreshErrorActive = false;" in script

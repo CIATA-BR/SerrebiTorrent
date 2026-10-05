@@ -184,7 +184,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     // Short delay ensures Bootstrap animations/positioning don't interfere
                     setTimeout(() => {
                         firstItem.focus();
-                        announceToSR("Action menu opened. Use arrow keys to navigate.", true);
+                        announceToSR((window.SerrebiI18n?.t || ((value) => value))("Action menu opened. Use arrow keys to navigate."), true);
                     }, 100);
                 }
             }
@@ -200,10 +200,13 @@ window.addEventListener('DOMContentLoaded', () => {
         selectAllCheck.onchange = (e) => {
             if (e.target.checked) {
                 visibleTorrents.forEach(t => selectedHashes.add(t.hash));
-                announceToSR(`Selected all ${visibleTorrents.length} torrents`);
+                announceToSR(
+                    (window.SerrebiI18n?.t || ((value) => value))("Selected all {count} torrents")
+                        .replace("{count}", String(visibleTorrents.length))
+                );
             } else {
                 selectedHashes.clear();
-                announceToSR("Selection cleared");
+                announceToSR((window.SerrebiI18n?.t || ((value) => value))("Selection cleared"));
             }
             updateSelectionVisuals();
             updateDetailsDebounced();
@@ -214,7 +217,7 @@ window.addEventListener('DOMContentLoaded', () => {
         actionsBtn.addEventListener('show.bs.dropdown', (e) => {
             if (selectedHashes.size === 0) {
                 e.preventDefault();
-                announceToSR("Please select at least one torrent first.", true);
+                announceToSR((window.SerrebiI18n?.t || ((value) => value))("Please select at least one torrent first."), true);
             } else {
                 if (!actionMenuReturnFocus) {
                     actionMenuReturnFocus = document.activeElement || actionsBtn;
@@ -459,13 +462,13 @@ window.addEventListener('DOMContentLoaded', () => {
                     const modal = bootstrap.Modal.getInstance(settingsModal);
                     if(modal) modal.hide();
                 } else {
-                    const message = 'Error saving settings.';
+                    const message = (window.SerrebiI18n?.t || ((value) => value))('Error saving settings.');
                     announceToSR(message, true);
                     alert(message);
                 }
             } catch (err) {
                 console.error(err);
-                const message = 'Error saving settings.';
+                const message = (window.SerrebiI18n?.t || ((value) => value))('Error saving settings.');
                 announceToSR(message, true);
                 alert(message);
             }
@@ -516,7 +519,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (err) {
                 console.error(err);
-                const message = 'Error saving remote settings.';
+                const message = (window.SerrebiI18n?.t || ((value) => value))('Error saving remote settings.');
                 announceToSR(message, true);
                 alert(message);
             }
@@ -641,7 +644,11 @@ async function refreshData(force = false) {
                 );
                 const fallback = visibleTorrents[fallbackIndex];
                 focusRow(fallback.hash, true);
-                announceToSR(`Focused torrent is no longer available. Focus moved to ${fallback.name}.`, true);
+                announceToSR(
+                    (window.SerrebiI18n?.t || ((value) => value))('Focused torrent is no longer available. Focus moved to {name}.')
+                        .replace('{name}', fallback.name),
+                    true
+                );
             } else {
                 lastFocusedHash = null;
                 const table = els.table();
@@ -649,7 +656,7 @@ async function refreshData(force = false) {
                     table.tabIndex = 0;
                     table.focus();
                 }
-                announceToSR("Focused torrent is no longer available. The torrent list is empty.", true);
+                announceToSR((window.SerrebiI18n?.t || ((value) => value))("Focused torrent is no longer available. The torrent list is empty."), true);
             }
         } else if (lastFocusedHash && torrentsMap.has(lastFocusedHash)) {
             focusRow(lastFocusedHash, false);
@@ -666,7 +673,13 @@ async function refreshData(force = false) {
                 : listChanges.removed.length;
             // Separate calls so each sentence is translated on its own.
             if (addedCount > 0) announceToSR(`${addedCount} torrent${addedCount === 1 ? '' : 's'} added.`);
-            if (removedCount > 0) announceToSR(`${removedCount} torrent${removedCount === 1 ? '' : 's'} removed.`);
+            if (removedCount > 0) {
+                const key = removedCount === 1 ? '{count} torrent removed.' : '{count} torrents removed.';
+                announceToSR(
+                    (window.SerrebiI18n?.t || ((value) => value))(key)
+                        .replace('{count}', String(removedCount))
+                );
+            }
         }
     } catch (e) {
         console.error("Refresh error", e);
@@ -1029,7 +1042,7 @@ window.fetchProfiles = async function() {
 async function switchProfile(id, event) {
     if (event) event.preventDefault();
     if (id === currentProfileId) return;
-    announceToSR("Switching client profile...");
+    announceToSR((window.SerrebiI18n?.t || ((value) => value))("Switching client profile..."));
     const fd = new FormData(); fd.append('id', id);
     try {
         const res = await apiFetch('/api/v2/profiles/switch', { method: 'POST', body: fd });
@@ -1530,7 +1543,7 @@ function toggleSelectAllBtn() {
     const isAllSelected = visibleTorrents.length > 0 && visibleTorrents.every(t => selectedHashes.has(t.hash));
     if (isAllSelected) {
         selectedHashes.clear();
-        announceToSR("Selection cleared");
+        announceToSR((window.SerrebiI18n?.t || ((value) => value))("Selection cleared"));
     } else {
         visibleTorrents.forEach(t => selectedHashes.add(t.hash));
         announceToSR(`Selected all ${visibleTorrents.length} torrents`);
@@ -1552,7 +1565,7 @@ async function copyToClipboard(type) {
             throw new Error("Clipboard access is unavailable in this browser context.");
         }
         await navigator.clipboard.writeText(text);
-        announceToSR("Copied to clipboard");
+        announceToSR((window.SerrebiI18n?.t || ((value) => value))("Copied to clipboard"));
     } catch (err) {
         const message = err?.message || "Failed to copy to clipboard.";
         announceToSR(message, true);
