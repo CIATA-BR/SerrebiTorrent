@@ -882,12 +882,15 @@ function updateSelectionVisuals() {
     });
     const allSelected = visibleTorrents.length > 0 && visibleTorrents.every(t => selectedHashes.has(t.hash));
     const selectAllCheck = els.selectAllCheck();
+    const hasVisibleTorrents = visibleTorrents.length > 0;
     if (selectAllCheck) { 
         selectAllCheck.checked = allSelected; 
-        selectAllCheck.indeterminate = !allSelected && selectedHashes.size > 0; 
+        selectAllCheck.indeterminate = !allSelected && selectedHashes.size > 0;
+        selectAllCheck.disabled = !hasVisibleTorrents;
     }
     const selectAllBtn = document.getElementById('selectAllBtn');
     if (selectAllBtn) {
+        selectAllBtn.disabled = !hasVisibleTorrents;
         selectAllBtn.setAttribute('aria-pressed', allSelected ? 'true' : 'false');
         selectAllBtn.setAttribute(
             'aria-label',
