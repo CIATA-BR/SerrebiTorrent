@@ -16,7 +16,8 @@ def test_web_delete_actions_confirm_and_report_failures():
     script = (ROOT / "web_static" / "app.js").read_text(encoding="utf-8")
 
     assert "confirmDeleteAction(deleteFiles)" in script
-    assert "window.confirm(`Remove ${count} ${label}${dataText}?`)" in script
+    assert "'Remove {count} torrent and delete downloaded data?'" in script
+    assert "window.confirm(translate(key).replace('{count}', String(count)))" in script
     assert "announceToSR(message, true)" in script
     assert "alert(message)" in script
 
@@ -132,10 +133,10 @@ def test_web_form_actions_and_refresh_failures_are_announced():
     assert 'announceToSR("Torrent added.")' in script
     assert "Failed to add torrent:" in script
     assert "announceToSR(message, true)" in script
-    assert "const message = 'Settings saved.'" in script
-    assert "const message = 'Error saving settings.'" in script
+    assert "const message = (window.SerrebiI18n?.t || ((value) => value))('Settings saved.');" in script
+    assert "const message = (window.SerrebiI18n?.t || ((value) => value))('Error saving settings.');" in script
     assert "const message = 'Remote settings saved.'" in script
-    assert "Error saving remote settings:" in script
+    assert "(window.SerrebiI18n?.t || ((value) => value))('Error saving remote settings.')" in script
     assert "let refreshErrorActive = false;" in script
     assert "if (!refreshErrorActive)" in script
     assert "refreshErrorActive = false;" in script

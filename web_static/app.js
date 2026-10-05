@@ -184,7 +184,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     // Short delay ensures Bootstrap animations/positioning don't interfere
                     setTimeout(() => {
                         firstItem.focus();
-                        announceToSR("Action menu opened. Use arrow keys to navigate.", true);
+                        announceToSR((window.SerrebiI18n?.t || ((value) => value))("Action menu opened. Use arrow keys to navigate."), true);
                     }, 100);
                 }
             }
@@ -200,10 +200,13 @@ window.addEventListener('DOMContentLoaded', () => {
         selectAllCheck.onchange = (e) => {
             if (e.target.checked) {
                 visibleTorrents.forEach(t => selectedHashes.add(t.hash));
-                announceToSR(`Selected all ${visibleTorrents.length} torrents`);
+                announceToSR(
+                    (window.SerrebiI18n?.t || ((value) => value))("Selected all {count} torrents")
+                        .replace("{count}", String(visibleTorrents.length))
+                );
             } else {
                 selectedHashes.clear();
-                announceToSR("Selection cleared");
+                announceToSR((window.SerrebiI18n?.t || ((value) => value))("Selection cleared"));
             }
             updateSelectionVisuals();
             updateDetailsDebounced();
@@ -214,17 +217,17 @@ window.addEventListener('DOMContentLoaded', () => {
         actionsBtn.addEventListener('show.bs.dropdown', (e) => {
             if (selectedHashes.size === 0) {
                 e.preventDefault();
-                announceToSR("Please select at least one torrent first.", true);
+                announceToSR((window.SerrebiI18n?.t || ((value) => value))("Please select at least one torrent first."), true);
             } else {
                 if (!actionMenuReturnFocus) {
                     actionMenuReturnFocus = document.activeElement || actionsBtn;
                 }
                 lastUserActivity = Date.now();
-                announceToSR("Menu opened", true);
+                announceToSR((window.SerrebiI18n?.t || ((value) => value))("Menu opened"), true);
             }
         });
         actionsBtn.addEventListener('hidden.bs.dropdown', () => {
-            announceToSR("Menu closed");
+            announceToSR((window.SerrebiI18n?.t || ((value) => value))("Menu closed"));
             const origin = actionMenuReturnFocus;
             actionMenuReturnFocus = null;
             if (origin && origin.isConnected) {
@@ -453,19 +456,19 @@ window.addEventListener('DOMContentLoaded', () => {
                     body: JSON.stringify(data)
                 });
                 if (res.ok) {
-                    const message = 'Settings saved.';
+                    const message = (window.SerrebiI18n?.t || ((value) => value))('Settings saved.');
                     announceToSR(message);
                     alert(message);
                     const modal = bootstrap.Modal.getInstance(settingsModal);
                     if(modal) modal.hide();
                 } else {
-                    const message = 'Error saving settings.';
+                    const message = (window.SerrebiI18n?.t || ((value) => value))('Error saving settings.');
                     announceToSR(message, true);
                     alert(message);
                 }
             } catch (err) {
                 console.error(err);
-                const message = 'Error saving settings.';
+                const message = (window.SerrebiI18n?.t || ((value) => value))('Error saving settings.');
                 announceToSR(message, true);
                 alert(message);
             }
@@ -510,13 +513,14 @@ window.addEventListener('DOMContentLoaded', () => {
                     announceToSR(message);
                     alert(message);
                 } else {
-                    const message = 'Error saving remote settings: ' + ((await res.text()) || res.statusText || `HTTP ${res.status}`);
+                    const detail = (await res.text()) || res.statusText || `HTTP ${res.status}`;
+                    const message = `${(window.SerrebiI18n?.t || ((value) => value))('Error saving remote settings.')} ${detail}`;
                     announceToSR(message, true);
                     alert(message);
                 }
             } catch (err) {
                 console.error(err);
-                const message = 'Error saving remote settings.';
+                const message = (window.SerrebiI18n?.t || ((value) => value))('Error saving remote settings.');
                 announceToSR(message, true);
                 alert(message);
             }
@@ -641,7 +645,11 @@ async function refreshData(force = false) {
                 );
                 const fallback = visibleTorrents[fallbackIndex];
                 focusRow(fallback.hash, true);
-                announceToSR(`Focused torrent is no longer available. Focus moved to ${fallback.name}.`, true);
+                announceToSR(
+                    (window.SerrebiI18n?.t || ((value) => value))('Focused torrent is no longer available. Focus moved to {name}.')
+                        .replace('{name}', fallback.name),
+                    true
+                );
             } else {
                 lastFocusedHash = null;
                 const table = els.table();
@@ -649,7 +657,7 @@ async function refreshData(force = false) {
                     table.tabIndex = 0;
                     table.focus();
                 }
-                announceToSR("Focused torrent is no longer available. The torrent list is empty.", true);
+                announceToSR((window.SerrebiI18n?.t || ((value) => value))("Focused torrent is no longer available. The torrent list is empty."), true);
             }
         } else if (lastFocusedHash && torrentsMap.has(lastFocusedHash)) {
             focusRow(lastFocusedHash, false);
@@ -665,8 +673,20 @@ async function refreshData(force = false) {
                 ? listChanges.removed.length - 1
                 : listChanges.removed.length;
             // Separate calls so each sentence is translated on its own.
-            if (addedCount > 0) announceToSR(`${addedCount} torrent${addedCount === 1 ? '' : 's'} added.`);
-            if (removedCount > 0) announceToSR(`${removedCount} torrent${removedCount === 1 ? '' : 's'} removed.`);
+            if (addedCount > 0) {
+                const key = addedCount === 1 ? '{count} torrent added.' : '{count} torrents added.';
+                announceToSR(
+                    (window.SerrebiI18n?.t || ((value) => value))(key)
+                        .replace('{count}', String(addedCount))
+                );
+            }
+            if (removedCount > 0) {
+                const key = removedCount === 1 ? '{count} torrent removed.' : '{count} torrents removed.';
+                announceToSR(
+                    (window.SerrebiI18n?.t || ((value) => value))(key)
+                        .replace('{count}', String(removedCount))
+                );
+            }
         }
     } catch (e) {
         console.error("Refresh error", e);
@@ -785,7 +805,10 @@ function createRowElement(t) {
 function updateRowData(tr, t, absIndex) {
     const progress = t.size > 0 ? (t.done / t.size * 100).toFixed(1) : 0;
     const isSelected = selectedHashes.has(t.hash);
-    const statusText = t.state === 1 ? (progress >= 100 ? 'Seeding' : 'Downloading') : 'Paused';
+    const translate = window.SerrebiI18n?.t || ((value) => value);
+    const statusText = t.state === 1
+        ? translate(progress >= 100 ? 'Seeding' : 'Downloading')
+        : translate('Paused');
     const speedText = progress >= 100
         ? `UL: ${fmtSize(t.up_rate)}/s`
         : `DL: ${fmtSize(t.down_rate)}/s | UL: ${fmtSize(t.up_rate)}/s`;
@@ -1032,7 +1055,7 @@ window.fetchProfiles = async function() {
 async function switchProfile(id, event) {
     if (event) event.preventDefault();
     if (id === currentProfileId) return;
-    announceToSR("Switching client profile...");
+    announceToSR((window.SerrebiI18n?.t || ((value) => value))("Switching client profile..."));
     const fd = new FormData(); fd.append('id', id);
     try {
         const res = await apiFetch('/api/v2/profiles/switch', { method: 'POST', body: fd });
@@ -1465,9 +1488,15 @@ async function doAction(action, deleteFiles = false, actionLabel = null) {
 
 function confirmDeleteAction(deleteFiles) {
     const count = selectedHashes.size;
+    const translate = window.SerrebiI18n?.t || ((value) => value);
+    if (deleteFiles) {
+        const key = count === 1
+            ? 'Remove {count} torrent and delete downloaded data?'
+            : 'Remove {count} torrents and delete downloaded data?';
+        return window.confirm(translate(key).replace('{count}', String(count)));
+    }
     const label = count === 1 ? 'torrent' : 'torrents';
-    const dataText = deleteFiles ? ' and delete downloaded data' : '';
-    return window.confirm(`Remove ${count} ${label}${dataText}?`);
+    return window.confirm(`Remove ${count} ${label}?`);
 }
 
 function fmtSize(bytes) {
@@ -1533,7 +1562,7 @@ function toggleSelectAllBtn() {
     const isAllSelected = visibleTorrents.length > 0 && visibleTorrents.every(t => selectedHashes.has(t.hash));
     if (isAllSelected) {
         selectedHashes.clear();
-        announceToSR("Selection cleared");
+        announceToSR((window.SerrebiI18n?.t || ((value) => value))("Selection cleared"));
     } else {
         visibleTorrents.forEach(t => selectedHashes.add(t.hash));
         announceToSR(`Selected all ${visibleTorrents.length} torrents`);
@@ -1555,7 +1584,7 @@ async function copyToClipboard(type) {
             throw new Error("Clipboard access is unavailable in this browser context.");
         }
         await navigator.clipboard.writeText(text);
-        announceToSR("Copied to clipboard");
+        announceToSR((window.SerrebiI18n?.t || ((value) => value))("Copied to clipboard"));
     } catch (err) {
         const message = err?.message || "Failed to copy to clipboard.";
         announceToSR(message, true);
