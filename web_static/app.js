@@ -407,7 +407,11 @@ window.addEventListener('DOMContentLoaded', () => {
             const selecting = !selectedHashes.has(hash);
             toggleSelection(hash);
             focusRow(hash, true);
-            announceToSR(`${selecting ? 'Selected' : 'Deselected'} ${torrent?.name || 'torrent'}`);
+            announceToSR(
+                (window.SerrebiI18n?.t || ((value) => value))(
+                    `${selecting ? 'Selected' : 'Deselected'} ${torrent?.name || 'torrent'}`
+                )
+            );
             return;
         }
 
