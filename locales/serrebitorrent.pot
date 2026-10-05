@@ -370,10 +370,10 @@ msgstr ""
 msgid "Choose Watch Folder"
 msgstr ""
 
-msgid "Client"
+msgid "Clear selection of visible torrents"
 msgstr ""
 
-msgid "Clear selection of visible torrents"
+msgid "Client"
 msgstr ""
 
 msgid "Client Type"
@@ -1600,13 +1600,13 @@ msgstr ""
 msgid "Select All"
 msgstr ""
 
-msgid "Select all visible torrents"
-msgstr ""
-
 msgid "Select all torrent files"
 msgstr ""
 
 msgid "Select all torrents"
+msgstr ""
+
+msgid "Select all visible torrents"
 msgstr ""
 
 msgid "Select File"
