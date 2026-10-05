@@ -1574,7 +1574,10 @@ function toggleSelectAllBtn() {
         announceToSR((window.SerrebiI18n?.t || ((value) => value))("Selection cleared"));
     } else {
         visibleTorrents.forEach(t => selectedHashes.add(t.hash));
-        announceToSR(`Selected all ${visibleTorrents.length} torrents`);
+        announceToSR(
+            (window.SerrebiI18n?.t || ((value) => value))('Selected all {count} torrents')
+                .replace('{count}', String(visibleTorrents.length))
+        );
     }
     updateSelectionVisuals();
     updateDetailsDebounced();
