@@ -999,10 +999,12 @@ window.fetchProfiles = async function() {
             list.appendChild(a);
         }
         if (focusedProfile) {
-            const target = Array.from(list.querySelectorAll('.sidebar-link'))
-                .find(link => link.dataset.profileId === focusedProfile);
+            const links = Array.from(list.querySelectorAll('.sidebar-link'));
+            const target = links.find(link => link.dataset.profileId === focusedProfile)
+                || links.find(link => link.getAttribute('aria-selected') === 'true')
+                || links[0];
             if (target) {
-                list.querySelectorAll('.sidebar-link').forEach(link => { link.tabIndex = -1; });
+                links.forEach(link => { link.tabIndex = -1; });
                 target.tabIndex = 0;
                 target.focus();
             }
