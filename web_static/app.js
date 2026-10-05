@@ -1595,7 +1595,8 @@ async function loadRemoteSettings() {
         const data = await res.json();
         
         if (!data.prefs) {
-            container.innerHTML = '<div class="alert alert-info">No remote settings available (or Local client active).</div>';
+            const translate = window.SerrebiI18n?.t || ((value) => value);
+            container.innerHTML = `<div class="alert alert-info">${escapeHtml(translate('No remote settings available (or Local client active).'))}</div>`;
             return;
         }
         
