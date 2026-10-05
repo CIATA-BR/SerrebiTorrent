@@ -136,7 +136,7 @@ def test_web_form_actions_and_refresh_failures_are_announced():
     assert "const message = 'Settings saved.'" in script
     assert "const message = (window.SerrebiI18n?.t || ((value) => value))('Error saving settings.');" in script
     assert "const message = 'Remote settings saved.'" in script
-    assert "Error saving remote settings:" in script
+    assert "(window.SerrebiI18n?.t || ((value) => value))('Error saving remote settings.')" in script
     assert "let refreshErrorActive = false;" in script
     assert "if (!refreshErrorActive)" in script
     assert "refreshErrorActive = false;" in script
