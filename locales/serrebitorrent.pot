@@ -535,6 +535,9 @@ msgstr ""
 msgid "Delete this profile?"
 msgstr ""
 
+msgid "Deselect {name}"
+msgstr ""
+
 msgid "Deselect All"
 msgstr ""
 
