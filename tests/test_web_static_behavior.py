@@ -18,6 +18,7 @@ def test_web_delete_actions_confirm_and_report_failures():
     assert "confirmDeleteAction(deleteFiles)" in script
     assert "'Remove {count} torrent and delete downloaded data?'" in script
     assert "window.confirm(translate(key).replace('{count}', String(count)))" in script
+    assert "const key = count === 1 ? 'Remove {count} torrent?' : 'Remove {count} torrents?';" in script
     assert "announceToSR(message, true)" in script
     assert "alert(message)" in script
 
