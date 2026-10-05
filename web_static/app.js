@@ -1465,9 +1465,13 @@ async function doAction(action, deleteFiles = false, actionLabel = null) {
 
 function confirmDeleteAction(deleteFiles) {
     const count = selectedHashes.size;
-    const label = count === 1 ? 'torrent' : 'torrents';
-    const dataText = deleteFiles ? ' and delete downloaded data' : '';
-    return window.confirm(`Remove ${count} ${label}${dataText}?`);
+    if (deleteFiles) {
+        const label = count === 1 ? 'torrent' : 'torrents';
+        return window.confirm(`Remove ${count} ${label} and delete downloaded data?`);
+    }
+    const translate = window.SerrebiI18n?.t || ((value) => value);
+    const key = count === 1 ? 'Remove {count} torrent?' : 'Remove {count} torrents?';
+    return window.confirm(translate(key).replace('{count}', String(count)));
 }
 
 function fmtSize(bytes) {
