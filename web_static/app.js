@@ -203,7 +203,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 announceToSR(`Selected all ${visibleTorrents.length} torrents`);
             } else {
                 selectedHashes.clear();
-                announceToSR("Selection cleared");
+                announceToSR((window.SerrebiI18n?.t || ((value) => value))("Selection cleared"));
             }
             updateSelectionVisuals();
             updateDetailsDebounced();
