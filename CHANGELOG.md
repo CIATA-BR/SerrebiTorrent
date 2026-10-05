@@ -2,6 +2,19 @@
 
 All notable changes to SerrebiTorrent are recorded here.
 
+## v1.22.38 - 2026-10-05
+
+- Allow local paths in Web profile form (#331).
+- Preserve tracker sidebar focus on removal (#332).
+- Preserve profile sidebar focus on removal (#333).
+- Keep Web select-all name in sync (#334).
+- Refresh details after Web Ctrl+A (#335).
+- I18n: translate empty Web details state (#338).
+- I18n: translate remote settings loading state (#336).
+- I18n: translate empty remote settings state (#337).
+- Disable Web select-all controls when empty (#339).
+- I18n: translate Web torrent detail labels (#340).
+
 ## v1.22.37 - 2026-10-04
 
 - A11y: contextualize RSS rule editor actions (#321).
