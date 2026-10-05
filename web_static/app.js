@@ -459,7 +459,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     const modal = bootstrap.Modal.getInstance(settingsModal);
                     if(modal) modal.hide();
                 } else {
-                    const message = 'Error saving settings.';
+                    const message = (window.SerrebiI18n?.t || ((value) => value))('Error saving settings.');
                     announceToSR(message, true);
                     alert(message);
                 }
