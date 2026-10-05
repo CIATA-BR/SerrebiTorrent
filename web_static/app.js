@@ -1366,7 +1366,11 @@ async function updateDetails() {
         const t = torrentsMap.get(hash);
         if (t) {
             // Escape torrent-supplied fields (name/hash/save_path) to prevent DOM XSS.
-            detailPane.innerHTML = `<h3 class="fs-5">${escapeHtml(t.name)}</h3><p>Size: ${fmtSize(t.size)}<br>Hash: ${escapeHtml(t.hash)}<br>Path: ${escapeHtml(t.save_path || 'N/A')}</p>`;
+            const sizeLabel = escapeHtml(translate('Size'));
+            const hashLabel = escapeHtml(translate('Hash'));
+            const pathLabel = escapeHtml(translate('Path'));
+            const unavailable = translate('N/A');
+            detailPane.innerHTML = `<h3 class="fs-5">${escapeHtml(t.name)}</h3><p>${sizeLabel}: ${fmtSize(t.size)}<br>${hashLabel}: ${escapeHtml(t.hash)}<br>${pathLabel}: ${escapeHtml(t.save_path || unavailable)}</p>`;
         }
     }
 
