@@ -73,6 +73,8 @@
         'Open Download Folder': 'Abrir pasta de download',
         'Remove with Data': 'Remover com dados',
         'Select All': 'Selecionar tudo',
+        'Select all visible torrents': 'Selecionar todos os torrents visíveis',
+        'Clear selection of visible torrents': 'Limpar seleção dos torrents visíveis',
         'Add Connection Profile': 'Adicionar perfil de conexão',
         'Close Add Connection Profile': 'Fechar Adicionar perfil de conexão',
         'Create connection profile': 'Criar perfil de conexão',
