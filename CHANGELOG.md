@@ -2,6 +2,41 @@
 
 All notable changes to SerrebiTorrent are recorded here.
 
+## v1.22.39 - 2026-10-05
+
+- I18n: translate Clear All button text (#372).
+- I18n: localize Deselect row labels (#373).
+- I18n: localize Web toolbar action labels (#374).
+- I18n: translate Select All button announcement (#371).
+- Merge PR #369.
+- Merge PR #350.
+- Merge PR #356.
+- Merge PR #362.
+- Merge PR #365.
+- Merge PR #367.
+- I18n: translate Space selection feedback (#368).
+- I18n: localize Web accessible action labels (#370).
+- I18n: translate Web torrent row status (#366).
+- I18n PR #351.
+- I18n PR #357.
+- I18n PR #360.
+- I18n: translate remove-with-data confirmation (#363).
+- I18n: translate torrent focus recovery (#359).
+- I18n: translate remote settings exception feedback (#358).
+- I18n: translate torrent-removed refresh feedback (#361).
+- I18n: translate profile-switch announcement (#346).
+- I18n: translate empty-list focus recovery (#348).
+- I18n: translate clipboard success announcement (#347).
+- I18n: translate select-all announcement (#349).
+- I18n: translate settings save error feedback (#352).
+- I18n: translate clear-all feedback (#353).
+- I18n: translate settings exception feedback (#354).
+- I18n: translate action-menu guidance (#341).
+- I18n: translate selection-cleared announcement (#342).
+- I18n: translate empty-selection action warning (#343).
+- I18n: translate menu-open announcement (#344).
+- I18n: translate menu-close announcement (#345).
+
 ## v1.22.38 - 2026-10-05
 
 - Allow local paths in Web profile form (#331).
