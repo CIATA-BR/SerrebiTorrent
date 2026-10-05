@@ -1400,7 +1400,9 @@ async function updateDetails() {
     if (selectedHashes.size === 0) {
         detailPane.innerHTML = `<p>${escapeHtml(translate('Select a torrent.'))}</p>`;
     } else if (selectedHashes.size > 1) {
-        detailPane.innerHTML = `<p>${selectedHashes.size} torrents selected.</p>`;
+        detailPane.innerHTML = `<p>${escapeHtml(
+            translate('{count} torrents selected.').replace('{count}', String(selectedHashes.size))
+        )}</p>`;
     } else {
         const hash = Array.from(selectedHashes)[0];
         const t = torrentsMap.get(hash);
