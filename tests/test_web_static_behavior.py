@@ -1,4 +1,3 @@
-sha: 3d5c81f4e5ad27e767548d80d375244bf90cf0d6 | lines: 306
 from pathlib import Path
 
 
@@ -305,4 +304,3 @@ def test_web_toolbar_actions_have_contextual_accessible_names():
     ):
         assert f'aria-label="{label}"' in page
         assert f'title="{label}"' in page
-
