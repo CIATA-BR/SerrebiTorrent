@@ -220,7 +220,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     actionMenuReturnFocus = document.activeElement || actionsBtn;
                 }
                 lastUserActivity = Date.now();
-                announceToSR("Menu opened", true);
+                announceToSR((window.SerrebiI18n?.t || ((value) => value))("Menu opened"), true);
             }
         });
         actionsBtn.addEventListener('hidden.bs.dropdown', () => {
