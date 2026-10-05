@@ -373,6 +373,9 @@ msgstr ""
 msgid "Choose Watch Folder"
 msgstr ""
 
+msgid "Clear All"
+msgstr ""
+
 msgid "Clear selection of visible torrents"
 msgstr ""
 

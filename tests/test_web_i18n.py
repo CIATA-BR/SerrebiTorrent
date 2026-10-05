@@ -27,6 +27,7 @@ def test_pt_br_layer_covers_accessibility_critical_strings():
         "Seleção limpa",
         "Selecionar todos os torrents visíveis",
         "Limpar seleção dos torrents visíveis",
+        "Limpar tudo",
         "Abrir Preferências",
         "Sair da interface Web",
         "Ações dos torrents selecionados",
