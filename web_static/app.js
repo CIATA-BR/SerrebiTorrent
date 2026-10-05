@@ -184,7 +184,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     // Short delay ensures Bootstrap animations/positioning don't interfere
                     setTimeout(() => {
                         firstItem.focus();
-                        announceToSR("Action menu opened. Use arrow keys to navigate.", true);
+                        announceToSR((window.SerrebiI18n?.t || ((value) => value))("Action menu opened. Use arrow keys to navigate."), true);
                     }, 100);
                 }
             }
