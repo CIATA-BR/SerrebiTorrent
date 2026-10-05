@@ -214,7 +214,7 @@ window.addEventListener('DOMContentLoaded', () => {
         actionsBtn.addEventListener('show.bs.dropdown', (e) => {
             if (selectedHashes.size === 0) {
                 e.preventDefault();
-                announceToSR("Please select at least one torrent first.", true);
+                announceToSR((window.SerrebiI18n?.t || ((value) => value))("Please select at least one torrent first."), true);
             } else {
                 if (!actionMenuReturnFocus) {
                     actionMenuReturnFocus = document.activeElement || actionsBtn;
