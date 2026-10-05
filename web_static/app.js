@@ -1530,7 +1530,7 @@ function toggleSelectAllBtn() {
     const isAllSelected = visibleTorrents.length > 0 && visibleTorrents.every(t => selectedHashes.has(t.hash));
     if (isAllSelected) {
         selectedHashes.clear();
-        announceToSR("Selection cleared");
+        announceToSR((window.SerrebiI18n?.t || ((value) => value))("Selection cleared"));
     } else {
         visibleTorrents.forEach(t => selectedHashes.add(t.hash));
         announceToSR(`Selected all ${visibleTorrents.length} torrents`);
