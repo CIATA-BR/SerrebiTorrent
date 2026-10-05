@@ -1584,7 +1584,8 @@ async function loadAppSettings() {
 async function loadRemoteSettings() {
     const container = document.getElementById('remoteSettingsFields');
     if (!container) return;
-    container.innerHTML = '<p class="text-muted">Loading...</p>';
+    const translate = window.SerrebiI18n?.t || ((value) => value);
+    container.innerHTML = `<p class="text-muted">${escapeHtml(translate('Loading...'))}</p>`;
     
     try {
         const res = await fetch('/api/v2/app/remote_prefs');
