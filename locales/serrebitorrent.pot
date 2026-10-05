@@ -541,6 +541,9 @@ msgstr ""
 msgid "Deselect all torrent files"
 msgstr ""
 
+msgid "Deselect {name}"
+msgstr ""
+
 msgid "Deselected {name}"
 msgstr ""
 

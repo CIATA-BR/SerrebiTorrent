@@ -45,6 +45,7 @@
         'Torrents': 'Torrents',
         'torrents': 'torrents',
         'Select': 'Selecionar',
+        'Deselect {name}': 'Desmarcar {name}',
         'Name': 'Nome',
         'Size': 'Tamanho',
         'Progress': 'Progresso',
@@ -347,6 +348,11 @@
                 if (currentLanguage === 'pt-BR') translated = `Selecionar ${source.slice(7)}`;
                 else if (currentLanguage !== 'en' && externalTranslations['Select {name}']) {
                     translated = externalTranslations['Select {name}'].replace('{name}', source.slice(7));
+                }
+            } else if (attr === 'aria-label' && element.classList.contains('row-check') && source.startsWith('Deselect ')) {
+                if (currentLanguage === 'pt-BR') translated = PT_BR['Deselect {name}'].replace('{name}', source.slice(9));
+                else if (currentLanguage !== 'en' && externalTranslations['Deselect {name}']) {
+                    translated = externalTranslations['Deselect {name}'].replace('{name}', source.slice(9));
                 }
             } else if (!(element.matches('tr[data-hash]') && attr === 'aria-label') && !(element.classList.contains('col-name') && attr === 'title')) {
                 translated = t(source);

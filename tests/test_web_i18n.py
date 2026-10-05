@@ -86,6 +86,8 @@ def test_user_supplied_torrent_names_are_not_translated():
     assert "element.classList.contains('col-name')" in I18N
     assert "element.classList.contains('row-check')" in I18N
     assert "`Selecionar ${source.slice(7)}`" in I18N
+    assert "'Deselect {name}': 'Desmarcar {name}'" in I18N
+    assert "source.startsWith('Deselect ')" in I18N
 
 
 def test_remote_labels_are_translated_without_changing_api_keys():
