@@ -519,7 +519,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (err) {
                 console.error(err);
-                const message = 'Error saving remote settings.';
+                const message = (window.SerrebiI18n?.t || ((value) => value))('Error saving remote settings.');
                 announceToSR(message, true);
                 alert(message);
             }
