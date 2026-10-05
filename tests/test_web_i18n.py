@@ -25,6 +25,8 @@ def test_pt_br_layer_covers_accessibility_critical_strings():
         "Menu de ações aberto. Use as setas para navegar.",
         "Selecione pelo menos um torrent primeiro.",
         "Seleção limpa",
+        "Selecionar todos os torrents visíveis",
+        "Limpar seleção dos torrents visíveis",
     )
     for text in expected:
         assert text in I18N
