@@ -142,6 +142,9 @@ msgstr ""
 msgid "Add Torrent"
 msgstr ""
 
+msgid "Add torrents"
+msgstr ""
+
 msgid "Add Torrent: {name}"
 msgstr ""
 
@@ -382,6 +385,15 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
+msgid "Close Add Connection Profile"
+msgstr ""
+
+msgid "Close Add Torrent"
+msgstr ""
+
+msgid "Close Preferences"
+msgstr ""
+
 msgid "Close connection manager"
 msgstr ""
 
@@ -485,6 +497,9 @@ msgid "Create Profile"
 msgstr ""
 
 msgid "Create Torrent"
+msgstr ""
+
+msgid "Create connection profile"
 msgstr ""
 
 msgid "Created by:"
@@ -997,6 +1012,9 @@ msgstr ""
 msgid "Loading trackers..."
 msgstr ""
 
+msgid "Log out of Web UI"
+msgstr ""
+
 msgid "Loading..."
 msgstr ""
 
@@ -1190,6 +1208,9 @@ msgid "Open Download &Folder"
 msgstr ""
 
 msgid "Open Download Folder"
+msgstr ""
+
+msgid "Open Preferences"
 msgstr ""
 
 msgid "Open online translation"
@@ -1778,6 +1799,9 @@ msgid "Too many failed attempts. Try again later."
 msgstr ""
 
 msgid "Torrent Actions"
+msgstr ""
+
+msgid "Torrent actions for selected torrents"
 msgstr ""
 
 msgid "Torrent added"
