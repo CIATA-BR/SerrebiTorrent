@@ -373,6 +373,9 @@ msgstr ""
 msgid "Client"
 msgstr ""
 
+msgid "Clear selection of visible torrents"
+msgstr ""
+
 msgid "Client Type"
 msgstr ""
 
@@ -1595,6 +1598,9 @@ msgid "Select a torrent."
 msgstr ""
 
 msgid "Select All"
+msgstr ""
+
+msgid "Select all visible torrents"
 msgstr ""
 
 msgid "Select all torrent files"
