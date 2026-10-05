@@ -1369,8 +1369,9 @@ async function updateTrackersDetails() {
 
 async function updateDetails() {
     const detailPane = document.getElementById('details-general');
+    const translate = window.SerrebiI18n?.t || ((value) => value);
     if (selectedHashes.size === 0) {
-        detailPane.innerHTML = '<p>Select a torrent.</p>';
+        detailPane.innerHTML = `<p>${escapeHtml(translate('Select a torrent.'))}</p>`;
     } else if (selectedHashes.size > 1) {
         detailPane.innerHTML = `<p>${selectedHashes.size} torrents selected.</p>`;
     } else {
