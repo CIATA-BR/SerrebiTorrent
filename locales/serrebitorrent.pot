@@ -1387,6 +1387,9 @@ msgstr ""
 msgid "Refresh All"
 msgstr ""
 
+msgid "Refresh torrent list"
+msgstr ""
+
 msgid "Regex Pattern:"
 msgstr ""
 
