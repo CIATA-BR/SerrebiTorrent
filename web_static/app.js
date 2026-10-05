@@ -1501,8 +1501,8 @@ function confirmDeleteAction(deleteFiles) {
             : 'Remove {count} torrents and delete downloaded data?';
         return window.confirm(translate(key).replace('{count}', String(count)));
     }
-    const label = count === 1 ? 'torrent' : 'torrents';
-    return window.confirm(`Remove ${count} ${label}?`);
+    const key = count === 1 ? 'Remove {count} torrent?' : 'Remove {count} torrents?';
+    return window.confirm(translate(key).replace('{count}', String(count)));
 }
 
 function fmtSize(bytes) {
