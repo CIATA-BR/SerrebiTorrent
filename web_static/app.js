@@ -2,6 +2,7 @@ let torrentsMap = new Map();
 let domRows = new Map(); 
 let selectedHashes = new Set();
 let currentFilter = 'All';
+let torrentNameQuery = '';
 let currentProfileId = null;
 let lastFocusedHash = null;
 let lastUserActivity = 0;
@@ -108,6 +109,19 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    const torrentNameFilter = document.getElementById('torrentNameFilter');
+    if (torrentNameFilter) {
+        torrentNameFilter.addEventListener('input', () => {
+            torrentNameQuery = torrentNameFilter.value.trim().toLocaleLowerCase();
+            const container = els.container();
+            if (container) container.scrollTop = 0;
+            updateFilteredList();
+            renderVirtualRows();
+            updateSelectionVisuals();
+            updateDetailsDebounced();
+        });
+    }
 
     const filesTab = document.getElementById('files-tab');
     if (filesTab) {
@@ -732,19 +746,25 @@ function syncTorrentsMap(newData) {
 
 function updateFilteredList() {
     visibleTorrents = Array.from(torrentsMap.values()).filter(t => {
-        if (currentFilter === 'All') return true;
-        if (currentFilter === 'RSS') return false;
-        const pct = t.size > 0 ? (t.done / t.size * 100) : 0;
-        if (currentFilter === 'Downloading') return t.state === 1 && (pct < 100);
-        if (currentFilter === 'Seeding') return t.state === 1 && (pct >= 100);
-        if (currentFilter === 'Finished') return pct >= 100;
-        if (currentFilter === 'Stopped') return t.state === 0;
-        if (currentFilter === 'Failed') {
-            const msg = (t.message || '').toLowerCase();
-            return msg && !msg.includes('success') && !msg.includes('ok');
+        let matchesFilter = false;
+        if (currentFilter === 'All') {
+            matchesFilter = true;
+        } else if (currentFilter !== 'RSS') {
+            const pct = t.size > 0 ? (t.done / t.size * 100) : 0;
+            if (currentFilter === 'Downloading') matchesFilter = t.state === 1 && (pct < 100);
+            else if (currentFilter === 'Seeding') matchesFilter = t.state === 1 && (pct >= 100);
+            else if (currentFilter === 'Finished') matchesFilter = pct >= 100;
+            else if (currentFilter === 'Stopped') matchesFilter = t.state === 0;
+            else if (currentFilter === 'Failed') {
+                const msg = (t.message || '').toLowerCase();
+                matchesFilter = !!(msg && !msg.includes('success') && !msg.includes('ok'));
+            } else if (t.tracker_domain === currentFilter) {
+                matchesFilter = true;
+            }
         }
-        if (t.tracker_domain === currentFilter) return true;
-        return false;
+        if (!matchesFilter) return false;
+        if (!torrentNameQuery) return true;
+        return String(t.name || '').toLocaleLowerCase().includes(torrentNameQuery);
     });
     visibleTorrents.sort((a, b) => a.name.localeCompare(b.name));
     
