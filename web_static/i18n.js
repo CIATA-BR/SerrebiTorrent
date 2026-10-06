@@ -71,6 +71,8 @@
         'Priority': 'Prioridade',
         'Torrent Actions': 'Ações do torrent',
         'Torrent actions for selected torrents': 'Ações dos torrents selecionados',
+        'Start All': 'Iniciar todos',
+        'Stop All': 'Parar todos',
         'Force Recheck': 'Forçar reverificação',
         'Force Reannounce': 'Forçar novo anúncio',
         'Copy Info Hash': 'Copiar info hash',
