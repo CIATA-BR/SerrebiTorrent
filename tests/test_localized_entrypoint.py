@@ -167,7 +167,8 @@ def test_move_torrent_data_action_runs_in_background():
 
     assert '_("Move torrent &data...")' in source
     assert "supports_move_storage" in source
-    assert "wx.DirDialog(" in source
+    assert "wx.TextEntryDialog(" in source
+    assert '"Destination folder is required."' in source
     assert "def _move_torrent_data_background(" in source
     assert "client.move_torrent_data(torrent_hash, destination)" in source
     assert "self.thread_pool.submit(" in source
