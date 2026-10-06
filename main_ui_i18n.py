@@ -63,6 +63,7 @@ _PT_BR_MAIN = {
     "&Remove\tDel": "&Remover\tDel",
     "Remove with &Data\tShift+Del": "Remover com &dados\tShift+Del",
     "Select &All\tCtrl+A": "Selecionar &todos\tCtrl+A",
+    "Select &none": "Selecionar &nenhum",
     "&Search for Torrents...\tCtrl+F": "&Pesquisar torrents...\tCtrl+F",
     "Register &Associations": "Registrar &associações",
     "Check for &Updates...\tF5": "Verificar &atualizações...\tF5",
