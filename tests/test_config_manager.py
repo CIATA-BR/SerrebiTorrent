@@ -45,6 +45,7 @@ def test_normalize_prefs_missing_keys(tmp_path, monkeypatch):
     assert "web_ui_port" in prefs
     assert prefs.get("language") == "system"
     assert prefs["clipboard_prefill"] is True
+    assert prefs["announce_download_complete"] is True
 
 
 def test_clipboard_prefill_preference_persists_independently(tmp_path, monkeypatch):
