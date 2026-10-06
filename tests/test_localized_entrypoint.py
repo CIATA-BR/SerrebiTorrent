@@ -99,3 +99,17 @@ def test_localized_entry_point_can_clear_torrent_selection_without_moving_focus(
     assert "def on_select_none(self, event):" in source
     assert "self.torrent_list.Select(index, False)" in source
     assert "_(\"Select &none\")" in source
+
+
+def test_desktop_torrent_name_filter_combines_with_existing_sidebar_filter():
+    source = Path("app_entry.py").read_text(encoding="utf-8")
+
+    assert 'self._name_filter_query = ""' in source
+    assert "def on_filter_torrents_by_name(self, event):" in source
+    assert "def on_clear_torrent_name_filter(self, event):" in source
+    assert "filtered_display_data = display_data" in source
+    assert 'torrent.get("name")' in source
+    assert "casefold()" in source
+    assert "filtered_display_data," in source
+    assert 'ord("L")' in source
+    assert "wx.ACCEL_CTRL | wx.ACCEL_SHIFT" in source

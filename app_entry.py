@@ -47,6 +47,7 @@ class LocalizedMainFrame(legacy.MainFrame):
 
     def __init__(self):
         self._completion_tracker = CompletionTracker()
+        self._name_filter_query = ""
         super().__init__()
         self._install_localized_torrent_list()
         self._apply_localized_static_labels()
@@ -259,6 +260,16 @@ class LocalizedMainFrame(legacy.MainFrame):
             _("&Search for Torrents...\tCtrl+F"),
             _("Search torrent indexers and add what you find"),
         )
+        filter_name_item = tools_menu.Append(
+            wx.ID_ANY,
+            _("Filter torrent list by &name...\tCtrl+L"),
+            _("Filter the current torrent list by name"),
+        )
+        clear_name_filter_item = tools_menu.Append(
+            wx.ID_ANY,
+            _("Clear torrent name filter\tCtrl+Shift+L"),
+            _("Show all torrents allowed by the current sidebar filter"),
+        )
         tools_menu.AppendSeparator()
         assoc_item = tools_menu.Append(
             wx.ID_ANY,
@@ -326,6 +337,8 @@ class LocalizedMainFrame(legacy.MainFrame):
         self.Bind(wx.EVT_MENU, self.on_select_none, select_none_item)
 
         self.Bind(wx.EVT_MENU, self.on_search_torrents, search_item)
+        self.Bind(wx.EVT_MENU, self.on_filter_torrents_by_name, filter_name_item)
+        self.Bind(wx.EVT_MENU, self.on_clear_torrent_name_filter, clear_name_filter_item)
         self.Bind(
             wx.EVT_MENU,
             lambda event: register_associations(self._language()),
@@ -353,6 +366,8 @@ class LocalizedMainFrame(legacy.MainFrame):
             (wx.ACCEL_CTRL, ord("M"), copy_magnet_item.GetId()),
             (wx.ACCEL_CTRL, ord(","), local_settings_item.GetId()),
             (wx.ACCEL_CTRL, ord("F"), search_item.GetId()),
+            (wx.ACCEL_CTRL, ord("L"), filter_name_item.GetId()),
+            (wx.ACCEL_CTRL | wx.ACCEL_SHIFT, ord("L"), clear_name_filter_item.GetId()),
         ]
         self.SetAcceleratorTable(wx.AcceleratorTable(accel_entries))
 
@@ -360,6 +375,40 @@ class LocalizedMainFrame(legacy.MainFrame):
         count = self.torrent_list.GetItemCount()
         for index in range(count):
             self.torrent_list.Select(index, False)
+
+    def on_filter_torrents_by_name(self, event):
+        dialog = wx.TextEntryDialog(
+            self,
+            self._("Filter torrent list by name:"),
+            self._("Filter Torrents"),
+            self._name_filter_query,
+        )
+        try:
+            if dialog.ShowModal() != wx.ID_OK:
+                return
+            self._name_filter_query = dialog.GetValue().strip()
+        finally:
+            dialog.Destroy()
+
+        self.refresh_data()
+        if hasattr(self, "statusbar"):
+            if self._name_filter_query:
+                self.statusbar.SetStatusText(
+                    self._("Torrent name filter: {query}").format(
+                        query=self._name_filter_query
+                    ),
+                    0,
+                )
+            else:
+                self.statusbar.SetStatusText(self._("Torrent name filter cleared."), 0)
+
+    def on_clear_torrent_name_filter(self, event):
+        if not self._name_filter_query:
+            return
+        self._name_filter_query = ""
+        self.refresh_data()
+        if hasattr(self, "statusbar"):
+            self.statusbar.SetStatusText(self._("Torrent name filter cleared."), 0)
 
     def on_prefs(self, event):
         dlg = PreferencesDialog(self, self.config_manager)
@@ -571,10 +620,19 @@ class LocalizedMainFrame(legacy.MainFrame):
         g_down,
         g_up,
     ):
+        filtered_display_data = display_data
+        query = self._name_filter_query.strip().casefold()
+        if query:
+            filtered_display_data = [
+                torrent
+                for torrent in display_data
+                if query in str(torrent.get("name") or "").casefold()
+            ]
+
         super()._on_refresh_complete(
             generation,
             torrents,
-            display_data,
+            filtered_display_data,
             stats,
             tracker_counts,
             g_down,
