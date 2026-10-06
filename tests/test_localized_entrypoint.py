@@ -44,6 +44,7 @@ def test_localized_entry_point_preserves_keyboard_accelerators():
     source = Path("app_entry.py").read_text(encoding="utf-8")
     for accelerator in (
         "ord(\"A\")",
+        "wx.ACCEL_CTRL | wx.ACCEL_SHIFT",
         "ord(\"S\")",
         "ord(\"P\")",
         "ord(\"R\")",
@@ -79,3 +80,10 @@ def test_localized_entry_point_installs_external_catalogs_before_i18n_helpers():
 def test_watch_profile_switch_is_retryable_not_permanent_failure():
     source = Path("app_entry.py").read_text(encoding="utf-8")
     assert "watch_folder.RetryImportLater" in source
+
+
+def test_localized_entry_point_can_clear_torrent_selection_without_moving_focus():
+    source = Path("app_entry.py").read_text(encoding="utf-8")
+    assert "def on_select_none(self, event):" in source
+    assert "self.torrent_list.Select(index, False)" in source
+    assert "_(\"Select &none\")" in source
