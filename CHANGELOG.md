@@ -2,6 +2,10 @@
 
 All notable changes to SerrebiTorrent are recorded here.
 
+## v1.25.1 - 2026-10-06
+
+- Maintenance update.
+
 ## v1.25.0 - 2026-10-06
 
 - Add cross-client torrent queue controls (#390).
