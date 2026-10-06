@@ -468,7 +468,7 @@ class LocalizedMainFrame(legacy.MainFrame):
 
         action = getattr(self.client, method_name)
         generation = self.client_generation
-        self.statusbar.SetStatusText(self._(progress_message), 0)
+        self.statusbar.SetStatusText(progress_message, 0)
         self.thread_pool.submit(
             self._queue_action_background,
             action,
@@ -519,29 +519,29 @@ class LocalizedMainFrame(legacy.MainFrame):
     def on_queue_top(self, event):
         self._run_queue_action(
             "queue_top",
-            "Moving selected torrents to the top of the queue...",
-            "Selected torrents moved to the top of the queue.",
+            self._("Moving selected torrents to the top of the queue..."),
+            self._("Selected torrents moved to the top of the queue."),
         )
 
     def on_queue_up(self, event):
         self._run_queue_action(
             "queue_up",
-            "Moving selected torrents up in the queue...",
-            "Selected torrents moved up in the queue.",
+            self._("Moving selected torrents up in the queue..."),
+            self._("Selected torrents moved up in the queue."),
         )
 
     def on_queue_down(self, event):
         self._run_queue_action(
             "queue_down",
-            "Moving selected torrents down in the queue...",
-            "Selected torrents moved down in the queue.",
+            self._("Moving selected torrents down in the queue..."),
+            self._("Selected torrents moved down in the queue."),
         )
 
     def on_queue_bottom(self, event):
         self._run_queue_action(
             "queue_bottom",
-            "Moving selected torrents to the bottom of the queue...",
-            "Selected torrents moved to the bottom of the queue.",
+            self._("Moving selected torrents to the bottom of the queue..."),
+            self._("Selected torrents moved to the bottom of the queue."),
         )
 
     def on_prefs(self, event):
