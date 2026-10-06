@@ -182,6 +182,7 @@ Everything stays reachable by keyboard:
 - `Ctrl+Alt+Home` / `Ctrl+Alt+End` — Move selected torrents to the top / bottom of the queue
 - `Ctrl+Alt+Up` / `Ctrl+Alt+Down` — Move selected torrents up / down in the queue
 - `Ctrl+D` — Diagnose the selected torrent and explain common stalled-download causes
+- **Actions > Move torrent data...** — Move selected torrent data to another folder on qBittorrent, Transmission, or the built-in libtorrent client
 - `Delete` / `Shift+Delete` — Remove / Remove with data
 - `Ctrl+A` — Select all
 - `Ctrl+N` — Create a torrent
