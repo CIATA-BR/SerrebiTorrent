@@ -245,6 +245,10 @@ class LocalizedMainFrame(legacy.MainFrame):
             _("Select &All\tCtrl+A"),
             _("Select all torrents"),
         )
+        select_none_item = actions_menu.Append(
+            wx.ID_ANY,
+            _("Select &none"),
+        )
         menubar.Append(actions_menu, _("&Actions"))
 
         tools_menu = wx.Menu()
@@ -317,6 +321,7 @@ class LocalizedMainFrame(legacy.MainFrame):
         self.Bind(wx.EVT_MENU, self.on_remove, remove_item)
         self.Bind(wx.EVT_MENU, self.on_remove_data, remove_data_item)
         self.Bind(wx.EVT_MENU, self.on_select_all, select_all_item)
+        self.Bind(wx.EVT_MENU, self.on_select_none, select_none_item)
 
         self.Bind(wx.EVT_MENU, self.on_search_torrents, search_item)
         self.Bind(
@@ -333,6 +338,7 @@ class LocalizedMainFrame(legacy.MainFrame):
         self._update_remote_prefs_menu_state()
         accel_entries = [
             (wx.ACCEL_CTRL, ord("A"), select_all_item.GetId()),
+            (wx.ACCEL_CTRL | wx.ACCEL_SHIFT, ord("A"), select_none_item.GetId()),
             (wx.ACCEL_CTRL, ord("S"), start_item.GetId()),
             (wx.ACCEL_CTRL, ord("P"), pause_item.GetId()),
             (wx.ACCEL_CTRL, ord("R"), resume_item.GetId()),
@@ -347,6 +353,11 @@ class LocalizedMainFrame(legacy.MainFrame):
             (wx.ACCEL_CTRL, ord("F"), search_item.GetId()),
         ]
         self.SetAcceleratorTable(wx.AcceleratorTable(accel_entries))
+
+    def on_select_none(self, event):
+        count = self.torrent_list.GetItemCount()
+        for index in range(count):
+            self.torrent_list.Select(index, False)
 
     def on_prefs(self, event):
         dlg = PreferencesDialog(self, self.config_manager)
