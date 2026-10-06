@@ -360,3 +360,60 @@ def test_rtorrent_global_stats_failure_is_not_reported_as_zero():
 
     with pytest.raises(RuntimeError, match="rpc unavailable"):
         client.get_global_stats()
+
+
+
+def test_qbittorrent_queue_actions_use_queue_api():
+    client = clients.QBittorrentClient.__new__(clients.QBittorrentClient)
+    client.c = MagicMock()
+    client._normalize_hash = lambda value: "normalized"
+
+    client.queue_up("hash")
+    client.queue_down("hash")
+    client.queue_top("hash")
+    client.queue_bottom("hash")
+
+    client.c.torrents_increase_priority.assert_called_once_with(torrent_hashes="normalized")
+    client.c.torrents_decrease_priority.assert_called_once_with(torrent_hashes="normalized")
+    client.c.torrents_top_priority.assert_called_once_with(torrent_hashes="normalized")
+    client.c.torrents_bottom_priority.assert_called_once_with(torrent_hashes="normalized")
+    assert client.supports_queue_reordering is True
+
+
+def test_transmission_queue_actions_use_queue_api():
+    client = clients.TransmissionClient.__new__(clients.TransmissionClient)
+    client.c = MagicMock()
+    client._normalize_torrent_id = lambda value: "normalized"
+
+    client.queue_up("hash")
+    client.queue_down("hash")
+    client.queue_top("hash")
+    client.queue_bottom("hash")
+
+    client.c.queue_up.assert_called_once_with("normalized")
+    client.c.queue_down.assert_called_once_with("normalized")
+    client.c.queue_top.assert_called_once_with("normalized")
+    client.c.queue_bottom.assert_called_once_with("normalized")
+    assert client.supports_queue_reordering is True
+
+
+def test_local_queue_actions_delegate_to_libtorrent_handle():
+    handle = MagicMock()
+    client = clients.LocalClient.__new__(clients.LocalClient)
+    client.m = MagicMock()
+    client.m._find_handle.return_value = handle
+
+    client.queue_up("hash")
+    client.queue_down("hash")
+    client.queue_top("hash")
+    client.queue_bottom("hash")
+
+    handle.queue_position_up.assert_called_once_with()
+    handle.queue_position_down.assert_called_once_with()
+    handle.queue_position_top.assert_called_once_with()
+    handle.queue_position_bottom.assert_called_once_with()
+    assert client.supports_queue_reordering is True
+
+
+def test_rtorrent_does_not_claim_queue_reordering_support():
+    assert clients.RTorrentClient.supports_queue_reordering is False
