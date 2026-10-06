@@ -29,6 +29,7 @@ from main_ui_i18n import sidebar_label, tr_main
 from preferences_dialog import PreferencesDialog
 from runtime_actions_i18n import register_associations
 from torrent_list import TorrentListCtrl as LocalizedTorrentListCtrl
+from torrent_diagnostics import diagnose_torrent
 
 # The legacy handlers resolve AddTorrentDialog from main.py at call time. Point
 # that name at the localized implementation without editing the maintainer's
@@ -246,6 +247,11 @@ class LocalizedMainFrame(legacy.MainFrame):
             _("Queue"),
             _("Change selected torrent queue position"),
         )
+        diagnose_item = actions_menu.Append(
+            wx.ID_ANY,
+            _("Diagnose &Torrent\tCtrl+D"),
+            _("Diagnose the selected torrent"),
+        )
         actions_menu.AppendSeparator()
         copy_hash_item = actions_menu.Append(
             wx.ID_ANY,
@@ -362,6 +368,7 @@ class LocalizedMainFrame(legacy.MainFrame):
         self.Bind(wx.EVT_MENU, self.on_queue_up, queue_up_item)
         self.Bind(wx.EVT_MENU, self.on_queue_down, queue_down_item)
         self.Bind(wx.EVT_MENU, self.on_queue_bottom, queue_bottom_item)
+        self.Bind(wx.EVT_MENU, self.on_diagnose_torrent, diagnose_item)
         self.Bind(wx.EVT_MENU, self.on_copy_info_hash, copy_hash_item)
         self.Bind(wx.EVT_MENU, self.on_copy_magnet, copy_magnet_item)
         self.Bind(wx.EVT_MENU, self.on_open_download_folder, open_folder_item)
@@ -391,6 +398,7 @@ class LocalizedMainFrame(legacy.MainFrame):
             (wx.ACCEL_CTRL, ord("S"), start_item.GetId()),
             (wx.ACCEL_CTRL, ord("P"), pause_item.GetId()),
             (wx.ACCEL_CTRL, ord("R"), resume_item.GetId()),
+            (wx.ACCEL_CTRL, ord("D"), diagnose_item.GetId()),
             (wx.ACCEL_CTRL | wx.ACCEL_ALT, ord("S"), start_all_item.GetId()),
             (wx.ACCEL_CTRL | wx.ACCEL_ALT, ord("P"), stop_all_item.GetId()),
             (wx.ACCEL_CTRL | wx.ACCEL_ALT, wx.WXK_HOME, queue_top_item.GetId()),
@@ -680,6 +688,7 @@ class LocalizedMainFrame(legacy.MainFrame):
         queue_down = queue_menu.Append(wx.ID_ANY, self._("Move down"))
         queue_bottom = queue_menu.Append(wx.ID_ANY, self._("Move to bottom"))
         menu.AppendSubMenu(queue_menu, self._("Queue"))
+        diagnose = menu.Append(wx.ID_ANY, self._("Diagnose Torrent"))
         menu.AppendSeparator()
         copy_hash = menu.Append(wx.ID_ANY, self._("Copy Info Hash"))
         copy_magnet = menu.Append(wx.ID_ANY, self._("Copy Magnet Link"))
@@ -697,6 +706,7 @@ class LocalizedMainFrame(legacy.MainFrame):
         self.Bind(wx.EVT_MENU, self.on_queue_up, queue_up)
         self.Bind(wx.EVT_MENU, self.on_queue_down, queue_down)
         self.Bind(wx.EVT_MENU, self.on_queue_bottom, queue_bottom)
+        self.Bind(wx.EVT_MENU, self.on_diagnose_torrent, diagnose)
         self.Bind(wx.EVT_MENU, self.on_copy_info_hash, copy_hash)
         self.Bind(wx.EVT_MENU, self.on_copy_magnet, copy_magnet)
         self.Bind(wx.EVT_MENU, self.on_open_download_folder, open_folder)
@@ -707,6 +717,57 @@ class LocalizedMainFrame(legacy.MainFrame):
             self.PopupMenu(menu)
         finally:
             menu.Destroy()
+
+    def _diagnostic_text(self, finding):
+        code = finding.get("code")
+        if code == "complete":
+            return self._("Download is complete.")
+        if code == "checking":
+            return self._("Torrent is being checked.")
+        if code == "paused":
+            return self._("Torrent is paused or stopped.")
+        if code == "client_error":
+            return self._("Client reports an error: {message}").format(
+                message=finding.get("message", "")
+            )
+        if code == "receiving_data":
+            return self._("Torrent is currently receiving data.")
+        if code == "no_seeds":
+            return self._("No seeds are currently reported.")
+        if code == "seeds_not_connected":
+            return self._("{count} seeds are reported, but none are connected.").format(
+                count=finding.get("count", 0)
+            )
+        if code in {"no_complete_copy", "incomplete_copy"}:
+            return self._("The connected swarm does not currently expose a complete copy.")
+        if code == "active_no_data":
+            return self._("Torrent is active but currently receiving no data.")
+        return self._("No clear cause is visible from the current torrent data.")
+
+    def on_diagnose_torrent(self, event):
+        torrents, _missing = self._get_selected_torrent_objects()
+        if len(torrents) != 1:
+            wx.MessageBox(
+                self._("Select one torrent to diagnose."),
+                self._("Torrent Diagnosis"),
+                wx.OK | wx.ICON_INFORMATION,
+                self,
+            )
+            return
+
+        torrent = torrents[0]
+        findings = diagnose_torrent(torrent)
+        lines = [self._diagnostic_text(finding) for finding in findings]
+        message = self._("Torrent: {name}").format(
+            name=torrent.get("name") or torrent.get("hash") or self._("Unknown")
+        )
+        message += "\n\n" + "\n".join(f"- {line}" for line in lines)
+        wx.MessageBox(
+            message,
+            self._("Torrent Diagnosis"),
+            wx.OK | wx.ICON_INFORMATION,
+            self,
+        )
 
     def on_about(self, event):
         from app_version import APP_VERSION
@@ -730,13 +791,15 @@ class LocalizedMainFrame(legacy.MainFrame):
         if self.statusbar.GetName() == announced_name:
             self.statusbar.SetName(original_name)
 
+    def _completion_message(self, completed):
+        if len(completed) == 1:
+            return self._("Download complete: {name}").format(name=completed[0])
+        return self._("{count} downloads completed.").format(count=len(completed))
+
     def _announce_download_completion(self, completed):
         if not hasattr(self, "statusbar"):
             return
-        if len(completed) == 1:
-            message = self._("Download complete: {name}").format(name=completed[0])
-        else:
-            message = self._("{count} downloads completed.").format(count=len(completed))
+        message = self._completion_message(completed)
 
         self.statusbar.SetStatusText(message, 0)
         original_name = self.statusbar.GetName()
@@ -753,6 +816,21 @@ class LocalizedMainFrame(legacy.MainFrame):
             message,
             original_name,
         )
+
+    def _show_download_completion_notification(self, completed):
+        message = self._completion_message(completed)
+        try:
+            notification = wx.adv.NotificationMessage(
+                "SerrebiTorrent",
+                message,
+                parent=self,
+            )
+            self._download_complete_notification = notification
+            notification.Show(timeout=wx.adv.NotificationMessage.Timeout_Auto)
+        except Exception:
+            # Notifications are optional OS integration. Failure must never
+            # disrupt completion tracking or screen-reader feedback.
+            self._download_complete_notification = None
 
     def _pause_completed_background(self, client, generation, completed_events):
         if generation != self.client_generation or self._closing:
@@ -822,6 +900,8 @@ class LocalizedMainFrame(legacy.MainFrame):
         preferences = self.config_manager.get_preferences()
         if completed and preferences.get("announce_download_complete", True):
             self._announce_download_completion(completed)
+        if completed and preferences.get("show_download_complete_notification", False):
+            self._show_download_completion_notification(completed)
 
         if completion_events and preferences.get("pause_on_download_complete", False):
             try:

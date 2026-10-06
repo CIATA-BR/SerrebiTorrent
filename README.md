@@ -169,6 +169,8 @@ If an update fails, the backup is restored automatically. Check the updater log 
 
 Local Session Settings includes **Pause torrents when downloads complete**. It is off by default. When enabled, SerrebiTorrent pauses only torrents that transition from incomplete to complete while the current profile is active; already-complete torrents are not paused on startup or profile switch.
 
+**Show a system notification when downloads complete** is also off by default. Enable it when you want a native desktop notification while SerrebiTorrent is minimized or in the tray. This is independent from the screen-reader completion announcement.
+
 ## Accessibility and shortcuts
 
 Everything stays reachable by keyboard:
@@ -179,6 +181,7 @@ Everything stays reachable by keyboard:
 - `Ctrl+Alt+S` / `Ctrl+Alt+P` — Start / Stop all torrents
 - `Ctrl+Alt+Home` / `Ctrl+Alt+End` — Move selected torrents to the top / bottom of the queue
 - `Ctrl+Alt+Up` / `Ctrl+Alt+Down` — Move selected torrents up / down in the queue
+- `Ctrl+D` — Diagnose the selected torrent and explain common stalled-download causes
 - `Delete` / `Shift+Delete` — Remove / Remove with data
 - `Ctrl+A` — Select all
 - `Ctrl+N` — Create a torrent

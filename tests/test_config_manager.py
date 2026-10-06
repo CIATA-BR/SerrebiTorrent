@@ -46,6 +46,7 @@ def test_normalize_prefs_missing_keys(tmp_path, monkeypatch):
     assert prefs.get("language") == "system"
     assert prefs["clipboard_prefill"] is True
     assert prefs["announce_download_complete"] is True
+    assert prefs["show_download_complete_notification"] is False
     assert prefs["pause_on_download_complete"] is False
 
 

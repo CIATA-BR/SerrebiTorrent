@@ -89,6 +89,14 @@ def test_download_completion_announcements_use_accessibility_event_without_steal
     assert "self._completion_tracker.reset()" in source
 
 
+def test_completion_system_notification_uses_native_notification_message():
+    source = Path("app_entry.py").read_text(encoding="utf-8")
+    assert "def _show_download_completion_notification(self, completed):" in source
+    assert "wx.adv.NotificationMessage(" in source
+    assert '"show_download_complete_notification", False' in source
+    assert "self._completion_message(completed)" in source
+
+
 def test_pause_on_completion_runs_client_action_in_background():
     source = Path("app_entry.py").read_text(encoding="utf-8")
     assert "def _pause_completed_background(" in source
@@ -142,3 +150,11 @@ def test_torrent_queue_controls_are_keyboard_accessible():
     assert "wx.WXK_DOWN" in source
     assert "wx.WXK_END" in source
     assert "self.thread_pool.submit(" in source
+def test_torrent_diagnosis_action_is_keyboard_accessible():
+    source = Path("app_entry.py").read_text(encoding="utf-8")
+    assert "from torrent_diagnostics import diagnose_torrent" in source
+    assert '_("Diagnose &Torrent\\tCtrl+D")' in source
+    assert "def on_diagnose_torrent(self, event):" in source
+    assert "diagnose_torrent(torrent)" in source
+    assert 'ord("D")' in source
+    assert 'self._("Torrent Diagnosis")' in source
