@@ -431,16 +431,23 @@ window.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Ctrl+A Select All
-        if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
+        // Ctrl+A Select All; Ctrl+Shift+A clears the current selection.
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'a') {
             e.preventDefault();
+            if (e.shiftKey) {
+                selectedHashes.clear();
+                updateSelectionVisuals();
+                updateDetailsDebounced();
+                announceToSR((window.SerrebiI18n?.t || ((value) => value))('Selection cleared'));
+                return;
+            }
             visibleTorrents.forEach(t => selectedHashes.add(t.hash));
             updateSelectionVisuals();
             updateDetailsDebounced();
             announceToSR(
-            (window.SerrebiI18n?.t || ((value) => value))('Selected all {count} torrents')
-                .replace('{count}', String(visibleTorrents.length))
-        );
+                (window.SerrebiI18n?.t || ((value) => value))('Selected all {count} torrents')
+                    .replace('{count}', String(visibleTorrents.length))
+            );
             return;
         }
     });
