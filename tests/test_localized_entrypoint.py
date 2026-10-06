@@ -110,6 +110,13 @@ def test_localized_entry_point_can_clear_torrent_selection_without_moving_focus(
     assert "_(\"Select &none\")" in source
 
 
+def test_main_actions_expose_start_and_stop_all():
+    source = Path("app_entry.py").read_text(encoding="utf-8")
+    assert '_("Start All")' in source
+    assert '_("Stop All")' in source
+    assert "self.start_all_torrents()" in source
+    assert "self.stop_all_torrents()" in source
+    assert "wx.ACCEL_CTRL | wx.ACCEL_ALT" in source
 def test_desktop_torrent_name_filter_combines_with_existing_sidebar_filter():
     source = Path("app_entry.py").read_text(encoding="utf-8")
 

@@ -110,7 +110,9 @@ _PT_BR_MAIN = {
     "About this application": "Sobre este aplicativo",
     # Context menu.
     "Start": "Iniciar",
+    "Start All": "Iniciar todos",
     "Pause": "Pausar",
+    "Stop All": "Parar todos",
     "Resume": "Retomar",
     "Force Recheck": "Forçar reverificação",
     "Force Reannounce": "Forçar novo anúncio",
