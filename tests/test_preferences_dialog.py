@@ -69,6 +69,15 @@ def test_preferences_controls_have_explicit_accessible_names():
         assert f"self.{control}.SetName(" in source
 
 
+def test_completion_announcement_preference_is_exposed_and_saved():
+    from pathlib import Path
+
+    source = Path("preferences_dialog.py").read_text(encoding="utf-8")
+    assert '"Announce completed downloads to screen readers"' in source
+    assert 'self.prefs.get("announce_download_complete", True)' in source
+    assert '"announce_download_complete": self.announce_download_complete_chk.GetValue()' in source
+
+
 def test_browse_buttons_have_contextual_accessible_names():
     from pathlib import Path
 
