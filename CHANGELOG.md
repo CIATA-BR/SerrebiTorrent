@@ -2,6 +2,12 @@
 
 All notable changes to SerrebiTorrent are recorded here.
 
+## v1.25.0 - 2026-10-06
+
+- Add cross-client torrent queue controls (#390).
+- Optionally notify when downloads complete (#388).
+- Diagnose stalled torrents (#387).
+
 ## v1.24.0 - 2026-10-06
 
 - Expose Web Start All and Stop All actions (#386).
