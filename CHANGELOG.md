@@ -2,6 +2,10 @@
 
 All notable changes to SerrebiTorrent are recorded here.
 
+## v1.26.0 - 2026-10-06
+
+- Move torrent data across supported clients (#391).
+
 ## v1.25.1 - 2026-10-06
 
 - Maintenance update.
