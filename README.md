@@ -17,6 +17,7 @@ A vibe-coded, keyboard-first, screen-reader-friendly torrent manager for Windows
 - Responsive UI: remote operations run in the background so the app never freezes.
 - Quick filters (All, Downloading, Complete, Active) plus a tracker tree in the sidebar.
 - Full keyboard workflow and tray support, built and tested with NVDA.
+- Reorder torrent queues on qBittorrent, Transmission, and the built-in libtorrent client; unsupported backends report that explicitly.
 - Built-in updater that verifies SHA-256 and Authenticode before applying an update, with automatic backup and rollback.
 
 ## Download and install
@@ -176,6 +177,8 @@ Everything stays reachable by keyboard:
 - `Ctrl+O` / `Ctrl+U` — Add torrent file / Add URL or magnet
 - `Ctrl+S` / `Ctrl+P` — Start / Stop selected torrents
 - `Ctrl+Alt+S` / `Ctrl+Alt+P` — Start / Stop all torrents
+- `Ctrl+Alt+Home` / `Ctrl+Alt+End` — Move selected torrents to the top / bottom of the queue
+- `Ctrl+Alt+Up` / `Ctrl+Alt+Down` — Move selected torrents up / down in the queue
 - `Delete` / `Shift+Delete` — Remove / Remove with data
 - `Ctrl+A` — Select all
 - `Ctrl+N` — Create a torrent
