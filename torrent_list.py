@@ -23,6 +23,7 @@ COL_SEEDS = 4
 COL_LEECHERS = 5
 COL_RATIO = 6
 COL_AVAILABILITY = 7
+COL_QUEUE = 8
 
 
 def torrent_status_text(row, language=None):
@@ -87,6 +88,7 @@ class TorrentListCtrl(AccessibleVirtualListMixin, wx.ListCtrl):
             (COL_LEECHERS, "Leechers", 160),
             (COL_RATIO, "Ratio", 80),
             (COL_AVAILABILITY, "Availability", 110),
+            (COL_QUEUE, "Queue", 80),
         ):
             self.InsertColumn(index, tr_main(heading, language), width=width)
 
@@ -121,6 +123,15 @@ class TorrentListCtrl(AccessibleVirtualListMixin, wx.ListCtrl):
                 return fmt_ratio(row.get("ratio", 0))
             if col == COL_AVAILABILITY:
                 return fmt_availability(row.get("availability"))
+            if col == COL_QUEUE:
+                value = row.get("queue_position")
+                if value is None:
+                    return tr_main("N/A", self.language)
+                try:
+                    position = int(value)
+                except (TypeError, ValueError):
+                    return tr_main("N/A", self.language)
+                return str(position) if position >= 0 else tr_main("N/A", self.language)
             return ""
         except Exception:
             return ""
@@ -195,6 +206,7 @@ class TorrentListCtrl(AccessibleVirtualListMixin, wx.ListCtrl):
             COL_LEECHERS: "leechers_connected",
             COL_RATIO: "ratio",
             COL_AVAILABILITY: "availability",
+            COL_QUEUE: "queue_position",
         }
         key = sort_keys.get(self.sort_col)
         if not key:
