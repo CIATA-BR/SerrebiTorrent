@@ -76,6 +76,18 @@ def test_localized_entry_point_installs_external_catalogs_before_i18n_helpers():
 
 
 
+def test_download_completion_announcements_use_accessibility_event_without_stealing_focus():
+    source = Path("app_entry.py").read_text(encoding="utf-8")
+    assert "CompletionTracker" in source
+    assert '"announce_download_complete", True' in source
+    assert '"Download complete: {name}"' in source
+    assert '"{count} downloads completed."' in source
+    assert "legacy.notify_win_event(" in source
+    assert "0x800C" in source
+    assert "self.statusbar.SetName(message)" in source
+    assert "self._completion_tracker.reset()" in source
+
+
 def test_watch_profile_switch_is_retryable_not_permanent_failure():
     source = Path("app_entry.py").read_text(encoding="utf-8")
     assert "watch_folder.RetryImportLater" in source
