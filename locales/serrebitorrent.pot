@@ -382,6 +382,9 @@ msgstr ""
 msgid "Clear selection of visible torrents"
 msgstr ""
 
+msgid "Clear torrent name filter\tCtrl+Shift+L"
+msgstr ""
+
 msgid "Client"
 msgstr ""
 
@@ -833,6 +836,18 @@ msgid "Files"
 msgstr ""
 
 msgid "Files:"
+msgstr ""
+
+msgid "Filter the current torrent list by name"
+msgstr ""
+
+msgid "Filter torrent list by &name...\tCtrl+L"
+msgstr ""
+
+msgid "Filter torrent list by name:"
+msgstr ""
+
+msgid "Filter Torrents"
 msgstr ""
 
 msgid "Filter:"
@@ -1690,6 +1705,9 @@ msgstr ""
 msgid "Settings saved."
 msgstr ""
 
+msgid "Show all torrents allowed by the current sidebar filter"
+msgstr ""
+
 msgid "Size"
 msgstr ""
 
@@ -1853,6 +1871,12 @@ msgid "Torrent files (*.torrent)|*.torrent"
 msgstr ""
 
 msgid "Torrent List"
+msgstr ""
+
+msgid "Torrent name filter cleared."
+msgstr ""
+
+msgid "Torrent name filter: {query}"
 msgstr ""
 
 msgid "Torrent Options"
