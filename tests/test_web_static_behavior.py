@@ -321,3 +321,19 @@ def test_web_torrent_name_filter_combines_with_sidebar_filters():
     assert "torrentNameFilter.addEventListener('input'" in app
     assert "if (!matchesFilter) return false;" in app
     assert "includes(torrentNameQuery)" in app
+
+
+def test_web_announces_newly_completed_downloads_without_initial_false_positive():
+    app = Path("web_static/app.js").read_text(encoding="utf-8")
+    index = Path("web_static/index.html").read_text(encoding="utf-8")
+    server = Path("web_server.py").read_text(encoding="utf-8")
+
+    assert "let announceDownloadComplete = false;" in app
+    assert "void loadCompletionAnnouncementPreference();" in app
+    assert "if (!isFirstLoad)" in app
+    assert "previousComplete" in app
+    assert "currentComplete" in app
+    assert "Download complete: {name}" in app
+    assert "{count} downloads completed." in app
+    assert 'id="announceDownloadComplete"' in index
+    assert "'announce_download_complete'" in server

@@ -9,6 +9,7 @@ let lastUserActivity = 0;
 let refreshIntervalId = null;
 let refreshInFlight = false;
 let forcedRefreshPending = false;
+let announceDownloadComplete = false;
 
 // Virtual Scrolling Config
 const ROW_HEIGHT = 40;
@@ -152,6 +153,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     // Initial fetch
+    void loadCompletionAnnouncementPreference();
     refreshData(true);
     if (window.fetchProfiles) window.fetchProfiles(); 
     startRefreshLoop();
@@ -469,6 +471,11 @@ window.addEventListener('DOMContentLoaded', () => {
             if (clipboardAutoAdd) data['clipboard_auto_add'] = !!clipboardAutoAdd.checked;
             const clipboardPrefill = document.getElementById('clipboardPrefill');
             if (clipboardPrefill) data['clipboard_prefill'] = !!clipboardPrefill.checked;
+            const completionAnnouncements = document.getElementById('announceDownloadComplete');
+            if (completionAnnouncements) {
+                data['announce_download_complete'] = !!completionAnnouncements.checked;
+                announceDownloadComplete = !!completionAnnouncements.checked;
+            }
             
             try {
                 const res = await apiFetch('/api/v2/app/prefs', {
@@ -644,7 +651,20 @@ async function refreshData(force = false) {
         const infoData = await infoRes.json();
         
         refreshErrorActive = false;
-        const listChanges = syncTorrentsMap(Array.isArray(torrentsList) ? torrentsList : []);
+        const normalizedTorrents = Array.isArray(torrentsList) ? torrentsList : [];
+        const completedNow = [];
+        if (!isFirstLoad) {
+            for (const torrent of normalizedTorrents) {
+                const previous = torrentsMap.get(torrent.hash);
+                if (!previous) continue;
+                const previousComplete = previous.size > 0 && previous.done >= previous.size;
+                const currentComplete = torrent.size > 0 && torrent.done >= torrent.size;
+                if (!previousComplete && currentComplete) {
+                    completedNow.push(torrent.name || torrent.hash);
+                }
+            }
+        }
+        const listChanges = syncTorrentsMap(normalizedTorrents);
         updateFilteredList();
         renderVirtualRows();
         updateSidebarStats(infoData.stats, infoData.trackers);
@@ -687,6 +707,13 @@ async function refreshData(force = false) {
         }
 
         if (!isFirstLoad) {
+            if (announceDownloadComplete && completedNow.length > 0) {
+                const translate = window.SerrebiI18n?.t || ((value) => value);
+                const message = completedNow.length === 1
+                    ? translate('Download complete: {name}').replace('{name}', completedNow[0])
+                    : translate('{count} downloads completed.').replace('{count}', String(completedNow.length));
+                announceToSR(message);
+            }
             const focusedRemovalWasAnnounced =
                 focusedHashBeforeRefresh && listChanges.removed.some(t => t.hash === focusedHashBeforeRefresh);
             const addedCount = listChanges.added.length;
@@ -1623,6 +1650,18 @@ async function copyToClipboard(type) {
         alert(message);
     } finally {
         hideContextMenu();
+    }
+}
+
+async function loadCompletionAnnouncementPreference() {
+    try {
+        const res = await fetch('/api/v2/app/prefs');
+        if (await redirectIfSessionExpired(res)) return;
+        if (!res.ok) return;
+        const prefs = await res.json();
+        announceDownloadComplete = prefs.announce_download_complete !== false;
+    } catch (_error) {
+        // Keep announcements off until the preference can be read safely.
     }
 }
 

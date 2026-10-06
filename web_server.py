@@ -969,6 +969,7 @@ def get_app_prefs():
         'min_to_tray',
         'clipboard_auto_add',
         'clipboard_prefill',
+        'announce_download_complete',
         'language',
     }
     return jsonify({key: prefs[key] for key in web_fields if key in prefs})
@@ -981,6 +982,7 @@ _WEB_APP_PREF_FIELDS = {
     'min_to_tray',
     'clipboard_auto_add',
     'clipboard_prefill',
+    'announce_download_complete',
     'language',
 }
 
@@ -1000,7 +1002,12 @@ def set_app_prefs():
     if disallowed:
         return "Unsupported application preference field.", 400
 
-    bool_fields = {'min_to_tray', 'clipboard_auto_add', 'clipboard_prefill'}
+    bool_fields = {
+        'min_to_tray',
+        'clipboard_auto_add',
+        'clipboard_prefill',
+        'announce_download_complete',
+    }
     for key in bool_fields & set(new_prefs):
         if not isinstance(new_prefs[key], bool):
             return "Invalid boolean application preference.", 400
