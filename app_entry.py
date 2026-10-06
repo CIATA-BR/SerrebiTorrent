@@ -206,6 +206,8 @@ class LocalizedMainFrame(legacy.MainFrame):
         resume_item = actions_menu.Append(
             wx.ID_ANY, _("&Resume\tCtrl+R"), _("Resume selected torrents")
         )
+        start_all_item = actions_menu.Append(wx.ID_ANY, _("Start All"))
+        stop_all_item = actions_menu.Append(wx.ID_ANY, _("Stop All"))
         actions_menu.AppendSeparator()
         recheck_item = actions_menu.Append(
             wx.ID_ANY,
@@ -315,6 +317,8 @@ class LocalizedMainFrame(legacy.MainFrame):
         self.Bind(wx.EVT_MENU, self.on_start, start_item)
         self.Bind(wx.EVT_MENU, self.on_pause, pause_item)
         self.Bind(wx.EVT_MENU, self.on_resume, resume_item)
+        self.Bind(wx.EVT_MENU, lambda event: self.start_all_torrents(), start_all_item)
+        self.Bind(wx.EVT_MENU, lambda event: self.stop_all_torrents(), stop_all_item)
         self.Bind(wx.EVT_MENU, self.on_recheck, recheck_item)
         self.Bind(wx.EVT_MENU, self.on_reannounce, reannounce_item)
         self.Bind(wx.EVT_MENU, self.on_copy_info_hash, copy_hash_item)
@@ -344,6 +348,8 @@ class LocalizedMainFrame(legacy.MainFrame):
             (wx.ACCEL_CTRL, ord("S"), start_item.GetId()),
             (wx.ACCEL_CTRL, ord("P"), pause_item.GetId()),
             (wx.ACCEL_CTRL, ord("R"), resume_item.GetId()),
+            (wx.ACCEL_CTRL | wx.ACCEL_ALT, ord("S"), start_all_item.GetId()),
+            (wx.ACCEL_CTRL | wx.ACCEL_ALT, ord("P"), stop_all_item.GetId()),
             (wx.ACCEL_NORMAL, wx.WXK_DELETE, remove_item.GetId()),
             (wx.ACCEL_SHIFT, wx.WXK_DELETE, remove_data_item.GetId()),
             (wx.ACCEL_CTRL, ord("O"), add_file_item.GetId()),
