@@ -321,3 +321,12 @@ def test_web_torrent_name_filter_combines_with_sidebar_filters():
     assert "torrentNameFilter.addEventListener('input'" in app
     assert "if (!matchesFilter) return false;" in app
     assert "includes(torrentNameQuery)" in app
+
+
+def test_web_ctrl_shift_a_clears_selection():
+    app = Path("web_static/app.js").read_text(encoding="utf-8")
+
+    assert "e.shiftKey" in app
+    assert "selectedHashes.clear();" in app
+    assert "('Selection cleared')" in app
+    assert "e.key.toLowerCase() === 'a'" in app
