@@ -2,6 +2,15 @@
 
 All notable changes to SerrebiTorrent are recorded here.
 
+## v1.23.0 - 2026-10-06
+
+- Add keyboard access to Web torrent filter (#379).
+- Add Web Select none keyboard shortcut (#380).
+- Add Select none keyboard shortcut (#377).
+- Filter Web torrents by name (#376).
+- A11y: announce completed downloads in Web UI (#378).
+- A11y: announce completed downloads to screen readers (#375).
+
 ## v1.22.39 - 2026-10-05
 
 - I18n: translate Clear All button text (#372).
