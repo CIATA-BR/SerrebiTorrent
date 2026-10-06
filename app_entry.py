@@ -268,6 +268,11 @@ class LocalizedMainFrame(legacy.MainFrame):
             _("Open Download &Folder"),
             _("Open the download folder (if available)"),
         )
+        move_data_item = actions_menu.Append(
+            wx.ID_ANY,
+            _("Move torrent &data..."),
+            _("Move selected torrent data to another folder"),
+        )
         actions_menu.AppendSeparator()
         remove_item = actions_menu.Append(
             wx.ID_ANY, _("&Remove\tDel"), _("Remove selected torrents")
@@ -372,6 +377,7 @@ class LocalizedMainFrame(legacy.MainFrame):
         self.Bind(wx.EVT_MENU, self.on_copy_info_hash, copy_hash_item)
         self.Bind(wx.EVT_MENU, self.on_copy_magnet, copy_magnet_item)
         self.Bind(wx.EVT_MENU, self.on_open_download_folder, open_folder_item)
+        self.Bind(wx.EVT_MENU, self.on_move_torrent_data, move_data_item)
         self.Bind(wx.EVT_MENU, self.on_remove, remove_item)
         self.Bind(wx.EVT_MENU, self.on_remove_data, remove_data_item)
         self.Bind(wx.EVT_MENU, self.on_select_all, select_all_item)
@@ -599,6 +605,7 @@ class LocalizedMainFrame(legacy.MainFrame):
         copy_hash = menu.Append(wx.ID_ANY, self._("Copy Info Hash"))
         copy_magnet = menu.Append(wx.ID_ANY, self._("Copy Magnet Link"))
         open_folder = menu.Append(wx.ID_ANY, self._("Open Download Folder"))
+        move_data = menu.Append(wx.ID_ANY, self._("Move torrent data..."))
         menu.AppendSeparator()
         remove = menu.Append(wx.ID_ANY, self._("Remove"))
         remove_data = menu.Append(wx.ID_ANY, self._("Remove with Data"))
@@ -616,6 +623,7 @@ class LocalizedMainFrame(legacy.MainFrame):
         self.Bind(wx.EVT_MENU, self.on_copy_info_hash, copy_hash)
         self.Bind(wx.EVT_MENU, self.on_copy_magnet, copy_magnet)
         self.Bind(wx.EVT_MENU, self.on_open_download_folder, open_folder)
+        self.Bind(wx.EVT_MENU, self.on_move_torrent_data, move_data)
         self.Bind(wx.EVT_MENU, self.on_remove, remove)
         self.Bind(wx.EVT_MENU, self.on_remove_data, remove_data)
 
@@ -623,6 +631,78 @@ class LocalizedMainFrame(legacy.MainFrame):
             self.PopupMenu(menu)
         finally:
             menu.Destroy()
+
+    def on_move_torrent_data(self, event):
+        if not self.client:
+            self.statusbar.SetStatusText(self._("Not connected to any client."), 0)
+            return
+        if not getattr(self.client, "supports_move_storage", False):
+            self.statusbar.SetStatusText(
+                self._("Moving torrent data is not supported by this client."),
+                0,
+            )
+            return
+
+        hashes = self.torrent_list.get_selected_hashes()
+        if not hashes:
+            self.statusbar.SetStatusText(self._("No torrents selected."), 0)
+            return
+
+        dialog = wx.DirDialog(
+            self,
+            self._("Choose the destination folder for selected torrent data"),
+            style=wx.DD_DEFAULT_STYLE | wx.DD_DIR_MUST_EXIST,
+        )
+        try:
+            if dialog.ShowModal() != wx.ID_OK:
+                return
+            destination = dialog.GetPath()
+        finally:
+            dialog.Destroy()
+
+        generation = self.client_generation
+        self.statusbar.SetStatusText(self._("Moving selected torrent data..."), 0)
+        self.thread_pool.submit(
+            self._move_torrent_data_background,
+            self.client,
+            hashes,
+            destination,
+            generation,
+        )
+
+    def _move_torrent_data_background(self, client, hashes, destination, generation):
+        failed = 0
+        last_error = None
+        for torrent_hash in hashes:
+            if generation != self.client_generation or self._closing:
+                return
+            try:
+                client.move_torrent_data(torrent_hash, destination)
+            except Exception as exc:  # noqa: BLE001 - remote client boundary
+                failed += 1
+                last_error = exc
+
+        if generation != self.client_generation or self._closing:
+            return
+        if failed == 0:
+            wx.CallAfter(
+                self._on_action_complete,
+                self._("Selected torrent data moved successfully."),
+            )
+        elif failed < len(hashes):
+            wx.CallAfter(
+                self.statusbar.SetStatusText,
+                self._(
+                    "Torrent data move completed with {failed} failure(s). Last error: {error}"
+                ).format(failed=failed, error=last_error),
+                0,
+            )
+            wx.CallAfter(self.refresh_data)
+        else:
+            wx.CallAfter(
+                self._on_action_error,
+                self._("Failed to move torrent data: {error}").format(error=last_error),
+            )
 
     def _run_queue_action(self, method_name, progress_message, success_message):
         if not self.client:
