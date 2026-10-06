@@ -562,6 +562,9 @@ msgstr ""
 msgid "Deselected {name}"
 msgstr ""
 
+msgid "Destination folder is required."
+msgstr ""
+
 msgid "Diagnose &Torrent\tCtrl+D"
 msgstr ""
 
@@ -685,6 +688,9 @@ msgstr ""
 msgid "Enter RSS Feed URL:"
 msgstr ""
 
+msgid "Enter the destination folder for selected torrent data:"
+msgstr ""
+
 msgid "Error"
 msgstr ""
 
@@ -797,6 +803,9 @@ msgid "Failed to load torrent peers."
 msgstr ""
 
 msgid "Failed to load torrent trackers."
+msgstr ""
+
+msgid "Failed to move torrent data: {error}"
 msgstr ""
 
 msgid "Failed to open download folder."
@@ -1150,6 +1159,9 @@ msgstr ""
 msgid "Move down"
 msgstr ""
 
+msgid "Move selected torrent data to another folder"
+msgstr ""
+
 msgid "Move selected torrents down in the queue"
 msgstr ""
 
@@ -1174,7 +1186,19 @@ msgstr ""
 msgid "Move to top"
 msgstr ""
 
+msgid "Move torrent &data..."
+msgstr ""
+
+msgid "Move Torrent Data"
+msgstr ""
+
+msgid "Move torrent data..."
+msgstr ""
+
 msgid "Move up"
+msgstr ""
+
+msgid "Moving selected torrent data..."
 msgstr ""
 
 msgid "Moving selected torrents down in the queue..."
@@ -1187,6 +1211,9 @@ msgid "Moving selected torrents to the top of the queue..."
 msgstr ""
 
 msgid "Moving selected torrents up in the queue..."
+msgstr ""
+
+msgid "Moving torrent data is not supported by this client."
 msgstr ""
 
 msgid "My &indexers..."
@@ -1771,6 +1798,9 @@ msgstr ""
 msgid "Selected all {count} torrents"
 msgstr ""
 
+msgid "Selected torrent data moved successfully."
+msgstr ""
+
 msgid "Selected torrents moved down in the queue."
 msgstr ""
 
@@ -1958,6 +1988,9 @@ msgid "Torrent already added"
 msgstr ""
 
 msgid "Torrent created:\n{path}"
+msgstr ""
+
+msgid "Torrent data move completed with {failed} failure(s). Last error: {error}"
 msgstr ""
 
 msgid "Torrent Details"

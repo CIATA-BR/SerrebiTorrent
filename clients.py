@@ -317,6 +317,7 @@ def _handle_set_auto_managed(handle, enabled):
 class BaseClient(abc.ABC):
     handles_magnet_start = True
     supports_queue_reordering = False
+    supports_move_storage = False
     _magnet_add_lock = threading.RLock()
 
     def add_magnet(self, url, save_path, start):
@@ -360,6 +361,9 @@ class BaseClient(abc.ABC):
 
     def queue_bottom(self, h):
         raise NotImplementedError("Torrent queue reordering is not supported by this client.")
+
+    def move_torrent_data(self, h, destination):
+        raise NotImplementedError("Moving torrent data is not supported by this client.")
 
     @abc.abstractmethod
     def remove_torrent(self, h):
@@ -791,6 +795,7 @@ class RTorrentClient(BaseClient):
 import qbittorrentapi
 class QBittorrentClient(BaseClient):
     supports_queue_reordering = True
+    supports_move_storage = True
     def find_magnet_duplicate(self, url):
         info_hash = parse_magnet_infohash(url)
         if not info_hash:
@@ -862,6 +867,11 @@ class QBittorrentClient(BaseClient):
     def queue_down(self, h): self.c.torrents_decrease_priority(torrent_hashes=self._normalize_hash(h))
     def queue_top(self, h): self.c.torrents_top_priority(torrent_hashes=self._normalize_hash(h))
     def queue_bottom(self, h): self.c.torrents_bottom_priority(torrent_hashes=self._normalize_hash(h))
+    def move_torrent_data(self, h, destination):
+        self.c.torrents_set_location(
+            torrent_hashes=self._normalize_hash(h),
+            location=destination,
+        )
     def remove_torrent(self, h): self.remove_torrents([h], df=False)
     def remove_torrent_with_data(self, h): self.remove_torrents([h], df=True)
 
@@ -951,6 +961,7 @@ class QBittorrentClient(BaseClient):
 from transmission_rpc import Client as TransClient
 class TransmissionClient(BaseClient):
     supports_queue_reordering = True
+    supports_move_storage = True
 
     def _add_new_magnet(self, url, save_path, start):
         self.c.add_torrent(url, download_dir=save_path, paused=not start)
@@ -1135,6 +1146,8 @@ class TransmissionClient(BaseClient):
     def queue_down(self, h): self.c.queue_down(self._normalize_torrent_id(h))
     def queue_top(self, h): self.c.queue_top(self._normalize_torrent_id(h))
     def queue_bottom(self, h): self.c.queue_bottom(self._normalize_torrent_id(h))
+    def move_torrent_data(self, h, destination):
+        self.c.move_torrent_data(self._normalize_torrent_id(h), location=destination)
     def remove_torrent(self, h): self.c.remove_torrent(self._normalize_torrent_id(h), delete_data=False)
     def remove_torrent_with_data(self, h): self.c.remove_torrent(self._normalize_torrent_id(h), delete_data=True)
     def remove_torrents(self, hs, df=False):
@@ -1290,6 +1303,7 @@ except ImportError:
 from session_manager import SessionManager
 class LocalClient(BaseClient):
     supports_queue_reordering = True
+    supports_move_storage = True
     def find_magnet_duplicate(self, url):
         info_hash = parse_magnet_infohash(url)
         if not info_hash:
@@ -1415,6 +1429,8 @@ class LocalClient(BaseClient):
         self._require_handle(h).queue_position_top()
     def queue_bottom(self, h):
         self._require_handle(h).queue_position_bottom()
+    def move_torrent_data(self, h, destination):
+        self._require_handle(h).move_storage(destination)
     def remove_torrent(self, h): self.m.remove_torrent(h, False)
     def remove_torrent_with_data(self, h): self.m.remove_torrent(h, True)
     def add_torrent_url(self, u, sp=None):

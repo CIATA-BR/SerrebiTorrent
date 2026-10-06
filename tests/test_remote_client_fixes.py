@@ -417,3 +417,47 @@ def test_local_queue_actions_delegate_to_libtorrent_handle():
 
 def test_rtorrent_does_not_claim_queue_reordering_support():
     assert clients.RTorrentClient.supports_queue_reordering is False
+
+
+def test_qbittorrent_move_data_uses_set_location():
+    client = clients.QBittorrentClient.__new__(clients.QBittorrentClient)
+    client.c = MagicMock()
+    client._normalize_hash = lambda value: "normalized"
+
+    client.move_torrent_data("hash", "/downloads/complete")
+
+    client.c.torrents_set_location.assert_called_once_with(
+        torrent_hashes="normalized",
+        location="/downloads/complete",
+    )
+    assert client.supports_move_storage is True
+
+
+def test_transmission_move_data_uses_move_torrent_data():
+    client = clients.TransmissionClient.__new__(clients.TransmissionClient)
+    client.c = MagicMock()
+    client._normalize_torrent_id = lambda value: "normalized"
+
+    client.move_torrent_data("hash", "/downloads/complete")
+
+    client.c.move_torrent_data.assert_called_once_with(
+        "normalized",
+        location="/downloads/complete",
+    )
+    assert client.supports_move_storage is True
+
+
+def test_local_move_data_delegates_to_libtorrent_handle():
+    handle = MagicMock()
+    client = clients.LocalClient.__new__(clients.LocalClient)
+    client.m = MagicMock()
+    client.m._find_handle.return_value = handle
+
+    client.move_torrent_data("hash", "/downloads/complete")
+
+    handle.move_storage.assert_called_once_with("/downloads/complete")
+    assert client.supports_move_storage is True
+
+
+def test_rtorrent_does_not_claim_move_storage_support():
+    assert clients.RTorrentClient.supports_move_storage is False
