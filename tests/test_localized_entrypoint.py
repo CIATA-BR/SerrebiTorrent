@@ -129,3 +129,16 @@ def test_desktop_torrent_name_filter_combines_with_existing_sidebar_filter():
     assert "filtered_display_data," in source
     assert 'ord("L")' in source
     assert "wx.ACCEL_CTRL | wx.ACCEL_SHIFT" in source
+
+
+
+def test_torrent_queue_controls_are_keyboard_accessible():
+    source = Path("app_entry.py").read_text(encoding="utf-8")
+    for handler in ("on_queue_top", "on_queue_up", "on_queue_down", "on_queue_bottom"):
+        assert f"def {handler}(self, event):" in source
+    assert "supports_queue_reordering" in source
+    assert "wx.WXK_HOME" in source
+    assert "wx.WXK_UP" in source
+    assert "wx.WXK_DOWN" in source
+    assert "wx.WXK_END" in source
+    assert "self.thread_pool.submit(" in source
