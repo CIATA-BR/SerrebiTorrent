@@ -308,3 +308,16 @@ def test_web_toolbar_actions_have_contextual_accessible_names():
     ):
         assert f'aria-label="{label}"' in page
         assert f'title="{label}"' in page
+
+
+def test_web_torrent_name_filter_combines_with_sidebar_filters():
+    index = Path("web_static/index.html").read_text(encoding="utf-8")
+    app = Path("web_static/app.js").read_text(encoding="utf-8")
+
+    assert 'id="torrentNameFilter"' in index
+    assert 'type="search"' in index
+    assert 'aria-label="Search"' in index
+    assert "let torrentNameQuery = '';" in app
+    assert "torrentNameFilter.addEventListener('input'" in app
+    assert "if (!matchesFilter) return false;" in app
+    assert "includes(torrentNameQuery)" in app
