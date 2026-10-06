@@ -3,6 +3,8 @@ let domRows = new Map();
 let selectedHashes = new Set();
 let currentFilter = 'All';
 let torrentNameQuery = '';
+let torrentSortKey = 'name';
+let torrentSortAscending = true;
 let currentProfileId = null;
 let lastFocusedHash = null;
 let lastUserActivity = 0;
@@ -123,6 +125,32 @@ window.addEventListener('DOMContentLoaded', () => {
             updateDetailsDebounced();
         });
     }
+
+    document.querySelectorAll('.sort-header').forEach((button) => {
+        button.addEventListener('click', () => {
+            const key = button.dataset.sortKey;
+            if (!key) return;
+            if (torrentSortKey === key) torrentSortAscending = !torrentSortAscending;
+            else {
+                torrentSortKey = key;
+                torrentSortAscending = true;
+            }
+
+            const focusedHash = document.activeElement?.closest?.('tr[data-hash]')?.dataset?.hash
+                || lastFocusedHash;
+            updateFilteredList();
+            renderVirtualRows();
+            updateSortHeaders();
+            if (focusedHash && torrentsMap.has(focusedHash)) focusRow(focusedHash, false);
+
+            const label = button.textContent.trim();
+            announceToSR(
+                (window.SerrebiI18n?.t || ((value) => value))('Sorted by {label}.')
+                    .replace('{label}', label)
+            );
+        });
+    });
+    updateSortHeaders();
 
     const filesTab = document.getElementById('files-tab');
     if (filesTab) {
@@ -824,12 +852,50 @@ function updateFilteredList() {
         if (!torrentNameQuery) return true;
         return String(t.name || '').toLocaleLowerCase().includes(torrentNameQuery);
     });
-    visibleTorrents.sort((a, b) => a.name.localeCompare(b.name));
+    const direction = torrentSortAscending ? 1 : -1;
+    const progressValue = (torrent) => torrent.size > 0 ? torrent.done / torrent.size : 0;
+    const statusValue = (torrent) => {
+        const progress = progressValue(torrent);
+        if (torrent.state === 1 && progress >= 1) return 'Seeding';
+        if (torrent.state === 1) return 'Downloading';
+        return 'Paused';
+    };
+    const compareValues = (a, b) => {
+        if (typeof a === 'string' || typeof b === 'string') {
+            return String(a).localeCompare(String(b), undefined, {numeric: true, sensitivity: 'base'});
+        }
+        return Number(a || 0) - Number(b || 0);
+    };
+    const sortValues = {
+        name: (torrent) => torrent.name || '',
+        size: (torrent) => torrent.size || 0,
+        status: statusValue,
+        progress: progressValue,
+        speed: (torrent) => (Number(torrent.down_rate) || 0) + (Number(torrent.up_rate) || 0),
+    };
+    const valueFor = sortValues[torrentSortKey] || sortValues.name;
+    visibleTorrents.sort((a, b) => {
+        const compared = compareValues(valueFor(a), valueFor(b));
+        if (compared !== 0) return compared * direction;
+        return String(a.name || '').localeCompare(String(b.name || ''), undefined, {sensitivity: 'base'});
+    });
     
     const table = els.table();
     if (table) table.setAttribute('aria-rowcount', visibleTorrents.length);
     const stretcher = els.stretcher();
     if (stretcher) stretcher.style.height = (visibleTorrents.length * ROW_HEIGHT) + 'px';
+}
+
+function updateSortHeaders() {
+    document.querySelectorAll('.sort-header').forEach((button) => {
+        const th = button.closest('th[role="columnheader"]');
+        if (!th) return;
+        const active = button.dataset.sortKey === torrentSortKey;
+        th.setAttribute(
+            'aria-sort',
+            active ? (torrentSortAscending ? 'ascending' : 'descending') : 'none'
+        );
+    });
 }
 
 function renderVirtualRows() {
