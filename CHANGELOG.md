@@ -2,6 +2,14 @@
 
 All notable changes to SerrebiTorrent are recorded here.
 
+## v1.24.0 - 2026-10-06
+
+- Expose Web Start All and Stop All actions (#386).
+- Expose Start All and Stop All desktop actions (#384).
+- Optionally pause torrents when downloads complete (#383).
+- Filter desktop torrents by name (#381).
+- Add accessible Web torrent sorting (#382).
+
 ## v1.23.0 - 2026-10-06
 
 - Add keyboard access to Web torrent filter (#379).
