@@ -371,3 +371,15 @@ def test_web_torrent_table_supports_accessible_sorting():
     assert "speed: (torrent) =>" in app
     assert "progress: progressValue" in app
     assert "Sorted by {label}." in app
+
+
+def test_web_actions_can_start_and_stop_all_loaded_torrents():
+    index = Path("web_static/index.html").read_text(encoding="utf-8")
+    app = Path("web_static/app.js").read_text(encoding="utf-8")
+
+    assert "doActionAll('resume', 'Start All')" in index
+    assert "doActionAll('pause', 'Stop All')" in index
+    assert "function doActionAll(action, actionLabel)" in app
+    assert "torrentsMap.keys()" in app
+    assert "hashesOverride" in app
+    assert "const hashes = hashesOverride ? Array.from(hashesOverride) : Array.from(selectedHashes);" in app
