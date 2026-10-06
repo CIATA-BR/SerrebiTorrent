@@ -1711,6 +1711,9 @@ msgstr ""
 msgid "Settings saved."
 msgstr ""
 
+msgid "Show a system notification when downloads complete"
+msgstr ""
+
 msgid "Show all torrents allowed by the current sidebar filter"
 msgstr ""
 
