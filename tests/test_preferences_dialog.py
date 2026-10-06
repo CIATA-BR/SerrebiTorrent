@@ -78,6 +78,15 @@ def test_completion_announcement_preference_is_exposed_and_saved():
     assert '"announce_download_complete": self.announce_download_complete_chk.GetValue()' in source
 
 
+def test_completion_system_notification_preference_is_exposed_and_saved():
+    from pathlib import Path
+
+    source = Path("preferences_dialog.py").read_text(encoding="utf-8")
+    assert '"Show a system notification when downloads complete"' in source
+    assert 'self.prefs.get("show_download_complete_notification", False)' in source
+    assert '"show_download_complete_notification": self.show_download_complete_notification_chk.GetValue()' in source
+
+
 def test_pause_on_completion_preference_is_exposed_and_saved():
     from pathlib import Path
 

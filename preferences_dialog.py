@@ -118,6 +118,15 @@ class PreferencesDialog(wx.Dialog):
         )
         gen_sizer.Add(self.announce_download_complete_chk, 0, wx.ALL, 5)
 
+        self.show_download_complete_notification_chk = wx.CheckBox(
+            general_panel,
+            label=self._("Show a system notification when downloads complete"),
+        )
+        self.show_download_complete_notification_chk.SetValue(
+            self.prefs.get("show_download_complete_notification", False)
+        )
+        gen_sizer.Add(self.show_download_complete_notification_chk, 0, wx.ALL, 5)
+
         self.pause_on_download_complete_chk = wx.CheckBox(
             general_panel,
             label=self._("Pause torrents when downloads complete"),
@@ -456,6 +465,7 @@ class PreferencesDialog(wx.Dialog):
             "watch_folder": self.watch_input.GetValue().strip(),
             "auto_start": self.auto_start_chk.GetValue(),
             "announce_download_complete": self.announce_download_complete_chk.GetValue(),
+            "show_download_complete_notification": self.show_download_complete_notification_chk.GetValue(),
             "pause_on_download_complete": self.pause_on_download_complete_chk.GetValue(),
             "clipboard_auto_add": self.clipboard_chk.GetValue(),
             "clipboard_prefill": self.clipboard_prefill_chk.GetValue(),

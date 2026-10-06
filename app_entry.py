@@ -653,13 +653,15 @@ class LocalizedMainFrame(legacy.MainFrame):
         if self.statusbar.GetName() == announced_name:
             self.statusbar.SetName(original_name)
 
+    def _completion_message(self, completed):
+        if len(completed) == 1:
+            return self._("Download complete: {name}").format(name=completed[0])
+        return self._("{count} downloads completed.").format(count=len(completed))
+
     def _announce_download_completion(self, completed):
         if not hasattr(self, "statusbar"):
             return
-        if len(completed) == 1:
-            message = self._("Download complete: {name}").format(name=completed[0])
-        else:
-            message = self._("{count} downloads completed.").format(count=len(completed))
+        message = self._completion_message(completed)
 
         self.statusbar.SetStatusText(message, 0)
         original_name = self.statusbar.GetName()
@@ -676,6 +678,21 @@ class LocalizedMainFrame(legacy.MainFrame):
             message,
             original_name,
         )
+
+    def _show_download_completion_notification(self, completed):
+        message = self._completion_message(completed)
+        try:
+            notification = wx.adv.NotificationMessage(
+                "SerrebiTorrent",
+                message,
+                parent=self,
+            )
+            self._download_complete_notification = notification
+            notification.Show(timeout=wx.adv.NotificationMessage.Timeout_Auto)
+        except Exception:
+            # Notifications are optional OS integration. Failure must never
+            # disrupt completion tracking or screen-reader feedback.
+            self._download_complete_notification = None
 
     def _pause_completed_background(self, client, generation, completed_events):
         if generation != self.client_generation or self._closing:
@@ -745,6 +762,8 @@ class LocalizedMainFrame(legacy.MainFrame):
         preferences = self.config_manager.get_preferences()
         if completed and preferences.get("announce_download_complete", True):
             self._announce_download_completion(completed)
+        if completed and preferences.get("show_download_complete_notification", False):
+            self._show_download_completion_notification(completed)
 
         if completion_events and preferences.get("pause_on_download_complete", False):
             try:
