@@ -226,6 +226,32 @@ class LocalizedMainFrame(legacy.MainFrame):
             _("Diagnose &Torrent\tCtrl+D"),
             _("Diagnose the selected torrent"),
         )
+        queue_menu = wx.Menu()
+        queue_top_item = queue_menu.Append(
+            wx.ID_ANY,
+            _("Move to &top\tCtrl+Alt+Home"),
+            _("Move selected torrents to the top of the queue"),
+        )
+        queue_up_item = queue_menu.Append(
+            wx.ID_ANY,
+            _("Move &up\tCtrl+Alt+Up"),
+            _("Move selected torrents up in the queue"),
+        )
+        queue_down_item = queue_menu.Append(
+            wx.ID_ANY,
+            _("Move &down\tCtrl+Alt+Down"),
+            _("Move selected torrents down in the queue"),
+        )
+        queue_bottom_item = queue_menu.Append(
+            wx.ID_ANY,
+            _("Move to &bottom\tCtrl+Alt+End"),
+            _("Move selected torrents to the bottom of the queue"),
+        )
+        actions_menu.AppendSubMenu(
+            queue_menu,
+            _("Queue"),
+            _("Change selected torrent queue position"),
+        )
         actions_menu.AppendSeparator()
         copy_hash_item = actions_menu.Append(
             wx.ID_ANY,
@@ -339,6 +365,10 @@ class LocalizedMainFrame(legacy.MainFrame):
         self.Bind(wx.EVT_MENU, self.on_recheck, recheck_item)
         self.Bind(wx.EVT_MENU, self.on_reannounce, reannounce_item)
         self.Bind(wx.EVT_MENU, self.on_diagnose_torrent, diagnose_item)
+        self.Bind(wx.EVT_MENU, self.on_queue_top, queue_top_item)
+        self.Bind(wx.EVT_MENU, self.on_queue_up, queue_up_item)
+        self.Bind(wx.EVT_MENU, self.on_queue_down, queue_down_item)
+        self.Bind(wx.EVT_MENU, self.on_queue_bottom, queue_bottom_item)
         self.Bind(wx.EVT_MENU, self.on_copy_info_hash, copy_hash_item)
         self.Bind(wx.EVT_MENU, self.on_copy_magnet, copy_magnet_item)
         self.Bind(wx.EVT_MENU, self.on_open_download_folder, open_folder_item)
@@ -371,6 +401,10 @@ class LocalizedMainFrame(legacy.MainFrame):
             (wx.ACCEL_CTRL, ord("D"), diagnose_item.GetId()),
             (wx.ACCEL_CTRL | wx.ACCEL_ALT, ord("S"), start_all_item.GetId()),
             (wx.ACCEL_CTRL | wx.ACCEL_ALT, ord("P"), stop_all_item.GetId()),
+            (wx.ACCEL_CTRL | wx.ACCEL_ALT, wx.WXK_HOME, queue_top_item.GetId()),
+            (wx.ACCEL_CTRL | wx.ACCEL_ALT, wx.WXK_UP, queue_up_item.GetId()),
+            (wx.ACCEL_CTRL | wx.ACCEL_ALT, wx.WXK_DOWN, queue_down_item.GetId()),
+            (wx.ACCEL_CTRL | wx.ACCEL_ALT, wx.WXK_END, queue_bottom_item.GetId()),
             (wx.ACCEL_NORMAL, wx.WXK_DELETE, remove_item.GetId()),
             (wx.ACCEL_SHIFT, wx.WXK_DELETE, remove_data_item.GetId()),
             (wx.ACCEL_CTRL, ord("O"), add_file_item.GetId()),
@@ -555,6 +589,12 @@ class LocalizedMainFrame(legacy.MainFrame):
         recheck = menu.Append(wx.ID_ANY, self._("Force Recheck"))
         reannounce = menu.Append(wx.ID_ANY, self._("Force Reannounce"))
         diagnose = menu.Append(wx.ID_ANY, self._("Diagnose Torrent"))
+        queue_menu = wx.Menu()
+        queue_top = queue_menu.Append(wx.ID_ANY, self._("Move to top"))
+        queue_up = queue_menu.Append(wx.ID_ANY, self._("Move up"))
+        queue_down = queue_menu.Append(wx.ID_ANY, self._("Move down"))
+        queue_bottom = queue_menu.Append(wx.ID_ANY, self._("Move to bottom"))
+        menu.AppendSubMenu(queue_menu, self._("Queue"))
         menu.AppendSeparator()
         copy_hash = menu.Append(wx.ID_ANY, self._("Copy Info Hash"))
         copy_magnet = menu.Append(wx.ID_ANY, self._("Copy Magnet Link"))
@@ -569,6 +609,10 @@ class LocalizedMainFrame(legacy.MainFrame):
         self.Bind(wx.EVT_MENU, self.on_recheck, recheck)
         self.Bind(wx.EVT_MENU, self.on_reannounce, reannounce)
         self.Bind(wx.EVT_MENU, self.on_diagnose_torrent, diagnose)
+        self.Bind(wx.EVT_MENU, self.on_queue_top, queue_top)
+        self.Bind(wx.EVT_MENU, self.on_queue_up, queue_up)
+        self.Bind(wx.EVT_MENU, self.on_queue_down, queue_down)
+        self.Bind(wx.EVT_MENU, self.on_queue_bottom, queue_bottom)
         self.Bind(wx.EVT_MENU, self.on_copy_info_hash, copy_hash)
         self.Bind(wx.EVT_MENU, self.on_copy_magnet, copy_magnet)
         self.Bind(wx.EVT_MENU, self.on_open_download_folder, open_folder)
@@ -579,6 +623,100 @@ class LocalizedMainFrame(legacy.MainFrame):
             self.PopupMenu(menu)
         finally:
             menu.Destroy()
+
+    def _run_queue_action(self, method_name, progress_message, success_message):
+        if not self.client:
+            self.statusbar.SetStatusText(self._("Not connected to any client."), 0)
+            return
+        if not getattr(self.client, "supports_queue_reordering", False):
+            self.statusbar.SetStatusText(
+                self._("Queue reordering is not supported by this client."),
+                0,
+            )
+            return
+
+        hashes = self.torrent_list.get_selected_hashes()
+        if not hashes:
+            self.statusbar.SetStatusText(self._("No torrents selected."), 0)
+            return
+
+        action = getattr(self.client, method_name)
+        generation = self.client_generation
+        self.statusbar.SetStatusText(progress_message, 0)
+        self.thread_pool.submit(
+            self._queue_action_background,
+            action,
+            hashes,
+            generation,
+            success_message,
+            self._("Queue action completed with {failed} failure(s). Last error: {error}"),
+            self._("Queue action failed: {error}"),
+        )
+
+    def _queue_action_background(
+        self,
+        action,
+        hashes,
+        generation,
+        success_message,
+        partial_template,
+        failure_template,
+    ):
+        failed = 0
+        last_error = None
+        for torrent_hash in hashes:
+            if generation != self.client_generation or self._closing:
+                return
+            try:
+                action(torrent_hash)
+            except Exception as exc:  # noqa: BLE001 - remote client boundary
+                failed += 1
+                last_error = exc
+
+        if generation != self.client_generation or self._closing:
+            return
+        if failed == 0:
+            wx.CallAfter(self._on_action_complete, success_message)
+        elif failed < len(hashes):
+            wx.CallAfter(
+                self.statusbar.SetStatusText,
+                partial_template.format(failed=failed, error=last_error),
+                0,
+            )
+            wx.CallAfter(self.refresh_data)
+        else:
+            wx.CallAfter(
+                self._on_action_error,
+                failure_template.format(error=last_error),
+            )
+
+    def on_queue_top(self, event):
+        self._run_queue_action(
+            "queue_top",
+            self._("Moving selected torrents to the top of the queue..."),
+            self._("Selected torrents moved to the top of the queue."),
+        )
+
+    def on_queue_up(self, event):
+        self._run_queue_action(
+            "queue_up",
+            self._("Moving selected torrents up in the queue..."),
+            self._("Selected torrents moved up in the queue."),
+        )
+
+    def on_queue_down(self, event):
+        self._run_queue_action(
+            "queue_down",
+            self._("Moving selected torrents down in the queue..."),
+            self._("Selected torrents moved down in the queue."),
+        )
+
+    def on_queue_bottom(self, event):
+        self._run_queue_action(
+            "queue_bottom",
+            self._("Moving selected torrents to the bottom of the queue..."),
+            self._("Selected torrents moved to the bottom of the queue."),
+        )
 
     def _diagnostic_text(self, finding):
         code = finding.get("code")

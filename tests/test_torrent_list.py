@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from torrent_list import torrent_eta, torrent_status_text
 
 
@@ -30,3 +32,12 @@ def test_torrent_eta_uses_explicit_value_or_derives_from_rate():
     assert torrent_eta({"eta": 17}) == 17
     assert torrent_eta({"size": 1000, "done": 500, "down_rate": 100}) == 5
     assert torrent_eta({"size": 1000, "done": 500, "down_rate": 0}) == -1
+
+
+
+def test_torrent_list_exposes_sortable_queue_column():
+    source = Path("torrent_list.py").read_text(encoding="utf-8")
+    assert "COL_QUEUE = 8" in source
+    assert '(COL_QUEUE, "Queue", 80)' in source
+    assert 'row.get("queue_position")' in source
+    assert 'COL_QUEUE: "queue_position"' in source

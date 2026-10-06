@@ -147,3 +147,16 @@ def test_torrent_diagnosis_action_is_keyboard_accessible():
     assert "diagnose_torrent(torrent)" in source
     assert 'ord("D")' in source
     assert 'self._("Torrent Diagnosis")' in source
+
+
+
+def test_torrent_queue_controls_are_keyboard_accessible():
+    source = Path("app_entry.py").read_text(encoding="utf-8")
+    for handler in ("on_queue_top", "on_queue_up", "on_queue_down", "on_queue_bottom"):
+        assert f"def {handler}(self, event):" in source
+    assert "supports_queue_reordering" in source
+    assert "wx.WXK_HOME" in source
+    assert "wx.WXK_UP" in source
+    assert "wx.WXK_DOWN" in source
+    assert "wx.WXK_END" in source
+    assert "self.thread_pool.submit(" in source

@@ -331,6 +331,9 @@ msgstr ""
 msgid "Category"
 msgstr ""
 
+msgid "Change selected torrent queue position"
+msgstr ""
+
 msgid "Check"
 msgstr ""
 
@@ -1138,6 +1141,54 @@ msgstr ""
 msgid "Most seeders"
 msgstr ""
 
+msgid "Move &down\tCtrl+Alt+Down"
+msgstr ""
+
+msgid "Move &up\tCtrl+Alt+Up"
+msgstr ""
+
+msgid "Move down"
+msgstr ""
+
+msgid "Move selected torrents down in the queue"
+msgstr ""
+
+msgid "Move selected torrents to the bottom of the queue"
+msgstr ""
+
+msgid "Move selected torrents to the top of the queue"
+msgstr ""
+
+msgid "Move selected torrents up in the queue"
+msgstr ""
+
+msgid "Move to &bottom\tCtrl+Alt+End"
+msgstr ""
+
+msgid "Move to &top\tCtrl+Alt+Home"
+msgstr ""
+
+msgid "Move to bottom"
+msgstr ""
+
+msgid "Move to top"
+msgstr ""
+
+msgid "Move up"
+msgstr ""
+
+msgid "Moving selected torrents down in the queue..."
+msgstr ""
+
+msgid "Moving selected torrents to the bottom of the queue..."
+msgstr ""
+
+msgid "Moving selected torrents to the top of the queue..."
+msgstr ""
+
+msgid "Moving selected torrents up in the queue..."
+msgstr ""
+
 msgid "My &indexers..."
 msgstr ""
 
@@ -1418,6 +1469,15 @@ msgid "qBittorrent Remote Settings..."
 msgstr ""
 
 msgid "Queue"
+msgstr ""
+
+msgid "Queue action completed with {failed} failure(s). Last error: {error}"
+msgstr ""
+
+msgid "Queue action failed: {error}"
+msgstr ""
+
+msgid "Queue reordering is not supported by this client."
 msgstr ""
 
 msgid "Ratio"
@@ -1709,6 +1769,18 @@ msgid "Select {name}"
 msgstr ""
 
 msgid "Selected all {count} torrents"
+msgstr ""
+
+msgid "Selected torrents moved down in the queue."
+msgstr ""
+
+msgid "Selected torrents moved to the bottom of the queue."
+msgstr ""
+
+msgid "Selected torrents moved to the top of the queue."
+msgstr ""
+
+msgid "Selected torrents moved up in the queue."
 msgstr ""
 
 msgid "Selected {name}"
