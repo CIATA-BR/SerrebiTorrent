@@ -56,3 +56,12 @@ def test_zero_size_and_missing_hash_are_ignored():
         _torrent("a", 100, size=0),
         {"name": "No hash", "size": 100, "done": 100},
     ]) == []
+
+
+def test_update_events_exposes_hash_and_name():
+    tracker = CompletionTracker()
+    tracker.update_events([_torrent("abc", 50, name="Example")])
+
+    assert tracker.update_events([_torrent("abc", 100, name="Example")]) == [
+        {"hash": "abc", "name": "Example"}
+    ]
