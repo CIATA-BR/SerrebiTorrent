@@ -790,6 +790,7 @@ class RTorrentClient(BaseClient):
 # --- qBit ---
 import qbittorrentapi
 class QBittorrentClient(BaseClient):
+    supports_queue_reordering = True
     def find_magnet_duplicate(self, url):
         info_hash = parse_magnet_infohash(url)
         if not info_hash:
@@ -1288,6 +1289,7 @@ except ImportError:
     lt = None
 from session_manager import SessionManager
 class LocalClient(BaseClient):
+    supports_queue_reordering = True
     def find_magnet_duplicate(self, url):
         info_hash = parse_magnet_infohash(url)
         if not info_hash:
