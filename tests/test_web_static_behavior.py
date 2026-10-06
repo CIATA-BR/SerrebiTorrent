@@ -321,3 +321,13 @@ def test_web_torrent_name_filter_combines_with_sidebar_filters():
     assert "torrentNameFilter.addEventListener('input'" in app
     assert "if (!matchesFilter) return false;" in app
     assert "includes(torrentNameQuery)" in app
+
+
+def test_web_torrent_name_filter_has_keyboard_shortcuts():
+    app = Path("web_static/app.js").read_text(encoding="utf-8")
+
+    assert "e.key === '/'" in app
+    assert "torrentNameFilter.focus()" in app
+    assert "torrentNameFilter.select()" in app
+    assert "document.activeElement === torrentNameFilter && e.key === 'Escape'" in app
+    assert "torrentNameFilter.dispatchEvent(new Event('input'" in app
