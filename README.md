@@ -176,6 +176,7 @@ Everything stays reachable by keyboard:
 - `Ctrl+O` / `Ctrl+U` — Add torrent file / Add URL or magnet
 - `Ctrl+S` / `Ctrl+P` — Start / Stop selected torrents
 - `Ctrl+Alt+S` / `Ctrl+Alt+P` — Start / Stop all torrents
+- `Ctrl+D` — Diagnose the selected torrent and explain common stalled-download causes
 - `Delete` / `Shift+Delete` — Remove / Remove with data
 - `Ctrl+A` — Select all
 - `Ctrl+N` — Create a torrent
