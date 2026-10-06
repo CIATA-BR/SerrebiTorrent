@@ -1582,11 +1582,10 @@ async function updateDetails() {
     }
 }
 
-async function doAction(action, deleteFiles = false, actionLabel = null) {
-    if (selectedHashes.size === 0) return;
+async function doAction(action, deleteFiles = false, actionLabel = null, hashesOverride = null) {
+    const hashes = hashesOverride ? Array.from(hashesOverride) : Array.from(selectedHashes);
+    if (hashes.length === 0) return;
     if (action === 'delete' && !confirmDeleteAction(deleteFiles)) return;
-
-    const hashes = Array.from(selectedHashes);
     const batchSize = 100;
     let completed = 0;
 
@@ -1637,6 +1636,10 @@ async function doAction(action, deleteFiles = false, actionLabel = null) {
         announceToSR(message, true);
         alert(message);
     }
+}
+
+function doActionAll(action, actionLabel) {
+    return doAction(action, false, actionLabel, torrentsMap.keys());
 }
 
 function confirmDeleteAction(deleteFiles) {
