@@ -99,3 +99,12 @@ def test_localized_entry_point_can_clear_torrent_selection_without_moving_focus(
     assert "def on_select_none(self, event):" in source
     assert "self.torrent_list.Select(index, False)" in source
     assert "_(\"Select &none\")" in source
+
+
+def test_main_actions_expose_start_and_stop_all():
+    source = Path("app_entry.py").read_text(encoding="utf-8")
+    assert '_("Start All")' in source
+    assert '_("Stop All")' in source
+    assert "self.start_all_torrents()" in source
+    assert "self.stop_all_torrents()" in source
+    assert "wx.ACCEL_CTRL | wx.ACCEL_ALT" in source
