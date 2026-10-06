@@ -22,6 +22,7 @@ install_external_catalogs()
 
 import main as legacy
 import watch_folder
+from completion_notifications import CompletionTracker
 from add_torrent_dialog import AddTorrentDialog as LocalizedAddTorrentDialog
 from connection_dialog import ConnectDialog
 from main_ui_i18n import sidebar_label, tr_main
@@ -45,6 +46,7 @@ class LocalizedMainFrame(legacy.MainFrame):
         return tr_main(text, self._language())
 
     def __init__(self):
+        self._completion_tracker = CompletionTracker()
         super().__init__()
         self._install_localized_torrent_list()
         self._apply_localized_static_labels()
@@ -415,6 +417,7 @@ class LocalizedMainFrame(legacy.MainFrame):
         profile = self.config_manager.get_profile(pid)
         if not profile:
             return
+        self._completion_tracker.reset()
         super().connect_profile(pid)
         if hasattr(self, "statusbar") and not self.connected:
             self.statusbar.SetStatusText(self._("Connecting..."), 0)
@@ -517,6 +520,36 @@ class LocalizedMainFrame(legacy.MainFrame):
         info.AddDeveloper("serrebidev")
         wx.adv.AboutBox(info)
 
+    def _restore_statusbar_accessible_name(self, announced_name, original_name):
+        if self._closing or not hasattr(self, "statusbar"):
+            return
+        if self.statusbar.GetName() == announced_name:
+            self.statusbar.SetName(original_name)
+
+    def _announce_download_completion(self, completed):
+        if not hasattr(self, "statusbar"):
+            return
+        if len(completed) == 1:
+            message = self._("Download complete: {name}").format(name=completed[0])
+        else:
+            message = self._("{count} downloads completed.").format(count=len(completed))
+
+        self.statusbar.SetStatusText(message, 0)
+        original_name = self.statusbar.GetName()
+        self.statusbar.SetName(message)
+        legacy.notify_win_event(
+            0x800C,  # EVENT_OBJECT_NAMECHANGE
+            self.statusbar.GetHandle(),
+            legacy.OBJID_CLIENT,
+            0,
+        )
+        wx.CallLater(
+            1500,
+            self._restore_statusbar_accessible_name,
+            message,
+            original_name,
+        )
+
     def _on_refresh_complete(
         self,
         generation,
@@ -536,6 +569,22 @@ class LocalizedMainFrame(legacy.MainFrame):
             g_down,
             g_up,
         )
+        if (
+            self._closing
+            or generation != self.client_generation
+            or not self.connected
+        ):
+            return
+
+        completed = self._completion_tracker.update(torrents)
+        if (
+            completed
+            and self.config_manager.get_preferences().get(
+                "announce_download_complete", True
+            )
+        ):
+            self._announce_download_completion(completed)
+
         language = self._language()
         for key, item_id in self.cat_ids.items():
             self.sidebar.SetItemText(item_id, sidebar_label(key, stats.get(key, 0), language))

@@ -125,6 +125,8 @@ _PT_BR_MAIN = {
     "Failed to access clipboard.": "Falha ao acessar a área de transferência.",
     "Opened download folder.": "Pasta de download aberta.",
     "Download folder not available.": "Pasta de download indisponível.",
+    "Download complete: {name}": "Download concluído: {name}",
+    "{count} downloads completed.": "{count} downloads concluídos.",
     "Failed to apply settings: {error}": "Falha ao aplicar as configurações: {error}",
     "Another instance of SerrebiTorrent is already running.": "Outra instância do SerrebiTorrent já está em execução.",
     "Error": "Erro",

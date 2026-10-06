@@ -220,6 +220,9 @@ msgstr ""
 msgid "An update is already in progress."
 msgstr ""
 
+msgid "Announce completed downloads to screen readers"
+msgstr ""
+
 msgid "Announce IP (reported to trackers, blank = auto):"
 msgstr ""
 
@@ -557,6 +560,9 @@ msgid "Do not download"
 msgstr ""
 
 msgid "Down Speed"
+msgstr ""
+
+msgid "Download complete: {name}"
 msgstr ""
 
 msgid "Download folder is unavailable."
@@ -2039,6 +2045,9 @@ msgid "{action} complete ({failed} failed). Last error: {error}"
 msgstr ""
 
 msgid "{client} Remote Settings"
+msgstr ""
+
+msgid "{count} downloads completed."
 msgstr ""
 
 msgid "{count} feeds"

@@ -109,6 +109,15 @@ class PreferencesDialog(wx.Dialog):
         self.auto_start_chk.SetValue(self.prefs.get("auto_start", True))
         gen_sizer.Add(self.auto_start_chk, 0, wx.ALL, 5)
 
+        self.announce_download_complete_chk = wx.CheckBox(
+            general_panel,
+            label=self._("Announce completed downloads to screen readers"),
+        )
+        self.announce_download_complete_chk.SetValue(
+            self.prefs.get("announce_download_complete", True)
+        )
+        gen_sizer.Add(self.announce_download_complete_chk, 0, wx.ALL, 5)
+
         self.clipboard_chk = wx.CheckBox(general_panel, label=self._("Automatically open the Add Torrent dialog for clipboard magnets"))
         self.clipboard_chk.SetValue(self.prefs.get("clipboard_auto_add", False))
         gen_sizer.Add(self.clipboard_chk, 0, wx.ALL, 5)
@@ -437,6 +446,7 @@ class PreferencesDialog(wx.Dialog):
             "download_path": self.path_input.GetValue(),
             "watch_folder": self.watch_input.GetValue().strip(),
             "auto_start": self.auto_start_chk.GetValue(),
+            "announce_download_complete": self.announce_download_complete_chk.GetValue(),
             "clipboard_auto_add": self.clipboard_chk.GetValue(),
             "clipboard_prefill": self.clipboard_prefill_chk.GetValue(),
             "min_to_tray": self.min_tray_chk.GetValue(),
