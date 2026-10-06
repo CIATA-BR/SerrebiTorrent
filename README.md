@@ -164,6 +164,10 @@ Other environment variables:
 
 If an update fails, the backup is restored automatically. Check the updater log in `%TEMP%\SerrebiTorrent_update_*.log` if something goes wrong. The update process runs completely hidden — no console windows appear, and user data in `SerrebiTorrent_Data` is preserved throughout.
 
+## Download completion automation
+
+Local Session Settings includes **Pause torrents when downloads complete**. It is off by default. When enabled, SerrebiTorrent pauses only torrents that transition from incomplete to complete while the current profile is active; already-complete torrents are not paused on startup or profile switch.
+
 ## Accessibility and shortcuts
 
 Everything stays reachable by keyboard:
