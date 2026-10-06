@@ -80,6 +80,7 @@ DEFAULT_PREFERENCES: Dict[str, Any] = {
     "enable_dht": True,
     "enable_lsd": True,
     "auto_start": True,
+    "announce_download_complete": True,
     "clipboard_auto_add": False,
     "clipboard_prefill": True,
     "watch_folder": "",
