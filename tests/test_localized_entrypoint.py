@@ -108,3 +108,15 @@ def test_main_actions_expose_start_and_stop_all():
     assert "self.start_all_torrents()" in source
     assert "self.stop_all_torrents()" in source
     assert "wx.ACCEL_CTRL | wx.ACCEL_ALT" in source
+def test_desktop_torrent_name_filter_combines_with_existing_sidebar_filter():
+    source = Path("app_entry.py").read_text(encoding="utf-8")
+
+    assert 'self._name_filter_query = ""' in source
+    assert "def on_filter_torrents_by_name(self, event):" in source
+    assert "def on_clear_torrent_name_filter(self, event):" in source
+    assert "filtered_display_data = display_data" in source
+    assert 'torrent.get("name")' in source
+    assert "casefold()" in source
+    assert "filtered_display_data," in source
+    assert 'ord("L")' in source
+    assert "wx.ACCEL_CTRL | wx.ACCEL_SHIFT" in source

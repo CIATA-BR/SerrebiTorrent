@@ -355,3 +355,19 @@ def test_web_announces_newly_completed_downloads_without_initial_false_positive(
     assert "{count} downloads completed." in app
     assert 'id="announceDownloadComplete"' in index
     assert "'announce_download_complete'" in server
+
+
+def test_web_torrent_table_supports_accessible_sorting():
+    index = Path("web_static/index.html").read_text(encoding="utf-8")
+    app = Path("web_static/app.js").read_text(encoding="utf-8")
+
+    for key in ("name", "size", "status", "progress", "speed"):
+        assert f'data-sort-key="{key}"' in index
+    assert 'aria-sort="ascending"' in index
+    assert "let torrentSortKey = 'name';" in app
+    assert "let torrentSortAscending = true;" in app
+    assert "function updateSortHeaders()" in app
+    assert "'aria-sort'" in app
+    assert "speed: (torrent) =>" in app
+    assert "progress: progressValue" in app
+    assert "Sorted by {label}." in app
