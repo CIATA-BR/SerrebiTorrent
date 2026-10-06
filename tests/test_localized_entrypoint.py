@@ -129,3 +129,13 @@ def test_desktop_torrent_name_filter_combines_with_existing_sidebar_filter():
     assert "filtered_display_data," in source
     assert 'ord("L")' in source
     assert "wx.ACCEL_CTRL | wx.ACCEL_SHIFT" in source
+
+
+def test_torrent_diagnosis_action_is_keyboard_accessible():
+    source = Path("app_entry.py").read_text(encoding="utf-8")
+    assert "from torrent_diagnostics import diagnose_torrent" in source
+    assert '_("Diagnose &Torrent\\tCtrl+D")' in source
+    assert "def on_diagnose_torrent(self, event):" in source
+    assert "diagnose_torrent(torrent)" in source
+    assert 'ord("D")' in source
+    assert 'self._("Torrent Diagnosis")' in source
