@@ -173,7 +173,10 @@
         '{count} torrent removed.': '{count} torrent removido.',
         '{count} torrents removed.': '{count} torrents removidos.',
         'Session expired. Please sign in again.': 'Sessão expirada. Entre novamente.',
-        'Focused torrent is no longer available. The torrent list is empty.': 'O torrent em foco não está mais disponível. A lista de torrents está vazia.'
+        'Focused torrent is no longer available. The torrent list is empty.': 'O torrent em foco não está mais disponível. A lista de torrents está vazia.',
+        'Announce completed downloads to screen readers': 'Anunciar downloads concluídos aos leitores de tela',
+        'Download complete: {name}': 'Download concluído: {name}',
+        '{count} downloads completed.': '{count} downloads concluídos.'
     };
 
     const REMOTE_WORDS = {
@@ -202,6 +205,8 @@
     // Messages built with values: the key's {placeholders} take the regex captures in order.
     const TEMPLATES = [
         [/^Selected all (\d+) torrents$/, 'Selected all {count} torrents'],
+        [/^Download complete: (.+)$/, 'Download complete: {name}'],
+        [/^(\d+) downloads completed\.$/, '{count} downloads completed.'],
         [/^(\d+) torrent added\.$/, '{count} torrent added.'],
         [/^(\d+) torrents added\.$/, '{count} torrents added.'],
         [/^(\d+) torrent removed\.$/, '{count} torrent removed.'],
