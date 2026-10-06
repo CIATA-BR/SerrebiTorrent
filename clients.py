@@ -316,6 +316,7 @@ def _handle_set_auto_managed(handle, enabled):
 
 class BaseClient(abc.ABC):
     handles_magnet_start = True
+    supports_queue_reordering = False
     _magnet_add_lock = threading.RLock()
 
     def add_magnet(self, url, save_path, start):
@@ -347,6 +348,18 @@ class BaseClient(abc.ABC):
     @abc.abstractmethod
     def stop_torrent(self, h):
         pass
+
+    def queue_up(self, h):
+        raise NotImplementedError("Torrent queue reordering is not supported by this client.")
+
+    def queue_down(self, h):
+        raise NotImplementedError("Torrent queue reordering is not supported by this client.")
+
+    def queue_top(self, h):
+        raise NotImplementedError("Torrent queue reordering is not supported by this client.")
+
+    def queue_bottom(self, h):
+        raise NotImplementedError("Torrent queue reordering is not supported by this client.")
 
     @abc.abstractmethod
     def remove_torrent(self, h):
@@ -833,13 +846,21 @@ class QBittorrentClient(BaseClient):
                 elif state_key == "missingfiles":
                     message = "Missing files"
                 tracker_domain = _safe_tracker_domain(getattr(t, "tracker", "") or "")
-                res.append({"hash": t.hash, "name": t.name, "size": t.total_size, "done": t.completed, "up_total": t.uploaded, "ratio": t.ratio * 1000, "state": sv, "active": av, "hashing": hv, "message": message, "down_rate": t.dlspeed, "up_rate": t.upspeed, "tracker_domain": tracker_domain, "eta": int(getattr(t, "eta", -1) or -1), "seeds_connected": int(getattr(t, "num_seeds", 0) or 0), "seeds_total": int(getattr(t, "num_complete", 0) or 0), "leechers_connected": int(getattr(t, "num_leechs", 0) or 0), "leechers_total": int(getattr(t, "num_incomplete", 0) or 0), "availability": getattr(t, "availability", None), "save_path": getattr(t, "save_path", None)})
+                try:
+                    queue_position = int(getattr(t, "priority", -1))
+                except (TypeError, ValueError):
+                    queue_position = -1
+                res.append({"hash": t.hash, "name": t.name, "size": t.total_size, "done": t.completed, "up_total": t.uploaded, "ratio": t.ratio * 1000, "state": sv, "active": av, "hashing": hv, "message": message, "down_rate": t.dlspeed, "up_rate": t.upspeed, "tracker_domain": tracker_domain, "eta": int(getattr(t, "eta", -1) or -1), "seeds_connected": int(getattr(t, "num_seeds", 0) or 0), "seeds_total": int(getattr(t, "num_complete", 0) or 0), "leechers_connected": int(getattr(t, "num_leechs", 0) or 0), "leechers_total": int(getattr(t, "num_incomplete", 0) or 0), "availability": getattr(t, "availability", None), "queue_position": queue_position, "save_path": getattr(t, "save_path", None)})
             return res
         except Exception as e:
             print(f"qBittorrent error: {e}")
             raise
     def start_torrent(self, h): self._torrent_action("torrents_start", "torrents_resume", h)
     def stop_torrent(self, h): self._torrent_action("torrents_stop", "torrents_pause", h)
+    def queue_up(self, h): self.c.torrents_increase_priority(torrent_hashes=self._normalize_hash(h))
+    def queue_down(self, h): self.c.torrents_decrease_priority(torrent_hashes=self._normalize_hash(h))
+    def queue_top(self, h): self.c.torrents_top_priority(torrent_hashes=self._normalize_hash(h))
+    def queue_bottom(self, h): self.c.torrents_bottom_priority(torrent_hashes=self._normalize_hash(h))
     def remove_torrent(self, h): self.remove_torrents([h], df=False)
     def remove_torrent_with_data(self, h): self.remove_torrents([h], df=True)
 
@@ -928,6 +949,8 @@ class QBittorrentClient(BaseClient):
 # --- Trans ---
 from transmission_rpc import Client as TransClient
 class TransmissionClient(BaseClient):
+    supports_queue_reordering = True
+
     def _add_new_magnet(self, url, save_path, start):
         self.c.add_torrent(url, download_dir=save_path, paused=not start)
 
@@ -1080,7 +1103,7 @@ class TransmissionClient(BaseClient):
                 seeds_total, leechers_total = self._swarm_counts(t)
                 size, done = self._completion_bytes(t)
                 ratio = self._float(self._field(t, "ratio", default=0.0)) * 1000
-                res.append({"hash": self._field(t, "hash_string", "hashString", "hash", default=""), "name": self._field(t, "name", default=""), "size": size, "done": done, "up_total": self._int(self._field(t, "uploaded_ever", "uploadedEver", default=0)), "ratio": ratio, "state": sv, "active": av, "hashing": hv, "message": self._field(t, "error_string", "errorString", default=""), "down_rate": self._int(self._field(t, "rate_download", "rateDownload", default=0)), "up_rate": self._int(self._field(t, "rate_upload", "rateUpload", default=0)), "tracker_domain": tracker_domain, "eta": self._eta_seconds(self._field(t, "eta", default=-1)), "seeds_connected": self._int(self._field(t, "peers_sending_to_us", "peersSendingToUs", default=0)), "seeds_total": seeds_total, "leechers_connected": self._int(self._field(t, "peers_getting_from_us", "peersGettingFromUs", default=0)), "leechers_total": leechers_total, "availability": None, "save_path": self._field(t, "download_dir", "downloadDir", default=None)})
+                res.append({"hash": self._field(t, "hash_string", "hashString", "hash", default=""), "name": self._field(t, "name", default=""), "size": size, "done": done, "up_total": self._int(self._field(t, "uploaded_ever", "uploadedEver", default=0)), "ratio": ratio, "state": sv, "active": av, "hashing": hv, "message": self._field(t, "error_string", "errorString", default=""), "down_rate": self._int(self._field(t, "rate_download", "rateDownload", default=0)), "up_rate": self._int(self._field(t, "rate_upload", "rateUpload", default=0)), "tracker_domain": tracker_domain, "eta": self._eta_seconds(self._field(t, "eta", default=-1)), "seeds_connected": self._int(self._field(t, "peers_sending_to_us", "peersSendingToUs", default=0)), "seeds_total": seeds_total, "leechers_connected": self._int(self._field(t, "peers_getting_from_us", "peersGettingFromUs", default=0)), "leechers_total": leechers_total, "availability": None, "queue_position": self._int(self._field(t, "queue_position", "queuePosition", default=-1), -1), "save_path": self._field(t, "download_dir", "downloadDir", default=None)})
             return res
         except Exception as e:
             print(f"Transmission error: {e}")
@@ -1107,6 +1130,10 @@ class TransmissionClient(BaseClient):
 
     def start_torrent(self, h): self.c.start_torrent(self._normalize_torrent_id(h))
     def stop_torrent(self, h): self.c.stop_torrent(self._normalize_torrent_id(h))
+    def queue_up(self, h): self.c.queue_up(self._normalize_torrent_id(h))
+    def queue_down(self, h): self.c.queue_down(self._normalize_torrent_id(h))
+    def queue_top(self, h): self.c.queue_top(self._normalize_torrent_id(h))
+    def queue_bottom(self, h): self.c.queue_bottom(self._normalize_torrent_id(h))
     def remove_torrent(self, h): self.c.remove_torrent(self._normalize_torrent_id(h), delete_data=False)
     def remove_torrent_with_data(self, h): self.c.remove_torrent(self._normalize_torrent_id(h), delete_data=True)
     def remove_torrents(self, hs, df=False):
@@ -1343,7 +1370,11 @@ class LocalClient(BaseClient):
                 except Exception:
                     pass
                 tracker_domain = _safe_tracker_domain(getattr(s, "current_tracker", "") or "")
-                row = {"hash": str(ihs), "name": str(s.name if s.name else ihs), "size": int(s.total_wanted), "done": int(s.total_wanted_done), "up_total": int(s.all_time_upload), "ratio": int(ratio), "state": int(sv), "active": int(av), "hashing": int(hv), "message": str(s.errc.message() if s.errc else ""), "down_rate": int(s.download_payload_rate), "up_rate": int(s.upload_payload_rate), "tracker_domain": tracker_domain, "save_path": str(getattr(s, 'save_path', None) or self._edp()), "eta": int(eta), "seeds_connected": int(getattr(s, 'num_seeds', 0)), "seeds_total": int(s.num_complete), "leechers_connected": int(max(0, int(getattr(s, 'num_peers', s.num_connections)) - int(getattr(s, 'num_seeds', 0)))), "leechers_total": int(s.num_incomplete), "availability": ac}
+                try:
+                    queue_position = int(getattr(s, "queue_position", -1))
+                except (TypeError, ValueError):
+                    queue_position = -1
+                row = {"hash": str(ihs), "name": str(s.name if s.name else ihs), "size": int(s.total_wanted), "done": int(s.total_wanted_done), "up_total": int(s.all_time_upload), "ratio": int(ratio), "state": int(sv), "active": int(av), "hashing": int(hv), "message": str(s.errc.message() if s.errc else ""), "down_rate": int(s.download_payload_rate), "up_rate": int(s.upload_payload_rate), "tracker_domain": tracker_domain, "save_path": str(getattr(s, 'save_path', None) or self._edp()), "eta": int(eta), "seeds_connected": int(getattr(s, 'num_seeds', 0)), "seeds_total": int(s.num_complete), "leechers_connected": int(max(0, int(getattr(s, 'num_peers', s.num_connections)) - int(getattr(s, 'num_seeds', 0)))), "leechers_total": int(s.num_incomplete), "availability": ac, "queue_position": queue_position}
                 if hashes:
                     row["hashes"] = hashes
                     if hashes.get("v1"):
@@ -1374,6 +1405,14 @@ class LocalClient(BaseClient):
         # shows a torrent as Stopped when paused and NOT auto-managed.
         _handle_set_auto_managed(x, False)
         x.pause()
+    def queue_up(self, h):
+        self._require_handle(h).queue_position_up()
+    def queue_down(self, h):
+        self._require_handle(h).queue_position_down()
+    def queue_top(self, h):
+        self._require_handle(h).queue_position_top()
+    def queue_bottom(self, h):
+        self._require_handle(h).queue_position_bottom()
     def remove_torrent(self, h): self.m.remove_torrent(h, False)
     def remove_torrent_with_data(self, h): self.m.remove_torrent(h, True)
     def add_torrent_url(self, u, sp=None):
