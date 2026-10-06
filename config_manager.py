@@ -81,6 +81,7 @@ DEFAULT_PREFERENCES: Dict[str, Any] = {
     "enable_lsd": True,
     "auto_start": True,
     "announce_download_complete": True,
+    "pause_on_download_complete": False,
     "clipboard_auto_add": False,
     "clipboard_prefill": True,
     "watch_folder": "",

@@ -610,6 +610,34 @@ class LocalizedMainFrame(legacy.MainFrame):
             original_name,
         )
 
+    def _pause_completed_background(self, client, generation, completed_events):
+        if generation != self.client_generation or self._closing:
+            return
+
+        failures = []
+        for event in completed_events:
+            if generation != self.client_generation or self._closing:
+                return
+            try:
+                client.stop_torrent(event["hash"])
+            except Exception as exc:  # noqa: BLE001 - client boundary
+                failures.append((event["name"], exc))
+
+        if generation != self.client_generation or self._closing:
+            return
+
+        if failures:
+            name, error = failures[0]
+            wx.CallAfter(
+                self.statusbar.SetStatusText,
+                self._("Failed to pause completed torrent {name}: {error}").format(
+                    name=name,
+                    error=error,
+                ),
+                0,
+            )
+        wx.CallAfter(self.refresh_data)
+
     def _on_refresh_complete(
         self,
         generation,
@@ -645,14 +673,22 @@ class LocalizedMainFrame(legacy.MainFrame):
         ):
             return
 
-        completed = self._completion_tracker.update(torrents)
-        if (
-            completed
-            and self.config_manager.get_preferences().get(
-                "announce_download_complete", True
-            )
-        ):
+        completion_events = self._completion_tracker.update_events(torrents)
+        completed = [event["name"] for event in completion_events]
+        preferences = self.config_manager.get_preferences()
+        if completed and preferences.get("announce_download_complete", True):
             self._announce_download_completion(completed)
+
+        if completion_events and preferences.get("pause_on_download_complete", False):
+            try:
+                self.thread_pool.submit(
+                    self._pause_completed_background,
+                    self.client,
+                    generation,
+                    completion_events,
+                )
+            except RuntimeError:
+                pass
 
         language = self._language()
         for key, item_id in self.cat_ids.items():

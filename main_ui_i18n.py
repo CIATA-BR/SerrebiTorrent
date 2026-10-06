@@ -135,6 +135,8 @@ _PT_BR_MAIN = {
     "Opened download folder.": "Pasta de download aberta.",
     "Download folder not available.": "Pasta de download indisponível.",
     "Download complete: {name}": "Download concluído: {name}",
+    "Failed to pause completed torrent {name}: {error}":
+        "Falha ao pausar o torrent concluído {name}: {error}",
     "{count} downloads completed.": "{count} downloads concluídos.",
     "Failed to apply settings: {error}": "Falha ao aplicar as configurações: {error}",
     "Another instance of SerrebiTorrent is already running.": "Outra instância do SerrebiTorrent já está em execução.",

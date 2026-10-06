@@ -230,6 +230,8 @@ _PT_BR: Mapping[str, str] = {
     "Deselect all torrent files": "Desmarcar todos os arquivos do torrent",
     "Announce completed downloads to screen readers":
         "Anunciar downloads concluídos aos leitores de tela",
+    "Pause torrents when downloads complete":
+        "Pausar torrents quando os downloads forem concluídos",
     "Automatically open the Add Torrent dialog for clipboard magnets":
         "Abrir automaticamente a janela Adicionar torrent para magnets da área de transferência",
     "Prefill Add URL from clipboard (magnets and .torrent URLs)":

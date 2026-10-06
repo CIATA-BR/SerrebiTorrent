@@ -25,7 +25,7 @@ class CompletionTracker:
     def reset(self) -> None:
         self._complete_by_hash = None
 
-    def update(self, torrents) -> list[str]:
+    def update_events(self, torrents) -> list[dict[str, str]]:
         current = {}
         names = {}
         for torrent in torrents or []:
@@ -43,7 +43,10 @@ class CompletionTracker:
             return []
 
         return [
-            names[info_hash]
+            {"hash": info_hash, "name": names[info_hash]}
             for info_hash, complete in current.items()
             if complete and previous.get(info_hash) is False
         ]
+
+    def update(self, torrents) -> list[str]:
+        return [event["name"] for event in self.update_events(torrents)]

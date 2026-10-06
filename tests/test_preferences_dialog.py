@@ -78,6 +78,15 @@ def test_completion_announcement_preference_is_exposed_and_saved():
     assert '"announce_download_complete": self.announce_download_complete_chk.GetValue()' in source
 
 
+def test_pause_on_completion_preference_is_exposed_and_saved():
+    from pathlib import Path
+
+    source = Path("preferences_dialog.py").read_text(encoding="utf-8")
+    assert '"Pause torrents when downloads complete"' in source
+    assert 'self.prefs.get("pause_on_download_complete", False)' in source
+    assert '"pause_on_download_complete": self.pause_on_download_complete_chk.GetValue()' in source
+
+
 def test_browse_buttons_have_contextual_accessible_names():
     from pathlib import Path
 

@@ -89,6 +89,15 @@ def test_download_completion_announcements_use_accessibility_event_without_steal
     assert "self._completion_tracker.reset()" in source
 
 
+def test_pause_on_completion_runs_client_action_in_background():
+    source = Path("app_entry.py").read_text(encoding="utf-8")
+    assert "def _pause_completed_background(" in source
+    assert 'client.stop_torrent(event["hash"])' in source
+    assert '"pause_on_download_complete", False' in source
+    assert "self.thread_pool.submit(" in source
+    assert "completion_events = self._completion_tracker.update_events(torrents)" in source
+
+
 def test_watch_profile_switch_is_retryable_not_permanent_failure():
     source = Path("app_entry.py").read_text(encoding="utf-8")
     assert "watch_folder.RetryImportLater" in source
