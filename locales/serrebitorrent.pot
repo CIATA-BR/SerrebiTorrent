@@ -388,6 +388,9 @@ msgstr ""
 msgid "Client"
 msgstr ""
 
+msgid "Client reports an error: {message}"
+msgstr ""
+
 msgid "Client Type"
 msgstr ""
 
@@ -556,6 +559,15 @@ msgstr ""
 msgid "Deselected {name}"
 msgstr ""
 
+msgid "Diagnose &Torrent\tCtrl+D"
+msgstr ""
+
+msgid "Diagnose the selected torrent"
+msgstr ""
+
+msgid "Diagnose Torrent"
+msgstr ""
+
 msgid "Disconnected"
 msgstr ""
 
@@ -572,6 +584,9 @@ msgid "Download folder is unavailable."
 msgstr ""
 
 msgid "Download folder not available."
+msgstr ""
+
+msgid "Download is complete."
 msgstr ""
 
 msgid "Download Path"
@@ -1162,6 +1177,9 @@ msgstr ""
 msgid "No"
 msgstr ""
 
+msgid "No clear cause is visible from the current torrent data."
+msgstr ""
+
 msgid "No client connected."
 msgstr ""
 
@@ -1178,6 +1196,9 @@ msgid "No regular files found to include in torrent."
 msgstr ""
 
 msgid "No remote settings available (or Local client active)."
+msgstr ""
+
+msgid "No seeds are currently reported."
 msgstr ""
 
 msgid "No torrent client is connected."
@@ -1672,6 +1693,9 @@ msgstr ""
 msgid "Select Folder"
 msgstr ""
 
+msgid "Select one torrent to diagnose."
+msgstr ""
+
 msgid "Select one torrent to view files."
 msgstr ""
 
@@ -1819,6 +1843,9 @@ msgstr ""
 msgid "The active profile changed."
 msgstr ""
 
+msgid "The connected swarm does not currently expose a complete copy."
+msgstr ""
+
 msgid "Theme"
 msgstr ""
 
@@ -1861,6 +1888,9 @@ msgstr ""
 msgid "Torrent Details"
 msgstr ""
 
+msgid "Torrent Diagnosis"
+msgstr ""
+
 msgid "Torrent download finished after the active profile changed."
 msgstr ""
 
@@ -1874,6 +1904,18 @@ msgid "Torrent Files"
 msgstr ""
 
 msgid "Torrent files (*.torrent)|*.torrent"
+msgstr ""
+
+msgid "Torrent is active but currently receiving no data."
+msgstr ""
+
+msgid "Torrent is being checked."
+msgstr ""
+
+msgid "Torrent is currently receiving data."
+msgstr ""
+
+msgid "Torrent is paused or stopped."
 msgstr ""
 
 msgid "Torrent List"
@@ -1892,6 +1934,9 @@ msgid "Torrent Peers"
 msgstr ""
 
 msgid "Torrent Trackers"
+msgstr ""
+
+msgid "Torrent: {name}"
 msgstr ""
 
 msgid "Torrents"
@@ -2105,6 +2150,9 @@ msgid "{count} results"
 msgstr ""
 
 msgid "{count} results so far, {pending} still searching. Last: {source}."
+msgstr ""
+
+msgid "{count} seeds are reported, but none are connected."
 msgstr ""
 
 msgid "{count} torrent added."

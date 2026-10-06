@@ -29,6 +29,7 @@ from main_ui_i18n import sidebar_label, tr_main
 from preferences_dialog import PreferencesDialog
 from runtime_actions_i18n import register_associations
 from torrent_list import TorrentListCtrl as LocalizedTorrentListCtrl
+from torrent_diagnostics import diagnose_torrent
 
 # The legacy handlers resolve AddTorrentDialog from main.py at call time. Point
 # that name at the localized implementation without editing the maintainer's
@@ -220,6 +221,11 @@ class LocalizedMainFrame(legacy.MainFrame):
             _("Force Reannoun&ce"),
             _("Force an immediate tracker announce (if supported)"),
         )
+        diagnose_item = actions_menu.Append(
+            wx.ID_ANY,
+            _("Diagnose &Torrent\tCtrl+D"),
+            _("Diagnose the selected torrent"),
+        )
         actions_menu.AppendSeparator()
         copy_hash_item = actions_menu.Append(
             wx.ID_ANY,
@@ -332,6 +338,7 @@ class LocalizedMainFrame(legacy.MainFrame):
         self.Bind(wx.EVT_MENU, lambda event: self.stop_all_torrents(), stop_all_item)
         self.Bind(wx.EVT_MENU, self.on_recheck, recheck_item)
         self.Bind(wx.EVT_MENU, self.on_reannounce, reannounce_item)
+        self.Bind(wx.EVT_MENU, self.on_diagnose_torrent, diagnose_item)
         self.Bind(wx.EVT_MENU, self.on_copy_info_hash, copy_hash_item)
         self.Bind(wx.EVT_MENU, self.on_copy_magnet, copy_magnet_item)
         self.Bind(wx.EVT_MENU, self.on_open_download_folder, open_folder_item)
@@ -361,6 +368,7 @@ class LocalizedMainFrame(legacy.MainFrame):
             (wx.ACCEL_CTRL, ord("S"), start_item.GetId()),
             (wx.ACCEL_CTRL, ord("P"), pause_item.GetId()),
             (wx.ACCEL_CTRL, ord("R"), resume_item.GetId()),
+            (wx.ACCEL_CTRL, ord("D"), diagnose_item.GetId()),
             (wx.ACCEL_CTRL | wx.ACCEL_ALT, ord("S"), start_all_item.GetId()),
             (wx.ACCEL_CTRL | wx.ACCEL_ALT, ord("P"), stop_all_item.GetId()),
             (wx.ACCEL_NORMAL, wx.WXK_DELETE, remove_item.GetId()),
@@ -546,6 +554,7 @@ class LocalizedMainFrame(legacy.MainFrame):
         menu.AppendSeparator()
         recheck = menu.Append(wx.ID_ANY, self._("Force Recheck"))
         reannounce = menu.Append(wx.ID_ANY, self._("Force Reannounce"))
+        diagnose = menu.Append(wx.ID_ANY, self._("Diagnose Torrent"))
         menu.AppendSeparator()
         copy_hash = menu.Append(wx.ID_ANY, self._("Copy Info Hash"))
         copy_magnet = menu.Append(wx.ID_ANY, self._("Copy Magnet Link"))
@@ -559,6 +568,7 @@ class LocalizedMainFrame(legacy.MainFrame):
         self.Bind(wx.EVT_MENU, self.on_resume, resume)
         self.Bind(wx.EVT_MENU, self.on_recheck, recheck)
         self.Bind(wx.EVT_MENU, self.on_reannounce, reannounce)
+        self.Bind(wx.EVT_MENU, self.on_diagnose_torrent, diagnose)
         self.Bind(wx.EVT_MENU, self.on_copy_info_hash, copy_hash)
         self.Bind(wx.EVT_MENU, self.on_copy_magnet, copy_magnet)
         self.Bind(wx.EVT_MENU, self.on_open_download_folder, open_folder)
@@ -569,6 +579,57 @@ class LocalizedMainFrame(legacy.MainFrame):
             self.PopupMenu(menu)
         finally:
             menu.Destroy()
+
+    def _diagnostic_text(self, finding):
+        code = finding.get("code")
+        if code == "complete":
+            return self._("Download is complete.")
+        if code == "checking":
+            return self._("Torrent is being checked.")
+        if code == "paused":
+            return self._("Torrent is paused or stopped.")
+        if code == "client_error":
+            return self._("Client reports an error: {message}").format(
+                message=finding.get("message", "")
+            )
+        if code == "receiving_data":
+            return self._("Torrent is currently receiving data.")
+        if code == "no_seeds":
+            return self._("No seeds are currently reported.")
+        if code == "seeds_not_connected":
+            return self._("{count} seeds are reported, but none are connected.").format(
+                count=finding.get("count", 0)
+            )
+        if code in {"no_complete_copy", "incomplete_copy"}:
+            return self._("The connected swarm does not currently expose a complete copy.")
+        if code == "active_no_data":
+            return self._("Torrent is active but currently receiving no data.")
+        return self._("No clear cause is visible from the current torrent data.")
+
+    def on_diagnose_torrent(self, event):
+        torrents, _missing = self._get_selected_torrent_objects()
+        if len(torrents) != 1:
+            wx.MessageBox(
+                self._("Select one torrent to diagnose."),
+                self._("Torrent Diagnosis"),
+                wx.OK | wx.ICON_INFORMATION,
+                self,
+            )
+            return
+
+        torrent = torrents[0]
+        findings = diagnose_torrent(torrent)
+        lines = [self._diagnostic_text(finding) for finding in findings]
+        message = self._("Torrent: {name}").format(
+            name=torrent.get("name") or torrent.get("hash") or self._("Unknown")
+        )
+        message += "\n\n" + "\n".join(f"- {line}" for line in lines)
+        wx.MessageBox(
+            message,
+            self._("Torrent Diagnosis"),
+            wx.OK | wx.ICON_INFORMATION,
+            self,
+        )
 
     def on_about(self, event):
         from app_version import APP_VERSION
