@@ -781,6 +781,9 @@ msgstr ""
 msgid "Failed to open download folder."
 msgstr ""
 
+msgid "Failed to pause completed torrent {name}: {error}"
+msgstr ""
+
 msgid "Failed to read torrent file: {error}"
 msgstr ""
 
@@ -1280,6 +1283,9 @@ msgid "Pause selected torrents"
 msgstr ""
 
 msgid "Pause torrent"
+msgstr ""
+
+msgid "Pause torrents when downloads complete"
 msgstr ""
 
 msgid "Paused"
