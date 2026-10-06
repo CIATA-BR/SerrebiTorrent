@@ -648,17 +648,20 @@ class LocalizedMainFrame(legacy.MainFrame):
             self.statusbar.SetStatusText(self._("No torrents selected."), 0)
             return
 
-        dialog = wx.DirDialog(
+        dialog = wx.TextEntryDialog(
             self,
-            self._("Choose the destination folder for selected torrent data"),
-            style=wx.DD_DEFAULT_STYLE | wx.DD_DIR_MUST_EXIST,
+            self._("Enter the destination folder for selected torrent data:"),
+            self._("Move Torrent Data"),
         )
         try:
             if dialog.ShowModal() != wx.ID_OK:
                 return
-            destination = dialog.GetPath()
+            destination = dialog.GetValue().strip()
         finally:
             dialog.Destroy()
+        if not destination:
+            self.statusbar.SetStatusText(self._("Destination folder is required."), 0)
+            return
 
         generation = self.client_generation
         self.statusbar.SetStatusText(self._("Moving selected torrent data..."), 0)
