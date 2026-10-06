@@ -357,6 +357,30 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        const torrentNameFilter = document.getElementById('torrentNameFilter');
+        if (document.activeElement === torrentNameFilter && e.key === 'Escape' && torrentNameFilter.value) {
+            e.preventDefault();
+            torrentNameFilter.value = '';
+            torrentNameFilter.dispatchEvent(new Event('input', {bubbles: true}));
+            return;
+        }
+
+        if (
+            e.key === '/'
+            && !e.ctrlKey
+            && !e.metaKey
+            && !e.altKey
+            && document.activeElement.tagName !== 'INPUT'
+            && document.activeElement.tagName !== 'TEXTAREA'
+        ) {
+            e.preventDefault();
+            if (torrentNameFilter) {
+                torrentNameFilter.focus();
+                torrentNameFilter.select();
+            }
+            return;
+        }
+
         if (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA') return;
 
         const sidebarNav = els.sidebarNav();
