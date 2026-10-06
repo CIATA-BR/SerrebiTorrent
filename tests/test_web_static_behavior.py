@@ -355,3 +355,15 @@ def test_web_announces_newly_completed_downloads_without_initial_false_positive(
     assert "{count} downloads completed." in app
     assert 'id="announceDownloadComplete"' in index
     assert "'announce_download_complete'" in server
+
+
+def test_web_actions_can_start_and_stop_all_loaded_torrents():
+    index = Path("web_static/index.html").read_text(encoding="utf-8")
+    app = Path("web_static/app.js").read_text(encoding="utf-8")
+
+    assert "doActionAll('resume', 'Start All')" in index
+    assert "doActionAll('pause', 'Stop All')" in index
+    assert "function doActionAll(action, actionLabel)" in app
+    assert "torrentsMap.keys()" in app
+    assert "hashesOverride" in app
+    assert "const hashes = hashesOverride ? Array.from(hashesOverride) : Array.from(selectedHashes);" in app
