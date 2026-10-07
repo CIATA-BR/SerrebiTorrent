@@ -100,3 +100,22 @@ def test_parse_magnet_infohash_never_crashes(text):
 @pytest.mark.skipif(torrent_parsing.lt is None, reason="libtorrent not installed")
 def test_safe_torrent_info_hash_invalid_bytes():
     assert torrent_parsing.safe_torrent_info_hash(b"not a torrent") is None
+
+
+def test_torrent_required_bytes_respects_priorities(monkeypatch):
+    class Storage:
+        def file_size(self, index):
+            return [100, 200, 300][index]
+
+    class Info:
+        def num_files(self):
+            return 3
+
+        def layout(self):
+            return Storage()
+
+    fake_lt = type("FakeLt", (), {"torrent_info": staticmethod(lambda data: Info())})()
+    monkeypatch.setattr(torrent_parsing, "lt", fake_lt)
+
+    assert torrent_parsing.torrent_required_bytes(b"torrent") == 600
+    assert torrent_parsing.torrent_required_bytes(b"torrent", [1, 0, 1]) == 400
