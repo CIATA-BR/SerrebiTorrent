@@ -1234,7 +1234,13 @@ class LocalizedMainFrame(legacy.MainFrame):
                 done = float(torrent.get("done") or 0)
             except (TypeError, ValueError):
                 size = done = 0
-            if (size > 0 and done >= size) or bool(torrent.get("hashing")):
+            findings = diagnose_torrent(torrent)
+            finding_codes = {finding.get("code") for finding in findings}
+            if (
+                (size > 0 and done >= size)
+                or bool(torrent.get("hashing"))
+                or finding_codes.intersection({"complete", "checking", "receiving_data"})
+            ):
                 skipped += 1
                 continue
             hashes.append(torrent_hash)
@@ -1285,7 +1291,7 @@ class LocalizedMainFrame(legacy.MainFrame):
             )
             if skipped:
                 message += " " + self._(
-                    "{count} completed/checking torrent(s) skipped."
+                    "{count} torrent(s) skipped because they are complete, checking, downloading, or unavailable."
                 ).format(count=skipped)
             wx.CallAfter(self._on_action_complete, message)
             return
@@ -1301,7 +1307,7 @@ class LocalizedMainFrame(legacy.MainFrame):
             )
             if skipped:
                 message += " " + self._(
-                    "{count} completed/checking torrent(s) skipped."
+                    "{count} torrent(s) skipped because they are complete, checking, downloading, or unavailable."
                 ).format(count=skipped)
             wx.CallAfter(self.statusbar.SetStatusText, message, 0)
             wx.CallAfter(self._record_activity, message, "error")
