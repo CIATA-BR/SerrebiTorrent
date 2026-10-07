@@ -136,6 +136,31 @@ class PreferencesDialog(wx.Dialog):
         )
         gen_sizer.Add(self.pause_on_download_complete_chk, 0, wx.ALL, 5)
 
+        seed_ratio_label = self._(
+            "Pause seeding when ratio reaches (0 disables automation):"
+        )
+        gen_sizer.Add(
+            wx.StaticText(general_panel, label=seed_ratio_label),
+            0,
+            wx.ALL,
+            5,
+        )
+        self.pause_at_seed_ratio = wx.SpinCtrlDouble(
+            general_panel,
+            min=0.0,
+            max=1000.0,
+            inc=0.1,
+            initial=float(self.prefs.get("pause_at_seed_ratio", 0.0) or 0.0),
+        )
+        self.pause_at_seed_ratio.SetDigits(2)
+        self.pause_at_seed_ratio.SetName(seed_ratio_label)
+        gen_sizer.Add(
+            self.pause_at_seed_ratio,
+            0,
+            wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM,
+            5,
+        )
+
         move_completed_label = self._(
             "Move completed torrent data to (leave blank to disable; use a remote path for remote clients):"
         )
@@ -506,6 +531,7 @@ class PreferencesDialog(wx.Dialog):
             "announce_download_complete": self.announce_download_complete_chk.GetValue(),
             "show_download_complete_notification": self.show_download_complete_notification_chk.GetValue(),
             "pause_on_download_complete": self.pause_on_download_complete_chk.GetValue(),
+            "pause_at_seed_ratio": self.pause_at_seed_ratio.GetValue(),
             "move_completed_to_path": self.move_completed_to_path.GetValue().strip(),
             "disk_space_reserve_mib": self.disk_space_reserve.GetValue(),
             "clipboard_auto_add": self.clipboard_chk.GetValue(),

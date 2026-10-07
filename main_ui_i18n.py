@@ -237,6 +237,9 @@ _PT_BR_MAIN = {
     "Download complete: {name}": "Download concluído: {name}",
     "Failed to pause completed torrent {name}: {error}":
         "Falha ao pausar o torrent concluído {name}: {error}",
+    "Paused {name} at ratio {ratio:.2f} (target {target:.2f}).": "{name} pausado na proporção {ratio:.2f} (alvo {target:.2f}).",
+    "Failed to pause {name} at the seed ratio target: {error}": "Falha ao pausar {name} no alvo de proporção de semeadura: {error}",
+    "Seed ratio target reached; matching torrents were paused.": "Alvo de proporção de semeadura atingido; os torrents correspondentes foram pausados.",
     "Automatic move on completion is not supported by this client.": "Este cliente não oferece suporte à movimentação automática ao concluir.",
     "Moved {count} completed torrent(s) to {destination}.": "{count} torrent(s) concluído(s) movido(s) para {destination}.",
     "Failed to move completed torrent {name}: {error}": "Falha ao mover o torrent concluído {name}: {error}",

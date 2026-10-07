@@ -163,6 +163,7 @@ class LocalizedMainFrame(legacy.MainFrame):
         self.recent_save_paths = RecentSavePaths()
         self.torrent_categories = TorrentCategoryStore()
         self.category_items = {}
+        self._ratio_pause_pending = set()
         self._name_filter_query = ""
         super().__init__()
         self.categories_root = self.sidebar.AppendItem(
@@ -809,6 +810,7 @@ class LocalizedMainFrame(legacy.MainFrame):
         if not profile:
             return
         self._completion_tracker.reset()
+        self._ratio_pause_pending.clear()
         self.current_filter = "All"
         for item in list(self.category_items.values()):
             try:
@@ -1584,6 +1586,70 @@ class LocalizedMainFrame(legacy.MainFrame):
             )
         wx.CallAfter(self.refresh_data)
 
+    def _ratio_target_events(self, torrents, target):
+        events = []
+        threshold = float(target) * 1000.0
+        for torrent in torrents:
+            torrent_hash = str(torrent.get("hash") or "").strip()
+            if not torrent_hash or torrent_hash in self._ratio_pause_pending:
+                continue
+            try:
+                size = float(torrent.get("size") or 0)
+                done = float(torrent.get("done") or 0)
+                ratio = float(torrent.get("ratio") or 0)
+                state = int(torrent.get("state") or 0)
+            except (TypeError, ValueError):
+                continue
+            if size <= 0 or done < size or state != 1 or ratio < threshold:
+                continue
+            events.append(
+                {
+                    "hash": torrent_hash,
+                    "name": str(torrent.get("name") or torrent_hash),
+                    "ratio": ratio / 1000.0,
+                }
+            )
+        return events
+
+    def _pause_seed_ratio_background(self, client, generation, events, target):
+        failures = []
+        for event in events:
+            torrent_hash = event["hash"]
+            if generation != self.client_generation or self._closing:
+                self._ratio_pause_pending.discard(torrent_hash)
+                continue
+            try:
+                client.stop_torrent(torrent_hash)
+                message = self._(
+                    "Paused {name} at ratio {ratio:.2f} (target {target:.2f})."
+                ).format(
+                    name=event["name"],
+                    ratio=event["ratio"],
+                    target=target,
+                )
+                wx.CallAfter(self._record_activity, message, "success")
+            except Exception as exc:  # noqa: BLE001 - client boundary
+                failures.append((event["name"], exc))
+            finally:
+                self._ratio_pause_pending.discard(torrent_hash)
+
+        if generation != self.client_generation or self._closing:
+            return
+        if failures:
+            name, error = failures[0]
+            message = self._(
+                "Failed to pause {name} at the seed ratio target: {error}"
+            ).format(name=name, error=error)
+            wx.CallAfter(self.statusbar.SetStatusText, message, 0)
+            wx.CallAfter(self._record_activity, message, "error")
+        elif events:
+            wx.CallAfter(
+                self.statusbar.SetStatusText,
+                self._("Seed ratio target reached; matching torrents were paused."),
+                0,
+            )
+        wx.CallAfter(self.refresh_data)
+
     def _on_refresh_complete(
         self,
         generation,
@@ -1641,6 +1707,29 @@ class LocalizedMainFrame(legacy.MainFrame):
             self._announce_download_completion(completed)
         if completed and preferences.get("show_download_complete_notification", False):
             self._show_download_completion_notification(completed)
+
+        try:
+            seed_ratio_target = float(
+                preferences.get("pause_at_seed_ratio", 0.0) or 0.0
+            )
+        except (TypeError, ValueError):
+            seed_ratio_target = 0.0
+        if seed_ratio_target > 0:
+            ratio_events = self._ratio_target_events(torrents, seed_ratio_target)
+            if ratio_events:
+                for event in ratio_events:
+                    self._ratio_pause_pending.add(event["hash"])
+                try:
+                    self.thread_pool.submit(
+                        self._pause_seed_ratio_background,
+                        self.client,
+                        generation,
+                        ratio_events,
+                        seed_ratio_target,
+                    )
+                except RuntimeError:
+                    for event in ratio_events:
+                        self._ratio_pause_pending.discard(event["hash"])
 
         move_destination = str(
             preferences.get("move_completed_to_path", "") or ""

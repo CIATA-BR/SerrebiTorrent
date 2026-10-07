@@ -48,6 +48,7 @@ def test_normalize_prefs_missing_keys(tmp_path, monkeypatch):
     assert prefs["announce_download_complete"] is True
     assert prefs["show_download_complete_notification"] is False
     assert prefs["pause_on_download_complete"] is False
+    assert prefs["pause_at_seed_ratio"] == 0.0
     assert prefs["move_completed_to_path"] == ""
     assert prefs["disk_space_reserve_mib"] == 0
 
@@ -488,3 +489,16 @@ def test_set_default_profile_rejects_unknown_id_without_changing_default(tmp_pat
         cm.set_default_profile_id("missing-profile")
 
     assert cm.get_default_profile_id() == original
+
+
+def test_normalize_repairs_invalid_seed_ratio_target(tmp_path, monkeypatch):
+    config_path = tmp_path / "config.json"
+    config_path.write_text(
+        json.dumps({"preferences": {"pause_at_seed_ratio": "not-a-number"}, "profiles": {}}),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(config_manager, "CONFIG_FILE", config_path)
+
+    prefs = config_manager.ConfigManager().get_preferences()
+
+    assert prefs["pause_at_seed_ratio"] == 0.0

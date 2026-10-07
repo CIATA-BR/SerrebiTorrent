@@ -280,3 +280,17 @@ def test_stalled_torrent_recovery_is_safe_keyboard_accessible_and_backgrounded()
     assert "self.thread_pool.submit(" in source
     assert 'ord("D")' in source
     assert "wx.ACCEL_CTRL | wx.ACCEL_SHIFT" in source
+
+
+def test_seed_ratio_target_pause_runs_in_background():
+    source = Path("app_entry.py").read_text(encoding="utf-8")
+
+    assert "self._ratio_pause_pending = set()" in source
+    assert "def _ratio_target_events(" in source
+    assert "def _pause_seed_ratio_background(" in source
+    assert 'preferences.get("pause_at_seed_ratio", 0.0)' in source
+    assert "ratio / 1000.0" in source
+    assert "done < size or state != 1 or ratio < threshold" in source
+    assert "client.stop_torrent(torrent_hash)" in source
+    assert "self.thread_pool.submit(" in source
+    assert "self._record_activity" in source
