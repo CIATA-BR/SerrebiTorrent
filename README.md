@@ -187,6 +187,10 @@ Local Session Settings includes **Minimum free space reserve (MiB, 0 disables pr
 
 The check supports the built-in libtorrent client and arbitrary Transmission download paths. qBittorrent exposes free space for its default save path, so protection is available there when that path is used. rTorrent does not expose a reliable cross-client free-space query and reports the limitation instead. Magnet links are not preflighted because their payload size is unknown until metadata arrives.
 
+## Safe stalled-torrent recovery
+
+After using **Diagnose Torrent**, you can run **Actions > Try to Fix Stalled Torrent** (`Ctrl+Shift+D`) on one or more selected torrents. SerrebiTorrent only targets incomplete torrents that are not checking and are not already receiving data. The recovery action runs in the background, asks the client to start/resume the torrent, and forces a tracker reannounce. It deliberately does **not** start a recheck, because verification can be expensive and should remain an explicit user action.
+
 ## Torrent categories
 
 SerrebiTorrent provides its own profile-scoped torrent categories so the experience is consistent across local libtorrent, qBittorrent, Transmission, and rTorrent. Select one or more torrents and use **Actions > Set Category...** (`Ctrl+Alt+C`) to assign a category, or **Clear Category** to remove it. Categories appear in the sidebar with live counts and combine with the existing name filter. Category metadata is stored locally under the SerrebiTorrent state directory and does not modify backend-specific labels or tags.
@@ -206,6 +210,7 @@ Everything stays reachable by keyboard:
 - `Ctrl+Alt+Home` / `Ctrl+Alt+End` — Move selected torrents to the top / bottom of the queue
 - `Ctrl+Alt+Up` / `Ctrl+Alt+Down` — Move selected torrents up / down in the queue
 - `Ctrl+D` — Diagnose the selected torrent and explain common stalled-download causes
+- `Ctrl+Shift+D` — Try safe recovery actions for selected stalled torrents (resume/start + tracker reannounce)
 - **Actions > Move torrent data...** — Move selected torrent data to another folder on qBittorrent, Transmission, or the built-in libtorrent client
 - `Ctrl+Alt+L` — Set per-torrent download/upload speed limits in bytes/s (0 = unlimited) on qBittorrent, Transmission, or the built-in libtorrent client
 - `Ctrl+Alt+C` — Assign a SerrebiTorrent category to selected torrents
