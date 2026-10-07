@@ -2,6 +2,14 @@
 
 All notable changes to SerrebiTorrent are recorded here.
 
+## v1.29.0 - 2026-10-07
+
+- Add safe stalled torrent recovery action (#399).
+- Remember recent torrent save destinations (#398).
+- Move completed torrent data automatically (#397).
+- Add profile-scoped torrent categories (#395).
+- Compose category and name torrent filters (#396).
+
 ## v1.28.0 - 2026-10-07
 
 - Add persistent accessible activity history (#394).
