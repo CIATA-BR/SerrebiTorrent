@@ -83,6 +83,7 @@ DEFAULT_PREFERENCES: Dict[str, Any] = {
     "announce_download_complete": True,
     "show_download_complete_notification": False,
     "pause_on_download_complete": False,
+    "pause_at_seed_ratio": 0.0,  # 0 = disabled
     "move_completed_to_path": "",
     "disk_space_reserve_mib": 0,  # 0 = disabled
     "clipboard_auto_add": False,
@@ -183,6 +184,9 @@ class ConfigManager:
         prefs = cfg.get("preferences")
         if not isinstance(prefs, dict):
             prefs = {}
+        float_ranges = {
+            "pause_at_seed_ratio": (0.0, 1000.0),
+        }
         numeric_ranges = {
             "dl_limit": (-1, 1000000000),
             "ul_limit": (-1, 1000000000),
@@ -200,6 +204,18 @@ class ConfigManager:
             if isinstance(v, bool):
                 if not isinstance(current, bool):
                     prefs[k] = v
+                continue
+            if k in float_ranges:
+                if isinstance(current, bool):
+                    prefs[k] = v
+                    continue
+                try:
+                    number = float(current)
+                except (TypeError, ValueError):
+                    prefs[k] = v
+                    continue
+                minimum, maximum = float_ranges[k]
+                prefs[k] = number if minimum <= number <= maximum else v
                 continue
             if k in numeric_ranges:
                 if isinstance(current, bool):
