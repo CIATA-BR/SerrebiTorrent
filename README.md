@@ -171,6 +171,12 @@ Local Session Settings includes **Pause torrents when downloads complete**. It i
 
 **Show a system notification when downloads complete** is also off by default. Enable it when you want a native desktop notification while SerrebiTorrent is minimized or in the tray. This is independent from the screen-reader completion announcement.
 
+## Disk-space protection
+
+Local Session Settings includes **Minimum free space reserve (MiB, 0 disables protection)**. The default is 0, so existing behavior does not change until the user enables it. For .torrent files, SerrebiTorrent calculates the bytes actually selected for download before adding the torrent and refuses the add when it would cross the configured free-space reserve.
+
+The check supports the built-in libtorrent client and arbitrary Transmission download paths. qBittorrent exposes free space for its default save path, so protection is available there when that path is used. rTorrent does not expose a reliable cross-client free-space query and reports the limitation instead. Magnet links are not preflighted because their payload size is unknown until metadata arrives.
+
 ## Accessibility and shortcuts
 
 Everything stays reachable by keyboard:
