@@ -37,6 +37,52 @@ from torrent_diagnostics import diagnose_torrent
 legacy.AddTorrentDialog = LocalizedAddTorrentDialog
 
 
+class TorrentRateLimitDialog(wx.Dialog):
+    def __init__(self, parent, translate):
+        super().__init__(parent, title=translate("Set Torrent Speed Limits"))
+        panel = wx.Panel(self)
+        sizer = wx.BoxSizer(wx.VERTICAL)
+
+        sizer.Add(
+            wx.StaticText(
+                panel,
+                label=translate("Enter bytes per second. Use 0 for unlimited."),
+            ),
+            0,
+            wx.ALL,
+            8,
+        )
+
+        grid = wx.FlexGridSizer(cols=2, vgap=8, hgap=8)
+        grid.AddGrowableCol(1, 1)
+
+        download_label = translate("Download limit (bytes/s):")
+        grid.Add(wx.StaticText(panel, label=download_label), 0, wx.ALIGN_CENTER_VERTICAL)
+        self.download_limit = wx.SpinCtrl(panel, min=0, max=1000000000, initial=0)
+        self.download_limit.SetName(download_label)
+        grid.Add(self.download_limit, 1, wx.EXPAND)
+
+        upload_label = translate("Upload limit (bytes/s):")
+        grid.Add(wx.StaticText(panel, label=upload_label), 0, wx.ALIGN_CENTER_VERTICAL)
+        self.upload_limit = wx.SpinCtrl(panel, min=0, max=1000000000, initial=0)
+        self.upload_limit.SetName(upload_label)
+        grid.Add(self.upload_limit, 1, wx.EXPAND)
+
+        sizer.Add(grid, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 8)
+        buttons = self.CreateButtonSizer(wx.OK | wx.CANCEL)
+        if buttons:
+            sizer.Add(buttons, 0, wx.EXPAND | wx.ALL, 8)
+
+        panel.SetSizer(sizer)
+        top = wx.BoxSizer(wx.VERTICAL)
+        top.Add(panel, 1, wx.EXPAND)
+        self.SetSizerAndFit(top)
+        self.download_limit.SetFocus()
+
+    def get_limits(self):
+        return self.download_limit.GetValue(), self.upload_limit.GetValue()
+
+
 class LocalizedMainFrame(legacy.MainFrame):
     """Main frame with localized menus, sidebar and extracted dialogs."""
 
@@ -273,6 +319,11 @@ class LocalizedMainFrame(legacy.MainFrame):
             _("Move torrent &data..."),
             _("Move selected torrent data to another folder"),
         )
+        rate_limits_item = actions_menu.Append(
+            wx.ID_ANY,
+            _("Set torrent speed &limits...\tCtrl+Alt+L"),
+            _("Set download and upload limits for selected torrents"),
+        )
         actions_menu.AppendSeparator()
         remove_item = actions_menu.Append(
             wx.ID_ANY, _("&Remove\tDel"), _("Remove selected torrents")
@@ -378,6 +429,7 @@ class LocalizedMainFrame(legacy.MainFrame):
         self.Bind(wx.EVT_MENU, self.on_copy_magnet, copy_magnet_item)
         self.Bind(wx.EVT_MENU, self.on_open_download_folder, open_folder_item)
         self.Bind(wx.EVT_MENU, self.on_move_torrent_data, move_data_item)
+        self.Bind(wx.EVT_MENU, self.on_set_torrent_rate_limits, rate_limits_item)
         self.Bind(wx.EVT_MENU, self.on_remove, remove_item)
         self.Bind(wx.EVT_MENU, self.on_remove_data, remove_data_item)
         self.Bind(wx.EVT_MENU, self.on_select_all, select_all_item)
@@ -411,6 +463,7 @@ class LocalizedMainFrame(legacy.MainFrame):
             (wx.ACCEL_CTRL | wx.ACCEL_ALT, wx.WXK_UP, queue_up_item.GetId()),
             (wx.ACCEL_CTRL | wx.ACCEL_ALT, wx.WXK_DOWN, queue_down_item.GetId()),
             (wx.ACCEL_CTRL | wx.ACCEL_ALT, wx.WXK_END, queue_bottom_item.GetId()),
+            (wx.ACCEL_CTRL | wx.ACCEL_ALT, ord("L"), rate_limits_item.GetId()),
             (wx.ACCEL_NORMAL, wx.WXK_DELETE, remove_item.GetId()),
             (wx.ACCEL_SHIFT, wx.WXK_DELETE, remove_data_item.GetId()),
             (wx.ACCEL_CTRL, ord("O"), add_file_item.GetId()),
@@ -606,6 +659,7 @@ class LocalizedMainFrame(legacy.MainFrame):
         copy_magnet = menu.Append(wx.ID_ANY, self._("Copy Magnet Link"))
         open_folder = menu.Append(wx.ID_ANY, self._("Open Download Folder"))
         move_data = menu.Append(wx.ID_ANY, self._("Move torrent data..."))
+        rate_limits = menu.Append(wx.ID_ANY, self._("Set torrent speed limits..."))
         menu.AppendSeparator()
         remove = menu.Append(wx.ID_ANY, self._("Remove"))
         remove_data = menu.Append(wx.ID_ANY, self._("Remove with Data"))
@@ -624,6 +678,7 @@ class LocalizedMainFrame(legacy.MainFrame):
         self.Bind(wx.EVT_MENU, self.on_copy_magnet, copy_magnet)
         self.Bind(wx.EVT_MENU, self.on_open_download_folder, open_folder)
         self.Bind(wx.EVT_MENU, self.on_move_torrent_data, move_data)
+        self.Bind(wx.EVT_MENU, self.on_set_torrent_rate_limits, rate_limits)
         self.Bind(wx.EVT_MENU, self.on_remove, remove)
         self.Bind(wx.EVT_MENU, self.on_remove_data, remove_data)
 
@@ -705,6 +760,88 @@ class LocalizedMainFrame(legacy.MainFrame):
             wx.CallAfter(
                 self._on_action_error,
                 self._("Failed to move torrent data: {error}").format(error=last_error),
+            )
+
+    def on_set_torrent_rate_limits(self, event):
+        if not self.client:
+            self.statusbar.SetStatusText(self._("Not connected to any client."), 0)
+            return
+        if not getattr(self.client, "supports_torrent_rate_limits", False):
+            self.statusbar.SetStatusText(
+                self._("Per-torrent speed limits are not supported by this client."),
+                0,
+            )
+            return
+
+        hashes = self.torrent_list.get_selected_hashes()
+        if not hashes:
+            self.statusbar.SetStatusText(self._("No torrents selected."), 0)
+            return
+
+        dialog = TorrentRateLimitDialog(self, self._)
+        try:
+            if dialog.ShowModal() != wx.ID_OK:
+                return
+            download_limit, upload_limit = dialog.get_limits()
+        finally:
+            dialog.Destroy()
+
+        generation = self.client_generation
+        self.statusbar.SetStatusText(self._("Applying torrent speed limits..."), 0)
+        self.thread_pool.submit(
+            self._set_torrent_rate_limits_background,
+            self.client,
+            hashes,
+            download_limit,
+            upload_limit,
+            generation,
+        )
+
+    def _set_torrent_rate_limits_background(
+        self,
+        client,
+        hashes,
+        download_limit,
+        upload_limit,
+        generation,
+    ):
+        failed = 0
+        last_error = None
+        for torrent_hash in hashes:
+            if generation != self.client_generation or self._closing:
+                return
+            try:
+                client.set_torrent_rate_limits(
+                    torrent_hash,
+                    download_limit,
+                    upload_limit,
+                )
+            except Exception as exc:  # noqa: BLE001 - remote client boundary
+                failed += 1
+                last_error = exc
+
+        if generation != self.client_generation or self._closing:
+            return
+        if failed == 0:
+            wx.CallAfter(
+                self._on_action_complete,
+                self._("Selected torrent speed limits updated."),
+            )
+        elif failed < len(hashes):
+            wx.CallAfter(
+                self.statusbar.SetStatusText,
+                self._(
+                    "Speed limit update completed with {failed} failure(s). Last error: {error}"
+                ).format(failed=failed, error=last_error),
+                0,
+            )
+            wx.CallAfter(self.refresh_data)
+        else:
+            wx.CallAfter(
+                self._on_action_error,
+                self._("Failed to update torrent speed limits: {error}").format(
+                    error=last_error
+                ),
             )
 
     def _run_queue_action(self, method_name, progress_message, success_message):
