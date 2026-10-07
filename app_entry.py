@@ -32,6 +32,7 @@ from runtime_actions_i18n import register_associations
 from torrent_list import TorrentListCtrl as LocalizedTorrentListCtrl
 from torrent_diagnostics import diagnose_torrent
 from torrent_parsing import torrent_required_bytes
+from torrent_categories import TorrentCategoryStore
 
 # The legacy handlers resolve AddTorrentDialog from main.py at call time. Point
 # that name at the localized implementation without editing the maintainer's
@@ -158,8 +159,14 @@ class LocalizedMainFrame(legacy.MainFrame):
     def __init__(self):
         self._completion_tracker = CompletionTracker()
         self.activity_history = ActivityHistory()
+        self.torrent_categories = TorrentCategoryStore()
+        self.category_items = {}
         self._name_filter_query = ""
         super().__init__()
+        self.categories_root = self.sidebar.AppendItem(
+            self.root_id,
+            self._("Torrent Categories"),
+        )
         self._install_localized_torrent_list()
         self._apply_localized_static_labels()
         self._watch_scan_busy = False
@@ -244,6 +251,11 @@ class LocalizedMainFrame(legacy.MainFrame):
                 self.sidebar.SetItemText(item_id, sidebar_label(key, language=language))
             if hasattr(self, "trackers_root"):
                 self.sidebar.SetItemText(self.trackers_root, tr_main("Trackers", language))
+            if hasattr(self, "categories_root"):
+                self.sidebar.SetItemText(
+                    self.categories_root,
+                    tr_main("Torrent Categories", language),
+                )
         if hasattr(self, "torrent_list"):
             self.torrent_list.SetName(tr_main("Torrent List", language))
         if hasattr(self, "statusbar") and not self.connected:
@@ -389,6 +401,16 @@ class LocalizedMainFrame(legacy.MainFrame):
             _("Set torrent speed &limits...\tCtrl+Alt+L"),
             _("Set download and upload limits for selected torrents"),
         )
+        set_category_item = actions_menu.Append(
+            wx.ID_ANY,
+            _("Set &Category...\tCtrl+Alt+C"),
+            _("Assign a SerrebiTorrent category to selected torrents"),
+        )
+        clear_category_item = actions_menu.Append(
+            wx.ID_ANY,
+            _("Clear Category"),
+            _("Remove the SerrebiTorrent category from selected torrents"),
+        )
         actions_menu.AppendSeparator()
         remove_item = actions_menu.Append(
             wx.ID_ANY, _("&Remove\tDel"), _("Remove selected torrents")
@@ -500,6 +522,8 @@ class LocalizedMainFrame(legacy.MainFrame):
         self.Bind(wx.EVT_MENU, self.on_open_download_folder, open_folder_item)
         self.Bind(wx.EVT_MENU, self.on_move_torrent_data, move_data_item)
         self.Bind(wx.EVT_MENU, self.on_set_torrent_rate_limits, rate_limits_item)
+        self.Bind(wx.EVT_MENU, self.on_set_torrent_category, set_category_item)
+        self.Bind(wx.EVT_MENU, self.on_clear_torrent_category, clear_category_item)
         self.Bind(wx.EVT_MENU, self.on_remove, remove_item)
         self.Bind(wx.EVT_MENU, self.on_remove_data, remove_data_item)
         self.Bind(wx.EVT_MENU, self.on_select_all, select_all_item)
@@ -535,6 +559,7 @@ class LocalizedMainFrame(legacy.MainFrame):
             (wx.ACCEL_CTRL | wx.ACCEL_ALT, wx.WXK_DOWN, queue_down_item.GetId()),
             (wx.ACCEL_CTRL | wx.ACCEL_ALT, wx.WXK_END, queue_bottom_item.GetId()),
             (wx.ACCEL_CTRL | wx.ACCEL_ALT, ord("L"), rate_limits_item.GetId()),
+            (wx.ACCEL_CTRL | wx.ACCEL_ALT, ord("C"), set_category_item.GetId()),
             (wx.ACCEL_NORMAL, wx.WXK_DELETE, remove_item.GetId()),
             (wx.ACCEL_SHIFT, wx.WXK_DELETE, remove_data_item.GetId()),
             (wx.ACCEL_CTRL, ord("O"), add_file_item.GetId()),
@@ -576,6 +601,92 @@ class LocalizedMainFrame(legacy.MainFrame):
         count = self.torrent_list.GetItemCount()
         for index in range(count):
             self.torrent_list.Select(index, False)
+
+    def _selected_category_hashes(self):
+        if not self.current_profile_id:
+            self.statusbar.SetStatusText(self._("Connect to a profile first."), 0)
+            return []
+        hashes = self.torrent_list.get_selected_hashes()
+        if not hashes:
+            self.statusbar.SetStatusText(self._("No torrents selected."), 0)
+            return []
+        return hashes
+
+    def on_set_torrent_category(self, event):
+        hashes = self._selected_category_hashes()
+        if not hashes:
+            return
+
+        existing = {
+            self.torrent_categories.get(self.current_profile_id, torrent_hash)
+            for torrent_hash in hashes
+        }
+        existing.discard("")
+        initial = next(iter(existing)) if len(existing) == 1 else ""
+        dialog = wx.TextEntryDialog(
+            self,
+            self._("Category name:"),
+            self._("Set Torrent Category"),
+            initial,
+        )
+        try:
+            if dialog.ShowModal() != wx.ID_OK:
+                return
+            category = self.torrent_categories.clean_category(dialog.GetValue())
+        finally:
+            dialog.Destroy()
+        if not category:
+            self.statusbar.SetStatusText(self._("Category name is required."), 0)
+            return
+
+        self.torrent_categories.assign_many(
+            self.current_profile_id,
+            hashes,
+            category,
+        )
+        message = self._("Category set to {category} for {count} torrent(s).").format(
+            category=category,
+            count=len(hashes),
+        )
+        self.statusbar.SetStatusText(message, 0)
+        self._record_activity(message, kind="success")
+        self.refresh_data()
+
+    def on_clear_torrent_category(self, event):
+        hashes = self._selected_category_hashes()
+        if not hashes:
+            return
+        self.torrent_categories.assign_many(self.current_profile_id, hashes, "")
+        message = self._("Category cleared for {count} torrent(s).").format(
+            count=len(hashes)
+        )
+        self.statusbar.SetStatusText(message, 0)
+        self._record_activity(message, kind="success")
+        self.refresh_data()
+
+    def _refresh_category_sidebar(self, torrents):
+        if not hasattr(self, "categories_root"):
+            return
+        hashes = [torrent.get("hash") for torrent in torrents if torrent.get("hash")]
+        counts = self.torrent_categories.counts(self.current_profile_id, hashes)
+
+        for category, count in counts.items():
+            label = f"{category} ({count})"
+            item = self.category_items.get(category)
+            if item:
+                self.sidebar.SetItemText(item, label)
+            else:
+                self.category_items[category] = self.sidebar.AppendItem(
+                    self.categories_root,
+                    label,
+                )
+
+        for category in list(self.category_items):
+            if category not in counts:
+                self.sidebar.Delete(self.category_items.pop(category))
+
+        if counts:
+            self.sidebar.Expand(self.categories_root)
 
     def on_filter_torrents_by_name(self, event):
         dialog = wx.TextEntryDialog(
@@ -679,6 +790,13 @@ class LocalizedMainFrame(legacy.MainFrame):
         if not profile:
             return
         self._completion_tracker.reset()
+        self.current_filter = "All"
+        for item in list(self.category_items.values()):
+            try:
+                self.sidebar.Delete(item)
+            except Exception:
+                pass
+        self.category_items.clear()
         super().connect_profile(pid)
         if hasattr(self, "statusbar") and not self.connected:
             self.statusbar.SetStatusText(self._("Connecting..."), 0)
@@ -721,6 +839,14 @@ class LocalizedMainFrame(legacy.MainFrame):
 
         if item == self.rss_id:
             return
+        if item == self.categories_root:
+            return
+
+        for category, item_id in self.category_items.items():
+            if item == item_id:
+                self.current_filter = f"category:{category}"
+                self.refresh_data()
+                return
 
         for key, item_id in self.cat_ids.items():
             if item == item_id:
@@ -757,6 +883,8 @@ class LocalizedMainFrame(legacy.MainFrame):
         open_folder = menu.Append(wx.ID_ANY, self._("Open Download Folder"))
         move_data = menu.Append(wx.ID_ANY, self._("Move torrent data..."))
         rate_limits = menu.Append(wx.ID_ANY, self._("Set torrent speed limits..."))
+        set_category = menu.Append(wx.ID_ANY, self._("Set Category..."))
+        clear_category = menu.Append(wx.ID_ANY, self._("Clear Category"))
         menu.AppendSeparator()
         remove = menu.Append(wx.ID_ANY, self._("Remove"))
         remove_data = menu.Append(wx.ID_ANY, self._("Remove with Data"))
@@ -776,6 +904,8 @@ class LocalizedMainFrame(legacy.MainFrame):
         self.Bind(wx.EVT_MENU, self.on_open_download_folder, open_folder)
         self.Bind(wx.EVT_MENU, self.on_move_torrent_data, move_data)
         self.Bind(wx.EVT_MENU, self.on_set_torrent_rate_limits, rate_limits)
+        self.Bind(wx.EVT_MENU, self.on_set_torrent_category, set_category)
+        self.Bind(wx.EVT_MENU, self.on_clear_torrent_category, clear_category)
         self.Bind(wx.EVT_MENU, self.on_remove, remove)
         self.Bind(wx.EVT_MENU, self.on_remove_data, remove_data)
 
@@ -1266,6 +1396,16 @@ class LocalizedMainFrame(legacy.MainFrame):
         g_up,
     ):
         filtered_display_data = display_data
+        if self.current_filter.startswith("category:"):
+            wanted_category = self.current_filter.split(":", 1)[1]
+            filtered_display_data = [
+                torrent
+                for torrent in torrents
+                if self.torrent_categories.get(
+                    self.current_profile_id,
+                    torrent.get("hash"),
+                ) == wanted_category
+            ]
         query = self._name_filter_query.strip().casefold()
         if query:
             filtered_display_data = [
@@ -1314,6 +1454,7 @@ class LocalizedMainFrame(legacy.MainFrame):
             except RuntimeError:
                 pass
 
+        self._refresh_category_sidebar(torrents)
         language = self._language()
         for key, item_id in self.cat_ids.items():
             self.sidebar.SetItemText(item_id, sidebar_label(key, stats.get(key, 0), language))
