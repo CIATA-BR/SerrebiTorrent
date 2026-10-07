@@ -265,3 +265,18 @@ def test_recent_save_paths_are_scoped_to_current_profile():
     assert "self.current_profile_id" in source
     assert "self.recent_save_paths.paths(self.current_profile_id)" in source
     assert "self.recent_save_paths.remember(self.current_profile_id, value)" in source
+
+
+def test_stalled_torrent_recovery_is_safe_keyboard_accessible_and_backgrounded():
+    source = Path("app_entry.py").read_text(encoding="utf-8")
+
+    assert '_("Try to &Fix Stalled Torrent\\tCtrl+Shift+D")' in source
+    assert "def on_try_fix_stalled_torrents(self, event):" in source
+    assert "def _recover_stalled_torrents_background(" in source
+    assert 'finding_codes.intersection({"complete", "checking", "receiving_data"})' in source
+    assert "client.start_torrent(torrent_hash)" in source
+    assert "client.reannounce_torrent(torrent_hash)" in source
+    assert "client.recheck_torrent" not in source[source.index("def _recover_stalled_torrents_background("):source.index("def on_diagnose_torrent(")]
+    assert "self.thread_pool.submit(" in source
+    assert 'ord("D")' in source
+    assert "wx.ACCEL_CTRL | wx.ACCEL_SHIFT" in source
