@@ -177,6 +177,10 @@ Local Session Settings includes **Minimum free space reserve (MiB, 0 disables pr
 
 The check supports the built-in libtorrent client and arbitrary Transmission download paths. qBittorrent exposes free space for its default save path, so protection is available there when that path is used. rTorrent does not expose a reliable cross-client free-space query and reports the limitation instead. Magnet links are not preflighted because their payload size is unknown until metadata arrives.
 
+## Torrent categories
+
+SerrebiTorrent provides its own profile-scoped torrent categories so the experience is consistent across local libtorrent, qBittorrent, Transmission, and rTorrent. Select one or more torrents and use **Actions > Set Category...** (`Ctrl+Alt+C`) to assign a category, or **Clear Category** to remove it. Categories appear in the sidebar with live counts and combine with the existing name filter. Category metadata is stored locally under the SerrebiTorrent state directory and does not modify backend-specific labels or tags.
+
 ## Activity history
 
 SerrebiTorrent keeps up to 500 recent user-facing events in `SerrebiTorrent_Data/state/activity_history.json` (or the per-user state directory in installed mode). **Tools > Activity History** (`Ctrl+Shift+H`) shows the newest events first in a keyboard- and screen-reader-friendly list. The history records connections, completed downloads, successful actions, watch-folder results, and user-facing errors; it intentionally excludes noisy technical backend logging. Use **Clear History** in the dialog to reset it.
@@ -194,6 +198,7 @@ Everything stays reachable by keyboard:
 - `Ctrl+D` — Diagnose the selected torrent and explain common stalled-download causes
 - **Actions > Move torrent data...** — Move selected torrent data to another folder on qBittorrent, Transmission, or the built-in libtorrent client
 - `Ctrl+Alt+L` — Set per-torrent download/upload speed limits in bytes/s (0 = unlimited) on qBittorrent, Transmission, or the built-in libtorrent client
+- `Ctrl+Alt+C` — Assign a SerrebiTorrent category to selected torrents
 - `Delete` / `Shift+Delete` — Remove / Remove with data
 - `Ctrl+A` — Select all
 - `Ctrl+N` — Create a torrent
