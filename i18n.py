@@ -232,6 +232,8 @@ _PT_BR: Mapping[str, str] = {
         "Anunciar downloads concluídos aos leitores de tela",
     "Pause torrents when downloads complete":
         "Pausar torrents quando os downloads forem concluídos",
+    "Pause seeding when ratio reaches (0 disables automation):":
+        "Pausar a semeadura quando a proporção atingir (0 desativa a automação):",
     "Move completed torrent data to (leave blank to disable; use a remote path for remote clients):":
         "Mover os dados dos torrents concluídos para (deixe em branco para desativar; use um caminho remoto para clientes remotos):",
     "Minimum free space reserve (MiB, 0 disables protection):":
