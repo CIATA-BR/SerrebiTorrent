@@ -1298,8 +1298,7 @@ class LocalizedMainFrame(legacy.MainFrame):
 
         if succeeded:
             message = self._(
-                "Recovery actions sent to {succeeded} torrent(s); {failed} failed. "
-                "Last error: {error}"
+                "Recovery actions sent to {succeeded} torrent(s); {failed} failed. Last error: {error}"
             ).format(
                 succeeded=succeeded,
                 failed=failed,
