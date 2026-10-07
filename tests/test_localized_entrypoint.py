@@ -253,3 +253,15 @@ def test_category_and_name_filters_compose():
 
     assert 'self.current_filter.startswith("category:")' in source
     assert "for torrent in filtered_display_data" in source
+
+
+def test_recent_save_paths_are_scoped_to_current_profile():
+    source = Path("app_entry.py").read_text(encoding="utf-8")
+
+    assert "from recent_save_paths import RecentSavePaths" in source
+    assert "self.recent_save_paths = RecentSavePaths()" in source
+    assert "def get_recent_save_paths(self):" in source
+    assert "def remember_recent_save_path(self, value):" in source
+    assert "self.current_profile_id" in source
+    assert "self.recent_save_paths.paths(self.current_profile_id)" in source
+    assert "self.recent_save_paths.remember(self.current_profile_id, value)" in source
