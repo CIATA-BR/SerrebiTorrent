@@ -72,9 +72,8 @@ class AddTorrentDialog(wx.Dialog):
         seen = set()
         for value in [default_path, *self.recent_paths]:
             clean = str(value or "").strip()
-            key = clean.casefold()
-            if clean and key not in seen:
-                seen.add(key)
+            if clean and clean not in seen:
+                seen.add(clean)
                 choices.append(clean)
         self.path_input = wx.ComboBox(
             self,
