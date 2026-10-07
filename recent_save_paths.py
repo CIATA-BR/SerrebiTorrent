@@ -43,10 +43,9 @@ class RecentSavePaths:
             seen = set()
             for value in values:
                 path = self.clean_path(value)
-                key = path.casefold()
-                if not path or key in seen:
+                if not path or path in seen:
                     continue
-                seen.add(key)
+                seen.add(path)
                 cleaned.append(path)
                 if len(cleaned) >= self.max_paths:
                     break
@@ -70,8 +69,7 @@ class RecentSavePaths:
         with self._lock:
             data = self._load_unlocked()
             previous = data.get(profile, [])
-            key = path.casefold()
-            paths = [path] + [item for item in previous if item.casefold() != key]
+            paths = [path] + [item for item in previous if item != path]
             data[profile] = paths[: self.max_paths]
             self._write_unlocked(data)
 
