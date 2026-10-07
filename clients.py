@@ -6,6 +6,7 @@ import ipaddress
 import os
 import re
 import socket
+import shutil
 import time
 import threading
 from urllib.parse import quote, urljoin, urlparse, urlunparse
@@ -319,6 +320,7 @@ class BaseClient(abc.ABC):
     supports_queue_reordering = False
     supports_move_storage = False
     supports_torrent_rate_limits = False
+    supports_free_space_query = False
     _magnet_add_lock = threading.RLock()
 
     def add_magnet(self, url, save_path, start):
@@ -368,6 +370,9 @@ class BaseClient(abc.ABC):
 
     def set_torrent_rate_limits(self, h, download_limit, upload_limit):
         raise NotImplementedError("Per-torrent rate limits are not supported by this client.")
+
+    def get_free_space(self, path):
+        raise NotImplementedError("Free-space queries are not supported by this client.")
 
     @abc.abstractmethod
     def remove_torrent(self, h):
@@ -801,6 +806,7 @@ class QBittorrentClient(BaseClient):
     supports_queue_reordering = True
     supports_move_storage = True
     supports_torrent_rate_limits = True
+    supports_free_space_query = True
     def find_magnet_duplicate(self, url):
         info_hash = parse_magnet_infohash(url)
         if not info_hash:
@@ -958,6 +964,22 @@ class QBittorrentClient(BaseClient):
         h = self._normalize_hash(h)
         inf = self.c.torrents_info(torrent_hashes=h)
         return inf[0].get('save_path') if inf else None
+    def get_free_space(self, path):
+        default_path = self.get_default_save_path()
+
+        def _normalized(value):
+            return str(value or "").strip().replace("\\", "/").rstrip("/").casefold()
+
+        if path and default_path and _normalized(path) != _normalized(default_path):
+            raise NotImplementedError(
+                "qBittorrent reports free space only for its default save path."
+            )
+        data = self.c.sync_maindata()
+        server_state = data.get("server_state", {}) if data else {}
+        free_space = server_state.get("free_space_on_disk")
+        if free_space is None:
+            raise RuntimeError("qBittorrent did not report free disk space.")
+        return int(free_space)
     def get_files(self, h):
         h = self._normalize_hash(h)
         fs = self.c.torrents_files(torrent_hash=h)
@@ -978,6 +1000,7 @@ class TransmissionClient(BaseClient):
     supports_queue_reordering = True
     supports_move_storage = True
     supports_torrent_rate_limits = True
+    supports_free_space_query = True
 
     def _add_new_magnet(self, url, save_path, start):
         self.c.add_torrent(url, download_dir=save_path, paused=not start)
@@ -1269,6 +1292,9 @@ class TransmissionClient(BaseClient):
         t = self.c.get_torrent(h)
         return self._field(t, 'download_dir', 'downloadDir', default=None)
 
+    def get_free_space(self, path):
+        return int(self.c.free_space(path))
+
     def get_files(self, h):
         h = self._normalize_torrent_id(h)
         t = self.c.get_torrent(h, arguments=['files', 'fileStats'])
@@ -1331,6 +1357,7 @@ class LocalClient(BaseClient):
     supports_queue_reordering = True
     supports_move_storage = True
     supports_torrent_rate_limits = True
+    supports_free_space_query = True
     def find_magnet_duplicate(self, url):
         info_hash = parse_magnet_infohash(url)
         if not info_hash:
@@ -1489,6 +1516,8 @@ class LocalClient(BaseClient):
     def get_torrent_save_path(self, h):
         x = self._gh(h)
         return getattr(x.status(), 'save_path', None) if x else None
+    def get_free_space(self, path):
+        return int(shutil.disk_usage(path).free)
     def get_files(self, h):
         x = self._gh(h)
         if not x or not _handle_has_metadata(x):
