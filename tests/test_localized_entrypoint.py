@@ -234,6 +234,20 @@ def test_torrent_categories_are_profile_scoped_and_keyboard_accessible():
     assert 'self._("Torrent Categories")' in source
 
 
+def test_move_completed_downloads_runs_before_optional_pause():
+    source = Path("app_entry.py").read_text(encoding="utf-8")
+
+    assert 'preferences.get("move_completed_to_path", "")' in source
+    assert "def _move_completed_background(" in source
+    assert "client.move_torrent_data(event[\"hash\"], destination)" in source
+    assert "client.stop_torrent(event[\"hash\"])" in source
+    move_pos = source.index('client.move_torrent_data(event["hash"], destination)')
+    pause_pos = source.index('client.stop_torrent(event["hash"])', move_pos)
+    assert move_pos < pause_pos
+    assert "supports_move_storage" in source
+    assert "self.thread_pool.submit(" in source
+
+
 def test_category_and_name_filters_compose():
     source = Path("app_entry.py").read_text(encoding="utf-8")
 

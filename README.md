@@ -171,6 +171,12 @@ Local Session Settings includes **Pause torrents when downloads complete**. It i
 
 **Show a system notification when downloads complete** is also off by default. Enable it when you want a native desktop notification while SerrebiTorrent is minimized or in the tray. This is independent from the screen-reader completion announcement.
 
+## Automatic completed-download moves
+
+Local Session Settings includes **Move completed torrent data to**. Leave it blank to keep the feature disabled. When set, SerrebiTorrent moves each newly completed torrent to that destination using the connected client's storage-move API. For remote qBittorrent or Transmission profiles, enter a path valid on the remote server; SerrebiTorrent intentionally uses a text field rather than a local folder picker.
+
+The automatic move uses the same capability layer as the manual Move torrent data action, so it works with qBittorrent, Transmission, and the built-in libtorrent client. rTorrent reports the unsupported capability instead of silently pretending to move data. If **Pause torrents when downloads complete** is also enabled, SerrebiTorrent performs the move first and then pauses the torrent in the same background worker to avoid racing the two automations.
+
 ## Disk-space protection
 
 Local Session Settings includes **Minimum free space reserve (MiB, 0 disables protection)**. The default is 0, so existing behavior does not change until the user enables it. For .torrent files, SerrebiTorrent calculates the bytes actually selected for download before adding the torrent and refuses the add when it would cross the configured free-space reserve.

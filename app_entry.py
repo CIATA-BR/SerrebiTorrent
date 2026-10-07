@@ -1357,6 +1357,76 @@ class LocalizedMainFrame(legacy.MainFrame):
             # disrupt completion tracking or screen-reader feedback.
             self._download_complete_notification = None
 
+    def _move_completed_background(
+        self,
+        client,
+        generation,
+        completed_events,
+        destination,
+        pause_after,
+    ):
+        if generation != self.client_generation or self._closing:
+            return
+
+        move_supported = getattr(client, "supports_move_storage", False)
+        moved = 0
+        move_failures = []
+        pause_failures = []
+
+        for event in completed_events:
+            if generation != self.client_generation or self._closing:
+                return
+
+            if move_supported:
+                try:
+                    client.move_torrent_data(event["hash"], destination)
+                    moved += 1
+                except Exception as exc:  # noqa: BLE001 - client boundary
+                    move_failures.append((event["name"], exc))
+
+            if pause_after:
+                try:
+                    client.stop_torrent(event["hash"])
+                except Exception as exc:  # noqa: BLE001 - client boundary
+                    pause_failures.append((event["name"], exc))
+
+        if generation != self.client_generation or self._closing:
+            return
+
+        if not move_supported:
+            message = self._(
+                "Automatic move on completion is not supported by this client."
+            )
+            wx.CallAfter(self.statusbar.SetStatusText, message, 0)
+            wx.CallAfter(self._record_activity, message, "error")
+        elif moved:
+            message = self._(
+                "Moved {count} completed torrent(s) to {destination}."
+            ).format(
+                count=moved,
+                destination=destination,
+            )
+            wx.CallAfter(self.statusbar.SetStatusText, message, 0)
+            wx.CallAfter(self._record_activity, message, "success")
+
+        if move_failures:
+            name, error = move_failures[0]
+            message = self._(
+                "Failed to move completed torrent {name}: {error}"
+            ).format(name=name, error=error)
+            wx.CallAfter(self.statusbar.SetStatusText, message, 0)
+            wx.CallAfter(self._record_activity, message, "error")
+
+        if pause_failures:
+            name, error = pause_failures[0]
+            message = self._(
+                "Failed to pause completed torrent {name}: {error}"
+            ).format(name=name, error=error)
+            wx.CallAfter(self.statusbar.SetStatusText, message, 0)
+            wx.CallAfter(self._record_activity, message, "error")
+
+        wx.CallAfter(self.refresh_data)
+
     def _pause_completed_background(self, client, generation, completed_events):
         if generation != self.client_generation or self._closing:
             return
@@ -1443,7 +1513,23 @@ class LocalizedMainFrame(legacy.MainFrame):
         if completed and preferences.get("show_download_complete_notification", False):
             self._show_download_completion_notification(completed)
 
-        if completion_events and preferences.get("pause_on_download_complete", False):
+        move_destination = str(
+            preferences.get("move_completed_to_path", "") or ""
+        ).strip()
+        pause_after = preferences.get("pause_on_download_complete", False)
+        if completion_events and move_destination:
+            try:
+                self.thread_pool.submit(
+                    self._move_completed_background,
+                    self.client,
+                    generation,
+                    completion_events,
+                    move_destination,
+                    pause_after,
+                )
+            except RuntimeError:
+                pass
+        elif completion_events and pause_after:
             try:
                 self.thread_pool.submit(
                     self._pause_completed_background,

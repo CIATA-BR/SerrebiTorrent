@@ -228,6 +228,9 @@ _PT_BR_MAIN = {
     "Download complete: {name}": "Download concluído: {name}",
     "Failed to pause completed torrent {name}: {error}":
         "Falha ao pausar o torrent concluído {name}: {error}",
+    "Automatic move on completion is not supported by this client.": "Este cliente não oferece suporte à movimentação automática ao concluir.",
+    "Moved {count} completed torrent(s) to {destination}.": "{count} torrent(s) concluído(s) movido(s) para {destination}.",
+    "Failed to move completed torrent {name}: {error}": "Falha ao mover o torrent concluído {name}: {error}",
     "{count} downloads completed.": "{count} downloads concluídos.",
     "Failed to apply settings: {error}": "Falha ao aplicar as configurações: {error}",
     "Another instance of SerrebiTorrent is already running.": "Outra instância do SerrebiTorrent já está em execução.",
