@@ -100,6 +100,12 @@ msgstr ""
 msgid "Active"
 msgstr ""
 
+msgid "Activity &History...\tCtrl+Shift+H"
+msgstr ""
+
+msgid "Activity History"
+msgstr ""
+
 msgid "Add"
 msgstr ""
 
@@ -385,7 +391,13 @@ msgstr ""
 msgid "Clear All"
 msgstr ""
 
+msgid "Clear History"
+msgstr ""
+
 msgid "Clear selection of visible torrents"
+msgstr ""
+
+msgid "Clear the activity history?"
 msgstr ""
 
 msgid "Clear torrent name filter\tCtrl+Shift+L"
@@ -458,6 +470,9 @@ msgid "Connection"
 msgstr ""
 
 msgid "Connection Failed"
+msgstr ""
+
+msgid "Connection failed: {error}"
 msgstr ""
 
 msgid "Connection Manager"
@@ -1546,6 +1561,9 @@ msgstr ""
 msgid "Reannouncing torrents..."
 msgstr ""
 
+msgid "Recent activity, newest first:"
+msgstr ""
+
 msgid "Recheck not supported by this client."
 msgstr ""
 
@@ -1655,6 +1673,9 @@ msgid "Resume selected torrents"
 msgstr ""
 
 msgid "Resuming torrents..."
+msgstr ""
+
+msgid "Review recent SerrebiTorrent activity"
 msgstr ""
 
 msgid "Round-robin"
