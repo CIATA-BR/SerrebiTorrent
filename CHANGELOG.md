@@ -2,6 +2,10 @@
 
 All notable changes to SerrebiTorrent are recorded here.
 
+## v1.27.0 - 2026-10-07
+
+- Add per-torrent download and upload limits (#392).
+
 ## v1.26.0 - 2026-10-06
 
 - Move torrent data across supported clients (#391).
