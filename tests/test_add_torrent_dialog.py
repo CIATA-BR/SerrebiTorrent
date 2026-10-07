@@ -7,6 +7,7 @@ def test_add_torrent_dialog_strings_translate_to_pt_br():
     expected = {
         "Save Path:": "Salvar caminho:",
         "Save Path": "Salvar caminho",
+        "Recent destinations": "Destinos recentes",
         "Files:": "Arquivos:",
         "Files": "Arquivos",
         "Select All": "Selecionar tudo",
