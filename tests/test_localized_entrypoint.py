@@ -216,3 +216,19 @@ def test_activity_history_is_keyboard_accessible_and_records_user_events():
     assert "def _on_action_error(" in source
     assert 'self._record_activity(message, kind="success")' in source
     assert 'self._("Download complete: {name}")' in source
+
+
+def test_torrent_categories_are_profile_scoped_and_keyboard_accessible():
+    source = Path("app_entry.py").read_text(encoding="utf-8")
+
+    assert "from torrent_categories import TorrentCategoryStore" in source
+    assert "self.torrent_categories = TorrentCategoryStore()" in source
+    assert '_("Set &Category...\\tCtrl+Alt+C")' in source
+    assert 'ord("C")' in source
+    assert "wx.ACCEL_CTRL | wx.ACCEL_ALT" in source
+    assert "def on_set_torrent_category(self, event):" in source
+    assert "def on_clear_torrent_category(self, event):" in source
+    assert "self.current_profile_id" in source
+    assert 'self.current_filter.startswith("category:")' in source
+    assert "self._refresh_category_sidebar(torrents)" in source
+    assert 'self._("Torrent Categories")' in source

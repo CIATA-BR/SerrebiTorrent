@@ -262,6 +262,9 @@ msgstr ""
 msgid "Are you sure you want to clear ALL RSS feeds and rules?"
 msgstr ""
 
+msgid "Assign a SerrebiTorrent category to selected torrents"
+msgstr ""
+
 msgid "Associate .torrent and magnet links with this app"
 msgstr ""
 
@@ -340,6 +343,18 @@ msgstr ""
 msgid "Category"
 msgstr ""
 
+msgid "Category cleared for {count} torrent(s)."
+msgstr ""
+
+msgid "Category name is required."
+msgstr ""
+
+msgid "Category name:"
+msgstr ""
+
+msgid "Category set to {category} for {count} torrent(s)."
+msgstr ""
+
 msgid "Change selected torrent queue position"
 msgstr ""
 
@@ -389,6 +404,9 @@ msgid "Choose Watch Folder"
 msgstr ""
 
 msgid "Clear All"
+msgstr ""
+
+msgid "Clear Category"
 msgstr ""
 
 msgid "Clear History"
@@ -452,6 +470,9 @@ msgid "Connect or switch profile"
 msgstr ""
 
 msgid "Connect to a client before adding torrents."
+msgstr ""
+
+msgid "Connect to a profile first."
 msgstr ""
 
 msgid "Connect to this profile"
@@ -1627,6 +1648,9 @@ msgstr ""
 msgid "Remove selected torrents and data"
 msgstr ""
 
+msgid "Remove the SerrebiTorrent category from selected torrents"
+msgstr ""
+
 msgid "Remove torrent"
 msgstr ""
 
@@ -1879,6 +1903,12 @@ msgstr ""
 msgid "Set"
 msgstr ""
 
+msgid "Set &Category...\tCtrl+Alt+C"
+msgstr ""
+
+msgid "Set Category..."
+msgstr ""
+
 msgid "Set Default"
 msgstr ""
 
@@ -1886,6 +1916,9 @@ msgid "Set download and upload limits for selected torrents"
 msgstr ""
 
 msgid "Set selected connection profile as default"
+msgstr ""
+
+msgid "Set Torrent Category"
 msgstr ""
 
 msgid "Set torrent speed &limits...\tCtrl+Alt+L"
@@ -2054,6 +2087,9 @@ msgid "Torrent added"
 msgstr ""
 
 msgid "Torrent already added"
+msgstr ""
+
+msgid "Torrent Categories"
 msgstr ""
 
 msgid "Torrent created:\n{path}"
