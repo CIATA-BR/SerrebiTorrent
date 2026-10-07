@@ -2,6 +2,11 @@
 
 All notable changes to SerrebiTorrent are recorded here.
 
+## v1.28.0 - 2026-10-07
+
+- Add persistent accessible activity history (#394).
+- Protect disk-space reserve before torrent file adds (#393).
+
 ## v1.27.0 - 2026-10-07
 
 - Add per-torrent download and upload limits (#392).
