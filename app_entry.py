@@ -361,6 +361,11 @@ class LocalizedMainFrame(legacy.MainFrame):
             _("Diagnose &Torrent\tCtrl+D"),
             _("Diagnose the selected torrent"),
         )
+        recover_stalled_item = actions_menu.Append(
+            wx.ID_ANY,
+            _("Try to &Fix Stalled Torrent\tCtrl+Shift+D"),
+            _("Resume incomplete torrents and force a tracker announce"),
+        )
         queue_menu = wx.Menu()
         queue_top_item = queue_menu.Append(
             wx.ID_ANY,
@@ -525,6 +530,7 @@ class LocalizedMainFrame(legacy.MainFrame):
         self.Bind(wx.EVT_MENU, self.on_recheck, recheck_item)
         self.Bind(wx.EVT_MENU, self.on_reannounce, reannounce_item)
         self.Bind(wx.EVT_MENU, self.on_diagnose_torrent, diagnose_item)
+        self.Bind(wx.EVT_MENU, self.on_try_fix_stalled_torrents, recover_stalled_item)
         self.Bind(wx.EVT_MENU, self.on_queue_top, queue_top_item)
         self.Bind(wx.EVT_MENU, self.on_queue_up, queue_up_item)
         self.Bind(wx.EVT_MENU, self.on_queue_down, queue_down_item)
@@ -564,6 +570,7 @@ class LocalizedMainFrame(legacy.MainFrame):
             (wx.ACCEL_CTRL, ord("P"), pause_item.GetId()),
             (wx.ACCEL_CTRL, ord("R"), resume_item.GetId()),
             (wx.ACCEL_CTRL, ord("D"), diagnose_item.GetId()),
+            (wx.ACCEL_CTRL | wx.ACCEL_SHIFT, ord("D"), recover_stalled_item.GetId()),
             (wx.ACCEL_CTRL | wx.ACCEL_ALT, ord("S"), start_all_item.GetId()),
             (wx.ACCEL_CTRL | wx.ACCEL_ALT, ord("P"), stop_all_item.GetId()),
             (wx.ACCEL_CTRL | wx.ACCEL_ALT, wx.WXK_HOME, queue_top_item.GetId()),
@@ -883,6 +890,7 @@ class LocalizedMainFrame(legacy.MainFrame):
         recheck = menu.Append(wx.ID_ANY, self._("Force Recheck"))
         reannounce = menu.Append(wx.ID_ANY, self._("Force Reannounce"))
         diagnose = menu.Append(wx.ID_ANY, self._("Diagnose Torrent"))
+        recover_stalled = menu.Append(wx.ID_ANY, self._("Try to Fix Stalled Torrent"))
         queue_menu = wx.Menu()
         queue_top = queue_menu.Append(wx.ID_ANY, self._("Move to top"))
         queue_up = queue_menu.Append(wx.ID_ANY, self._("Move up"))
@@ -907,6 +915,7 @@ class LocalizedMainFrame(legacy.MainFrame):
         self.Bind(wx.EVT_MENU, self.on_recheck, recheck)
         self.Bind(wx.EVT_MENU, self.on_reannounce, reannounce)
         self.Bind(wx.EVT_MENU, self.on_diagnose_torrent, diagnose)
+        self.Bind(wx.EVT_MENU, self.on_try_fix_stalled_torrents, recover_stalled)
         self.Bind(wx.EVT_MENU, self.on_queue_top, queue_top)
         self.Bind(wx.EVT_MENU, self.on_queue_up, queue_up)
         self.Bind(wx.EVT_MENU, self.on_queue_down, queue_down)
@@ -1202,6 +1211,109 @@ class LocalizedMainFrame(legacy.MainFrame):
         if code == "active_no_data":
             return self._("Torrent is active but currently receiving no data.")
         return self._("No clear cause is visible from the current torrent data.")
+
+    def on_try_fix_stalled_torrents(self, event):
+        if not self.client:
+            self.statusbar.SetStatusText(self._("Not connected to any client."), 0)
+            return
+
+        torrents, missing = self._get_selected_torrent_objects()
+        if not torrents and not missing:
+            self.statusbar.SetStatusText(self._("No torrents selected."), 0)
+            return
+
+        hashes = []
+        skipped = len(missing)
+        for torrent in torrents:
+            torrent_hash = str(torrent.get("hash") or "").strip()
+            if not torrent_hash:
+                skipped += 1
+                continue
+            try:
+                size = float(torrent.get("size") or 0)
+                done = float(torrent.get("done") or 0)
+            except (TypeError, ValueError):
+                size = done = 0
+            if (size > 0 and done >= size) or bool(torrent.get("hashing")):
+                skipped += 1
+                continue
+            hashes.append(torrent_hash)
+
+        if not hashes:
+            self.statusbar.SetStatusText(
+                self._("No recoverable incomplete torrents selected."),
+                0,
+            )
+            return
+
+        generation = self.client_generation
+        self.statusbar.SetStatusText(self._("Trying safe recovery actions..."), 0)
+        self.thread_pool.submit(
+            self._recover_stalled_torrents_background,
+            self.client,
+            generation,
+            hashes,
+            skipped,
+        )
+
+    def _recover_stalled_torrents_background(
+        self,
+        client,
+        generation,
+        hashes,
+        skipped,
+    ):
+        failed = 0
+        last_error = None
+        for torrent_hash in hashes:
+            if generation != self.client_generation or self._closing:
+                return
+            try:
+                client.start_torrent(torrent_hash)
+                client.reannounce_torrent(torrent_hash)
+            except Exception as exc:  # noqa: BLE001 - remote client boundary
+                failed += 1
+                last_error = exc
+
+        if generation != self.client_generation or self._closing:
+            return
+
+        succeeded = len(hashes) - failed
+        if failed == 0:
+            message = self._("Recovery actions sent to {count} torrent(s).").format(
+                count=succeeded
+            )
+            if skipped:
+                message += " " + self._(
+                    "{count} completed/checking torrent(s) skipped."
+                ).format(count=skipped)
+            wx.CallAfter(self._on_action_complete, message)
+            return
+
+        if succeeded:
+            message = self._(
+                "Recovery actions sent to {succeeded} torrent(s); {failed} failed. "
+                "Last error: {error}"
+            ).format(
+                succeeded=succeeded,
+                failed=failed,
+                error=last_error,
+            )
+            if skipped:
+                message += " " + self._(
+                    "{count} completed/checking torrent(s) skipped."
+                ).format(count=skipped)
+            wx.CallAfter(self.statusbar.SetStatusText, message, 0)
+            wx.CallAfter(self._record_activity, message, "error")
+            wx.CallAfter(self.refresh_data)
+            return
+
+        wx.CallAfter(
+            self._on_action_error,
+            self._("Failed to send recovery actions: {error}").format(
+                error=last_error
+            ),
+        )
 
     def on_diagnose_torrent(self, event):
         torrents, _missing = self._get_selected_torrent_objects()
