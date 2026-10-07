@@ -461,3 +461,55 @@ def test_local_move_data_delegates_to_libtorrent_handle():
 
 def test_rtorrent_does_not_claim_move_storage_support():
     assert clients.RTorrentClient.supports_move_storage is False
+
+
+def test_qbittorrent_torrent_rate_limits_use_torrent_api():
+    client = clients.QBittorrentClient.__new__(clients.QBittorrentClient)
+    client.c = MagicMock()
+    client._normalize_hash = lambda value: "normalized"
+
+    client.set_torrent_rate_limits("hash", 250000, 0)
+
+    client.c.torrents_set_download_limit.assert_called_once_with(
+        limit=250000,
+        torrent_hashes="normalized",
+    )
+    client.c.torrents_set_upload_limit.assert_called_once_with(
+        limit=-1,
+        torrent_hashes="normalized",
+    )
+    assert client.supports_torrent_rate_limits is True
+
+
+def test_transmission_torrent_rate_limits_convert_bytes_to_kbps():
+    client = clients.TransmissionClient.__new__(clients.TransmissionClient)
+    client.c = MagicMock()
+    client._normalize_torrent_id = lambda value: "normalized"
+
+    client.set_torrent_rate_limits("hash", 250001, 0)
+
+    client.c.change_torrent.assert_called_once_with(
+        "normalized",
+        download_limit=251,
+        download_limited=True,
+        upload_limit=0,
+        upload_limited=False,
+    )
+    assert client.supports_torrent_rate_limits is True
+
+
+def test_local_torrent_rate_limits_delegate_to_libtorrent_handle():
+    handle = MagicMock()
+    client = clients.LocalClient.__new__(clients.LocalClient)
+    client.m = MagicMock()
+    client.m._find_handle.return_value = handle
+
+    client.set_torrent_rate_limits("hash", 123456, 0)
+
+    handle.set_download_limit.assert_called_once_with(123456)
+    handle.set_upload_limit.assert_called_once_with(-1)
+    assert client.supports_torrent_rate_limits is True
+
+
+def test_rtorrent_does_not_claim_torrent_rate_limit_support():
+    assert clients.RTorrentClient.supports_torrent_rate_limits is False

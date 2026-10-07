@@ -247,6 +247,9 @@ msgstr ""
 msgid "Apply to Feeds (Uncheck all for Global):"
 msgstr ""
 
+msgid "Applying torrent speed limits..."
+msgstr ""
+
 msgid "Applying update..."
 msgstr ""
 
@@ -595,6 +598,9 @@ msgstr ""
 msgid "Download is complete."
 msgstr ""
 
+msgid "Download limit (bytes/s):"
+msgstr ""
+
 msgid "Download Path"
 msgstr ""
 
@@ -677,6 +683,9 @@ msgid "Enter a JSON object (e.g. {\"/watched\": \"/home/user\"})."
 msgstr ""
 
 msgid "Enter adds the selected torrents. Control C copies the magnet link."
+msgstr ""
+
+msgid "Enter bytes per second. Use 0 for unlimited."
 msgstr ""
 
 msgid "Enter edits the selected indexer. Delete removes it."
@@ -836,6 +845,9 @@ msgid "Failed to save RSS rule."
 msgstr ""
 
 msgid "Failed to update remote preferences: {error}"
+msgstr ""
+
+msgid "Failed to update torrent speed limits: {error}"
 msgstr ""
 
 msgid "Failed to {action} torrent(s)."
@@ -1414,6 +1426,9 @@ msgstr ""
 msgid "Peers"
 msgstr ""
 
+msgid "Per-torrent speed limits are not supported by this client."
+msgstr ""
+
 msgid "Piece size:"
 msgstr ""
 
@@ -1801,6 +1816,9 @@ msgstr ""
 msgid "Selected torrent data moved successfully."
 msgstr ""
 
+msgid "Selected torrent speed limits updated."
+msgstr ""
+
 msgid "Selected torrents moved down in the queue."
 msgstr ""
 
@@ -1828,7 +1846,19 @@ msgstr ""
 msgid "Set Default"
 msgstr ""
 
+msgid "Set download and upload limits for selected torrents"
+msgstr ""
+
 msgid "Set selected connection profile as default"
+msgstr ""
+
+msgid "Set torrent speed &limits...\tCtrl+Alt+L"
+msgstr ""
+
+msgid "Set Torrent Speed Limits"
+msgstr ""
+
+msgid "Set torrent speed limits..."
 msgstr ""
 
 msgid "Settings"
@@ -1892,6 +1922,9 @@ msgid "Source text:"
 msgstr ""
 
 msgid "Speed"
+msgstr ""
+
+msgid "Speed limit update completed with {failed} failure(s). Last error: {error}"
 msgstr ""
 
 msgid "Start"
@@ -2153,6 +2186,9 @@ msgid "Updating SerrebiTorrent"
 msgstr ""
 
 msgid "Updating..."
+msgstr ""
+
+msgid "Upload limit (bytes/s):"
 msgstr ""
 
 msgid "Upload Rate (bytes/s):"
