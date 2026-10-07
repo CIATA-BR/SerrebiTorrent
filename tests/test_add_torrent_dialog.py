@@ -30,7 +30,8 @@ def test_add_torrent_title_preserves_torrent_name():
 
 def test_dialog_source_has_explicit_accessible_names():
     source = Path("add_torrent_dialog.py").read_text(encoding="utf-8")
-    assert 'self.path_input.SetName(self._("Save Path"))' in source
+    assert 'self.path_input.SetName(' in source
+    assert 'self._("Save Path")' in source
     assert 'self.tree.SetName(self._("Files"))' in source
 
 
@@ -63,3 +64,13 @@ def test_localized_add_torrent_actions_have_contextual_accessible_names():
     assert 'browse_btn.SetName(self._("Browse save path"))' in source
     assert 'sel_all.SetName(self._("Select all torrent files"))' in source
     assert 'desel_all.SetName(self._("Deselect all torrent files"))' in source
+
+
+def test_add_torrent_dialog_exposes_profile_recent_destinations():
+    source = Path("add_torrent_dialog.py").read_text(encoding="utf-8")
+
+    assert "wx.ComboBox(" in source
+    assert "style=wx.CB_DROPDOWN" in source
+    assert "self._parent_recent_paths(parent)" in source
+    assert 'self._("Recent destinations")' in source
+    assert "remember_recent_save_path(value)" in source
