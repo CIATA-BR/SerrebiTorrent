@@ -136,6 +136,24 @@ class PreferencesDialog(wx.Dialog):
         )
         gen_sizer.Add(self.pause_on_download_complete_chk, 0, wx.ALL, 5)
 
+        disk_space_label = self._(
+            "Minimum free space reserve (MiB, 0 disables protection):"
+        )
+        gen_sizer.Add(
+            wx.StaticText(general_panel, label=disk_space_label),
+            0,
+            wx.ALL,
+            5,
+        )
+        self.disk_space_reserve = wx.SpinCtrl(
+            general_panel,
+            min=0,
+            max=1048576,
+            initial=self.prefs.get("disk_space_reserve_mib", 0),
+        )
+        self.disk_space_reserve.SetName(disk_space_label)
+        gen_sizer.Add(self.disk_space_reserve, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 5)
+
         self.clipboard_chk = wx.CheckBox(general_panel, label=self._("Automatically open the Add Torrent dialog for clipboard magnets"))
         self.clipboard_chk.SetValue(self.prefs.get("clipboard_auto_add", False))
         gen_sizer.Add(self.clipboard_chk, 0, wx.ALL, 5)
@@ -467,6 +485,7 @@ class PreferencesDialog(wx.Dialog):
             "announce_download_complete": self.announce_download_complete_chk.GetValue(),
             "show_download_complete_notification": self.show_download_complete_notification_chk.GetValue(),
             "pause_on_download_complete": self.pause_on_download_complete_chk.GetValue(),
+            "disk_space_reserve_mib": self.disk_space_reserve.GetValue(),
             "clipboard_auto_add": self.clipboard_chk.GetValue(),
             "clipboard_prefill": self.clipboard_prefill_chk.GetValue(),
             "min_to_tray": self.min_tray_chk.GetValue(),
