@@ -200,3 +200,19 @@ def test_disk_space_protection_runs_before_torrent_file_add():
     assert "def _add_torrent_file_background(" in source
     assert "self._check_disk_space_before_add(" in source
     assert "super()._add_torrent_file_background(" in source
+
+
+def test_activity_history_is_keyboard_accessible_and_records_user_events():
+    source = Path("app_entry.py").read_text(encoding="utf-8")
+
+    assert "from activity_history import ActivityHistory" in source
+    assert "class ActivityHistoryDialog(wx.Dialog):" in source
+    assert '_("Activity &History...\\tCtrl+Shift+H")' in source
+    assert 'ord("H")' in source
+    assert "wx.ACCEL_CTRL | wx.ACCEL_SHIFT" in source
+    assert 'self.activity_list.SetName(self._("Activity History"))' in source
+    assert "def _record_activity(" in source
+    assert "def _on_action_complete(" in source
+    assert "def _on_action_error(" in source
+    assert 'self._record_activity(message, kind="success")' in source
+    assert 'self._("Download complete: {name}")' in source
