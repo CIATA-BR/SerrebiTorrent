@@ -70,6 +70,10 @@ SerrebiTorrent ships with no indexers of its own configured — only the public 
 - Local session + app settings: Tools -> Local Session Settings... (`Ctrl+,`) (or tray icon -> Settings -> Local Session Settings...).
 - Remote client settings (enabled only when connected): Tools -> qBittorrent/Transmission/rTorrent Remote Settings... (or tray icon -> Settings -> ...).
 
+## Recent save destinations
+
+The Add Torrent dialog remembers up to 10 destination paths per connection profile. The Save Path field remains fully editable and now exposes recent destinations in a drop-down, including remote server paths exactly as entered. Choosing or typing a path does not require it to exist on the local computer, so remote qBittorrent, Transmission, and rTorrent workflows are not confused with local filesystem browsing.
+
 ## Clipboard magnets and duplicate trackers
 
 `Ctrl+U` prefills the Add URL dialog with the first valid magnet or HTTP(S)
