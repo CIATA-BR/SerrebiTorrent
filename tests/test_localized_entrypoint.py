@@ -187,3 +187,16 @@ def test_per_torrent_rate_limit_action_is_accessible_and_backgrounded():
     assert "def _set_torrent_rate_limits_background(" in source
     assert "client.set_torrent_rate_limits(" in source
     assert "self.thread_pool.submit(" in source
+
+
+def test_disk_space_protection_runs_before_torrent_file_add():
+    source = Path("app_entry.py").read_text(encoding="utf-8")
+
+    assert "def _check_disk_space_before_add(" in source
+    assert 'preferences.get("disk_space_reserve_mib", 0)' in source
+    assert "supports_free_space_query" in source
+    assert "torrent_required_bytes(data, priorities)" in source
+    assert "client.get_free_space(target_path)" in source
+    assert "def _add_torrent_file_background(" in source
+    assert "self._check_disk_space_before_add(" in source
+    assert "super()._add_torrent_file_background(" in source
