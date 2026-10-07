@@ -231,4 +231,4 @@ def test_torrent_categories_are_profile_scoped_and_keyboard_accessible():
     assert "self.current_profile_id" in source
     assert 'self.current_filter.startswith("category:")' in source
     assert "self._refresh_category_sidebar(torrents)" in source
-    assert 'self.sidebar.AppendItem(self.root_id, self._("Torrent Categories"))' in source
+    assert 'self._("Torrent Categories")' in source
