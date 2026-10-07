@@ -874,6 +874,9 @@ msgstr ""
 msgid "Failed to pause completed torrent {name}: {error}"
 msgstr ""
 
+msgid "Failed to pause {name} at the seed ratio target: {error}"
+msgstr ""
+
 msgid "Failed to read torrent file: {error}"
 msgstr ""
 
@@ -1474,6 +1477,9 @@ msgstr ""
 msgid "Pause"
 msgstr ""
 
+msgid "Pause seeding when ratio reaches (0 disables automation):"
+msgstr ""
+
 msgid "Pause selected torrents"
 msgstr ""
 
@@ -1484,6 +1490,9 @@ msgid "Pause torrents when downloads complete"
 msgstr ""
 
 msgid "Paused"
+msgstr ""
+
+msgid "Paused {name} at ratio {ratio:.2f} (target {target:.2f})."
 msgstr ""
 
 msgid "Pausing torrents..."
@@ -1841,6 +1850,9 @@ msgid "Searching {count} indexer..."
 msgstr ""
 
 msgid "Searching {count} indexers..."
+msgstr ""
+
+msgid "Seed ratio target reached; matching torrents were paused."
 msgstr ""
 
 msgid "Seeding"
