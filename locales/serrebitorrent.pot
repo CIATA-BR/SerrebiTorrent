@@ -895,6 +895,9 @@ msgstr ""
 msgid "Failed to save RSS rule."
 msgstr ""
 
+msgid "Failed to send recovery actions: {error}"
+msgstr ""
+
 msgid "Failed to update remote preferences: {error}"
 msgstr ""
 
@@ -1342,6 +1345,9 @@ msgstr ""
 msgid "No peers available."
 msgstr ""
 
+msgid "No recoverable incomplete torrents selected."
+msgstr ""
+
 msgid "No regular files found to include in torrent."
 msgstr ""
 
@@ -1606,6 +1612,12 @@ msgstr ""
 msgid "Rechecking torrents..."
 msgstr ""
 
+msgid "Recovery actions sent to {count} torrent(s)."
+msgstr ""
+
+msgid "Recovery actions sent to {succeeded} torrent(s); {failed} failed. Last error: {error}"
+msgstr ""
+
 msgid "Refresh"
 msgstr ""
 
@@ -1706,6 +1718,9 @@ msgid "Results, {count} results"
 msgstr ""
 
 msgid "Resume"
+msgstr ""
+
+msgid "Resume incomplete torrents and force a tracker announce"
 msgstr ""
 
 msgid "Resume selected torrents"
@@ -2206,6 +2221,15 @@ msgstr ""
 msgid "Transmission Remote Settings..."
 msgstr ""
 
+msgid "Try to &Fix Stalled Torrent\tCtrl+Shift+D"
+msgstr ""
+
+msgid "Try to Fix Stalled Torrent"
+msgstr ""
+
+msgid "Trying safe recovery actions..."
+msgstr ""
+
 msgid "Type"
 msgstr ""
 
@@ -2393,6 +2417,9 @@ msgid "{count} torrent added."
 msgstr ""
 
 msgid "{count} torrent removed."
+msgstr ""
+
+msgid "{count} torrent(s) skipped because they are complete, checking, downloading, or unavailable."
 msgstr ""
 
 msgid "{count} torrents"
