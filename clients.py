@@ -318,6 +318,7 @@ class BaseClient(abc.ABC):
     handles_magnet_start = True
     supports_queue_reordering = False
     supports_move_storage = False
+    supports_torrent_rate_limits = False
     _magnet_add_lock = threading.RLock()
 
     def add_magnet(self, url, save_path, start):
@@ -364,6 +365,9 @@ class BaseClient(abc.ABC):
 
     def move_torrent_data(self, h, destination):
         raise NotImplementedError("Moving torrent data is not supported by this client.")
+
+    def set_torrent_rate_limits(self, h, download_limit, upload_limit):
+        raise NotImplementedError("Per-torrent rate limits are not supported by this client.")
 
     @abc.abstractmethod
     def remove_torrent(self, h):
@@ -796,6 +800,7 @@ import qbittorrentapi
 class QBittorrentClient(BaseClient):
     supports_queue_reordering = True
     supports_move_storage = True
+    supports_torrent_rate_limits = True
     def find_magnet_duplicate(self, url):
         info_hash = parse_magnet_infohash(url)
         if not info_hash:
@@ -871,6 +876,16 @@ class QBittorrentClient(BaseClient):
         self.c.torrents_set_location(
             torrent_hashes=self._normalize_hash(h),
             location=destination,
+        )
+    def set_torrent_rate_limits(self, h, download_limit, upload_limit):
+        torrent_hash = self._normalize_hash(h)
+        self.c.torrents_set_download_limit(
+            limit=int(download_limit) if int(download_limit) > 0 else -1,
+            torrent_hashes=torrent_hash,
+        )
+        self.c.torrents_set_upload_limit(
+            limit=int(upload_limit) if int(upload_limit) > 0 else -1,
+            torrent_hashes=torrent_hash,
         )
     def remove_torrent(self, h): self.remove_torrents([h], df=False)
     def remove_torrent_with_data(self, h): self.remove_torrents([h], df=True)
@@ -962,6 +977,7 @@ from transmission_rpc import Client as TransClient
 class TransmissionClient(BaseClient):
     supports_queue_reordering = True
     supports_move_storage = True
+    supports_torrent_rate_limits = True
 
     def _add_new_magnet(self, url, save_path, start):
         self.c.add_torrent(url, download_dir=save_path, paused=not start)
@@ -1148,6 +1164,16 @@ class TransmissionClient(BaseClient):
     def queue_bottom(self, h): self.c.queue_bottom(self._normalize_torrent_id(h))
     def move_torrent_data(self, h, destination):
         self.c.move_torrent_data(self._normalize_torrent_id(h), location=destination)
+    def set_torrent_rate_limits(self, h, download_limit, upload_limit):
+        download_limit = max(0, int(download_limit))
+        upload_limit = max(0, int(upload_limit))
+        self.c.change_torrent(
+            self._normalize_torrent_id(h),
+            download_limit=max(1, (download_limit + 999) // 1000) if download_limit else 0,
+            download_limited=download_limit > 0,
+            upload_limit=max(1, (upload_limit + 999) // 1000) if upload_limit else 0,
+            upload_limited=upload_limit > 0,
+        )
     def remove_torrent(self, h): self.c.remove_torrent(self._normalize_torrent_id(h), delete_data=False)
     def remove_torrent_with_data(self, h): self.c.remove_torrent(self._normalize_torrent_id(h), delete_data=True)
     def remove_torrents(self, hs, df=False):
@@ -1304,6 +1330,7 @@ from session_manager import SessionManager
 class LocalClient(BaseClient):
     supports_queue_reordering = True
     supports_move_storage = True
+    supports_torrent_rate_limits = True
     def find_magnet_duplicate(self, url):
         info_hash = parse_magnet_infohash(url)
         if not info_hash:
@@ -1431,6 +1458,12 @@ class LocalClient(BaseClient):
         self._require_handle(h).queue_position_bottom()
     def move_torrent_data(self, h, destination):
         self._require_handle(h).move_storage(destination)
+    def set_torrent_rate_limits(self, h, download_limit, upload_limit):
+        handle = self._require_handle(h)
+        download_limit = int(download_limit)
+        upload_limit = int(upload_limit)
+        handle.set_download_limit(download_limit if download_limit > 0 else -1)
+        handle.set_upload_limit(upload_limit if upload_limit > 0 else -1)
     def remove_torrent(self, h): self.m.remove_torrent(h, False)
     def remove_torrent_with_data(self, h): self.m.remove_torrent(h, True)
     def add_torrent_url(self, u, sp=None):
