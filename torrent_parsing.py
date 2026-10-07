@@ -197,3 +197,25 @@ def torrent_file_storage(info):
     """
     layout = getattr(info, "layout", None)
     return layout() if layout else info.files()
+
+
+def torrent_required_bytes(data: bytes, priorities=None) -> Optional[int]:
+    """Return selected torrent payload bytes, or None when metadata cannot be parsed."""
+    if not lt:
+        return None
+    try:
+        info = lt.torrent_info(data)
+        storage = torrent_file_storage(info)
+        total = 0
+        count = info.num_files()
+        for index in range(count):
+            selected = (
+                priorities is None
+                or index >= len(priorities)
+                or int(priorities[index]) > 0
+            )
+            if selected:
+                total += int(storage.file_size(index))
+        return total
+    except Exception:
+        return None

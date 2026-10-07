@@ -232,6 +232,8 @@ _PT_BR: Mapping[str, str] = {
         "Anunciar downloads concluídos aos leitores de tela",
     "Pause torrents when downloads complete":
         "Pausar torrents quando os downloads forem concluídos",
+    "Minimum free space reserve (MiB, 0 disables protection):":
+        "Reserva mínima de espaço livre (MiB, 0 desativa a proteção):",
     "Show a system notification when downloads complete":
         "Mostrar uma notificação do sistema quando os downloads forem concluídos",
     "Automatically open the Add Torrent dialog for clipboard magnets":

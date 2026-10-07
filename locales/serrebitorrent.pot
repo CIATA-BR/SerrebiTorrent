@@ -580,6 +580,15 @@ msgstr ""
 msgid "Disconnected"
 msgstr ""
 
+msgid "Disk-space protection could not determine the torrent size."
+msgstr ""
+
+msgid "Disk-space protection is enabled, but the destination path is unavailable."
+msgstr ""
+
+msgid "Disk-space protection is enabled, but this client cannot report free space."
+msgstr ""
+
 msgid "Do not download"
 msgstr ""
 
@@ -1159,6 +1168,9 @@ msgstr ""
 msgid "Minimize to Tray"
 msgstr ""
 
+msgid "Minimum free space reserve (MiB, 0 disables protection):"
+msgstr ""
+
 msgid "Most seeders"
 msgstr ""
 
@@ -1325,6 +1337,9 @@ msgid "Normal"
 msgstr ""
 
 msgid "Not connected to any client."
+msgstr ""
+
+msgid "Not enough free disk space: {required} MiB required, {free} MiB free, {reserve} MiB reserved."
 msgstr ""
 
 msgid "Nothing found. Try fewer words, or switch on more indexers in Search sites."
@@ -2075,6 +2090,9 @@ msgid "Torrent Peers"
 msgstr ""
 
 msgid "Torrent Trackers"
+msgstr ""
+
+msgid "Torrent was not added: {error}"
 msgstr ""
 
 msgid "Torrent: {name}"

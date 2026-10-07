@@ -513,3 +513,47 @@ def test_local_torrent_rate_limits_delegate_to_libtorrent_handle():
 
 def test_rtorrent_does_not_claim_torrent_rate_limit_support():
     assert clients.RTorrentClient.supports_torrent_rate_limits is False
+
+
+def test_qbittorrent_free_space_uses_server_state_for_default_path():
+    client = clients.QBittorrentClient.__new__(clients.QBittorrentClient)
+    client.get_default_save_path = lambda: "/downloads"
+    client.c = MagicMock()
+    client.c.sync_maindata.return_value = {
+        "server_state": {"free_space_on_disk": 123456789}
+    }
+
+    assert client.get_free_space("/downloads/") == 123456789
+    assert client.supports_free_space_query is True
+
+
+def test_qbittorrent_free_space_rejects_non_default_path():
+    client = clients.QBittorrentClient.__new__(clients.QBittorrentClient)
+    client.get_default_save_path = lambda: "/downloads"
+    client.c = MagicMock()
+
+    with pytest.raises(NotImplementedError, match="default save path"):
+        client.get_free_space("/other")
+
+
+def test_transmission_free_space_uses_rpc_path_query():
+    client = clients.TransmissionClient.__new__(clients.TransmissionClient)
+    client.c = MagicMock()
+    client.c.free_space.return_value = 987654321
+
+    assert client.get_free_space("/downloads/custom") == 987654321
+    client.c.free_space.assert_called_once_with("/downloads/custom")
+    assert client.supports_free_space_query is True
+
+
+def test_local_free_space_uses_disk_usage(monkeypatch):
+    client = clients.LocalClient.__new__(clients.LocalClient)
+    usage = type("Usage", (), {"free": 456789})()
+    monkeypatch.setattr(clients.shutil, "disk_usage", lambda path: usage)
+
+    assert client.get_free_space("C:/Downloads") == 456789
+    assert client.supports_free_space_query is True
+
+
+def test_rtorrent_does_not_claim_free_space_query_support():
+    assert clients.RTorrentClient.supports_free_space_query is False

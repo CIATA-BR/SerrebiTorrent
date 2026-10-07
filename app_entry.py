@@ -30,6 +30,7 @@ from preferences_dialog import PreferencesDialog
 from runtime_actions_i18n import register_associations
 from torrent_list import TorrentListCtrl as LocalizedTorrentListCtrl
 from torrent_diagnostics import diagnose_torrent
+from torrent_parsing import torrent_required_bytes
 
 # The legacy handlers resolve AddTorrentDialog from main.py at call time. Point
 # that name at the localized implementation without editing the maintainer's
@@ -1004,6 +1005,84 @@ class LocalizedMainFrame(legacy.MainFrame):
         info.SetWebSite("https://github.com/serrebidev/SerrebiTorrent")
         info.AddDeveloper("serrebidev")
         wx.adv.AboutBox(info)
+
+    def _check_disk_space_before_add(self, client, data, save_path, priorities):
+        preferences = self.config_manager.get_preferences()
+        reserve_mib = max(0, int(preferences.get("disk_space_reserve_mib", 0) or 0))
+        if reserve_mib <= 0:
+            return
+
+        if not getattr(client, "supports_free_space_query", False):
+            raise RuntimeError(
+                self._(
+                    "Disk-space protection is enabled, but this client cannot report free space."
+                )
+            )
+
+        target_path = save_path or client.get_default_save_path()
+        if not target_path:
+            raise RuntimeError(
+                self._(
+                    "Disk-space protection is enabled, but the destination path is unavailable."
+                )
+            )
+
+        required_bytes = torrent_required_bytes(data, priorities)
+        if required_bytes is None:
+            raise RuntimeError(
+                self._("Disk-space protection could not determine the torrent size.")
+            )
+
+        free_bytes = int(client.get_free_space(target_path))
+        reserve_bytes = reserve_mib * 1024 * 1024
+        if free_bytes - required_bytes < reserve_bytes:
+            raise RuntimeError(
+                self._(
+                    "Not enough free disk space: {required} MiB required, {free} MiB free, "
+                    "{reserve} MiB reserved."
+                ).format(
+                    required=f"{required_bytes / (1024 * 1024):.1f}",
+                    free=f"{free_bytes / (1024 * 1024):.1f}",
+                    reserve=reserve_mib,
+                )
+            )
+
+    def _add_torrent_file_background(
+        self,
+        client,
+        generation,
+        data,
+        save_path,
+        priorities,
+        status_msg,
+    ):
+        try:
+            if generation != self.client_generation or self._closing:
+                return
+            if not client:
+                raise RuntimeError(self._("Not connected to any client."))
+            self._check_disk_space_before_add(
+                client,
+                data,
+                save_path,
+                priorities,
+            )
+        except Exception as exc:  # noqa: BLE001 - client/storage boundary
+            if generation == self.client_generation and not self._closing:
+                wx.CallAfter(
+                    self._on_action_error,
+                    self._("Torrent was not added: {error}").format(error=exc),
+                )
+            return
+
+        super()._add_torrent_file_background(
+            client,
+            generation,
+            data,
+            save_path,
+            priorities,
+            status_msg,
+        )
 
     def _restore_statusbar_accessible_name(self, announced_name, original_name):
         if self._closing or not hasattr(self, "statusbar"):
