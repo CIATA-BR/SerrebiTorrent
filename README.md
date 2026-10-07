@@ -181,6 +181,10 @@ Local Session Settings includes **Move completed torrent data to**. Leave it bla
 
 The automatic move uses the same capability layer as the manual Move torrent data action, so it works with qBittorrent, Transmission, and the built-in libtorrent client. rTorrent reports the unsupported capability instead of silently pretending to move data. If **Pause torrents when downloads complete** is also enabled, SerrebiTorrent performs the move first and then pauses the torrent in the same background worker to avoid racing the two automations.
 
+## Seed ratio automation
+
+Local Session Settings includes **Pause seeding when ratio reaches**. Set a decimal target such as `2.0` to have SerrebiTorrent automatically pause completed, active torrents when their upload ratio reaches the target. `0` disables the automation. The rule is implemented at the SerrebiTorrent layer, so it behaves consistently across local libtorrent, qBittorrent, Transmission, and rTorrent, and successful automatic pauses are recorded in Activity History.
+
 ## Disk-space protection
 
 Local Session Settings includes **Minimum free space reserve (MiB, 0 disables protection)**. The default is 0, so existing behavior does not change until the user enables it. For .torrent files, SerrebiTorrent calculates the bytes actually selected for download before adding the torrent and refuses the add when it would cross the configured free-space reserve.
