@@ -64,7 +64,7 @@ _PT_BR_MAIN = {
     "Open Download &Folder": "Abrir &pasta de download",
     "Move torrent &data...": "Mover &dados do torrent...",
     "Move selected torrent data to another folder": "Mover os dados dos torrents selecionados para outra pasta",
-    "Set torrent speed &limits...\\tCtrl+Alt+L": "Definir &limites de velocidade do torrent...\\tCtrl+Alt+L",
+    "Set torrent speed &limits...\tCtrl+Alt+L": "Definir &limites de velocidade do torrent...\tCtrl+Alt+L",
     "Set download and upload limits for selected torrents": "Definir limites de download e upload para os torrents selecionados",
     "Set torrent speed limits...": "Definir limites de velocidade do torrent...",
     "Set Torrent Speed Limits": "Definir limites de velocidade do torrent",
