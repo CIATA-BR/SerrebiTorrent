@@ -22,6 +22,7 @@ install_external_catalogs()
 
 import main as legacy
 import watch_folder
+from activity_history import ActivityHistory
 from completion_notifications import CompletionTracker
 from add_torrent_dialog import AddTorrentDialog as LocalizedAddTorrentDialog
 from connection_dialog import ConnectDialog
@@ -36,6 +37,67 @@ from torrent_parsing import torrent_required_bytes
 # that name at the localized implementation without editing the maintainer's
 # reviewed main.py.
 legacy.AddTorrentDialog = LocalizedAddTorrentDialog
+
+
+class ActivityHistoryDialog(wx.Dialog):
+    def __init__(self, parent, history, translate):
+        super().__init__(parent, title=translate("Activity History"), size=(760, 460))
+        self.history = history
+        self._ = translate
+
+        panel = wx.Panel(self)
+        sizer = wx.BoxSizer(wx.VERTICAL)
+
+        label = wx.StaticText(panel, label=self._("Recent activity, newest first:"))
+        sizer.Add(label, 0, wx.ALL, 8)
+
+        self.activity_list = wx.ListBox(panel)
+        self.activity_list.SetName(self._("Activity History"))
+        sizer.Add(self.activity_list, 1, wx.EXPAND | wx.LEFT | wx.RIGHT, 8)
+
+        buttons = wx.BoxSizer(wx.HORIZONTAL)
+        clear_button = wx.Button(panel, label=self._("Clear History"))
+        clear_button.SetName(self._("Clear History"))
+        clear_button.Bind(wx.EVT_BUTTON, self.on_clear)
+        buttons.Add(clear_button, 0, wx.RIGHT, 8)
+
+        close_button = wx.Button(panel, wx.ID_CLOSE, label=self._("Close"))
+        close_button.SetName(self._("Close"))
+        close_button.Bind(wx.EVT_BUTTON, lambda event: self.EndModal(wx.ID_CLOSE))
+        close_button.SetDefault()
+        buttons.Add(close_button, 0)
+
+        sizer.Add(buttons, 0, wx.ALIGN_RIGHT | wx.ALL, 8)
+        panel.SetSizer(sizer)
+
+        top = wx.BoxSizer(wx.VERTICAL)
+        top.Add(panel, 1, wx.EXPAND)
+        self.SetSizer(top)
+        self._reload()
+
+    def _reload(self):
+        self.activity_list.Clear()
+        entries = list(reversed(self.history.entries()))
+        for entry in entries:
+            timestamp = entry["timestamp"].replace("T", " ", 1)
+            self.activity_list.Append(
+                f'{timestamp} — {entry["message"]}'
+            )
+        if self.activity_list.GetCount():
+            self.activity_list.SetSelection(0)
+            self.activity_list.SetFocus()
+
+    def on_clear(self, event):
+        result = wx.MessageBox(
+            self._("Clear the activity history?"),
+            self._("Activity History"),
+            wx.YES_NO | wx.NO_DEFAULT | wx.ICON_QUESTION,
+            self,
+        )
+        if result != wx.YES:
+            return
+        self.history.clear()
+        self._reload()
 
 
 class TorrentRateLimitDialog(wx.Dialog):
@@ -95,6 +157,7 @@ class LocalizedMainFrame(legacy.MainFrame):
 
     def __init__(self):
         self._completion_tracker = CompletionTracker()
+        self.activity_history = ActivityHistory()
         self._name_filter_query = ""
         super().__init__()
         self._install_localized_torrent_list()
@@ -147,6 +210,7 @@ class LocalizedMainFrame(legacy.MainFrame):
         else:
             message = self._("Watch folder: added {count} torrent(s)").format(count=len(added))
         self.statusbar.SetStatusText(message, 0)
+        self._record_activity(message, kind="error" if failed else "success")
         self.refresh_data()
 
     def _install_localized_torrent_list(self):
@@ -361,6 +425,11 @@ class LocalizedMainFrame(legacy.MainFrame):
             _("Clear torrent name filter\tCtrl+Shift+L"),
             _("Show all torrents allowed by the current sidebar filter"),
         )
+        activity_history_item = tools_menu.Append(
+            wx.ID_ANY,
+            _("Activity &History...\tCtrl+Shift+H"),
+            _("Review recent SerrebiTorrent activity"),
+        )
         tools_menu.AppendSeparator()
         assoc_item = tools_menu.Append(
             wx.ID_ANY,
@@ -439,6 +508,7 @@ class LocalizedMainFrame(legacy.MainFrame):
         self.Bind(wx.EVT_MENU, self.on_search_torrents, search_item)
         self.Bind(wx.EVT_MENU, self.on_filter_torrents_by_name, filter_name_item)
         self.Bind(wx.EVT_MENU, self.on_clear_torrent_name_filter, clear_name_filter_item)
+        self.Bind(wx.EVT_MENU, self.on_activity_history, activity_history_item)
         self.Bind(
             wx.EVT_MENU,
             lambda event: register_associations(self._language()),
@@ -476,8 +546,31 @@ class LocalizedMainFrame(legacy.MainFrame):
             (wx.ACCEL_CTRL, ord("F"), search_item.GetId()),
             (wx.ACCEL_CTRL, ord("L"), filter_name_item.GetId()),
             (wx.ACCEL_CTRL | wx.ACCEL_SHIFT, ord("L"), clear_name_filter_item.GetId()),
+            (wx.ACCEL_CTRL | wx.ACCEL_SHIFT, ord("H"), activity_history_item.GetId()),
         ]
         self.SetAcceleratorTable(wx.AcceleratorTable(accel_entries))
+
+    def on_activity_history(self, event):
+        dialog = ActivityHistoryDialog(self, self.activity_history, self._)
+        try:
+            dialog.ShowModal()
+        finally:
+            dialog.Destroy()
+
+    def _record_activity(self, message, kind="info"):
+        try:
+            self.activity_history.append(str(message), kind=kind)
+        except Exception:
+            # User-facing history must never break the torrent workflow.
+            pass
+
+    def _on_action_complete(self, msg):
+        self._record_activity(self._(str(msg)), kind="success")
+        super()._on_action_complete(msg)
+
+    def _on_action_error(self, msg):
+        self._record_activity(self._(str(msg)), kind="error")
+        super()._on_action_error(msg)
 
     def on_select_none(self, event):
         count = self.torrent_list.GetItemCount()
@@ -596,6 +689,8 @@ class LocalizedMainFrame(legacy.MainFrame):
             return
         if error or not client:
             self.statusbar.SetStatusText(self._("Connection Failed"), 0)
+            failure_message = self._("Connection failed: {error}").format(error=error)
+            self._record_activity(failure_message, kind="error")
             return
         message = self._("Connected to {name}").format(
             name=profile.get("name", self._("Profile"))
@@ -603,6 +698,7 @@ class LocalizedMainFrame(legacy.MainFrame):
         if profile.get("type") != "local":
             message += f" ({self._('Local session active')})"
         self.statusbar.SetStatusText(message, 0)
+        self._record_activity(message, kind="success")
 
     def on_filter_change(self, event):
         """Keep canonical filter keys independent from translated sidebar labels."""
@@ -1196,6 +1292,11 @@ class LocalizedMainFrame(legacy.MainFrame):
 
         completion_events = self._completion_tracker.update_events(torrents)
         completed = [event["name"] for event in completion_events]
+        for event in completion_events:
+            self._record_activity(
+                self._("Download complete: {name}").format(name=event["name"]),
+                kind="success",
+            )
         preferences = self.config_manager.get_preferences()
         if completed and preferences.get("announce_download_complete", True):
             self._announce_download_completion(completed)

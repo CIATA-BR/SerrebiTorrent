@@ -177,6 +177,10 @@ Local Session Settings includes **Minimum free space reserve (MiB, 0 disables pr
 
 The check supports the built-in libtorrent client and arbitrary Transmission download paths. qBittorrent exposes free space for its default save path, so protection is available there when that path is used. rTorrent does not expose a reliable cross-client free-space query and reports the limitation instead. Magnet links are not preflighted because their payload size is unknown until metadata arrives.
 
+## Activity history
+
+SerrebiTorrent keeps up to 500 recent user-facing events in `SerrebiTorrent_Data/state/activity_history.json` (or the per-user state directory in installed mode). **Tools > Activity History** (`Ctrl+Shift+H`) shows the newest events first in a keyboard- and screen-reader-friendly list. The history records connections, completed downloads, successful actions, watch-folder results, and user-facing errors; it intentionally excludes noisy technical backend logging. Use **Clear History** in the dialog to reset it.
+
 ## Accessibility and shortcuts
 
 Everything stays reachable by keyboard:
@@ -196,6 +200,7 @@ Everything stays reachable by keyboard:
 - `Ctrl+F` — Search for torrents
 - `Ctrl+L` — Filter the current torrent list by name
 - `Ctrl+Shift+L` — Clear the torrent name filter
+- `Ctrl+Shift+H` — Open the persistent activity history
 - `Tab` — Toggle focus between the sidebar and torrent list; double-clicking the tray icon restores the window.
 
 Local libtorrent errors, state changes, and recheck completion are recorded in `SerrebiTorrent_Data\logs\session.log` (or the per-user app data folder in installed mode). The log keeps two rotated backups. If a torrent stays incomplete after Force Recheck, compare its save path and files with the errors in this log.
