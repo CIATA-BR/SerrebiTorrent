@@ -31,6 +31,7 @@
         "announce_download_complete": true,
         "show_download_complete_notification": false,
         "pause_on_download_complete": false,
+        "pause_at_seed_ratio": 0.0,
         "move_completed_to_path": "",
         "disk_space_reserve_mib": 0,
         "clipboard_auto_add": false,
