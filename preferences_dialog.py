@@ -136,6 +136,27 @@ class PreferencesDialog(wx.Dialog):
         )
         gen_sizer.Add(self.pause_on_download_complete_chk, 0, wx.ALL, 5)
 
+        move_completed_label = self._(
+            "Move completed torrent data to (leave blank to disable; use a remote path for remote clients):"
+        )
+        gen_sizer.Add(
+            wx.StaticText(general_panel, label=move_completed_label),
+            0,
+            wx.ALL,
+            5,
+        )
+        self.move_completed_to_path = wx.TextCtrl(
+            general_panel,
+            value=self.prefs.get("move_completed_to_path", ""),
+        )
+        self.move_completed_to_path.SetName(move_completed_label)
+        gen_sizer.Add(
+            self.move_completed_to_path,
+            0,
+            wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM,
+            5,
+        )
+
         disk_space_label = self._(
             "Minimum free space reserve (MiB, 0 disables protection):"
         )
@@ -485,6 +506,7 @@ class PreferencesDialog(wx.Dialog):
             "announce_download_complete": self.announce_download_complete_chk.GetValue(),
             "show_download_complete_notification": self.show_download_complete_notification_chk.GetValue(),
             "pause_on_download_complete": self.pause_on_download_complete_chk.GetValue(),
+            "move_completed_to_path": self.move_completed_to_path.GetValue().strip(),
             "disk_space_reserve_mib": self.disk_space_reserve.GetValue(),
             "clipboard_auto_add": self.clipboard_chk.GetValue(),
             "clipboard_prefill": self.clipboard_prefill_chk.GetValue(),
