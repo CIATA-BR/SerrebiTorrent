@@ -172,3 +172,18 @@ def test_move_torrent_data_action_runs_in_background():
     assert "def _move_torrent_data_background(" in source
     assert "client.move_torrent_data(torrent_hash, destination)" in source
     assert "self.thread_pool.submit(" in source
+
+
+def test_per_torrent_rate_limit_action_is_accessible_and_backgrounded():
+    source = Path("app_entry.py").read_text(encoding="utf-8")
+
+    assert "class TorrentRateLimitDialog(wx.Dialog):" in source
+    assert '"Download limit (bytes/s):"' in source
+    assert '"Upload limit (bytes/s):"' in source
+    assert "self.download_limit.SetName(download_label)" in source
+    assert "self.upload_limit.SetName(upload_label)" in source
+    assert '_("Set torrent speed &limits...\\tCtrl+Alt+L")' in source
+    assert "supports_torrent_rate_limits" in source
+    assert "def _set_torrent_rate_limits_background(" in source
+    assert "client.set_torrent_rate_limits(" in source
+    assert "self.thread_pool.submit(" in source
