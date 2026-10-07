@@ -48,6 +48,7 @@ def test_normalize_prefs_missing_keys(tmp_path, monkeypatch):
     assert prefs["announce_download_complete"] is True
     assert prefs["show_download_complete_notification"] is False
     assert prefs["pause_on_download_complete"] is False
+    assert prefs["move_completed_to_path"] == ""
     assert prefs["disk_space_reserve_mib"] == 0
 
 

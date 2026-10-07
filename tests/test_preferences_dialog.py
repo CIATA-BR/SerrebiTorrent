@@ -60,7 +60,7 @@ def test_preferences_controls_have_explicit_accessible_names():
 
     source = Path("preferences_dialog.py").read_text(encoding="utf-8")
     for control in (
-        "path_input", "watch_input", "disk_space_reserve", "dl_limit", "ul_limit", "max_conn",
+        "path_input", "watch_input", "move_completed_to_path", "disk_space_reserve", "dl_limit", "ul_limit", "max_conn",
         "max_slots", "port_input", "announce_ip_input", "listen_interface_input",
         "track_url_input", "rss_interval", "web_host", "web_port", "web_user",
         "web_pass", "proxy_type", "proxy_host", "proxy_port", "proxy_user",
@@ -135,3 +135,13 @@ def test_disk_space_reserve_preference_is_exposed_and_saved():
     assert 'self.prefs.get("disk_space_reserve_mib", 0)' in source
     assert '"disk_space_reserve_mib": self.disk_space_reserve.GetValue()' in source
     assert "self.disk_space_reserve.SetName(disk_space_label)" in source
+
+
+def test_completed_download_move_destination_is_exposed_and_saved():
+    from pathlib import Path
+
+    source = Path("preferences_dialog.py").read_text(encoding="utf-8")
+    assert '"Move completed torrent data to (leave blank to disable; use a remote path for remote clients):"' in source
+    assert 'self.prefs.get("move_completed_to_path", "")' in source
+    assert '"move_completed_to_path": self.move_completed_to_path.GetValue().strip()' in source
+    assert "self.move_completed_to_path.SetName(move_completed_label)" in source

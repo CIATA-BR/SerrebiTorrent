@@ -295,6 +295,9 @@ msgstr ""
 msgid "Auto-update is not available for this build."
 msgstr ""
 
+msgid "Automatic move on completion is not supported by this client."
+msgstr ""
+
 msgid "Automatically add trackers from URL"
 msgstr ""
 
@@ -859,6 +862,9 @@ msgstr ""
 msgid "Failed to load torrent trackers."
 msgstr ""
 
+msgid "Failed to move completed torrent {name}: {error}"
+msgstr ""
+
 msgid "Failed to move torrent data: {error}"
 msgstr ""
 
@@ -1216,6 +1222,9 @@ msgstr ""
 msgid "Move &up\tCtrl+Alt+Up"
 msgstr ""
 
+msgid "Move completed torrent data to (leave blank to disable; use a remote path for remote clients):"
+msgstr ""
+
 msgid "Move down"
 msgstr ""
 
@@ -1256,6 +1265,9 @@ msgid "Move torrent data..."
 msgstr ""
 
 msgid "Move up"
+msgstr ""
+
+msgid "Moved {count} completed torrent(s) to {destination}."
 msgstr ""
 
 msgid "Moving selected torrent data..."
