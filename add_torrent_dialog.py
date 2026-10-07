@@ -15,6 +15,7 @@ _PT_BR = {
     "Add Torrent: {name}": "Adicionar torrent: {name}",
     "Save Path:": "Pasta de destino:",
     "Save Path": "Pasta de destino",
+    "Recent destinations": "Destinos recentes",
     "Browse...": "Procurar...",
     "Files:": "Arquivos:",
     "Files": "Arquivos",
@@ -56,6 +57,7 @@ class AddTorrentDialog(wx.Dialog):
 
         self.file_list = file_list or []
         self.item_map = {}
+        self.recent_paths = self._parent_recent_paths(parent)
 
         sizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -66,8 +68,22 @@ class AddTorrentDialog(wx.Dialog):
             wx.ALIGN_CENTER_VERTICAL | wx.RIGHT,
             5,
         )
-        self.path_input = wx.TextCtrl(self, value=default_path)
-        self.path_input.SetName(self._("Save Path"))
+        choices = []
+        seen = set()
+        for value in [default_path, *self.recent_paths]:
+            clean = str(value or "").strip()
+            if clean and clean not in seen:
+                seen.add(clean)
+                choices.append(clean)
+        self.path_input = wx.ComboBox(
+            self,
+            value=default_path,
+            choices=choices,
+            style=wx.CB_DROPDOWN,
+        )
+        self.path_input.SetName(
+            f'{self._("Save Path")}. {self._("Recent destinations")}'
+        )
         path_sizer.Add(self.path_input, 1, wx.EXPAND | wx.RIGHT, 5)
         browse_btn = wx.Button(self, label=self._("Browse..."))
         browse_btn.SetName(self._("Browse save path"))
@@ -154,6 +170,13 @@ class AddTorrentDialog(wx.Dialog):
 
         self.SetSizer(sizer)
         self.Center()
+
+    @staticmethod
+    def _parent_recent_paths(parent):
+        try:
+            return list(parent.get_recent_save_paths())
+        except Exception:
+            return []
 
     @staticmethod
     def _parent_language(parent):
@@ -273,7 +296,12 @@ class AddTorrentDialog(wx.Dialog):
             child, cookie = self.tree.GetNextChild(self.root, cookie)
 
     def get_selected_path(self):
-        return self.path_input.GetValue()
+        value = self.path_input.GetValue().strip()
+        try:
+            self.GetParent().remember_recent_save_path(value)
+        except Exception:
+            pass
+        return value
 
     def get_file_priorities(self):
         if not self.file_list:

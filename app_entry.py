@@ -28,6 +28,7 @@ from add_torrent_dialog import AddTorrentDialog as LocalizedAddTorrentDialog
 from connection_dialog import ConnectDialog
 from main_ui_i18n import sidebar_label, tr_main
 from preferences_dialog import PreferencesDialog
+from recent_save_paths import RecentSavePaths
 from runtime_actions_i18n import register_associations
 from torrent_list import TorrentListCtrl as LocalizedTorrentListCtrl
 from torrent_diagnostics import diagnose_torrent
@@ -159,6 +160,7 @@ class LocalizedMainFrame(legacy.MainFrame):
     def __init__(self):
         self._completion_tracker = CompletionTracker()
         self.activity_history = ActivityHistory()
+        self.recent_save_paths = RecentSavePaths()
         self.torrent_categories = TorrentCategoryStore()
         self.category_items = {}
         self._name_filter_query = ""
@@ -173,6 +175,16 @@ class LocalizedMainFrame(legacy.MainFrame):
         self.watch_timer = wx.Timer(self)
         self.Bind(wx.EVT_TIMER, self.on_watch_timer, self.watch_timer)
         self.watch_timer.Start(watch_folder.SCAN_INTERVAL_SECONDS * 1000)
+
+    def get_recent_save_paths(self):
+        if not self.current_profile_id:
+            return []
+        return self.recent_save_paths.paths(self.current_profile_id)
+
+    def remember_recent_save_path(self, value):
+        if not self.current_profile_id:
+            return
+        self.recent_save_paths.remember(self.current_profile_id, value)
 
     def on_watch_timer(self, event):
         folder = watch_folder.clean_folder_path(self.config_manager.get_preferences().get("watch_folder"))
