@@ -83,6 +83,7 @@ DEFAULT_PREFERENCES: Dict[str, Any] = {
     "announce_download_complete": True,
     "show_download_complete_notification": False,
     "pause_on_download_complete": False,
+    "disk_space_reserve_mib": 0,  # 0 = disabled
     "clipboard_auto_add": False,
     "clipboard_prefill": True,
     "watch_folder": "",
