@@ -232,3 +232,10 @@ def test_torrent_categories_are_profile_scoped_and_keyboard_accessible():
     assert 'self.current_filter.startswith("category:")' in source
     assert "self._refresh_category_sidebar(torrents)" in source
     assert 'self._("Torrent Categories")' in source
+
+
+def test_category_and_name_filters_compose():
+    source = Path("app_entry.py").read_text(encoding="utf-8")
+
+    assert 'self.current_filter.startswith("category:")' in source
+    assert "for torrent in filtered_display_data" in source
