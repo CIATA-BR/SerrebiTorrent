@@ -1480,7 +1480,7 @@ class LocalizedMainFrame(legacy.MainFrame):
         if query:
             filtered_display_data = [
                 torrent
-                for torrent in display_data
+                for torrent in filtered_display_data
                 if query in str(torrent.get("name") or "").casefold()
             ]
 

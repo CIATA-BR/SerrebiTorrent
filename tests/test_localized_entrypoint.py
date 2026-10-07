@@ -246,3 +246,10 @@ def test_move_completed_downloads_runs_before_optional_pause():
     assert move_pos < pause_pos
     assert "supports_move_storage" in source
     assert "self.thread_pool.submit(" in source
+
+
+def test_category_and_name_filters_compose():
+    source = Path("app_entry.py").read_text(encoding="utf-8")
+
+    assert 'self.current_filter.startswith("category:")' in source
+    assert "for torrent in filtered_display_data" in source
