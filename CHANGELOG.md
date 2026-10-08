@@ -2,6 +2,10 @@
 
 All notable changes to SerrebiTorrent are recorded here.
 
+## v1.30.0 - 2026-10-08
+
+- Pause seeding at a configurable ratio target (#400).
+
 ## v1.29.0 - 2026-10-07
 
 - Add safe stalled torrent recovery action (#399).
