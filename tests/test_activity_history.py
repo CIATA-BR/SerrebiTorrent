@@ -61,3 +61,27 @@ def test_search_and_export_respects_filter_and_newest_order():
 def test_export_sanitizes_multiline_messages():
     from activity_history import format_activity_entry
     assert format_activity_entry({"timestamp": "T", "kind": "error", "message": "one\nnew line"}) == "  [error] one new line"
+
+
+def test_activity_history_uses_unique_temp_files_for_concurrent_instances(tmp_path, monkeypatch):
+    from concurrent.futures import ThreadPoolExecutor
+    import threading
+    import activity_history
+
+    path = tmp_path / "activity.json"
+    first = ActivityHistory(path=str(path))
+    second = ActivityHistory(path=str(path))
+    barrier = threading.Barrier(2)
+    original_replace = activity_history.os.replace
+
+    def synchronized_replace(src, dst):
+        barrier.wait(timeout=5)
+        return original_replace(src, dst)
+
+    monkeypatch.setattr(activity_history.os, "replace", synchronized_replace)
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        futures = [pool.submit(h._write_unlocked, [{"timestamp": "now", "kind": "info", "message": "ok"}]) for h in (first, second)]
+        for future in futures:
+            future.result(timeout=10)
+    assert json.loads(path.read_text(encoding="utf-8"))[0]["message"] == "ok"
+    assert not list(tmp_path.glob("*.tmp"))
