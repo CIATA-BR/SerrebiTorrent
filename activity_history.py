@@ -18,6 +18,35 @@ DEFAULT_MAX_ENTRIES = 500
 MAX_MESSAGE_CHARS = 2000
 
 
+def filter_activity_entries(entries, query: str = "") -> list[dict[str, str]]:
+    """Filter events without changing their chronological order."""
+    needle = str(query or "").strip().casefold()
+    if not needle:
+        return list(entries)
+    return [
+        entry for entry in entries
+        if needle in str(entry.get("message") or "").casefold()
+        or needle in str(entry.get("timestamp") or "").casefold()
+        or needle in str(entry.get("kind") or "").casefold()
+    ]
+
+
+def format_activity_entry(entry) -> str:
+    """Format one entry for copying or text export."""
+    timestamp = str(entry.get("timestamp") or "").replace("T", " ", 1)
+    kind = str(entry.get("kind") or "info")
+    message = str(entry.get("message") or "").replace("\r", " ").replace("\n", " ")
+    return f"{timestamp} [{kind}] {message}"
+
+
+def render_activity_export(entries) -> str:
+    """Create a human-readable text export, newest entries first."""
+    lines = [format_activity_entry(entry) for entry in entries]
+    return "\n".join(lines) + ("\n" if lines else "")
+
+
+
+
 class ActivityHistory:
     def __init__(self, path: str | None = None, max_entries: int = DEFAULT_MAX_ENTRIES):
         self.path = Path(path or os.path.join(get_state_dir(), "activity_history.json"))
