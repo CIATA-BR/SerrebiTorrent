@@ -83,6 +83,50 @@ class TorrentCategoryStore:
             values = self._load_unlocked().get(profile, {}).values()
             return sorted(set(values), key=lambda value: (value.casefold(), value))
 
+    def rename_category(self, profile_id, old_category, new_category) -> int:
+        """Rename all assignments in one profile, rejecting collisions."""
+        profile = str(profile_id or "")
+        old = self.clean_category(old_category)
+        new = self.clean_category(new_category)
+        if not profile or not old or not new:
+            raise ValueError("A profile and non-empty category names are required.")
+        if old == new:
+            return 0
+        with self._lock:
+            data = self._load_unlocked()
+            mapping = data.get(profile, {})
+            if any(
+                value.casefold() == new.casefold() and value != old
+                for value in mapping.values()
+            ):
+                raise ValueError("A category with that name already exists.")
+            matching = [h for h, value in mapping.items() if value == old]
+            if not matching:
+                return 0
+            for torrent_hash in matching:
+                mapping[torrent_hash] = new
+            self._write_unlocked(data)
+            return len(matching)
+
+    def delete_category(self, profile_id, category) -> int:
+        """Remove category assignments, never torrents or their files."""
+        profile = str(profile_id or "")
+        name = self.clean_category(category)
+        if not profile or not name:
+            return 0
+        with self._lock:
+            data = self._load_unlocked()
+            mapping = data.get(profile, {})
+            matching = [h for h, value in mapping.items() if value == name]
+            if not matching:
+                return 0
+            for torrent_hash in matching:
+                del mapping[torrent_hash]
+            if not mapping:
+                data.pop(profile, None)
+            self._write_unlocked(data)
+            return len(matching)
+
     def counts(self, profile_id, hashes) -> dict[str, int]:
         profile = str(profile_id or "")
         wanted = {str(value or "").strip() for value in hashes if str(value or "").strip()}
