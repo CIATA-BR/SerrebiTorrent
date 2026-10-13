@@ -203,7 +203,7 @@ SerrebiTorrent provides its own profile-scoped torrent categories so the experie
 
 ## Activity history
 
-SerrebiTorrent keeps up to 500 recent user-facing events in `SerrebiTorrent_Data/state/activity_history.json` (or the per-user state directory in installed mode). **Tools > Activity History** (`Ctrl+Shift+H`) shows the newest events first in a keyboard- and screen-reader-friendly list. The history records connections, completed downloads, successful actions, watch-folder results, and user-facing errors; it intentionally excludes noisy technical backend logging. Use **Clear History** in the dialog to reset it.
+SerrebiTorrent keeps up to 500 recent user-facing events in `SerrebiTorrent_Data/state/activity_history.json` (or the per-user state directory in installed mode). **Tools > Activity History** (`Ctrl+Shift+H`) shows the newest events first in a keyboard- and screen-reader-friendly list. The history records connections, completed downloads, successful actions, watch-folder results, and user-facing errors; it intentionally excludes noisy technical backend logging. Search the history by message, timestamp or event type, **Copy Selected Entry** to the clipboard, or **Export Visible Entries...** to a UTF-8 text file for troubleshooting. Search filters the displayed events; exports include only visible results in newest-first order. Use **Clear History** in the dialog to reset it.
 
 ## Accessibility and shortcuts
 
