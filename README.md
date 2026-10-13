@@ -199,7 +199,7 @@ After using **Diagnose Torrent**, you can run **Actions > Try to Fix Stalled Tor
 
 ## Torrent categories
 
-SerrebiTorrent provides its own profile-scoped torrent categories so the experience is consistent across local libtorrent, qBittorrent, Transmission, and rTorrent. Select one or more torrents and use **Actions > Set Category...** (`Ctrl+Alt+C`) to assign a category, or **Clear Category** to remove it. Categories appear in the sidebar with live counts and combine with the existing name filter. Category metadata is stored locally under the SerrebiTorrent state directory and does not modify backend-specific labels or tags.
+SerrebiTorrent provides its own profile-scoped torrent categories so the experience is consistent across local libtorrent, qBittorrent, Transmission, and rTorrent. Select one or more torrents and use **Actions > Set Category...** (`Ctrl+Alt+C`) to assign a category, or **Clear Category** to remove it. Categories appear in the sidebar with live counts and combine with the existing name filter. Category metadata is stored locally under the SerrebiTorrent state directory and does not modify backend-specific labels or tags. **Tools > Manage Torrent Categories...** provides a keyboard-accessible list to rename a category across every assigned torrent in the current profile, or remove the category after confirmation. Removing a category only clears assignments; it does not delete torrents or downloaded files. Categories from other profiles are unaffected.
 
 ## Activity history
 
