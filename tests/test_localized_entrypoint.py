@@ -309,3 +309,22 @@ def test_disk_space_guard_pauses_active_downloads_in_background():
     assert "self.thread_pool.submit(" in source
     assert "legacy.notify_win_event(" in source
     assert '"disk_space_reserve_mib", 0' in source
+
+
+
+def test_category_management_menu_is_accessible_and_updates_filters():
+    source = Path("app_entry.py").read_text(encoding="utf-8")
+    dialog = Path("torrent_category_manager_dialog.py").read_text(encoding="utf-8")
+
+    assert "from torrent_category_manager_dialog import TorrentCategoryManagerDialog" in source
+    assert '_("Manage Torrent &Categories...")' in source
+    assert "def on_manage_torrent_categories(self, event):" in source
+    assert "self.torrent_categories, profile_id, self._" in source
+    assert 'self.current_filter = f"category:{new}"' in source
+    assert 'self.current_filter = "All"' in source
+    assert 'self._record_activity(last_message, kind="success")' in source
+    assert "self.category_list.SetName(label)" in dialog
+    assert "self.category_list.SetFocus()" in dialog
+    assert "wx.YES_NO | wx.NO_DEFAULT" in dialog
+    assert "self.store.rename_category(" in dialog
+    assert "self.store.delete_category(" in dialog
