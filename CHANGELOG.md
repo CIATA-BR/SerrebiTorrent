@@ -2,6 +2,11 @@
 
 All notable changes to SerrebiTorrent are recorded here.
 
+## v1.33.0 - 2026-10-13
+
+- Rename and remove torrent categories across a profile (#404).
+- Avoid activity history temporary file collisions (#405).
+
 ## v1.32.0 - 2026-10-13
 
 - Search, copy, and export accessible activity history (#403).
