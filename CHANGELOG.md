@@ -2,6 +2,10 @@
 
 All notable changes to SerrebiTorrent are recorded here.
 
+## v1.32.0 - 2026-10-13
+
+- Search, copy, and export accessible activity history (#403).
+
 ## v1.31.0 - 2026-10-08
 
 - Enforce disk-space reserve during active downloads (#401).
