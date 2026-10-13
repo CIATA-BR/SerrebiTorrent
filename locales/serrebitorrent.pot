@@ -106,6 +106,9 @@ msgstr ""
 msgid "Activity History"
 msgstr ""
 
+msgid "Activity history exported."
+msgstr ""
+
 msgid "Add"
 msgstr ""
 
@@ -436,6 +439,9 @@ msgstr ""
 msgid "Client Type:"
 msgstr ""
 
+msgid "Clipboard is unavailable."
+msgstr ""
+
 msgid "Close"
 msgstr ""
 
@@ -542,6 +548,9 @@ msgid "Copy Magnet Link"
 msgstr ""
 
 msgid "Copy magnet link to clipboard"
+msgstr ""
+
+msgid "Copy Selected Entry"
 msgstr ""
 
 msgid "Copy the info hash for selected torrents"
@@ -811,7 +820,13 @@ msgstr ""
 msgid "Exit application"
 msgstr ""
 
+msgid "Export Activity History"
+msgstr ""
+
 msgid "Export PO..."
+msgstr ""
+
+msgid "Export Visible Entries..."
 msgstr ""
 
 msgid "Extracted update does not contain application files."
@@ -845,6 +860,9 @@ msgid "Failed to apply settings: {error}"
 msgstr ""
 
 msgid "Failed to download torrent from URL: {error}"
+msgstr ""
+
+msgid "Failed to export activity history: {error}"
 msgstr ""
 
 msgid "Failed to fetch preferences"
@@ -1339,6 +1357,9 @@ msgstr ""
 msgid "No"
 msgstr ""
 
+msgid "No activity entries to export."
+msgstr ""
+
 msgid "No clear cause is visible from the current torrent data."
 msgstr ""
 
@@ -1828,6 +1849,9 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
+msgid "Search activity history:"
+msgstr ""
+
 msgid "Search failed: {error}"
 msgstr ""
 
@@ -1895,6 +1919,9 @@ msgid "Select all torrents"
 msgstr ""
 
 msgid "Select all visible torrents"
+msgstr ""
+
+msgid "Select an activity entry first."
 msgstr ""
 
 msgid "Select File"
@@ -2093,6 +2120,9 @@ msgid "System default"
 msgstr ""
 
 msgid "TCP and uTP"
+msgstr ""
+
+msgid "Text files (*.txt)|*.txt"
 msgstr ""
 
 msgid "The active profile changed."
