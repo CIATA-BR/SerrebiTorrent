@@ -35,6 +35,7 @@ from torrent_diagnostics import diagnose_torrent
 from torrent_parsing import torrent_required_bytes
 from disk_space_guard import active_download_groups
 from torrent_categories import TorrentCategoryStore
+from torrent_category_manager_dialog import TorrentCategoryManagerDialog
 
 # The legacy handlers resolve AddTorrentDialog from main.py at call time. Point
 # that name at the localized implementation without editing the maintainer's
@@ -472,6 +473,11 @@ class LocalizedMainFrame(legacy.MainFrame):
             _("Activity &History...\tCtrl+Shift+H"),
             _("Review recent SerrebiTorrent activity"),
         )
+        manage_categories_item = tools_menu.Append(
+            wx.ID_ANY,
+            _("Manage Torrent &Categories..."),
+            _("Rename or remove torrent categories in the connected profile"),
+        )
         tools_menu.AppendSeparator()
         assoc_item = tools_menu.Append(
             wx.ID_ANY,
@@ -554,6 +560,7 @@ class LocalizedMainFrame(legacy.MainFrame):
         self.Bind(wx.EVT_MENU, self.on_filter_torrents_by_name, filter_name_item)
         self.Bind(wx.EVT_MENU, self.on_clear_torrent_name_filter, clear_name_filter_item)
         self.Bind(wx.EVT_MENU, self.on_activity_history, activity_history_item)
+        self.Bind(wx.EVT_MENU, self.on_manage_torrent_categories, manage_categories_item)
         self.Bind(
             wx.EVT_MENU,
             lambda event: register_associations(self._language()),
@@ -684,6 +691,40 @@ class LocalizedMainFrame(legacy.MainFrame):
         )
         self.statusbar.SetStatusText(message, 0)
         self._record_activity(message, kind="success")
+        self.refresh_data()
+
+    def on_manage_torrent_categories(self, event):
+        profile_id = self.current_profile_id
+        if not profile_id:
+            self.statusbar.SetStatusText(self._("Connect to a profile first."), 0)
+            return
+        dialog = TorrentCategoryManagerDialog(
+            self, self.torrent_categories, profile_id, self._
+        )
+        try:
+            dialog.ShowModal()
+            operations = list(dialog.operations)
+        finally:
+            dialog.Destroy()
+        if not operations:
+            return
+
+        last_message = ""
+        for action, old, new, count in operations:
+            if action == "rename":
+                if self.current_filter == f"category:{old}":
+                    self.current_filter = f"category:{new}"
+                last_message = self._(
+                    'Renamed category "{old}" to "{new}" for {count} torrent(s).'
+                ).format(old=old, new=new, count=count)
+            else:
+                if self.current_filter == f"category:{old}":
+                    self.current_filter = "All"
+                last_message = self._(
+                    'Removed category "{name}" from {count} torrent(s).'
+                ).format(name=old, count=count)
+            self._record_activity(last_message, kind="success")
+        self.statusbar.SetStatusText(last_message, 0)
         self.refresh_data()
 
     def _refresh_category_sidebar(self, torrents):
