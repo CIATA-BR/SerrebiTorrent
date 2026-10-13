@@ -22,7 +22,7 @@ install_external_catalogs()
 
 import main as legacy
 import watch_folder
-from activity_history import ActivityHistory
+from activity_history import ActivityHistory, filter_activity_entries, format_activity_entry, render_activity_export
 from completion_notifications import CompletionTracker
 from add_torrent_dialog import AddTorrentDialog as LocalizedAddTorrentDialog
 from connection_dialog import ConnectDialog
@@ -47,48 +47,108 @@ class ActivityHistoryDialog(wx.Dialog):
         super().__init__(parent, title=translate("Activity History"), size=(760, 460))
         self.history = history
         self._ = translate
+        self.visible_entries = []
 
         panel = wx.Panel(self)
         sizer = wx.BoxSizer(wx.VERTICAL)
 
-        label = wx.StaticText(panel, label=self._("Recent activity, newest first:"))
-        sizer.Add(label, 0, wx.ALL, 8)
+        search_label = self._("Search activity history:")
+        sizer.Add(wx.StaticText(panel, label=search_label), 0, wx.ALL, 8)
+        self.search_input = wx.TextCtrl(panel)
+        self.search_input.SetName(search_label)
+        self.search_input.Bind(wx.EVT_TEXT, self.on_search)
+        sizer.Add(self.search_input, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 8)
 
+        sizer.Add(wx.StaticText(panel, label=self._("Recent activity, newest first:")), 0, wx.LEFT | wx.RIGHT | wx.BOTTOM, 8)
         self.activity_list = wx.ListBox(panel)
         self.activity_list.SetName(self._("Activity History"))
         sizer.Add(self.activity_list, 1, wx.EXPAND | wx.LEFT | wx.RIGHT, 8)
 
         buttons = wx.BoxSizer(wx.HORIZONTAL)
+        copy_button = wx.Button(panel, label=self._("Copy Selected Entry"))
+        copy_button.Bind(wx.EVT_BUTTON, self.on_copy)
+        buttons.Add(copy_button, 0, wx.RIGHT, 8)
+
+        export_button = wx.Button(panel, label=self._("Export Visible Entries..."))
+        export_button.Bind(wx.EVT_BUTTON, self.on_export)
+        buttons.Add(export_button, 0, wx.RIGHT, 8)
+
         clear_button = wx.Button(panel, label=self._("Clear History"))
-        clear_button.SetName(self._("Clear History"))
         clear_button.Bind(wx.EVT_BUTTON, self.on_clear)
         buttons.Add(clear_button, 0, wx.RIGHT, 8)
 
         close_button = wx.Button(panel, wx.ID_CLOSE, label=self._("Close"))
-        close_button.SetName(self._("Close"))
         close_button.Bind(wx.EVT_BUTTON, lambda event: self.EndModal(wx.ID_CLOSE))
         close_button.SetDefault()
         buttons.Add(close_button, 0)
 
         sizer.Add(buttons, 0, wx.ALIGN_RIGHT | wx.ALL, 8)
         panel.SetSizer(sizer)
-
         top = wx.BoxSizer(wx.VERTICAL)
         top.Add(panel, 1, wx.EXPAND)
         self.SetSizer(top)
         self._reload()
+        self.search_input.SetFocus()
 
     def _reload(self):
-        self.activity_list.Clear()
-        entries = list(reversed(self.history.entries()))
-        for entry in entries:
-            timestamp = entry["timestamp"].replace("T", " ", 1)
-            self.activity_list.Append(
-                f'{timestamp} — {entry["message"]}'
+        previous = self.activity_list.GetSelection()
+        self.visible_entries = filter_activity_entries(
+            reversed(self.history.entries()), self.search_input.GetValue()
+        )
+        self.activity_list.Freeze()
+        try:
+            self.activity_list.Clear()
+            for entry in self.visible_entries:
+                self.activity_list.Append(format_activity_entry(entry))
+            if self.visible_entries:
+                self.activity_list.SetSelection(
+                    min(max(previous, 0), len(self.visible_entries) - 1)
+                )
+        finally:
+            self.activity_list.Thaw()
+
+    def on_search(self, event):
+        self._reload()
+
+    def on_copy(self, event):
+        index = self.activity_list.GetSelection()
+        if index == wx.NOT_FOUND or index >= len(self.visible_entries):
+            wx.MessageBox(self._("Select an activity entry first."), self._("Activity History"), wx.OK | wx.ICON_INFORMATION, self)
+            return
+        if not wx.TheClipboard.Open():
+            wx.MessageBox(self._("Clipboard is unavailable."), self._("Activity History"), wx.OK | wx.ICON_WARNING, self)
+            return
+        try:
+            wx.TheClipboard.SetData(wx.TextDataObject(
+                format_activity_entry(self.visible_entries[index])
+            ))
+        finally:
+            wx.TheClipboard.Close()
+
+    def on_export(self, event):
+        if not self.visible_entries:
+            wx.MessageBox(self._("No activity entries to export."), self._("Activity History"), wx.OK | wx.ICON_INFORMATION, self)
+            return
+        with wx.FileDialog(
+            self,
+            self._("Export Activity History"),
+            wildcard=self._("Text files (*.txt)|*.txt"),
+            style=wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT,
+            defaultFile="SerrebiTorrent-activity.txt",
+        ) as dialog:
+            if dialog.ShowModal() != wx.ID_OK:
+                return
+            destination = dialog.GetPath()
+        try:
+            from pathlib import Path
+            Path(destination).write_text(render_activity_export(self.visible_entries), encoding="utf-8")
+        except OSError as exc:
+            wx.MessageBox(
+                self._("Failed to export activity history: {error}").format(error=exc),
+                self._("Activity History"), wx.OK | wx.ICON_ERROR, self
             )
-        if self.activity_list.GetCount():
-            self.activity_list.SetSelection(0)
-            self.activity_list.SetFocus()
+            return
+        wx.MessageBox(self._("Activity history exported."), self._("Activity History"), wx.OK | wx.ICON_INFORMATION, self)
 
     def on_clear(self, event):
         result = wx.MessageBox(
@@ -101,7 +161,6 @@ class ActivityHistoryDialog(wx.Dialog):
             return
         self.history.clear()
         self._reload()
-
 
 class TorrentRateLimitDialog(wx.Dialog):
     def __init__(self, parent, translate):
