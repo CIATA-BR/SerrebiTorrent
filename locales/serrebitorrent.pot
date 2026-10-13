@@ -82,6 +82,9 @@ msgstr ""
 msgid "1 feed"
 msgstr ""
 
+msgid "A category with that name already exists."
+msgstr ""
+
 msgid "A Torznab or Newznab search endpoint. Prowlarr: {prowlarr}. Jackett, all trackers at once: {jackett}"
 msgstr ""
 
@@ -341,6 +344,9 @@ msgid "Cancel profile changes"
 msgstr ""
 
 msgid "Categories"
+msgstr ""
+
+msgid "Categories in this profile:"
 msgstr ""
 
 msgid "Category"
@@ -1198,6 +1204,12 @@ msgstr ""
 msgid "Manage Profiles & Connect"
 msgstr ""
 
+msgid "Manage Torrent &Categories..."
+msgstr ""
+
+msgid "Manage Torrent Categories"
+msgstr ""
+
 msgid "Max Connections:"
 msgstr ""
 
@@ -1328,6 +1340,9 @@ msgid "Needs review"
 msgstr ""
 
 msgid "Network"
+msgstr ""
+
+msgid "New category name:"
 msgstr ""
 
 msgid "Newest"
@@ -1663,6 +1678,12 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
+msgid "Remove category \"{name}\" from all torrents in this profile? No torrent files or data will be deleted."
+msgstr ""
+
+msgid "Remove Category..."
+msgstr ""
+
 msgid "Remove failed: {error}"
 msgstr ""
 
@@ -1714,7 +1735,22 @@ msgstr ""
 msgid "Remove {count} torrents?"
 msgstr ""
 
+msgid "Removed category \"{name}\" from {count} torrent(s)."
+msgstr ""
+
 msgid "Removed {name}."
+msgstr ""
+
+msgid "Rename Category"
+msgstr ""
+
+msgid "Rename Category..."
+msgstr ""
+
+msgid "Rename or remove torrent categories in the connected profile"
+msgstr ""
+
+msgid "Renamed category \"{old}\" to \"{new}\" for {count} torrent(s)."
 msgstr ""
 
 msgid "Reset failed: {error}"
@@ -1877,6 +1913,9 @@ msgid "Select &All\tCtrl+A"
 msgstr ""
 
 msgid "Select &none"
+msgstr ""
+
+msgid "Select a category first."
 msgstr ""
 
 msgid "Select a result first."
