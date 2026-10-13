@@ -10,6 +10,7 @@ import json
 import os
 from pathlib import Path
 import threading
+import tempfile
 
 from app_paths import get_state_dir
 
@@ -115,12 +116,11 @@ class ActivityHistory:
 
     def _write_unlocked(self, entries: list[dict[str, str]]) -> None:
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        temp = self.path.with_name(f"{self.path.name}.{os.getpid()}.tmp")
+        fd, name = tempfile.mkstemp(prefix=f"{self.path.name}.", suffix=".tmp", dir=self.path.parent)
+        temp = Path(name)
         try:
-            temp.write_text(
-                json.dumps(entries, ensure_ascii=False, indent=2),
-                encoding="utf-8",
-            )
+            with os.fdopen(fd, "w", encoding="utf-8") as output:
+                output.write(json.dumps(entries, ensure_ascii=False, indent=2))
             os.replace(temp, self.path)
             if os.name != "nt":
                 try:
