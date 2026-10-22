@@ -73,3 +73,17 @@
 - The current Authenticode certificate is self-signed, so `signtool verify /pa` reports an untrusted root on a stock machine even though the EXE is signed and timestamped. The updater accepts its manifest thumbprint; eliminating the initial Windows trust prompt requires a publicly trusted code-signing certificate.
 
 Keep edits lean, comment only when code is not self-explanatory, and leave user-facing docs in README.md. Everything technical goes here.
+
+## Agent skills
+
+### Issue tracker
+
+Issues are tracked in this repo's GitHub Issues, via the `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default vocabulary: `needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: one `GLOSSARY.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.
