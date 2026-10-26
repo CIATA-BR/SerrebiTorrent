@@ -353,4 +353,6 @@ def test_batch_torrent_file_add_uses_duplicate_guard():
     assert "client.add_torrent_file_if_new(" in source
     assert "before_add=lambda data=data: self._check_disk_space_before_add(" in source
     assert "self._prompt_duplicate_torrent_file" in source
+    assert "duplicates += 1" in source
+    assert "len(paths) - len(failed) - duplicates" in source
     assert "client.add_torrent_file(data, save_path, None)" not in source
