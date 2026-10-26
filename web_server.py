@@ -732,6 +732,7 @@ def torrents_add():
     errors = []
     attempted = 0
     succeeded = 0
+    duplicates = 0
     
     if url_items:
         for url in url_items:
@@ -746,11 +747,17 @@ def torrents_add():
                 try:
                     attempted += 1
                     if urlparse(u).scheme.lower() == 'magnet':
-                        client.add_torrent_url(u, sp=save_path)
+                        duplicate = client.add_magnet(u, save_path, True)
                     else:
                         content = download_torrent_url(u)
-                        client.add_torrent_file(content, sp=save_path)
-                    succeeded += 1
+                        _magnet, duplicate = client.add_torrent_file_if_new(
+                            content,
+                            save_path,
+                        )
+                    if duplicate:
+                        duplicates += 1
+                    else:
+                        succeeded += 1
                 except Exception as e:
                     errors.append("url-failed")
                     print(f"Web add URL error for {u[:80]!r}: {e}")
@@ -765,8 +772,14 @@ def torrents_add():
             if content:
                 try:
                     attempted += 1
-                    client.add_torrent_file(content, sp=save_path)
-                    succeeded += 1
+                    _magnet, duplicate = client.add_torrent_file_if_new(
+                        content,
+                        save_path,
+                    )
+                    if duplicate:
+                        duplicates += 1
+                    else:
+                        succeeded += 1
                 except Exception as e:
                     errors.append("file-failed")
                     print(f"Web add file error for {f.filename!r}: {e}")
@@ -774,7 +787,13 @@ def torrents_add():
     if attempted == 0 and not errors:
         return "No torrents provided", 400
     if errors:
-        if succeeded:
+        if succeeded or duplicates:
+            if duplicates:
+                return (
+                    f"Added {succeeded} torrent(s), skipped {duplicates} duplicate torrent(s), "
+                    f"but {len(errors)} item(s) failed. Check the torrent list before retrying.",
+                    207,
+                )
             return (
                 f"Added {succeeded} torrent(s), but {len(errors)} item(s) failed. "
                 "Check the torrent list before retrying.",
@@ -786,7 +805,13 @@ def torrents_add():
             return "Torrent file exceeds the 16 MB upload limit.", 413
         # Detail is logged server-side; don't leak exception text to clients.
         return "Failed to add torrents.", 500
-    return "Ok."
+    if duplicates:
+        if succeeded:
+            return f"Added {succeeded} torrent(s); skipped {duplicates} duplicate torrent(s)."
+        return f"Skipped {duplicates} duplicate torrent(s)."
+    if succeeded == 1:
+        return "1 torrent added."
+    return f"{succeeded} torrents added."
 
 @app.route('/api/v2/rss/feeds')
 @login_required
