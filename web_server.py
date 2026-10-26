@@ -747,7 +747,7 @@ def torrents_add():
                 try:
                     attempted += 1
                     if urlparse(u).scheme.lower() == 'magnet':
-                        duplicate = client.add_magnet(u, save_path, True)
+                        duplicate = client.add_magnet(u, save_path)
                     else:
                         content = download_torrent_url(u)
                         _magnet, duplicate = client.add_torrent_file_if_new(
