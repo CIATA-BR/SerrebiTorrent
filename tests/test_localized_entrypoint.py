@@ -345,3 +345,12 @@ def test_torrent_file_duplicate_detection_reuses_magnet_prompt():
     prompt = source.index("self._prompt_duplicate_torrent_file", duplicate_check)
     success = source.index("self._on_action_complete", duplicate_check)
     assert duplicate_check < prompt < success
+
+
+def test_batch_torrent_file_add_uses_duplicate_guard():
+    source = Path("runtime_file_add_i18n.py").read_text(encoding="utf-8")
+
+    assert "client.add_torrent_file_if_new(" in source
+    assert "before_add=lambda data=data: self._check_disk_space_before_add(" in source
+    assert "self._prompt_duplicate_torrent_file" in source
+    assert "client.add_torrent_file(data, save_path, None)" not in source
