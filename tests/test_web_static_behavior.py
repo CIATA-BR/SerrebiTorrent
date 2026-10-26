@@ -131,7 +131,9 @@ def test_remote_settings_load_failure_is_accessible():
 def test_web_form_actions_and_refresh_failures_are_announced():
     script = (ROOT / "web_static" / "app.js").read_text(encoding="utf-8")
 
-    assert 'announceToSR("Torrent added.")' in script
+    assert 'const rawMessage = (await res.text()) || "Torrent added."' in script
+    assert 'const message = rawMessage === "Ok." ? translate("Torrent added.") : translate(rawMessage);' in script
+    assert 'announceToSR(message, rawMessage.includes("duplicate"))' in script
     assert "Failed to add torrent:" in script
     assert "announceToSR(message, true)" in script
     assert "const message = (window.SerrebiI18n?.t || ((value) => value))('Settings saved.');" in script

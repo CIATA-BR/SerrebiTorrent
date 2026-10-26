@@ -11,6 +11,8 @@ class FakeClient:
     def __init__(self):
         self.urls = []
         self.files = []
+        self.duplicate_magnets = set()
+        self.duplicate_files = set()
 
     def add_torrent_url(self, u, sp=None):
         self.urls.append((u, sp))
@@ -18,9 +20,23 @@ class FakeClient:
     def add_torrent_file(self, content, sp=None):
         self.files.append((content, sp))
 
+    def add_magnet(self, u, save_path, start):
+        if u in self.duplicate_magnets:
+            return ("existing-hash", "Existing torrent", [])
+        self.urls.append((u, save_path))
+        return None
+
+    def add_torrent_file_if_new(self, content, save_path=None, priorities=None, before_add=None):
+        if content in self.duplicate_files:
+            return ("magnet:?xt=urn:btih:existing", ("existing-hash", "Existing torrent", []))
+        if before_add is not None:
+            before_add()
+        self.files.append((content, save_path))
+        return ("magnet:?xt=urn:btih:new", None)
+
 
 class FailingClient(FakeClient):
-    def add_torrent_url(self, u, sp=None):
+    def add_magnet(self, u, save_path, start):
         raise RuntimeError("boom")
 
 
@@ -58,6 +74,7 @@ def test_torrents_add_downloads_http_urls_server_side(app_client, fake_client, m
     assert res.status_code == 200
     assert fake_client.urls == []
     assert fake_client.files == [(b"torrent-bytes", "C:\\Downloads")]
+    assert b"1 torrent added." in res.data
 
 
 @pytest.mark.parametrize(
@@ -139,6 +156,7 @@ def test_torrents_add_calls_client_for_files(app_client, fake_client):
     )
     assert res.status_code == 200
     assert fake_client.files == [(b"abc", "C:\\Downloads")]
+    assert b"1 torrent added." in res.data
 
 
 def test_torrents_add_returns_error_on_failure(app_client):
@@ -173,10 +191,11 @@ def test_torrents_add_requires_csrf(app_client, fake_client):
 
 def test_torrents_add_reports_partial_success_without_generic_500(app_client, monkeypatch):
     class PartialClient(FakeClient):
-        def add_torrent_url(self, u, sp=None):
+        def add_magnet(self, u, save_path, start):
             if "bad" in u:
                 raise RuntimeError("boom")
-            self.urls.append((u, sp))
+            self.urls.append((u, save_path))
+            return None
 
     original = web_server.WEB_CONFIG["client"]
     client = PartialClient()
@@ -274,3 +293,78 @@ def test_download_torrent_url_rejects_invalid_content_length(monkeypatch):
 
     with pytest.raises(ValueError, match="invalid Content-Length"):
         clients.download_torrent_url("https://example.com/file.torrent")
+
+
+
+def test_torrents_add_skips_duplicate_magnets(app_client, fake_client):
+    magnet = "magnet:?xt=urn:btih:duplicate"
+    fake_client.duplicate_magnets.add(magnet)
+
+    res = app_client.post(
+        "/api/v2/torrents/add",
+        data={"urls": magnet, "savepath": "/downloads"},
+        headers=csrf_headers(),
+    )
+
+    assert res.status_code == 200
+    assert b"Skipped 1 duplicate torrent(s)." in res.data
+    assert fake_client.urls == []
+
+
+def test_torrents_add_skips_duplicate_uploaded_files(app_client, fake_client):
+    fake_client.duplicate_files.add(b"duplicate")
+
+    res = app_client.post(
+        "/api/v2/torrents/add",
+        data={"torrents": (io.BytesIO(b"duplicate"), "duplicate.torrent")},
+        content_type="multipart/form-data",
+        headers=csrf_headers(),
+    )
+
+    assert res.status_code == 200
+    assert b"Skipped 1 duplicate torrent(s)." in res.data
+    assert fake_client.files == []
+
+
+def test_torrents_add_reports_new_and_duplicate_items(app_client, fake_client):
+    duplicate = "magnet:?xt=urn:btih:duplicate"
+    fresh = "magnet:?xt=urn:btih:fresh"
+    fake_client.duplicate_magnets.add(duplicate)
+
+    res = app_client.post(
+        "/api/v2/torrents/add",
+        data={"urls": f"{duplicate}\n{fresh}"},
+        headers=csrf_headers(),
+    )
+
+    assert res.status_code == 200
+    assert b"Added 1 torrent(s); skipped 1 duplicate torrent(s)." in res.data
+    assert fake_client.urls == [(fresh, None)]
+
+
+def test_torrents_add_reports_duplicate_plus_failure_as_partial(app_client):
+    class DuplicateAndFailClient(FakeClient):
+        def add_magnet(self, u, save_path, start):
+            if "duplicate" in u:
+                return ("existing-hash", "Existing torrent", [])
+            raise RuntimeError("boom")
+
+    original = web_server.WEB_CONFIG["client"]
+    web_server.WEB_CONFIG["client"] = DuplicateAndFailClient()
+    try:
+        res = app_client.post(
+            "/api/v2/torrents/add",
+            data={
+                "urls": (
+                    "magnet:?xt=urn:btih:duplicate\n"
+                    "magnet:?xt=urn:btih:bad"
+                )
+            },
+            headers=csrf_headers(),
+        )
+    finally:
+        web_server.WEB_CONFIG["client"] = original
+
+    assert res.status_code == 207
+    assert b"skipped 1 duplicate torrent(s)" in res.data
+    assert b"1 item(s) failed" in res.data

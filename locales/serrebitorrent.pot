@@ -181,6 +181,12 @@ msgstr ""
 msgid "Added {added} of {total} torrents"
 msgstr ""
 
+msgid "Added {added} torrent(s), skipped {duplicates} duplicate torrent(s), but {failed} item(s) failed. Check the torrent list before retrying."
+msgstr ""
+
+msgid "Added {added} torrent(s); skipped {duplicates} duplicate torrent(s)."
+msgstr ""
+
 msgid "Added {title}"
 msgstr ""
 
@@ -2066,6 +2072,9 @@ msgid "Skip"
 msgstr ""
 
 msgid "Skip to torrent list"
+msgstr ""
+
+msgid "Skipped {count} duplicate torrent(s)."
 msgstr ""
 
 msgid "SOCKS4 (no auth)"

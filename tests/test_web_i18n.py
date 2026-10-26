@@ -142,3 +142,10 @@ def test_pt_br_layer_covers_clipboard_app_settings():
     assert "'Open Add Torrent for clipboard magnets':" in I18N
     assert "'Prefill Add Torrent from clipboard magnets and .torrent URLs':" in I18N
     assert "'These options monitor the desktop application clipboard, not the browser clipboard.':" in I18N
+
+
+
+def test_web_duplicate_add_feedback_is_translatable():
+    assert "Skipped {count} duplicate torrent(s)." in I18N
+    assert "Added {added} torrent(s); skipped {duplicates} duplicate torrent(s)." in I18N
+    assert "duplicate torrent\\(s\\)" in I18N

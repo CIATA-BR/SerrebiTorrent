@@ -107,9 +107,11 @@ copy. Instead, it compares trackers and asks whether to add only the new ones.
 Declining leaves the torrent unchanged; accepting preserves its location and
 running/paused state. Inputs without new trackers show an already-added message.
 The submission-time duplicate check is serialized within the process, so a torrent
-added while the save dialog was open is still caught. RSS/web additions remain outside
-this desktop duplicate-tracker merge flow. Locally merged trackers are persisted
-across application restarts.
+added while the save dialog was open is still caught. Web UI additions also use the
+same info-hash guard and skip duplicates instead of submitting them again; unlike the
+desktop flow, the Web UI does not merge trackers automatically because there is no
+confirmation dialog. RSS auto-additions remain outside this duplicate-tracker flow.
+Locally merged trackers are persisted across application restarts.
 
 Transmission file additions also preserve the checked/unchecked file selection
 from the Add Torrent dialog. Transmission progress uses the selected download
