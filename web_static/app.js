@@ -335,7 +335,9 @@ window.addEventListener('DOMContentLoaded', () => {
             try {
                 const res = await apiFetch('/api/v2/torrents/add', { method: 'POST', body: formData });
                 if (res.status === 207) {
-                    const message = (await res.text()) || "Some torrents were added, but one or more failed.";
+                    const rawMessage = (await res.text()) || "Some torrents were added, but one or more failed.";
+                    const translate = window.SerrebiI18n?.t || ((value) => value);
+                    const message = translate(rawMessage);
                     const modal = bootstrap.Modal.getInstance(document.getElementById('addTorrentModal'));
                     if (modal) modal.hide();
                     e.target.reset();
@@ -345,10 +347,13 @@ window.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
                 if (res.ok) {
+                    const rawMessage = (await res.text()) || "Torrent added.";
+                    const translate = window.SerrebiI18n?.t || ((value) => value);
+                    const message = rawMessage === "Ok." ? translate("Torrent added.") : translate(rawMessage);
                     const modal = bootstrap.Modal.getInstance(document.getElementById('addTorrentModal'));
                     if (modal) modal.hide();
                     e.target.reset();
-                    announceToSR("Torrent added.");
+                    announceToSR(message, rawMessage.includes("duplicate"));
                     refreshData(true);
                     return;
                 }
