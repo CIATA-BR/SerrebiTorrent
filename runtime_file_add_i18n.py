@@ -138,6 +138,7 @@ def _add_many_files(self, paths, language):
 
 def _add_many_files_background(self, client, generation, paths, save_path, language):
     failed = []
+    duplicates = 0
     for path in paths:
         if generation != self.client_generation:
             return
@@ -159,6 +160,7 @@ def _add_many_files_background(self, client, generation, paths, save_path, langu
                 ),
             )
             if duplicate:
+                duplicates += 1
                 wx.CallAfter(
                     self._prompt_duplicate_torrent_file,
                     client,
@@ -173,7 +175,7 @@ def _add_many_files_background(self, client, generation, paths, save_path, langu
     wx.CallAfter(
         self._on_action_complete,
         tr_file_add("Added {added} of {total} torrents", language).format(
-            added=len(paths) - len(failed), total=len(paths)),
+            added=len(paths) - len(failed) - duplicates, total=len(paths)),
     )
     if failed:
         # One summary, not a dialog per file: a batch can be a thousand files.
