@@ -1506,6 +1506,23 @@ class LocalizedMainFrame(legacy.MainFrame):
                 )
             )
 
+    def _prompt_duplicate_torrent_file(
+        self,
+        client,
+        generation,
+        magnet,
+        duplicate,
+        original_hash,
+    ):
+        if original_hash:
+            self.pending_hash_starts.discard(original_hash)
+        self._prompt_duplicate_magnet(
+            client,
+            generation,
+            magnet,
+            duplicate,
+        )
+
     def _add_torrent_file_background(
         self,
         client,
@@ -1520,28 +1537,38 @@ class LocalizedMainFrame(legacy.MainFrame):
                 return
             if not client:
                 raise RuntimeError(self._("Not connected to any client."))
-            self._check_disk_space_before_add(
-                client,
+
+            magnet, duplicate = client.add_torrent_file_if_new(
                 data,
                 save_path,
                 priorities,
+                before_add=lambda: self._check_disk_space_before_add(
+                    client,
+                    data,
+                    save_path,
+                    priorities,
+                ),
             )
+            if duplicate:
+                wx.CallAfter(
+                    self._prompt_duplicate_torrent_file,
+                    client,
+                    generation,
+                    magnet,
+                    duplicate,
+                    self._maybe_hash_from_torrent_bytes(data),
+                )
+                return
+
+            if generation != self.client_generation or self._closing:
+                return
+            wx.CallAfter(self._on_action_complete, status_msg)
         except Exception as exc:  # noqa: BLE001 - client/storage boundary
             if generation == self.client_generation and not self._closing:
                 wx.CallAfter(
                     self._on_action_error,
                     self._("Torrent was not added: {error}").format(error=exc),
                 )
-            return
-
-        super()._add_torrent_file_background(
-            client,
-            generation,
-            data,
-            save_path,
-            priorities,
-            status_msg,
-        )
 
     def _restore_statusbar_accessible_name(self, announced_name, original_name):
         if self._closing or not hasattr(self, "statusbar"):

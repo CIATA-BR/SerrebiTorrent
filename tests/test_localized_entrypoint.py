@@ -199,7 +199,8 @@ def test_disk_space_protection_runs_before_torrent_file_add():
     assert "client.get_free_space(target_path)" in source
     assert "def _add_torrent_file_background(" in source
     assert "self._check_disk_space_before_add(" in source
-    assert "super()._add_torrent_file_background(" in source
+    assert "client.add_torrent_file_if_new(" in source
+    assert "before_add=lambda: self._check_disk_space_before_add(" in source
 
 
 def test_activity_history_is_keyboard_accessible_and_records_user_events():
@@ -328,3 +329,19 @@ def test_category_management_menu_is_accessible_and_updates_filters():
     assert "wx.YES_NO | wx.NO_DEFAULT" in dialog
     assert "self.store.rename_category(" in dialog
     assert "self.store.delete_category(" in dialog
+
+
+def test_torrent_file_duplicate_detection_reuses_magnet_prompt():
+    source = Path("app_entry.py").read_text(encoding="utf-8")
+
+    assert "client.add_torrent_file_if_new(" in source
+    assert "before_add=lambda: self._check_disk_space_before_add(" in source
+    assert "def _prompt_duplicate_torrent_file(" in source
+    assert "self._prompt_duplicate_magnet(" in source
+    assert "self.pending_hash_starts.discard(original_hash)" in source
+    assert "wx.CallAfter(" in source
+
+    duplicate_check = source.index("client.add_torrent_file_if_new(")
+    prompt = source.index("self._prompt_duplicate_torrent_file", duplicate_check)
+    success = source.index("self._on_action_complete", duplicate_check)
+    assert duplicate_check < prompt < success
