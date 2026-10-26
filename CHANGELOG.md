@@ -2,6 +2,10 @@
 
 All notable changes to SerrebiTorrent are recorded here.
 
+## v1.34.1 - 2026-10-26
+
+- Maintenance update.
+
 ## v1.34.0 - 2026-10-26
 
 - Detect duplicate torrent file additions (#407).
