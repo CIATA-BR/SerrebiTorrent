@@ -557,3 +557,45 @@ def test_local_free_space_uses_disk_usage(monkeypatch):
 
 def test_rtorrent_does_not_claim_free_space_query_support():
     assert clients.RTorrentClient.supports_free_space_query is False
+
+
+def test_duplicate_submission_guards_share_one_lock():
+    assert clients.BaseClient._magnet_add_lock is clients.BaseClient._torrent_file_add_lock
+
+
+def test_qbittorrent_magnet_default_does_not_override_start_policy():
+    client = clients.QBittorrentClient.__new__(clients.QBittorrentClient)
+    client.c = MagicMock()
+
+    client._add_new_magnet("magnet:?xt=urn:btih:test", "/downloads", None)
+
+    client.c.torrents_add.assert_called_once_with(
+        urls="magnet:?xt=urn:btih:test",
+        save_path="/downloads",
+    )
+
+
+def test_transmission_magnet_default_does_not_override_start_policy():
+    client = clients.TransmissionClient.__new__(clients.TransmissionClient)
+    client.c = MagicMock()
+
+    client._add_new_magnet("magnet:?xt=urn:btih:test", "/downloads", None)
+
+    client.c.add_torrent.assert_called_once_with(
+        "magnet:?xt=urn:btih:test",
+        download_dir="/downloads",
+    )
+
+
+def test_local_magnet_default_delegates_start_policy_to_session_manager():
+    client = clients.LocalClient.__new__(clients.LocalClient)
+    client.m = MagicMock()
+    client.dp = "/downloads"
+
+    client._add_new_magnet("magnet:?xt=urn:btih:test", "/downloads", None)
+
+    client.m.add_magnet.assert_called_once_with(
+        "magnet:?xt=urn:btih:test",
+        "/downloads",
+        start=None,
+    )
