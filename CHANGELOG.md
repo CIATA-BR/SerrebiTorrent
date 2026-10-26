@@ -2,6 +2,12 @@
 
 All notable changes to SerrebiTorrent are recorded here.
 
+## v1.34.0 - 2026-10-26
+
+- Detect duplicate torrent file additions (#407).
+- Close duplicate torrent intake gaps (#411).
+- Prevent duplicate torrent additions from Web UI (#409).
+
 ## v1.33.0 - 2026-10-13
 
 - Rename and remove torrent categories across a profile (#404).
