@@ -327,10 +327,11 @@ class BaseClient(abc.ABC):
     supports_move_storage = False
     supports_torrent_rate_limits = False
     supports_free_space_query = False
-    _magnet_add_lock = threading.RLock()
-    _torrent_file_add_lock = threading.RLock()
+    _submission_lock = threading.RLock()
+    _magnet_add_lock = _submission_lock
+    _torrent_file_add_lock = _submission_lock
 
-    def add_magnet(self, url, save_path, start):
+    def add_magnet(self, url, save_path, start=None):
         with self._magnet_add_lock:
             duplicate = self.find_magnet_duplicate(url)
             if duplicate:
@@ -615,7 +616,7 @@ class RTorrentClient(BaseClient):
         return None
 
     def _add_new_magnet(self, url, save_path, start):
-        load = self.srv.load.start if start else self.srv.load.normal
+        load = self.srv.load.normal if start is False else self.srv.load.start
         if save_path:
             load("", url, f"d.directory.set={save_path}")
         else:
@@ -839,7 +840,10 @@ class QBittorrentClient(BaseClient):
         return None
 
     def _add_new_magnet(self, url, save_path, start):
-        result = self.c.torrents_add(urls=url, save_path=save_path, is_paused=not start)
+        kwargs = {"urls": url, "save_path": save_path}
+        if start is not None:
+            kwargs["is_paused"] = not start
+        result = self.c.torrents_add(**kwargs)
         if isinstance(result, str) and result.strip().lower() == "fails.":
             raise RuntimeError("qBittorrent rejected the URL (Fails.)")
 
@@ -1022,7 +1026,10 @@ class TransmissionClient(BaseClient):
     supports_free_space_query = True
 
     def _add_new_magnet(self, url, save_path, start):
-        self.c.add_torrent(url, download_dir=save_path, paused=not start)
+        kwargs = {"download_dir": save_path}
+        if start is not None:
+            kwargs["paused"] = not start
+        self.c.add_torrent(url, **kwargs)
 
     def find_magnet_duplicate(self, url):
         info_hash = parse_magnet_infohash(url)

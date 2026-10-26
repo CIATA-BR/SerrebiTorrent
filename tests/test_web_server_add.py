@@ -20,7 +20,7 @@ class FakeClient:
     def add_torrent_file(self, content, sp=None):
         self.files.append((content, sp))
 
-    def add_magnet(self, u, save_path, start):
+    def add_magnet(self, u, save_path, start=None):
         if u in self.duplicate_magnets:
             return ("existing-hash", "Existing torrent", [])
         self.urls.append((u, save_path))
@@ -36,7 +36,7 @@ class FakeClient:
 
 
 class FailingClient(FakeClient):
-    def add_magnet(self, u, save_path, start):
+    def add_magnet(self, u, save_path, start=None):
         raise RuntimeError("boom")
 
 
@@ -191,7 +191,7 @@ def test_torrents_add_requires_csrf(app_client, fake_client):
 
 def test_torrents_add_reports_partial_success_without_generic_500(app_client, monkeypatch):
     class PartialClient(FakeClient):
-        def add_magnet(self, u, save_path, start):
+        def add_magnet(self, u, save_path, start=None):
             if "bad" in u:
                 raise RuntimeError("boom")
             self.urls.append((u, save_path))
@@ -344,7 +344,7 @@ def test_torrents_add_reports_new_and_duplicate_items(app_client, fake_client):
 
 def test_torrents_add_reports_duplicate_plus_failure_as_partial(app_client):
     class DuplicateAndFailClient(FakeClient):
-        def add_magnet(self, u, save_path, start):
+        def add_magnet(self, u, save_path, start=None):
             if "duplicate" in u:
                 return ("existing-hash", "Existing torrent", [])
             raise RuntimeError("boom")
@@ -368,3 +368,32 @@ def test_torrents_add_reports_duplicate_plus_failure_as_partial(app_client):
     assert res.status_code == 207
     assert b"skipped 1 duplicate torrent(s)" in res.data
     assert b"1 item(s) failed" in res.data
+
+
+def test_web_magnet_add_preserves_backend_start_default(app_client):
+    class StartPolicyClient(FakeClient):
+        def __init__(self):
+            super().__init__()
+            self.starts = []
+
+        def add_magnet(self, u, save_path, start=None):
+            self.starts.append(start)
+            return super().add_magnet(u, save_path, start)
+
+    original = web_server.WEB_CONFIG["client"]
+    client = StartPolicyClient()
+    web_server.WEB_CONFIG["client"] = client
+    try:
+        res = app_client.post(
+            "/api/v2/torrents/add",
+            data={
+                "urls": "magnet:?xt=urn:btih:0123456789012345678901234567890123456789",
+                "savepath": "C:\\Downloads",
+            },
+            headers=csrf_headers(),
+        )
+    finally:
+        web_server.WEB_CONFIG["client"] = original
+
+    assert res.status_code == 200
+    assert client.starts == [None]
