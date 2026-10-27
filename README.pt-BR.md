@@ -72,7 +72,7 @@ Para abrir automaticamente a janela Adicionar torrent quando um magnet for copia
 
 Cada magnet detectado abre a janela normal de destino. Nada é adicionado até a confirmação; Cancelar descarta aquele conteúdo da área de transferência. Vários magnets são processados um de cada vez, conteúdo inalterado não gera prompts repetidos e magnets copiados pelo próprio comando Copiar link magnet do aplicativo são ignorados.
 
-Se o torrent já existir, o SerrebiTorrent compara os trackers do novo magnet com os trackers existentes e pergunta se deve adicionar apenas os novos. Recusar mantém o torrent inalterado.
+Se o torrent já existir, o SerrebiTorrent compara os trackers do novo magnet com os trackers existentes e pergunta se deve adicionar apenas os novos. Recusar mantém o torrent inalterado. Magnets adicionados automaticamente ou manualmente pelo RSS também passam pela guarda de info-hash e informam quando o torrent já existe. Links HTTP(S) de RSS continuam no caminho de busca do próprio backend, preservando o funcionamento com clientes remotos.
 
 ## Executar a partir do código-fonte (desenvolvedores)
 
