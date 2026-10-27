@@ -41,6 +41,8 @@ def test_rss_auto_add_validates_http_links_before_client_call():
 
     assert "validate_public_torrent_url(link)" in source
     assert "client.add_torrent_url(link)" in source
+    assert "client.add_magnet(link, None)" in source
+    assert "Already added from RSS" in source
 
 
 def test_column_sort_preserves_selection_by_hash():
@@ -89,8 +91,10 @@ def test_rss_adds_use_captured_client_generation_and_validate_manual_downloads()
     assert "self.frame.client_generation" in submit_source
     assert "client and generation == self.frame.client_generation" in update_source
     assert "client.add_torrent_url(link)" in update_source
+    assert "client.add_magnet(link, None)" in update_source
     assert "validate_public_torrent_url(url)" in manual_source
     assert "client.add_torrent_url(url)" in manual_source
+    assert "client.add_magnet(url, None)" in manual_source
 
 
 def test_remove_worker_ignores_stale_generation_completion_and_errors():
