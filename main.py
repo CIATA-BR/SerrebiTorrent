@@ -2782,11 +2782,19 @@ class RSSPanel(wx.Panel):
                 if client and generation == self.frame.client_generation:
                     try:
                         link = m['link']
-                        if not link.lower().startswith("magnet:"):
+                        duplicate = None
+                        if link.lower().startswith("magnet:"):
+                            duplicate = client.add_magnet(link, None)
+                        else:
                             validate_public_torrent_url(link)
-                        client.add_torrent_url(link)
+                            client.add_torrent_url(link)
                         self.manager.mark_downloaded(url, m.get('uid'))
-                        wx.CallAfter(self.frame.statusbar.SetStatusText, f"Auto-added from RSS: {m['title']}", 0)
+                        status = (
+                            f"Already added from RSS: {m['title']}"
+                            if duplicate else
+                            f"Auto-added from RSS: {m['title']}"
+                        )
+                        wx.CallAfter(self.frame.statusbar.SetStatusText, status, 0)
                     except Exception as e:
                         print(f"Auto-add error: {e}")
             
@@ -2831,11 +2839,19 @@ class RSSPanel(wx.Panel):
         url = article['link']
         if client and generation == self.frame.client_generation:
             try:
-                if not url.lower().startswith("magnet:"):
+                duplicate = None
+                if url.lower().startswith("magnet:"):
+                    duplicate = client.add_magnet(url, None)
+                else:
                     validate_public_torrent_url(url)
-                client.add_torrent_url(url)
+                    client.add_torrent_url(url)
                 if generation == self.frame.client_generation:
-                    wx.CallAfter(self.frame.statusbar.SetStatusText, f"Added from RSS: {article['title']}", 0)
+                    status = (
+                        f"Already added from RSS: {article['title']}"
+                        if duplicate else
+                        f"Added from RSS: {article['title']}"
+                    )
+                    wx.CallAfter(self.frame.statusbar.SetStatusText, status, 0)
             except Exception as e:
                 if generation == self.frame.client_generation:
                     wx.CallAfter(wx.LogError, f"Failed to add from RSS: {e}")
