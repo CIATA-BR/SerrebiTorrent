@@ -22,7 +22,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: platform-assets-${{ github.event.workflow_run.id || inputs.release_tag || 'latest' }}
+  group: platform-assets-v2-${{ github.event.workflow_run.id || inputs.release_tag || 'latest' }}
   cancel-in-progress: false
 
 jobs:
@@ -110,10 +110,124 @@ jobs:
           sudo apt-get update
           sudo DEBIAN_FRONTEND=noninteractive apt-get install -y xvfb libgtk-3-dev libtiff-dev libwebp-dev patchelf
 
-      - name: Create Python 3.13 release environment with libtorrent 2.1
+      - name: Create Python 3.13 release environment with pinned native wheels
+        env:
+          WXPYTHON_WHEEL_URL: https://github.com/wxWidgets/Phoenix/releases/download/wxPython-4.3.2/wxpython-4.3.2%2Bubuntu2404-cp313-cp313-linux_x86_64.whl
+          WXPYTHON_WHEEL_SHA256: bd7fd6315b649a3c6dbf576842c20b305ee3af1a79cb4420922f8f3367f1a3e3
         run: |
+          set -euo pipefail
           uv venv --python 3.13 .venv
-          uv pip install --python .venv/bin/python -r requirements.txt -r requirements-build.txt pytest hypothesis 'libtorrent==2.1.1'
+          wheel="$RUNNER_TEMP/wxpython-linux.whl"
+          curl --fail --location --retry 3 --retry-all-errors "$WXPYTHON_WHEEL_URL" --output "$wheel"
+          echo "$WXPYTHON_WHEEL_SHA256  $wheel" | sha256sum --check -
+          grep -v -E '^wxPython([<=>~!].*)?
+      - name: Validate source and run tests
+        run: |
+          node --check web_static/i18n.js
+          node --check web_static/app.js
+          .venv/bin/python tools/translation_tool.py check
+          xvfb-run -a .venv/bin/python -m pytest -q
+
+      - name: Build and verify standalone Linux package
+        env:
+          VERSION: ${{ needs.plan.outputs.version }}
+        run: |
+          set -euo pipefail
+          libtorrent_version="$(.venv/bin/python -c 'import libtorrent; print(libtorrent.__version__)')"
+          .venv/bin/python -m PyInstaller SerrebiTorrent.spec --noconfirm
+          .venv/bin/python tools/audit_bundle.py dist/SerrebiTorrent
+          .venv/bin/python tools/verify_frozen.py dist/SerrebiTorrent/SerrebiTorrent build/frozen-self-test.json --expected-libtorrent "$libtorrent_version"
+          artifact="SerrebiTorrent-v$VERSION-linux-x86_64.tar.gz"
+          tar -C dist -czf "dist/$artifact" SerrebiTorrent
+          echo "artifact=$artifact" >> "$GITHUB_ENV"
+
+      - name: Attach Linux package to GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.plan.outputs.tag }}
+        run: |
+          gh release upload "$TAG" "dist/$artifact" --repo "$GITHUB_REPOSITORY" --clobber
+
+  macos:
+    needs: plan
+    if: ${{ needs.plan.outputs.macos_missing == 'true' }}
+    runs-on: macos-15
+    timeout-minutes: 75
+    steps:
+      - name: Check out release source
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.plan.outputs.tag }}
+          fetch-depth: 0
+
+      - name: Update Homebrew
+        run: brew update
+
+      - name: Install native runtime
+        run: brew install libtorrent-rasterbar
+
+      - name: Create isolated Python environment
+        run: |
+          python="$(brew --prefix python@3.15)/bin/python3.15"
+          "$python" -m venv --system-site-packages .venv
+          .venv/bin/python -m pip install --disable-pip-version-check             -r requirements.txt             -r requirements-build.txt             pytest hypothesis
+          .venv/bin/python -c 'import libtorrent; print(libtorrent.__version__, libtorrent.__file__)'
+
+      - name: Run tests
+        run: .venv/bin/python -m pytest -q
+
+      - name: Build and verify standalone macOS app
+        env:
+          VERSION: ${{ needs.plan.outputs.version }}
+        run: |
+          set -euo pipefail
+          .venv/bin/python -m PyInstaller SerrebiTorrent.spec --noconfirm
+          libtorrent_version="$(.venv/bin/python -c 'import libtorrent; print(libtorrent.__version__)')"
+          .venv/bin/python tools/audit_bundle.py dist/SerrebiTorrent.app
+          .venv/bin/python tools/verify_frozen.py             dist/SerrebiTorrent.app/Contents/MacOS/SerrebiTorrent             build/frozen-self-test.json             --expected-libtorrent "$libtorrent_version"
+
+          artifact="SerrebiTorrent-v$VERSION-macos-${RUNNER_ARCH}.zip"
+          ditto -c -k --sequesterRsrc --keepParent             dist/SerrebiTorrent.app             "dist/$artifact"
+          echo "artifact=$artifact" >> "$GITHUB_ENV"
+
+      - name: Attach macOS package to GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.plan.outputs.tag }}
+        run: |
+          gh release upload "$TAG" "dist/$artifact"             --repo "$GITHUB_REPOSITORY"             --clobber
+
+  verify:
+    needs: [plan, linux, macos]
+    if: ${{ always() && needs.plan.result == 'success' && (needs.linux.result == 'success' || needs.linux.result == 'skipped') && (needs.macos.result == 'success' || needs.macos.result == 'skipped') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify release has Windows, Linux and macOS
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.plan.outputs.tag }}
+          VERSION: ${{ needs.plan.outputs.version }}
+        run: |
+          set -euo pipefail
+          assets="$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[].name')"
+
+          grep -qxF "SerrebiTorrent-v$VERSION.zip" <<<"$assets" || {
+            echo "::error::Windows package is missing from $TAG"
+            exit 1
+          }
+          grep -qxF "SerrebiTorrent-v$VERSION-linux-x86_64.tar.gz" <<<"$assets" || {
+            echo "::error::Linux package is missing from $TAG"
+            exit 1
+          }
+          grep -Eq "^SerrebiTorrent-v${VERSION}-macos-(ARM64|X64)\.zip$" <<<"$assets" || {
+            echo "::error::macOS package is missing from $TAG"
+            exit 1
+          }
+
+          echo "$TAG now has Windows, Linux and macOS release packages."
+ requirements.txt > "$RUNNER_TEMP/requirements-linux.txt"
+          uv pip install --python .venv/bin/python "$wheel"
+          uv pip install --python .venv/bin/python -r "$RUNNER_TEMP/requirements-linux.txt" -r requirements-build.txt pytest hypothesis 'libtorrent==2.1.1'
           .venv/bin/python -c 'import wx, libtorrent; print(wx.version()); print(libtorrent.__version__, libtorrent.__file__)'
           .venv/bin/python -c 'import libtorrent as lt; assert hasattr(lt, "list_files"), lt.__version__'
 
