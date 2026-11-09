@@ -1,4 +1,4 @@
-name: Mirror Forgejo to GitHub
+name: Mirror Forgejo releases to GitHub
 
 on:
   push:
@@ -19,14 +19,13 @@ permissions:
   contents: write
 
 concurrency:
-  group: forgejo-mirror
+  group: forgejo-release-mirror
   cancel-in-progress: false
 
 env:
   FORGEJO_BASE: https://git.serrebiradio.com
   FORGEJO_OWNER: serrebi
   FORGEJO_REPO: SerrebiTorrent
-  MIRROR_BRANCH: upstream-forgejo
 
 jobs:
   mirror:
@@ -38,37 +37,6 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
-
-      - name: Mirror Forgejo main and tags
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          forgejo_git="$FORGEJO_BASE/$FORGEJO_OWNER/$FORGEJO_REPO.git"
-          git remote remove forgejo 2>/dev/null || true
-          git remote add forgejo "$forgejo_git"
-
-          # Keep Forgejo refs separate from GitHub refs until they are checked.
-          git fetch --force --prune forgejo             "+refs/heads/main:refs/remotes/forgejo/main"             "+refs/tags/*:refs/forgejo/tags/*"
-
-          # This branch is intentionally an exact, disposable mirror of Forgejo main.
-          git push origin             "+refs/remotes/forgejo/main:refs/heads/$MIRROR_BRANCH"
-
-          # Mirror tags without silently rewriting a tag that already exists on GitHub.
-          while read -r forgejo_object forgejo_ref; do
-            tag="${forgejo_ref#refs/tags/}"
-            source_ref="refs/forgejo/tags/$tag"
-            source_object="$(git rev-parse "$source_ref")"
-            github_object="$(git ls-remote --refs origin "refs/tags/$tag" | awk '{print $1}')"
-
-            if [ -z "$github_object" ]; then
-              echo "Mirroring tag $tag"
-              git push origin "$source_ref:refs/tags/$tag"
-            elif [ "$github_object" != "$source_object" ]; then
-              echo "::error::Tag $tag differs between Forgejo and GitHub; refusing to rewrite it."
-              exit 1
-            fi
-          done < <(git ls-remote --tags --refs forgejo)
 
       - name: Read Forgejo release metadata
         id: release
@@ -100,10 +68,6 @@ jobs:
             echo "::error::Refusing to mirror Forgejo draft release $tag."
             exit 1
           fi
-          if ! git ls-remote --exit-code --refs origin "refs/tags/$tag" >/dev/null 2>&1; then
-            echo "::error::Tag $tag was not mirrored to GitHub."
-            exit 1
-          fi
 
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
           echo "prerelease=$prerelease" >> "$GITHUB_OUTPUT"
@@ -112,6 +76,33 @@ jobs:
             echo "$title"
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
+
+      - name: Mirror release tag
+        shell: bash
+        env:
+          TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          set -euo pipefail
+
+          forgejo_git="$FORGEJO_BASE/$FORGEJO_OWNER/$FORGEJO_REPO.git"
+          git remote remove forgejo 2>/dev/null || true
+          git remote add forgejo "$forgejo_git"
+
+          source_ref="refs/forgejo/tags/$TAG"
+          git fetch --force forgejo "refs/tags/$TAG:$source_ref"
+
+          source_object="$(git rev-parse "$source_ref")"
+          github_object="$(git ls-remote --refs origin "refs/tags/$TAG" | awk '{print $1}')"
+
+          if [ -z "$github_object" ]; then
+            echo "Mirroring tag $TAG"
+            git push origin "$source_ref:refs/tags/$TAG"
+          elif [ "$github_object" != "$source_object" ]; then
+            echo "::error::Tag $TAG differs between Forgejo and GitHub; refusing to rewrite it."
+            exit 1
+          else
+            echo "Tag $TAG already matches Forgejo."
+          fi
 
       - name: Download and verify Forgejo release assets
         shell: bash
@@ -177,9 +168,8 @@ jobs:
               exit 1
             fi
 
-            # Old GitHub-distributed builds validate the manifest URL against the
-            # GitHub release asset. Keep that upgrade path working while copying
-            # the exact signed package from Forgejo.
+            # Keep the upgrade path working for older builds that still query
+            # GitHub Releases while copying the exact signed package from Forgejo.
             github_download="https://github.com/$GITHUB_REPOSITORY/releases/download/$TAG/$asset_name"
             tmp_manifest="$RUNNER_TEMP/SerrebiTorrent-update.json"
             jq --arg url "$github_download" '.download_url = $url' "$manifest" > "$tmp_manifest"
