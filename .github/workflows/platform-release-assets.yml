@@ -117,7 +117,7 @@ jobs:
         run: |
           set -euo pipefail
           uv venv --python 3.13 .venv
-          wheel="$RUNNER_TEMP/wxpython-linux.whl"
+          wheel="$RUNNER_TEMP/wxpython-4.3.2+ubuntu2404-cp313-cp313-linux_x86_64.whl"
           curl --fail --location --retry 3 --retry-all-errors "$WXPYTHON_WHEEL_URL" --output "$wheel"
           echo "$WXPYTHON_WHEEL_SHA256  $wheel" | sha256sum --check -
           grep -v '^wxPython' requirements.txt > "$RUNNER_TEMP/requirements-linux.txt"
