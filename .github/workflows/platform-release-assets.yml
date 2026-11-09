@@ -89,7 +89,7 @@ jobs:
     needs: plan
     if: ${{ needs.plan.outputs.linux_missing == 'true' }}
     runs-on: ubuntu-26.04
-    timeout-minutes: 75
+    timeout-minutes: 120
     steps:
       - name: Check out release source
         uses: actions/checkout@v7
@@ -97,18 +97,25 @@ jobs:
           ref: ${{ needs.plan.outputs.tag }}
           fetch-depth: 0
 
-      - name: Install native runtime and build dependencies
+      - uses: astral-sh/setup-uv@main
+
+      - uses: actions/cache@v6
+        with:
+          path: ~/.cache/uv
+          key: uv-linux-py313-${{ hashFiles('requirements*.txt') }}
+          restore-keys: uv-linux-py313-
+
+      - name: Install native build dependencies
         run: |
           sudo apt-get update
-          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y             python3-venv             python3-dev             python3-wxgtk4.0             python3-libtorrent             xvfb             libgtk-3-dev             libtiff-dev             libwebp-dev             patchelf
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y xvfb libgtk-3-dev libtiff-dev libwebp-dev patchelf
 
-      - name: Create isolated release environment
+      - name: Create Python 3.13 release environment with libtorrent 2.1
         run: |
-          python3 -m venv --system-site-packages .venv
-          grep -v -E '^(wxPython)$' requirements.txt > /tmp/requirements-linux.txt
-          .venv/bin/python -m pip install --disable-pip-version-check --upgrade pip
-          .venv/bin/python -m pip install --disable-pip-version-check             -r /tmp/requirements-linux.txt             -r requirements-build.txt             pytest hypothesis
+          uv venv --python 3.13 .venv
+          uv pip install --python .venv/bin/python -r requirements.txt -r requirements-build.txt pytest hypothesis 'libtorrent==2.1.1'
           .venv/bin/python -c 'import wx, libtorrent; print(wx.version()); print(libtorrent.__version__, libtorrent.__file__)'
+          .venv/bin/python -c 'import libtorrent as lt; assert hasattr(lt, "list_files"), lt.__version__'
 
       - name: Validate source and run tests
         run: |
@@ -123,11 +130,9 @@ jobs:
         run: |
           set -euo pipefail
           libtorrent_version="$(.venv/bin/python -c 'import libtorrent; print(libtorrent.__version__)')"
-
           .venv/bin/python -m PyInstaller SerrebiTorrent.spec --noconfirm
           .venv/bin/python tools/audit_bundle.py dist/SerrebiTorrent
-          .venv/bin/python tools/verify_frozen.py             dist/SerrebiTorrent/SerrebiTorrent             build/frozen-self-test.json             --expected-libtorrent "$libtorrent_version"
-
+          .venv/bin/python tools/verify_frozen.py dist/SerrebiTorrent/SerrebiTorrent build/frozen-self-test.json --expected-libtorrent "$libtorrent_version"
           artifact="SerrebiTorrent-v$VERSION-linux-x86_64.tar.gz"
           tar -C dist -czf "dist/$artifact" SerrebiTorrent
           echo "artifact=$artifact" >> "$GITHUB_ENV"
@@ -137,7 +142,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ needs.plan.outputs.tag }}
         run: |
-          gh release upload "$TAG" "dist/$artifact"             --repo "$GITHUB_REPOSITORY"             --clobber
+          gh release upload "$TAG" "dist/$artifact" --repo "$GITHUB_REPOSITORY" --clobber
 
   macos:
     needs: plan
