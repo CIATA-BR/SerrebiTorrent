@@ -1,6 +1,11 @@
 name: Build missing Linux and macOS release assets
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/platform-release-assets.yml"
   workflow_run:
     workflows:
       - "Mirror Forgejo releases to GitHub"
