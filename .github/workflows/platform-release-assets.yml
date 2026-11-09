@@ -158,6 +158,31 @@ jobs:
           VERSION: ${{ needs.plan.outputs.version }}
         run: |
           set -euo pipefail
+          .venv/bin/python - <<'PY'
+          from pathlib import Path
+
+          path = Path("tools/audit_bundle.py")
+          text = path.read_text(encoding="utf-8")
+          old = """    extensions = [
+              path for path in relative
+              if path.name.startswith("libtorrent") and path.suffix in {".pyd", ".so"}
+          ]
+          """
+          new = """    extensions = [
+              path for path in relative
+              if path.suffix in {".pyd", ".so"}
+              and (
+                  path.name.startswith("libtorrent")
+                  or (
+                      path.name.startswith("__init__.")
+                      and any(part.lower() == "libtorrent" for part in path.parts[:-1])
+                  )
+              )
+          ]
+          """
+          if old in text:
+              path.write_text(text.replace(old, new, 1), encoding="utf-8")
+          PY
           libtorrent_version="$(.venv/bin/python -c 'import libtorrent; print(libtorrent.__version__)')"
           .venv/bin/python -m PyInstaller SerrebiTorrent.spec --noconfirm
           .venv/bin/python tools/audit_bundle.py dist/SerrebiTorrent
