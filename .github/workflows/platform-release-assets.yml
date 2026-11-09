@@ -161,27 +161,32 @@ jobs:
           .venv/bin/python - <<'PY'
           from pathlib import Path
 
-          path = Path("tools/audit_bundle.py")
-          text = path.read_text(encoding="utf-8")
-          old = """    extensions = [
-              path for path in relative
-              if path.name.startswith("libtorrent") and path.suffix in {".pyd", ".so"}
-          ]
-          """
-          new = """    extensions = [
-              path for path in relative
-              if path.suffix in {".pyd", ".so"}
-              and (
-                  path.name.startswith("libtorrent")
-                  or (
-                      path.name.startswith("__init__.")
-                      and any(part.lower() == "libtorrent" for part in path.parts[:-1])
-                  )
-              )
-          ]
-          """
-          if old in text:
-              path.write_text(text.replace(old, new, 1), encoding="utf-8")
+          spec = Path("SerrebiTorrent.spec")
+          spec_text = spec.read_text(encoding="utf-8")
+          old_spec = "binaries = [(os.path.abspath(libtorrent_spec.origin), '.')]"
+          new_spec = (
+              "libtorrent_dest = 'libtorrent' if "
+              "os.path.basename(libtorrent_spec.origin).startswith('__init__.') else '.'\n"
+              "binaries = [(os.path.abspath(libtorrent_spec.origin), libtorrent_dest)]"
+          )
+          if old_spec in spec_text:
+              spec.write_text(spec_text.replace(old_spec, new_spec, 1), encoding="utf-8")
+          elif "libtorrent_dest =" not in spec_text:
+              raise SystemExit("Could not adapt SerrebiTorrent.spec for package-based libtorrent.")
+
+          audit = Path("tools/audit_bundle.py")
+          audit_text = audit.read_text(encoding="utf-8")
+          old_audit = 'if path.name.startswith("libtorrent") and path.suffix in {".pyd", ".so"}'
+          new_audit = (
+              'if path.suffix in {".pyd", ".so"} and '
+              '(path.name.startswith("libtorrent") or '
+              '(path.name.startswith("__init__.") and '
+              'any(part.lower() == "libtorrent" for part in path.parts[:-1])))'
+          )
+          if old_audit in audit_text:
+              audit.write_text(audit_text.replace(old_audit, new_audit, 1), encoding="utf-8")
+          elif 'path.name.startswith("__init__.")' not in audit_text:
+              raise SystemExit("Could not adapt bundle audit for package-based libtorrent.")
           PY
           libtorrent_version="$(.venv/bin/python -c 'import libtorrent; print(libtorrent.__version__)')"
           .venv/bin/python -m PyInstaller SerrebiTorrent.spec --noconfirm
