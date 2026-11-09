@@ -110,10 +110,19 @@ jobs:
           sudo apt-get update
           sudo DEBIAN_FRONTEND=noninteractive apt-get install -y xvfb libgtk-3-dev libtiff-dev libwebp-dev patchelf
 
-      - name: Create Python 3.13 release environment with libtorrent 2.1
+      - name: Create Python 3.13 release environment with pinned native wheels
+        env:
+          WXPYTHON_WHEEL_URL: https://github.com/wxWidgets/Phoenix/releases/download/wxPython-4.3.2/wxpython-4.3.2%2Bubuntu2404-cp313-cp313-linux_x86_64.whl
+          WXPYTHON_WHEEL_SHA256: bd7fd6315b649a3c6dbf576842c20b305ee3af1a79cb4420922f8f3367f1a3e3
         run: |
+          set -euo pipefail
           uv venv --python 3.13 .venv
-          uv pip install --python .venv/bin/python -r requirements.txt -r requirements-build.txt pytest hypothesis 'libtorrent==2.1.1'
+          wheel="$RUNNER_TEMP/wxpython-linux.whl"
+          curl --fail --location --retry 3 --retry-all-errors "$WXPYTHON_WHEEL_URL" --output "$wheel"
+          echo "$WXPYTHON_WHEEL_SHA256  $wheel" | sha256sum --check -
+          grep -v '^wxPython' requirements.txt > "$RUNNER_TEMP/requirements-linux.txt"
+          uv pip install --python .venv/bin/python "$wheel"
+          uv pip install --python .venv/bin/python -r "$RUNNER_TEMP/requirements-linux.txt" -r requirements-build.txt pytest hypothesis 'libtorrent==2.1.1'
           .venv/bin/python -c 'import wx, libtorrent; print(wx.version()); print(libtorrent.__version__, libtorrent.__file__)'
           .venv/bin/python -c 'import libtorrent as lt; assert hasattr(lt, "list_files"), lt.__version__'
 
