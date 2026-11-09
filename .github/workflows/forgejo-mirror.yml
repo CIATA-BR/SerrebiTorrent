@@ -1,0 +1,249 @@
+name: Mirror Forgejo to GitHub
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/forgejo-mirror.yml"
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: "Forgejo release tag to mirror; leave blank for latest"
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: forgejo-mirror
+  cancel-in-progress: false
+
+env:
+  FORGEJO_BASE: https://git.serrebiradio.com
+  FORGEJO_OWNER: serrebi
+  FORGEJO_REPO: SerrebiTorrent
+  MIRROR_BRANCH: upstream-forgejo
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out GitHub repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Mirror Forgejo main and tags
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          forgejo_git="$FORGEJO_BASE/$FORGEJO_OWNER/$FORGEJO_REPO.git"
+          git remote remove forgejo 2>/dev/null || true
+          git remote add forgejo "$forgejo_git"
+
+          # Keep Forgejo refs separate from GitHub refs until they are checked.
+          git fetch --force --prune forgejo             "+refs/heads/main:refs/remotes/forgejo/main"             "+refs/tags/*:refs/forgejo/tags/*"
+
+          # This branch is intentionally an exact, disposable mirror of Forgejo main.
+          git push origin             "+refs/remotes/forgejo/main:refs/heads/$MIRROR_BRANCH"
+
+          # Mirror tags without silently rewriting a tag that already exists on GitHub.
+          while read -r forgejo_object forgejo_ref; do
+            tag="${forgejo_ref#refs/tags/}"
+            source_ref="refs/forgejo/tags/$tag"
+            source_object="$(git rev-parse "$source_ref")"
+            github_object="$(git ls-remote --refs origin "refs/tags/$tag" | awk '{print $1}')"
+
+            if [ -z "$github_object" ]; then
+              echo "Mirroring tag $tag"
+              git push origin "$source_ref:refs/tags/$tag"
+            elif [ "$github_object" != "$source_object" ]; then
+              echo "::error::Tag $tag differs between Forgejo and GitHub; refusing to rewrite it."
+              exit 1
+            fi
+          done < <(git ls-remote --tags --refs forgejo)
+
+      - name: Read Forgejo release metadata
+        id: release
+        shell: bash
+        env:
+          REQUESTED_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.release_tag || '' }}
+        run: |
+          set -euo pipefail
+          api="$FORGEJO_BASE/api/v1/repos/$FORGEJO_OWNER/$FORGEJO_REPO"
+
+          if [ -n "$REQUESTED_TAG" ]; then
+            endpoint="$api/releases/tags/$REQUESTED_TAG"
+          else
+            endpoint="$api/releases/latest"
+          fi
+
+          curl --fail --silent --show-error --location             --retry 3 --retry-all-errors             "$endpoint"             --output "$RUNNER_TEMP/forgejo-release.json"
+
+          tag="$(jq -r '.tag_name // empty' "$RUNNER_TEMP/forgejo-release.json")"
+          title="$(jq -r '.name // .tag_name // empty' "$RUNNER_TEMP/forgejo-release.json")"
+          draft="$(jq -r '.draft // false' "$RUNNER_TEMP/forgejo-release.json")"
+          prerelease="$(jq -r '.prerelease // false' "$RUNNER_TEMP/forgejo-release.json")"
+
+          if [[ ! "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Forgejo returned an invalid release tag: $tag"
+            exit 1
+          fi
+          if [ "$draft" = "true" ]; then
+            echo "::error::Refusing to mirror Forgejo draft release $tag."
+            exit 1
+          fi
+          if ! git ls-remote --exit-code --refs origin "refs/tags/$tag" >/dev/null 2>&1; then
+            echo "::error::Tag $tag was not mirrored to GitHub."
+            exit 1
+          fi
+
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "prerelease=$prerelease" >> "$GITHUB_OUTPUT"
+          {
+            echo "title<<EOF"
+            echo "$title"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Download and verify Forgejo release assets
+        shell: bash
+        env:
+          TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          set -euo pipefail
+          release_json="$RUNNER_TEMP/forgejo-release.json"
+          asset_dir="$RUNNER_TEMP/release-assets"
+          mkdir -p "$asset_dir"
+
+          asset_count="$(jq '.assets | length' "$release_json")"
+          if [ "$asset_count" -lt 1 ]; then
+            echo "::error::Forgejo release $TAG has no downloadable assets."
+            exit 1
+          fi
+
+          jq -r '.assets[] | [.name, (.browser_download_url // empty)] | @tsv' "$release_json" |
+          while IFS=$'\t' read -r name url; do
+            if [ -z "$name" ] || [ -z "$url" ]; then
+              echo "::error::Forgejo returned an asset without name or download URL."
+              exit 1
+            fi
+            if [[ "$name" == */* || "$name" == *\\* || "$name" == "." || "$name" == ".." ]]; then
+              echo "::error::Unsafe release asset name: $name"
+              exit 1
+            fi
+            case "$url" in
+              "$FORGEJO_BASE"/*) ;;
+              *)
+                echo "::error::Unexpected Forgejo asset host: $url"
+                exit 1
+                ;;
+            esac
+
+            echo "Downloading $name"
+            curl --fail --silent --show-error --location               --retry 3 --retry-all-errors               "$url"               --output "$asset_dir/$name"
+          done
+
+          manifest="$asset_dir/SerrebiTorrent-update.json"
+          if [ -f "$manifest" ]; then
+            version="$(jq -r '.version // empty' "$manifest")"
+            expected_version="${TAG#v}"
+            asset_name="$(jq -r '.asset_filename // empty' "$manifest")"
+            expected_sha="$(jq -r '.sha256 // empty' "$manifest" | tr '[:upper:]' '[:lower:]')"
+
+            if [ "$version" != "$expected_version" ]; then
+              echo "::error::Manifest version $version does not match $TAG."
+              exit 1
+            fi
+            if [ -z "$asset_name" ] || [ ! -f "$asset_dir/$asset_name" ]; then
+              echo "::error::Manifest release asset is missing: $asset_name"
+              exit 1
+            fi
+            if [[ ! "$expected_sha" =~ ^[0-9a-f]{64}$ ]]; then
+              echo "::error::Manifest contains an invalid SHA-256."
+              exit 1
+            fi
+
+            actual_sha="$(sha256sum "$asset_dir/$asset_name" | awk '{print $1}')"
+            if [ "$actual_sha" != "$expected_sha" ]; then
+              echo "::error::Manifest SHA-256 does not match $asset_name."
+              exit 1
+            fi
+
+            # Old GitHub-distributed builds validate the manifest URL against the
+            # GitHub release asset. Keep that upgrade path working while copying
+            # the exact signed package from Forgejo.
+            github_download="https://github.com/$GITHUB_REPOSITORY/releases/download/$TAG/$asset_name"
+            tmp_manifest="$RUNNER_TEMP/SerrebiTorrent-update.json"
+            jq --arg url "$github_download" '.download_url = $url' "$manifest" > "$tmp_manifest"
+            mv "$tmp_manifest" "$manifest"
+          fi
+
+          jq -r '.body // ""' "$release_json" > "$RUNNER_TEMP/release-notes.md"
+          printf '\n\n---\nMirrored from %s/%s/%s/releases/tag/%s\n'             "$FORGEJO_BASE" "$FORGEJO_OWNER" "$FORGEJO_REPO" "$TAG"             >> "$RUNNER_TEMP/release-notes.md"
+
+      - name: Create or refresh GitHub release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.release.outputs.tag }}
+          TITLE: ${{ steps.release.outputs.title }}
+          PRERELEASE: ${{ steps.release.outputs.prerelease }}
+        run: |
+          set -euo pipefail
+          asset_dir="$RUNNER_TEMP/release-assets"
+          notes="$RUNNER_TEMP/release-notes.md"
+
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Refreshing existing GitHub release $TAG"
+            gh release upload "$TAG" "$asset_dir"/*               --repo "$GITHUB_REPOSITORY"               --clobber
+            gh release edit "$TAG"               --repo "$GITHUB_REPOSITORY"               --title "$TITLE"               --notes-file "$notes"
+          else
+            echo "Creating GitHub release $TAG"
+            args=(
+              release create "$TAG"
+              "$asset_dir"/*
+              --repo "$GITHUB_REPOSITORY"
+              --verify-tag
+              --title "$TITLE"
+              --notes-file "$notes"
+            )
+            if [ "$PRERELEASE" = "true" ]; then
+              args+=(--prerelease)
+            fi
+            gh "${args[@]}"
+          fi
+
+          if [ "$PRERELEASE" != "true" ]; then
+            gh release edit "$TAG"               --repo "$GITHUB_REPOSITORY"               --latest
+          fi
+
+      - name: Verify GitHub latest release
+        if: ${{ steps.release.outputs.prerelease != 'true' }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.release.outputs.tag }}
+        run: |
+          set -euo pipefail
+          latest="$(gh api "repos/$GITHUB_REPOSITORY/releases/latest" --jq '.tag_name')"
+          if [ "$latest" != "$TAG" ]; then
+            echo "::error::GitHub /releases/latest is $latest, expected $TAG."
+            exit 1
+          fi
+
+          have="$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[].name')"
+          forgejo_assets="$(jq -r '.assets[].name' "$RUNNER_TEMP/forgejo-release.json")"
+          while IFS= read -r name; do
+            grep -qxF "$name" <<<"$have" || {
+              echo "::error::GitHub release is missing mirrored asset $name"
+              exit 1
+            }
+          done <<<"$forgejo_assets"
