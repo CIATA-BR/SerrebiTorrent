@@ -22,7 +22,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: platform-assets-${{ github.event.workflow_run.id || inputs.release_tag || 'latest' }}
+  group: platform-assets-v2-${{ github.event.workflow_run.id || inputs.release_tag || 'latest' }}
   cancel-in-progress: false
 
 jobs:
