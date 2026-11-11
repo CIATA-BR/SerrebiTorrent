@@ -2046,18 +2046,22 @@ def list_column_label(list_ctrl, col):
 def set_list_sort_accessible_name(list_ctrl):
     base_name = getattr(list_ctrl, "_sort_base_accessible_name", None)
     if not base_name:
-        base_name = list_ctrl.GetName() or "List"
+        get_name = getattr(list_ctrl, "GetName", None)
+        base_name = (get_name() if callable(get_name) else "") or "List"
         list_ctrl._sort_base_accessible_name = base_name
 
+    set_name = getattr(list_ctrl, "SetName", None)
     col = getattr(list_ctrl, "sort_col", -1)
     if col is None or col < 0:
-        list_ctrl.SetName(base_name)
+        if callable(set_name):
+            set_name(base_name)
         return base_name
 
     label = list_column_label(list_ctrl, col)
     direction = "ascending" if getattr(list_ctrl, "sort_asc", True) else "descending"
     accessible_name = f"{base_name}; sorted by {label}, {direction}"
-    list_ctrl.SetName(accessible_name)
+    if callable(set_name):
+        set_name(accessible_name)
     return accessible_name
 
 
