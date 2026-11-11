@@ -54,11 +54,50 @@ def test_desktop_torrent_file_adds_use_duplicate_guard():
 
 
 def test_column_sort_preserves_selection_by_hash():
-    source = inspect.getsource(main.TorrentListCtrl.on_col_click)
+    click_source = inspect.getsource(main.TorrentListCtrl.on_col_click)
+    apply_source = inspect.getsource(main.TorrentListCtrl.apply_sort)
 
-    assert "selected_hashes = set(self.get_selected_hashes())" in source
+    assert "self.apply_sort(col, ascending)" in click_source
+    assert "selected_hashes = set(self.get_selected_hashes())" in apply_source
+    assert "self._apply_sort()" in apply_source
+    assert "self.Select(idx, row.get('hash') in selected_hashes)" in apply_source
+    assert "self._restore_focus_row" in apply_source
+    assert "set_list_sort_accessible_name(self)" in apply_source
+
+
+def test_detail_column_sort_preserves_selection_focus_and_accessible_state():
+    source = inspect.getsource(main.DetailColumnSortMixin.apply_sort)
+
+    assert "selected = set(self._selected_identities())" in source
+    assert "focused = self._focused_identity()" in source
     assert "self._apply_sort()" in source
-    assert "self.Select(idx, row.get('hash') in selected_hashes)" in source
+    assert "self.Select(idx, self._row_identity(row) in selected)" in source
+    assert "self._restore_focus_row" in source
+    assert "set_list_sort_accessible_name(self)" in source
+
+
+def test_sort_current_list_is_keyboard_reachable():
+    menu_source = inspect.getsource(main.MainFrame._build_menu_bar)
+    handler_source = inspect.getsource(main.MainFrame.on_sort_current_list)
+    dialog_source = inspect.getsource(main.SortListDialog.__init__)
+
+    assert "Sort Current &List...\\tCtrl+Shift+O" in menu_source
+    assert "wx.ACCEL_CTRL | wx.ACCEL_SHIFT" in menu_source
+    assert "self.on_sort_current_list" in menu_source
+    assert "SortListDialog(self, target)" in handler_source
+    assert "target.apply_sort(col, ascending)" in handler_source
+    assert "target.SetFocus()" in handler_source
+    assert "_notify_accessible_focus_event" in handler_source
+    assert 'SetName("Sort column")' in dialog_source
+    assert 'SetName("Sort order")' in dialog_source
+
+
+def test_sort_accessible_name_exposes_column_and_direction():
+    source = inspect.getsource(main.set_list_sort_accessible_name)
+
+    assert "sorted by {label}, {direction}" in source
+    assert 'direction = "ascending"' in source
+    assert "list_ctrl.SetName(accessible_name)" in source
 
 
 def test_details_follow_focused_torrent_for_keyboard_navigation():
