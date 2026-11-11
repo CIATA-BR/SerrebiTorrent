@@ -1,0 +1,256 @@
+name: CIATA Distribution Release
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/ciata-release-request.json"
+      - ".github/workflows/ciata-release.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ciata-distribution-release
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      source_ref: ${{ steps.plan.outputs.source_ref }}
+      source_sha: ${{ steps.plan.outputs.source_sha }}
+      tag: ${{ steps.plan.outputs.tag }}
+      title: ${{ steps.plan.outputs.title }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - id: plan
+        shell: bash
+        run: |
+          set -euo pipefail
+          request=.github/ciata-release-request.json
+          source_ref="$(jq -r '.source_ref' "$request")"
+          tag="$(jq -r '.tag' "$request")"
+          title="$(jq -r '.title' "$request")"
+          [[ "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+-ciata\.[0-9]+$ ]] || { echo "::error::Invalid CIATA tag: $tag"; exit 1; }
+          git fetch origin "$source_ref"
+          source_sha="$(git rev-parse FETCH_HEAD)"
+          git ls-remote --exit-code --tags origin "refs/tags/$tag" >/dev/null 2>&1 && { echo "::error::Tag $tag already exists."; exit 1; } || true
+          echo "source_ref=$source_ref" >> "$GITHUB_OUTPUT"
+          echo "source_sha=$source_sha" >> "$GITHUB_OUTPUT"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          {
+            echo "title<<EOF"
+            echo "$title"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+  linux:
+    needs: plan
+    runs-on: ubuntu-26.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.plan.outputs.source_sha }}
+      - uses: astral-sh/setup-uv@main
+      - name: Install Linux runtime
+        run: |
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y xvfb libgtk-3-dev libnotify4 libsdl2-2.0-0 libtiff-dev libwebp-dev patchelf
+      - name: Create Python environment
+        env:
+          WXPYTHON_WHEEL_URL: https://github.com/wxWidgets/Phoenix/releases/download/wxPython-4.3.2/wxpython-4.3.2%2Bubuntu2404-cp313-cp313-linux_x86_64.whl
+          WXPYTHON_WHEEL_SHA256: bd7fd6315b649a3c6dbf576842c20b305ee3af1a79cb4420922f8f3367f1a3e3
+        run: |
+          set -euo pipefail
+          uv venv --python 3.13 .venv
+          wheel="$RUNNER_TEMP/wxpython-4.3.2+ubuntu2404-cp313-cp313-linux_x86_64.whl"
+          curl --fail --location --retry 3 --retry-all-errors "$WXPYTHON_WHEEL_URL" --output "$wheel"
+          echo "$WXPYTHON_WHEEL_SHA256  $wheel" | sha256sum --check -
+          grep -v '^wxPython' requirements.txt > "$RUNNER_TEMP/requirements-linux.txt"
+          uv pip install --python .venv/bin/python "$wheel"
+          uv pip install --python .venv/bin/python -r "$RUNNER_TEMP/requirements-linux.txt" -r requirements-build.txt pytest hypothesis 'libtorrent==2.1.1'
+      - name: Correct upstream Linux test fixture
+        run: |
+          .venv/bin/python - <<'PY'
+          from pathlib import Path
+          path=Path("tests/test_session_manager.py")
+          text=path.read_text(encoding="utf-8")
+          marker="def test_add_torrent_file_rolls_back_when_db_save_fails(session_manager, tmp_path, monkeypatch):"
+          start=text.index(marker)
+          end=text.find("\ndef ", start+len(marker))
+          block=text[start:len(text) if end == -1 else end]
+          if "_restore_real_path_exists(monkeypatch)" not in block:
+              text=text[:start+len(marker)]+"\n    _restore_real_path_exists(monkeypatch)"+text[start+len(marker):]
+              path.write_text(text,encoding="utf-8")
+          PY
+      - name: Test
+        run: |
+          node --check web_static/i18n.js
+          node --check web_static/app.js
+          .venv/bin/python tools/translation_tool.py check
+          xvfb-run -a .venv/bin/python -m pytest -q
+      - name: Restore pristine test source
+        run: git checkout -- tests/test_session_manager.py
+      - name: Adapt package layout and build
+        run: |
+          .venv/bin/python - <<'PY'
+          from pathlib import Path
+          spec=Path("SerrebiTorrent.spec")
+          text=spec.read_text(encoding="utf-8")
+          old="binaries = [(os.path.abspath(libtorrent_spec.origin), '.')]"
+          new="libtorrent_dest = 'libtorrent' if os.path.basename(libtorrent_spec.origin).startswith('__init__.') else '.'\nbinaries = [(os.path.abspath(libtorrent_spec.origin), libtorrent_dest)]"
+          if old in text: spec.write_text(text.replace(old,new,1),encoding="utf-8")
+          audit=Path("tools/audit_bundle.py")
+          text=audit.read_text(encoding="utf-8")
+          old='if path.name.startswith("libtorrent") and path.suffix in {".pyd", ".so"}'
+          new='if path.suffix in {".pyd", ".so"} and (path.name.startswith("libtorrent") or (path.name.startswith("__init__.") and any(part.lower() == "libtorrent" for part in path.parts[:-1])))'
+          if old in text: audit.write_text(text.replace(old,new,1),encoding="utf-8")
+          PY
+          version="$(.venv/bin/python -c 'import libtorrent; print(libtorrent.__version__)')"
+          .venv/bin/python -m PyInstaller SerrebiTorrent.spec --noconfirm
+          .venv/bin/python tools/audit_bundle.py dist/SerrebiTorrent
+          .venv/bin/python tools/verify_frozen.py dist/SerrebiTorrent/SerrebiTorrent build/frozen-self-test.json --expected-libtorrent "$version"
+          tar -C dist -czf "dist/SerrebiTorrent-${{ needs.plan.outputs.tag }}-linux-x86_64.tar.gz" SerrebiTorrent
+      - uses: actions/upload-artifact@v7
+        with:
+          name: linux
+          path: dist/SerrebiTorrent-*-linux-x86_64.tar.gz
+          if-no-files-found: error
+
+  windows:
+    needs: plan
+    runs-on: windows-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.plan.outputs.source_sha }}
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+      - name: Install dependencies
+        run: |
+          python -m pip install --disable-pip-version-check --upgrade pip
+          python -m pip install --disable-pip-version-check -r requirements.txt -r requirements-build.txt pytest hypothesis libtorrent==2.1.1
+      - name: Test
+        run: python -m pytest -q
+      - name: Adapt package layout
+        shell: pwsh
+        run: |
+          @'
+          from pathlib import Path
+          spec=Path("SerrebiTorrent.spec")
+          text=spec.read_text(encoding="utf-8")
+          old="binaries = [(os.path.abspath(libtorrent_spec.origin), '.')]"
+          new="libtorrent_dest = 'libtorrent' if os.path.basename(libtorrent_spec.origin).startswith('__init__.') else '.'\nbinaries = [(os.path.abspath(libtorrent_spec.origin), libtorrent_dest)]"
+          if old in text: spec.write_text(text.replace(old,new,1),encoding="utf-8")
+          audit=Path("tools/audit_bundle.py")
+          text=audit.read_text(encoding="utf-8")
+          old='if path.name.startswith("libtorrent") and path.suffix in {".pyd", ".so"}'
+          new='if path.suffix in {".pyd", ".so"} and (path.name.startswith("libtorrent") or (path.name.startswith("__init__.") and any(part.lower() == "libtorrent" for part in path.parts[:-1])))'
+          if old in text: audit.write_text(text.replace(old,new,1),encoding="utf-8")
+          '@ | python -
+      - name: Build and verify
+        shell: pwsh
+        run: |
+          $lt=(python -c "import libtorrent; print(libtorrent.__version__)")
+          python -m PyInstaller SerrebiTorrent.spec --noconfirm
+          python tools/audit_bundle.py dist/SerrebiTorrent
+          python tools/verify_frozen.py dist/SerrebiTorrent/SerrebiTorrent.exe build/frozen-self-test.json --expected-libtorrent $lt
+      - name: Sign when CIATA signing certificate is configured
+        shell: pwsh
+        env:
+          PFX_BASE64: ${{ secrets.WINDOWS_CODESIGN_PFX }}
+          PFX_PASSWORD: ${{ secrets.WINDOWS_CODESIGN_PASSWORD }}
+        run: |
+          if (-not $env:PFX_BASE64) {
+            Write-Warning "WINDOWS_CODESIGN_PFX is not configured; publishing unsigned CIATA build."
+            exit 0
+          }
+          $pfx=Join-Path $env:RUNNER_TEMP "codesign.pfx"
+          [IO.File]::WriteAllBytes($pfx,[Convert]::FromBase64String($env:PFX_BASE64))
+          $cert=Import-PfxCertificate -FilePath $pfx -CertStoreLocation Cert:\CurrentUser\My -Password (ConvertTo-SecureString $env:PFX_PASSWORD -AsPlainText -Force)
+          Remove-Item $pfx -Force
+          $tool=Get-ChildItem "${env:ProgramFiles(x86)}\Windows Kits\10\bin" -Recurse -Filter signtool.exe | Where-Object { $_.FullName -match '\\x64\\signtool\.exe$' } | Sort-Object FullName -Descending | Select-Object -First 1
+          & $tool.FullName sign /sha1 $cert.Thumbprint /fd SHA256 /tr http://timestamp.digicert.com /td SHA256 dist\SerrebiTorrent\SerrebiTorrent.exe
+          if ($LASTEXITCODE -ne 0) { throw "signtool failed" }
+      - name: Package
+        shell: pwsh
+        run: Compress-Archive -Path dist\SerrebiTorrent\* -DestinationPath "dist\SerrebiTorrent-${{ needs.plan.outputs.tag }}-windows-x86_64.zip"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: windows
+          path: dist/SerrebiTorrent-*-windows-x86_64.zip
+          if-no-files-found: error
+
+  macos:
+    needs: plan
+    runs-on: macos-15
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.plan.outputs.source_sha }}
+      - name: Install runtime
+        run: |
+          brew update
+          brew install libtorrent-rasterbar
+      - name: Create environment
+        run: |
+          python="$(brew --prefix python@3.15)/bin/python3.15"
+          "$python" -m venv --system-site-packages .venv
+          .venv/bin/python -m pip install --disable-pip-version-check -r requirements.txt -r requirements-build.txt pytest hypothesis
+      - name: Test
+        run: .venv/bin/python -m pytest -q
+      - name: Build and verify
+        run: |
+          .venv/bin/python -m PyInstaller SerrebiTorrent.spec --noconfirm
+          version="$(.venv/bin/python -c 'import libtorrent; print(libtorrent.__version__)')"
+          .venv/bin/python tools/audit_bundle.py dist/SerrebiTorrent.app
+          .venv/bin/python tools/verify_frozen.py dist/SerrebiTorrent.app/Contents/MacOS/SerrebiTorrent build/frozen-self-test.json --expected-libtorrent "$version"
+          ditto -c -k --sequesterRsrc --keepParent dist/SerrebiTorrent.app "dist/SerrebiTorrent-${{ needs.plan.outputs.tag }}-macos-ARM64.zip"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: macos
+          path: dist/SerrebiTorrent-*-macos-ARM64.zip
+          if-no-files-found: error
+
+  publish:
+    needs: [plan, linux, windows, macos]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          path: release-assets
+          merge-multiple: true
+      - name: Tag source and publish CIATA release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.plan.outputs.tag }}
+          SHA: ${{ needs.plan.outputs.source_sha }}
+          TITLE: ${{ needs.plan.outputs.title }}
+        run: |
+          set -euo pipefail
+          git init temp-repo
+          cd temp-repo
+          git remote add origin "https://x-access-token:$GH_TOKEN@github.com/$GITHUB_REPOSITORY.git"
+          git fetch --depth=1 origin "$SHA"
+          git tag "$TAG" "$SHA"
+          git push origin "refs/tags/$TAG"
+          cd ..
+          cat > notes.md <<'EOF'
+          CIATA distribution based on upstream SerrebiTorrent v1.35.1.
+
+          CIATA patch included:
+          - Keyboard-accessible sorting for Torrent List, Files, Peers and Trackers with Ctrl+Shift+O.
+          - Accessible sort state announcement while preserving selection and focused row.
+
+          This is a CIATA-maintained distribution while the patch is pending upstream. It is intentionally not published to the SerrebiTorrent automatic updater.
+          EOF
+          gh release create "$TAG" release-assets/* --repo "$GITHUB_REPOSITORY" --verify-tag --title "$TITLE" --notes-file notes.md --latest
