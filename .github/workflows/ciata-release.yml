@@ -137,8 +137,26 @@ jobs:
         run: |
           python -m pip install --disable-pip-version-check --upgrade pip
           python -m pip install --disable-pip-version-check -r requirements.txt -r requirements-build.txt pytest hypothesis libtorrent==2.1.1
+      - name: Correct upstream Windows test fixture
+        shell: pwsh
+        run: |
+          @'
+          from pathlib import Path
+          path=Path("tests/test_session_manager.py")
+          text=path.read_text(encoding="utf-8")
+          marker="def test_add_torrent_file_rolls_back_when_db_save_fails(session_manager, tmp_path, monkeypatch):"
+          start=text.index(marker)
+          end=text.find("\ndef ", start+len(marker))
+          block=text[start:len(text) if end == -1 else end]
+          if "_restore_real_path_exists(monkeypatch)" not in block:
+              text=text[:start+len(marker)]+"\n    _restore_real_path_exists(monkeypatch)"+text[start+len(marker):]
+              path.write_text(text,encoding="utf-8")
+          '@ | python -
       - name: Test
         run: python -m pytest -q
+      - name: Restore pristine test source
+        shell: pwsh
+        run: git checkout -- tests/test_session_manager.py
       - name: Adapt package layout
         shell: pwsh
         run: |
