@@ -193,7 +193,14 @@ jobs:
 
           if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
             echo "Refreshing existing GitHub release $TAG"
-            gh release upload "$TAG" "$asset_dir"/*               --repo "$GITHUB_REPOSITORY"               --clobber
+            for attempt in 1 2 3; do
+              gh release upload "$TAG" "$asset_dir"/* --repo "$GITHUB_REPOSITORY" --clobber && break
+              if [ "$attempt" -eq 3 ]; then
+                echo "::error::GitHub release upload failed after 3 attempts."
+                exit 1
+              fi
+              sleep $((attempt * 5))
+            done
             gh release edit "$TAG"               --repo "$GITHUB_REPOSITORY"               --title "$TITLE"               --notes-file "$notes"
           else
             echo "Creating GitHub release $TAG"
@@ -212,7 +219,13 @@ jobs:
           fi
 
           if [ "$PRERELEASE" != "true" ]; then
-            gh release edit "$TAG"               --repo "$GITHUB_REPOSITORY"               --latest
+            ciata_tag="$(gh api "repos/$GITHUB_REPOSITORY/releases?per_page=100" --jq --arg base "$TAG" '[.[] | select(.draft == false and .prerelease == false and (.tag_name | startswith($base + "-ciata.")))] | sort_by(.created_at) | last | .tag_name // empty')"
+            if [ -n "$ciata_tag" ]; then
+              echo "Keeping CIATA distribution $ciata_tag as /releases/latest."
+              gh release edit "$ciata_tag" --repo "$GITHUB_REPOSITORY" --latest
+            else
+              gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --latest
+            fi
           fi
 
       - name: Verify GitHub latest release
@@ -224,8 +237,8 @@ jobs:
         run: |
           set -euo pipefail
           latest="$(gh api "repos/$GITHUB_REPOSITORY/releases/latest" --jq '.tag_name')"
-          if [ "$latest" != "$TAG" ]; then
-            echo "::error::GitHub /releases/latest is $latest, expected $TAG."
+          if [ "$latest" != "$TAG" ] && [[ "$latest" != "$TAG-ciata."* ]]; then
+            echo "::error::GitHub /releases/latest is $latest; expected $TAG or a CIATA distribution based on it."
             exit 1
           fi
 
