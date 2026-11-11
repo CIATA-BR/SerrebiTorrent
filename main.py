@@ -2061,7 +2061,7 @@ def set_list_sort_accessible_name(list_ctrl):
     direction = "ascending" if getattr(list_ctrl, "sort_asc", True) else "descending"
     accessible_name = f"{base_name}; sorted by {label}, {direction}"
     if callable(set_name):
-        set_name(accessible_name)
+        list_ctrl.SetName(accessible_name)
     return accessible_name
 
 
