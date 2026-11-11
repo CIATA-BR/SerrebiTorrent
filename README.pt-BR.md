@@ -134,6 +134,7 @@ Tudo permanece acessível pelo teclado:
 - `Ctrl+A` — Selecionar tudo
 - `Ctrl+N` — Criar um torrent
 - `Ctrl+F` — Pesquisar torrents
+- `Ctrl+Shift+O` — Ordenar a lista em foco (torrents, Arquivos, Peers ou Trackers) por coluna e direção; o nome acessível da lista informa a ordenação ativa.
 - `Tab` — alterna o foco entre a barra lateral e a lista de torrents; um clique duplo no ícone da bandeja restaura a janela.
 
 Os logs ficam em `SerrebiTorrent_Data\logs`, ao lado do EXE/script no modo portátil (ou nos dados do aplicativo por usuário no modo instalado).

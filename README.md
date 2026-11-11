@@ -235,6 +235,7 @@ Everything stays reachable by keyboard:
 - `Ctrl+L` — Filter the current torrent list by name
 - `Ctrl+Shift+L` — Clear the torrent name filter
 - `Ctrl+Shift+H` — Open the persistent activity history
+- `Ctrl+Shift+O` — Sort the focused torrent, Files, Peers, or Trackers list by column and direction; the list's accessible name reports the active sort.
 - `Tab` — Toggle focus between the sidebar and torrent list; double-clicking the tray icon restores the window.
 
 Local libtorrent errors, state changes, and recheck completion are recorded in `SerrebiTorrent_Data\logs\session.log` (or the per-user app data folder in installed mode). The log keeps two rotated backups. If a torrent stays incomplete after Force Recheck, compare its save path and files with the errors in this log.

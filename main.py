@@ -935,15 +935,19 @@ class TorrentListCtrl(AccessibleVirtualListMixin, wx.ListCtrl):
         self._restore_focus_row(len(self.data), self._index_of_hash(focused_hash))
 
     def on_col_click(self, event):
+        col = event.GetColumn()
+        ascending = not self.sort_asc if col == self.sort_col else True
+        self.apply_sort(col, ascending)
+
+    def apply_sort(self, col, ascending):
+        if not isinstance(col, int) or not (0 <= col < self.GetColumnCount()):
+            return
         selected_hashes = set(self.get_selected_hashes())
         focused_hash = self._focused_hash()
-        col = event.GetColumn()
-        if col == self.sort_col:
-            self.sort_asc = not self.sort_asc
-        else:
-            self.sort_col = col
-            self.sort_asc = True
+        self.sort_col = col
+        self.sort_asc = bool(ascending)
         self._apply_sort()
+        set_list_sort_accessible_name(self)
         self.Refresh()
         # Sorting reorders rows: re-apply selection and restore focus by hash.
         if selected_hashes:
@@ -2025,6 +2029,81 @@ class RemotePreferencesDialog(wx.Dialog):
         return prefs
 
 
+def list_column_label(list_ctrl, col):
+    try:
+        if 0 <= int(col) < list_ctrl.GetColumnCount():
+            label = list_ctrl.GetColumn(int(col)).GetText()
+            if label:
+                return str(label)
+    except Exception:
+        pass
+    try:
+        return f"Column {int(col) + 1}"
+    except Exception:
+        return "Column"
+
+
+def set_list_sort_accessible_name(list_ctrl):
+    base_name = getattr(list_ctrl, "_sort_base_accessible_name", None)
+    if not base_name:
+        get_name = getattr(list_ctrl, "GetName", None)
+        base_name = (get_name() if callable(get_name) else "") or "List"
+        list_ctrl._sort_base_accessible_name = base_name
+
+    set_name = getattr(list_ctrl, "SetName", None)
+    col = getattr(list_ctrl, "sort_col", -1)
+    if col is None or col < 0:
+        if callable(set_name):
+            set_name(base_name)
+        return base_name
+
+    label = list_column_label(list_ctrl, col)
+    direction = "ascending" if getattr(list_ctrl, "sort_asc", True) else "descending"
+    accessible_name = f"{base_name}; sorted by {label}, {direction}"
+    if callable(set_name):
+        list_ctrl.SetName(accessible_name)
+    return accessible_name
+
+
+class SortListDialog(wx.Dialog):
+    """Keyboard-accessible column and direction picker for the focused list."""
+
+    def __init__(self, parent, list_ctrl):
+        list_name = getattr(list_ctrl, "_sort_base_accessible_name", None) or list_ctrl.GetName() or "List"
+        super().__init__(parent, title=f"Sort {list_name}")
+
+        columns = [
+            list_column_label(list_ctrl, col)
+            for col in range(list_ctrl.GetColumnCount())
+        ]
+
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(wx.StaticText(self, label="Column:"), 0, wx.LEFT | wx.RIGHT | wx.TOP, 10)
+        self.column_choice = wx.Choice(self, choices=columns)
+        self.column_choice.SetName("Sort column")
+        current_col = getattr(list_ctrl, "sort_col", -1)
+        if not isinstance(current_col, int) or not (0 <= current_col < len(columns)):
+            current_col = 0
+        if columns:
+            self.column_choice.SetSelection(current_col)
+        sizer.Add(self.column_choice, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
+
+        sizer.Add(wx.StaticText(self, label="Order:"), 0, wx.LEFT | wx.RIGHT, 10)
+        self.order_choice = wx.Choice(self, choices=["Ascending", "Descending"])
+        self.order_choice.SetName("Sort order")
+        self.order_choice.SetSelection(0 if getattr(list_ctrl, "sort_asc", True) else 1)
+        sizer.Add(self.order_choice, 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, 10)
+
+        buttons = self.CreateStdDialogButtonSizer(wx.OK | wx.CANCEL)
+        sizer.Add(buttons, 0, wx.EXPAND | wx.ALL, 10)
+        self.SetSizerAndFit(sizer)
+        self.CenterOnParent()
+        self.column_choice.SetFocus()
+
+    def get_sort(self):
+        return self.column_choice.GetSelection(), self.order_choice.GetSelection() == 0
+
+
 class DetailColumnSortMixin:
     """Click a column header to sort a detail list, like the torrent list.
 
@@ -2068,15 +2147,19 @@ class DetailColumnSortMixin:
         return identities
 
     def on_col_click(self, event):
+        col = event.GetColumn()
+        ascending = not self.sort_asc if col == getattr(self, "sort_col", -1) else True
+        self.apply_sort(col, ascending)
+
+    def apply_sort(self, col, ascending):
+        if not isinstance(col, int) or not (0 <= col < len(self.SORT_KEYS)):
+            return
         selected = set(self._selected_identities())
         focused = self._focused_identity()
-        col = event.GetColumn()
-        if col == getattr(self, "sort_col", -1):
-            self.sort_asc = not self.sort_asc
-        else:
-            self.sort_col = col
-            self.sort_asc = True
+        self.sort_col = col
+        self.sort_asc = bool(ascending)
         self._apply_sort()
+        set_list_sort_accessible_name(self)
         self.Refresh()
         if selected:
             for idx, row in enumerate(self.data):
@@ -3186,6 +3269,12 @@ class MainFrame(MagnetIntakeMixin, wx.Frame):
         remove_item = actions_menu.Append(wx.ID_ANY, "&Remove\tDel", "Remove selected torrents")
         remove_data_item = actions_menu.Append(wx.ID_ANY, "Remove with &Data\tShift+Del", "Remove selected torrents and data")
         select_all_item = actions_menu.Append(wx.ID_SELECTALL, "Select &All\tCtrl+A", "Select all torrents")
+        actions_menu.AppendSeparator()
+        sort_current_list_item = actions_menu.Append(
+            wx.ID_ANY,
+            "Sort Current &List...\tCtrl+Shift+O",
+            "Choose a column and direction for the focused torrent, Files, Peers, or Trackers list",
+        )
         menubar.Append(actions_menu, "&Actions")
 
         # ----- Tools menu -----
@@ -3238,6 +3327,7 @@ class MainFrame(MagnetIntakeMixin, wx.Frame):
         self.Bind(wx.EVT_MENU, self.on_remove, remove_item)
         self.Bind(wx.EVT_MENU, self.on_remove_data, remove_data_item)
         self.Bind(wx.EVT_MENU, self.on_select_all, select_all_item)
+        self.Bind(wx.EVT_MENU, self.on_sort_current_list, sort_current_list_item)
 
         # Tools menu extras.
         self.Bind(wx.EVT_MENU, self.on_search_torrents, search_item)
@@ -3267,8 +3357,54 @@ class MainFrame(MagnetIntakeMixin, wx.Frame):
             (wx.ACCEL_CTRL, ord('M'), copy_magnet_item.GetId()),
             (wx.ACCEL_CTRL, ord(','), local_settings_item.GetId()),
             (wx.ACCEL_CTRL, ord('F'), search_item.GetId()),
+            (wx.ACCEL_CTRL | wx.ACCEL_SHIFT, ord('O'), sort_current_list_item.GetId()),
         ]
         self.SetAcceleratorTable(wx.AcceleratorTable(accel_entries))
+
+
+    def _focused_sortable_list(self):
+        focus = wx.Window.FindFocus()
+        candidates = [
+            self.torrent_list,
+            self.details_panel.files_list,
+            self.details_panel.peers_list,
+            self.details_panel.trackers_list,
+        ]
+        for candidate in candidates:
+            if focus is candidate:
+                return candidate
+        return None
+
+    def on_sort_current_list(self, event):
+        target = self._focused_sortable_list()
+        if target is None:
+            wx.MessageBox(
+                "Focus the torrent list or the Files, Peers, or Trackers list first.",
+                "Sort Current List",
+                wx.OK | wx.ICON_INFORMATION,
+                self,
+            )
+            return
+
+        dialog = SortListDialog(self, target)
+        try:
+            if dialog.ShowModal() != wx.ID_OK:
+                return
+            col, ascending = dialog.get_sort()
+        finally:
+            dialog.Destroy()
+
+        target.apply_sort(col, ascending)
+        label = list_column_label(target, col)
+        direction = "ascending" if ascending else "descending"
+        self.statusbar.SetStatusText(
+            f"{getattr(target, '_sort_base_accessible_name', target.GetName())} sorted by {label}, {direction}.",
+            0,
+        )
+        target.SetFocus()
+        focused = target.GetFocusedItem()
+        if focused >= 0 and hasattr(target, "_notify_accessible_focus_event"):
+            wx.CallAfter(target._notify_accessible_focus_event, focused)
 
 
     def on_connect_profile_menu(self, event):
