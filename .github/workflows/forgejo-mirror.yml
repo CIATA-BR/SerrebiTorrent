@@ -219,7 +219,7 @@ jobs:
           fi
 
           if [ "$PRERELEASE" != "true" ]; then
-            ciata_tag="$(gh api "repos/$GITHUB_REPOSITORY/releases?per_page=100" --jq --arg base "$TAG" '[.[] | select(.draft == false and .prerelease == false and (.tag_name | startswith($base + "-ciata.")))] | sort_by(.created_at) | last | .tag_name // empty')"
+            ciata_tag="$(gh api "repos/$GITHUB_REPOSITORY/releases?per_page=100" | jq -r --arg base "$TAG" '[.[] | select(.draft == false and .prerelease == false and (.tag_name | startswith($base + "-ciata.")))] | sort_by(.created_at) | last | .tag_name // empty')"
             if [ -n "$ciata_tag" ]; then
               echo "Keeping CIATA distribution $ciata_tag as /releases/latest."
               gh release edit "$ciata_tag" --repo "$GITHUB_REPOSITORY" --latest
